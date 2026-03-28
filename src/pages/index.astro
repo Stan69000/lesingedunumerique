@@ -1,5 +1,23 @@
 ---
+import { getCollection } from 'astro:content';
 import '../styles/global.css';
+
+const posts = await getCollection('blog');
+const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
+  a.localeCompare(b, 'fr'),
+);
+const tagCounts = allTags
+  .map((tag) => ({
+    tag,
+    count: posts.filter((post) => post.data.tags.includes(tag)).length,
+  }))
+  .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag, 'fr'));
+
+const featuredTags = tagCounts.slice(0, 3);
+const beginnerTag =
+  allTags.find((tag) => tag.toLowerCase().includes('debut')) ?? featuredTags[0]?.tag;
+const advancedTag =
+  allTags.find((tag) => tag.toLowerCase().includes('avanc')) ?? featuredTags[1]?.tag;
 ---
 
 <html lang="fr">
@@ -7,23 +25,23 @@ import '../styles/global.css';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Le Singe Du Numérique</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  
+
   <body>
-    
-    <!-- NAVBAR -->
     <nav class="navbar">
       <div class="container nav-container">
         <a href="/" class="brand-logo">
           <img src="/logo.svg" alt="Logo" class="navbar-logo" />
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
-        
-        <!-- Menu Desktop -->
+
         <div class="nav-right">
           <div class="nav-links">
             <a href="#missions" class="nav-item">Missions</a>
@@ -36,7 +54,6 @@ import '../styles/global.css';
           </button>
         </div>
 
-        <!-- Bouton Burger (Mobile) -->
         <button class="burger-btn" id="burger-btn" aria-label="Menu">
           <span></span>
           <span></span>
@@ -44,7 +61,6 @@ import '../styles/global.css';
         </button>
       </div>
 
-      <!-- Menu Mobile Déroulant -->
       <div class="mobile-menu" id="mobile-menu">
         <a href="#missions" class="mobile-item">Missions</a>
         <a href="/projets" class="mobile-item">Projets</a>
@@ -56,7 +72,6 @@ import '../styles/global.css';
       </div>
     </nav>
 
-    <!-- HERO SECTION -->
     <main class="hero-section">
       <div class="glow-bg glow-green"></div>
       <div class="glow-bg glow-orange"></div>
@@ -69,44 +84,60 @@ import '../styles/global.css';
         <h1 class="hero-title">
           Explorez nos <span class="gradient-text">ressources</span>
         </h1>
-        
+
         <p class="hero-desc">
-          Ateliers, tutoriels et projets solidaires. Trouvez l'information qu'il vous faut pour coder mieux et ensemble.
+          Ateliers, tutoriels et projets solidaires. Trouvez l'information qu'il vous faut pour
+          coder mieux et ensemble.
         </p>
 
-        <!-- BARRE DE RECHERCHE -->
-        <div class="search-wrapper">
+        <form class="search-wrapper" action="/blog" method="get">
           <div class="search-bar">
             <span class="search-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
             </span>
-            <input type="text" placeholder="Rechercher un article, un tutoriel..." class="search-input" />
+            <input
+              type="search"
+              name="search"
+              placeholder="Rechercher un article, un tutoriel..."
+              class="search-input"
+            />
+            <button type="submit" class="search-submit">Chercher</button>
           </div>
-          
+
           <div class="search-meta">
-            <div class="filter-tag">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-              <span>Filtrer par tag</span>
-            </div>
+            <a href="/blog" class="filter-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+              <span>Filtrer sur le blog</span>
+            </a>
             <span class="divider">|</span>
-            <span class="tag-count">25 tags disponibles</span>
-            <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <span class="tag-count">{allTags.length} tags disponibles</span>
           </div>
-          
+
           <div class="explore-link">
             <a href="/blog">Explorer tous les tags →</a>
           </div>
-        </div>
+        </form>
 
         <div class="quick-actions">
-          <a href="/blog" class="quick-tag">🔥 Populaires</a>
-          <a href="/blog" class="quick-tag">🌱 Débutant</a>
-          <a href="/blog" class="quick-tag">⚡ Avancé</a>
+          {featuredTags[0] && (
+            <a href={`/blog?tag=${encodeURIComponent(featuredTags[0].tag)}`} class="quick-tag">
+              🔥 {featuredTags[0].tag}
+            </a>
+          )}
+          {beginnerTag && (
+            <a href={`/blog?tag=${encodeURIComponent(beginnerTag)}`} class="quick-tag">
+              🌱 {beginnerTag}
+            </a>
+          )}
+          {advancedTag && (
+            <a href={`/blog?tag=${encodeURIComponent(advancedTag)}`} class="quick-tag">
+              ⚡ {advancedTag}
+            </a>
+          )}
         </div>
       </div>
     </main>
 
-    <!-- SECTION MISSIONS -->
     <section id="missions" class="content-section">
       <div class="container">
         <div class="section-header">
@@ -151,7 +182,6 @@ import '../styles/global.css';
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
       <div class="container footer-container">
         <div class="footer-left">
@@ -169,7 +199,7 @@ import '../styles/global.css';
             <a href="/mentions-legales">Mentions légales</a>
           </div>
         </div>
-        
+
         <div class="footer-right">
           <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
           <div class="social-icons">
@@ -182,35 +212,35 @@ import '../styles/global.css';
       </div>
     </footer>
 
-    <!-- BOUTON RETOUR EN HAUT -->
     <button id="back-to-top" class="back-to-top" aria-label="Haut">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg>
     </button>
 
     <script>
-      // --- THÈME ---
       const themeBtn = document.getElementById('theme-toggle');
       const mobileThemeBtn = document.getElementById('mobile-theme-btn');
       const body = document.body;
-      
+
       if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light-mode');
-        if(mobileThemeBtn) mobileThemeBtn.textContent = '☀️';
+        if (mobileThemeBtn) mobileThemeBtn.textContent = '☀️';
       }
 
       function toggleTheme() {
         body.classList.toggle('light-mode');
         const isLight = body.classList.contains('light-mode');
         const icon = isLight ? '☀️' : '🌙';
-        if(themeBtn) themeBtn.innerHTML = isLight ? '<span class="icon-light">☀️</span>' : '<span class="icon-dark">🌙</span>';
-        if(mobileThemeBtn) mobileThemeBtn.textContent = icon;
+        if (themeBtn)
+          themeBtn.innerHTML = isLight
+            ? '<span class="icon-light">☀️</span>'
+            : '<span class="icon-dark">🌙</span>';
+        if (mobileThemeBtn) mobileThemeBtn.textContent = icon;
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
       }
 
-      if(themeBtn) themeBtn.addEventListener('click', toggleTheme);
-      if(mobileThemeBtn) mobileThemeBtn.addEventListener('click', toggleTheme);
+      if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+      if (mobileThemeBtn) mobileThemeBtn.addEventListener('click', toggleTheme);
 
-      // --- MENU BURGER ---
       const burgerBtn = document.getElementById('burger-btn');
       const mobileMenu = document.getElementById('mobile-menu');
 
@@ -221,8 +251,7 @@ import '../styles/global.css';
           document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
         });
 
-        // Fermer le menu si on clique sur un lien
-        document.querySelectorAll('.mobile-item').forEach(item => {
+        document.querySelectorAll('.mobile-item').forEach((item) => {
           item.addEventListener('click', () => {
             mobileMenu.classList.remove('active');
             burgerBtn.classList.remove('active');
@@ -231,7 +260,6 @@ import '../styles/global.css';
         });
       }
 
-      // --- RETOUR EN HAUT ---
       const backBtn = document.getElementById('back-to-top');
       window.addEventListener('scroll', () => {
         if (window.scrollY > 400) backBtn.classList.add('visible');
@@ -243,29 +271,38 @@ import '../styles/global.css';
 </html>
 
 <style>
-  /* --- VARIABLES --- */
   :root {
-    --bg-body: #0b1120; --bg-card: #151e32; --text-main: #f1f5f9; --text-muted: #94a3b8;
-    --brand-green: #2dd4bf; --brand-orange: #f97316; --brand-blue: #38bdf8;
-    --border-color: rgba(255, 255, 255, 0.08); --glow-opacity: 0.15;
+    --bg-body: #0b1120;
+    --bg-card: #151e32;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --brand-green: #2dd4bf;
+    --brand-orange: #f97316;
+    --brand-blue: #38bdf8;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --glow-opacity: 0.15;
     --nav-height: 70px;
   }
 
   body.light-mode {
-    --bg-body: #f8fafc; --bg-card: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
-    --brand-green: #0f766e; --brand-orange: #c2410c; --brand-blue: #0369a1;
-    --border-color: rgba(0, 0, 0, 0.08); --glow-opacity: 0.08;
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --brand-green: #0f766e;
+    --brand-orange: #c2410c;
+    --brand-blue: #0369a1;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --glow-opacity: 0.08;
   }
 
   body { margin: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Space Grotesk', sans-serif; line-height: 1.6; transition: background-color 0.5s, color 0.5s; }
   .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
   a { text-decoration: none; color: inherit; transition: 0.3s; }
 
-  /* --- NAVBAR --- */
   .navbar { position: sticky; top: 0; z-index: 100; padding: 16px 0; background: rgba(11, 17, 32, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); transition: background 0.5s; }
   body.light-mode .navbar { background: rgba(248, 250, 252, 0.85); }
   .nav-container { display: flex; justify-content: space-between; align-items: center; }
-  
   .brand-logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.1rem; color: var(--text-main); z-index: 101; }
   .navbar-logo { height: 40px; width: auto; display: block; }
   .brand-text { display: none; }
@@ -281,10 +318,9 @@ import '../styles/global.css';
   .icon-dark { display: block; } .icon-light { display: none; }
   body.light-mode .icon-dark { display: none; } body.light-mode .icon-light { display: block; }
 
-  /* BURGER MENU */
   .burger-btn { display: none; background: none; border: none; cursor: pointer; z-index: 101; flex-direction: column; gap: 5px; padding: 5px; }
   .burger-btn span { display: block; width: 25px; height: 2px; background: var(--text-main); transition: 0.3s; }
-  
+
   .mobile-menu {
     position: fixed; top: var(--nav-height); left: 0; width: 100%;
     background: var(--bg-card); border-bottom: 1px solid var(--border-color);
@@ -302,7 +338,6 @@ import '../styles/global.css';
     .burger-btn { display: flex; }
   }
 
-  /* --- HERO --- */
   .hero-section { position: relative; padding: 3rem 0 5rem; text-align: center; overflow: hidden; }
   .glow-bg { position: absolute; border-radius: 50%; filter: blur(90px); z-index: -1; opacity: var(--glow-opacity); animation: float 8s infinite ease-in-out; }
   .glow-green { width: 400px; height: 400px; background: var(--brand-green); top: -100px; left: -100px; }
@@ -316,20 +351,19 @@ import '../styles/global.css';
   .gradient-text { background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.6; }
 
-  /* SEARCH */
   .search-wrapper { max-width: 700px; margin: 0 auto 2rem; display: flex; flex-direction: column; gap: 12px; }
   .search-bar { position: relative; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
   .search-bar:focus-within { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
   .search-icon { color: var(--text-muted); display: flex; align-items: center; }
   .search-input { flex: 1; background: transparent; border: none; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
   .search-input::placeholder { color: var(--text-muted); }
+  .search-submit { border: none; border-radius: 999px; padding: 10px 14px; background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); color: #07131d; font-weight: 700; cursor: pointer; }
 
   .search-meta { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
   .filter-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(128,128,128, 0.1); border-radius: 6px; cursor: pointer; transition: background 0.2s; }
   .filter-tag:hover { background: rgba(128,128,128, 0.15); }
   .divider { opacity: 0.3; }
   .tag-count { opacity: 0.7; }
-  .dropdown-arrow { opacity: 0.5; }
   .explore-link { margin-top: 8px; }
   .explore-link a { font-size: 0.9rem; color: var(--text-muted); text-decoration: underline; text-underline-offset: 4px; }
   .explore-link a:hover { color: var(--brand-green); }
@@ -338,7 +372,6 @@ import '../styles/global.css';
   .quick-tag { font-size: 0.85rem; padding: 6px 14px; background: rgba(128,128,128, 0.1); border-radius: 20px; color: var(--text-muted); transition: all 0.2s; }
   .quick-tag:hover { background: rgba(45, 212, 191, 0.15); color: var(--brand-green); }
 
-  /* --- CONTENT --- */
   .content-section { padding: 5rem 0; }
   .section-header { margin-bottom: 3rem; display: flex; align-items: center; gap: 20px; }
   .section-header h2 { font-size: 2.2rem; margin: 0; color: var(--text-main); }
@@ -358,7 +391,6 @@ import '../styles/global.css';
   .card-tags { margin-top: 1.5rem; display: flex; gap: 8px; flex-wrap: wrap; }
   .card-tags span { font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; padding: 4px 10px; border-radius: 12px; background: rgba(128,128,128, 0.1); color: var(--text-muted); }
 
-  /* --- FOOTER --- */
   .footer { padding: 3rem 0; background: var(--bg-card); margin-top: 4rem; border-top: 1px solid var(--border-color); }
   .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
   .footer-left { display: flex; flex-direction: column; gap: 16px; }
@@ -373,35 +405,29 @@ import '../styles/global.css';
   .social-icon { font-size: 1.3rem; color: var(--text-muted); transition: transform 0.2s, color 0.2s; }
   .social-icon:hover { color: var(--brand-orange); transform: translateY(-3px); }
 
-  /* --- BACK TO TOP --- */
   .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--brand-green); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(45, 212, 191, 0.4); z-index: 90; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
   .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
   .back-to-top:hover { transform: translateY(-5px); }
 
-  /* --- RESPONSIVE MOBILE & TABLETTE --- */
   @media (max-width: 768px) {
     .hero-title { font-size: 2.2rem; }
     .hero-logo { max-width: 200px; }
     .hero-desc { font-size: 1rem; }
-    
-    /* Search Meta passe en dessous sur mobile */
+    .search-bar { flex-wrap: wrap; }
+    .search-submit { width: 100%; }
     .search-meta { justify-content: center; flex-wrap: wrap; font-size: 0.8rem; }
-    .divider { display: none; } /* On cache la barre verticale sur mobile */
-    
+    .divider { display: none; }
     .quick-actions { gap: 8px; }
     .quick-tag { padding: 5px 12px; font-size: 0.8rem; }
-    
     .section-header h2 { font-size: 1.8rem; }
-    .grid { grid-template-columns: 1fr; /* 1 seule colonne sur mobile */ }
-    
+    .grid { grid-template-columns: 1fr; }
     .footer-container { flex-direction: column; text-align: center; gap: 20px; }
     .footer-left, .footer-right { align-items: center; }
     .brand-text { display: none; }
   }
 
   @media (min-width: 769px) and (max-width: 1024px) {
-    /* Tablette */
     .hero-title { font-size: 2.8rem; }
-    .grid { grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur tablette */ }
+    .grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
