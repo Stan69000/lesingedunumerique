@@ -9,6 +9,7 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
 );
 ---
 
+<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -28,17 +29,19 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
     />
   </head>
   <body>
-    <nav class="navbar">
+    <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+    <nav class="navbar" aria-label="Navigation du blog">
       <div class="container nav-container">
         <a href="/" class="brand-logo">
-          <img src="/logo.svg" alt="Logo" class="navbar-logo" />
+          <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
         <a href="/" class="back-home">← Retour à l'accueil</a>
       </div>
     </nav>
 
-    <main>
+    <main id="main-content">
       <section class="hero-section">
         <div class="glow-bg glow-green"></div>
         <div class="glow-bg glow-orange"></div>
@@ -59,9 +62,10 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
           </div>
 
           <form class="search-panel" id="blog-filters" action="/blog" method="get">
+            <label class="sr-only" for="blog-search">Recherche dans les articles du blog</label>
             <div class="search-bar">
               <span class="search-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
               </span>
               <input
                 id="blog-search"
@@ -150,7 +154,7 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
     <footer class="footer">
       <div class="container footer-container">
         <div class="footer-brand">
-          <img src="/logo.svg" alt="Logo" class="footer-logo" />
+          <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
           <span>Le Singe Du Numérique</span>
         </div>
         <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
@@ -269,6 +273,35 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -48px;
+    z-index: 200;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #07131d;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .skip-link:focus {
+    top: 16px;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   button,

@@ -18,6 +18,7 @@ const {
 } = Astro.props;
 ---
 
+<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -34,10 +35,12 @@ const {
     />
   </head>
   <body>
-    <nav class="navbar">
+    <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+    <nav class="navbar" aria-label="Navigation principale">
       <div class="container nav-container">
         <a href="/" class="brand-logo">
-          <img src="/logo.svg" alt="Logo" class="navbar-logo" />
+          <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
 
@@ -51,7 +54,7 @@ const {
       </div>
     </nav>
 
-    <main>
+    <main id="main-content">
       <section class="hero-section">
         <div class="glow-bg glow-green"></div>
         <div class="glow-bg glow-orange"></div>
@@ -75,7 +78,7 @@ const {
     <footer class="footer">
       <div class="container footer-container">
         <div class="footer-brand">
-          <img src="/logo.svg" alt="Logo" class="footer-logo" />
+          <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
           <span>Le Singe Du Numérique</span>
         </div>
         <div class="footer-links">
@@ -120,6 +123,23 @@ const {
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -48px;
+    z-index: 200;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #07131d;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .skip-link:focus {
+    top: 16px;
   }
 
   .container {

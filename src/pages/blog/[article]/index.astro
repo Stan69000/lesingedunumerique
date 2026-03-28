@@ -19,6 +19,7 @@ if (!post) {
 const { Content } = await render(post);
 ---
 
+<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -56,6 +57,21 @@ const { Content } = await render(post);
       }
 
       a { color: inherit; text-decoration: none; }
+
+      .skip-link {
+        position: absolute;
+        left: 16px;
+        top: -48px;
+        z-index: 10;
+        padding: 10px 14px;
+        border-radius: 12px;
+        background: #ffffff;
+        color: #07131d;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85rem;
+      }
+
+      .skip-link:focus { top: 16px; }
 
       .page-shell {
         position: relative;
@@ -171,11 +187,13 @@ const { Content } = await render(post);
   </head>
   <body>
     <div class="page-shell">
+      <a class="skip-link" href="#main-content">Aller au contenu principal</a>
       <div class="glow-bg glow-left"></div>
       <div class="glow-bg glow-right"></div>
       <div class="container">
       <a href="/blog" class="nav-back">← Retour au blog</a>
 
+      <main id="main-content">
       <article>
         <header>
           <div class="tags">
@@ -193,6 +211,7 @@ const { Content } = await render(post);
           <Content />
         </div>
       </article>
+      </main>
 
       <footer>
         <p>© 2026 Le Singe Du Numérique. Code éthique & Open Source.</p>
