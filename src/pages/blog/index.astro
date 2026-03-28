@@ -49,15 +49,45 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
             Des ressources pour <span class="gradient-text">coder mieux</span>
           </h1>
           <p class="hero-desc">
-            Tutoriels, billets techniques et nouvelles de l'association. Le contenu est encore en
-            construction, mais la base est là.
+            Recherche par mot-clé, filtre par tag, puis parcours des articles existants.
           </p>
 
           <div class="hero-meta">
-            <span>{posts.length} article{posts.length > 1 ? 's' : ''}</span>
+            <span id="results-count">{posts.length} article{posts.length > 1 ? 's' : ''}</span>
             <span>•</span>
             <span>{allTags.length} tag{allTags.length > 1 ? 's' : ''}</span>
           </div>
+
+          <form class="search-panel" id="blog-filters" action="/blog" method="get">
+            <div class="search-bar">
+              <span class="search-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+              </span>
+              <input
+                id="blog-search"
+                name="search"
+                type="search"
+                placeholder="Rechercher un article, un auteur ou un sujet..."
+                class="search-input"
+                autocomplete="off"
+              />
+              <button type="submit" class="search-button">Chercher</button>
+            </div>
+
+            <div class="filters-row">
+              <div class="filter-group">
+                <span class="filter-label">Tags</span>
+                <div class="tag-cloud">
+                  <button type="button" class="cloud-tag is-active" data-tag="">Tous</button>
+                  {allTags.map((tag) => (
+                    <button type="button" class="cloud-tag" data-tag={tag}>{tag}</button>
+                  ))}
+                </div>
+              </div>
+
+              <a href="/blog" class="reset-link">Réinitialiser</a>
+            </div>
+          </form>
         </div>
       </section>
 
@@ -68,51 +98,50 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
             <div class="line-deco"></div>
           </div>
 
-          <div class="posts-grid">
-            {posts.map((post, index) => (
-              <article class={`post-card ${index === 0 ? 'featured' : ''}`}>
-                <div class={`card-top ${index % 3 === 0 ? 'card-green' : index % 3 === 1 ? 'card-orange' : 'card-blue'}`}>
-                  <span class="card-kicker">
-                    {post.data.pubDate.toLocaleDateString('fr-FR', {
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
-                  </span>
-                </div>
+          <p class="empty-state" id="empty-state" hidden>Aucun article ne correspond à ce filtre pour le moment.</p>
 
-                <div class="post-content">
-                  <div class="tag-list">
-                    {post.data.tags.map((tag) => (
-                      <span>{tag}</span>
-                    ))}
+          <div class="posts-grid" id="posts-grid">
+            {posts.map((post, index) => {
+              const searchable = [
+                post.data.title,
+                post.data.description,
+                post.data.author ?? '',
+                ...post.data.tags,
+              ].join(' ');
+              return (
+                <article
+                  class={`post-card ${index === 0 ? 'featured' : ''}`}
+                  data-tags={post.data.tags.join('|')}
+                  data-searchable={searchable}
+                >
+                  <div class={`card-top ${index % 3 === 0 ? 'card-green' : index % 3 === 1 ? 'card-orange' : 'card-blue'}`}>
+                    <span class="card-kicker">
+                      {post.data.pubDate.toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                      })}
+                    </span>
                   </div>
 
-                  <h3>{post.data.title}</h3>
-                  <p>{post.data.description}</p>
+                  <div class="post-content">
+                    <div class="tag-list">
+                      {post.data.tags.map((tag) => (
+                        <a href={`/blog?tag=${encodeURIComponent(tag)}`} class="tag-pill">{tag}</a>
+                      ))}
+                    </div>
 
-                  <a href={`/blog/${post.id}/`} class="post-link">
-                    Lire l'article
-                    <span aria-hidden="true">→</span>
-                  </a>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+                    <h3>{post.data.title}</h3>
+                    <p>{post.data.description}</p>
 
-      <section class="content-section compact-top">
-        <div class="container">
-          <div class="section-header">
-            <h2>Explorer par <span class="text-accent">tag</span></h2>
-            <div class="line-deco"></div>
-          </div>
-
-          <div class="tag-cloud">
-            {allTags.map((tag) => (
-              <span class="cloud-tag">{tag}</span>
-            ))}
+                    <a href={`/blog/${post.id}/`} class="post-link">
+                      Lire l'article
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -127,6 +156,88 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
         <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
       </div>
     </footer>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const normalize = (value) =>
+        (value || '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLowerCase()
+          .trim();
+
+      const searchInput = document.getElementById('blog-search');
+      const tagButtons = Array.from(document.querySelectorAll('[data-tag]'));
+      const cards = Array.from(document.querySelectorAll('.post-card'));
+      const countNode = document.getElementById('results-count');
+      const emptyState = document.getElementById('empty-state');
+
+      let selectedTag = params.get('tag') || '';
+
+      if (searchInput) {
+        searchInput.value = params.get('search') || '';
+      }
+
+      function syncTagButtons() {
+        const normalizedTag = normalize(selectedTag);
+        tagButtons.forEach((button) => {
+          const isActive = normalize(button.dataset.tag || '') === normalizedTag;
+          button.classList.toggle('is-active', isActive);
+        });
+      }
+
+      function updateUrl(searchTerm) {
+        const nextParams = new URLSearchParams();
+        if (searchTerm) nextParams.set('search', searchTerm);
+        if (selectedTag) nextParams.set('tag', selectedTag);
+        const nextQuery = nextParams.toString();
+        const nextUrl = nextQuery ? `/blog?${nextQuery}` : '/blog';
+        window.history.replaceState({}, '', nextUrl);
+      }
+
+      function applyFilters() {
+        const searchTerm = normalize(searchInput?.value || '');
+        const normalizedTag = normalize(selectedTag);
+        let visibleCount = 0;
+
+        cards.forEach((card) => {
+          const searchable = normalize(card.dataset.searchable || '');
+          const tags = (card.dataset.tags || '').split('|').map(normalize);
+          const matchesSearch = !searchTerm || searchable.includes(searchTerm);
+          const matchesTag = !normalizedTag || tags.includes(normalizedTag);
+          const visible = matchesSearch && matchesTag;
+          card.hidden = !visible;
+          if (visible) visibleCount += 1;
+        });
+
+        if (countNode) {
+          countNode.textContent = `${visibleCount} article${visibleCount > 1 ? 's' : ''}`;
+        }
+
+        if (emptyState) {
+          emptyState.hidden = visibleCount !== 0;
+        }
+
+        syncTagButtons();
+        updateUrl(searchTerm);
+      }
+
+      tagButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          selectedTag = button.dataset.tag || '';
+          applyFilters();
+        });
+      });
+
+      searchInput?.addEventListener('input', applyFilters);
+
+      document.getElementById('blog-filters')?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        applyFilters();
+      });
+
+      applyFilters();
+    </script>
   </body>
 </html>
 
@@ -158,6 +269,11 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  button,
+  input {
+    font: inherit;
   }
 
   .container {
@@ -280,6 +396,7 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
     display: inline-flex;
     gap: 12px;
     align-items: center;
+    margin-bottom: 1.5rem;
     padding: 10px 16px;
     border: 1px solid var(--border-color);
     border-radius: 999px;
@@ -289,12 +406,116 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
     font-size: 0.8rem;
   }
 
-  .content-section {
-    padding: 2rem 0 4rem;
+  .search-panel {
+    display: grid;
+    gap: 14px;
+    text-align: left;
   }
 
-  .compact-top {
-    padding-top: 0;
+  .search-bar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+  }
+
+  .search-icon {
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+  }
+
+  .search-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text-main);
+  }
+
+  .search-input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .search-button {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 14px;
+    background: linear-gradient(135deg, var(--brand-green), var(--brand-blue));
+    color: #07131d;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .filters-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .filter-group {
+    display: grid;
+    gap: 10px;
+  }
+
+  .filter-label {
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .cloud-tag,
+  .tag-pill {
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+  }
+
+  .cloud-tag {
+    cursor: pointer;
+  }
+
+  .cloud-tag.is-active {
+    border-color: rgba(45, 212, 191, 0.45);
+    background: rgba(45, 212, 191, 0.14);
+    color: var(--brand-green);
+  }
+
+  .tag-pill:hover {
+    color: var(--brand-green);
+    border-color: rgba(45, 212, 191, 0.45);
+  }
+
+  .reset-link {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .reset-link:hover {
+    color: var(--brand-green);
+  }
+
+  .content-section {
+    padding: 2rem 0 4rem;
   }
 
   .section-header {
@@ -318,6 +539,11 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
     flex: 1;
     height: 1px;
     background: var(--border-color);
+  }
+
+  .empty-state {
+    margin: 0 0 1rem;
+    color: var(--text-muted);
   }
 
   .posts-grid {
@@ -385,16 +611,6 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
     gap: 8px;
   }
 
-  .tag-list span,
-  .cloud-tag {
-    padding: 5px 10px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-  }
-
   .post-content h3 {
     margin: 0;
     font-size: 1.45rem;
@@ -417,16 +633,6 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
 
   .post-link:hover {
     gap: 12px;
-  }
-
-  .tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .cloud-tag {
-    color: var(--text-main);
   }
 
   .footer {
@@ -472,6 +678,14 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
     .section-header {
       flex-direction: column;
       align-items: flex-start;
+    }
+
+    .search-bar {
+      flex-wrap: wrap;
+    }
+
+    .search-button {
+      width: 100%;
     }
 
     .hero-section {
