@@ -16,6 +16,7 @@ const {
   accent = '',
   intro,
 } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
 <!DOCTYPE html>
@@ -45,11 +46,11 @@ const {
         </a>
 
         <div class="nav-links">
-          <a href="/projets" class="nav-item">Projets</a>
-          <a href="/asso" class="nav-item">L'Asso</a>
-          <a href="/evenements" class="nav-item">Événements</a>
-          <a href="/adhesion" class="nav-item">Adhérer</a>
-          <a href="/blog" class="nav-item">Blog</a>
+          <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+          <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L'Asso</a>
+          <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
+          <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Adhérer</a>
+          <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
         </div>
       </div>
     </nav>
@@ -200,9 +201,29 @@ const {
     font-size: 0.85rem;
   }
 
+  .nav-item[aria-current='page'] {
+    color: var(--text-main);
+  }
+
   .nav-item:hover,
   .footer-links a:hover {
     color: var(--brand-green);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--brand-green);
+    outline-offset: 3px;
+  }
+
+  .nav-item:focus-visible,
+  .footer-links a:focus-visible,
+  .brand-logo:focus-visible {
+    border-radius: 12px;
   }
 
   .hero-section {

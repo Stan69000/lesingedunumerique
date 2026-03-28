@@ -18,6 +18,7 @@ const beginnerTag =
   allTags.find((tag) => tag.toLowerCase().includes('debut')) ?? featuredTags[0]?.tag;
 const advancedTag =
   allTags.find((tag) => tag.toLowerCase().includes('avanc')) ?? featuredTags[1]?.tag;
+const currentPath = Astro.url.pathname;
 ---
 
 <!DOCTYPE html>
@@ -47,7 +48,7 @@ const advancedTag =
 
         <div class="nav-right">
           <div class="nav-links">
-            <a href="#missions" class="nav-item">Missions</a>
+            <a href="#missions" class="nav-item" aria-current={currentPath === '/' ? 'page' : undefined}>Missions</a>
             <a href="/projets" class="nav-item">Projets</a>
             <a href="/asso" class="nav-item">L'Asso</a>
           </div>
@@ -57,14 +58,20 @@ const advancedTag =
           </button>
         </div>
 
-        <button class="burger-btn" id="burger-btn" aria-label="Menu">
+        <button
+          class="burger-btn"
+          id="burger-btn"
+          aria-label="Ouvrir le menu principal"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+        >
           <span></span>
           <span></span>
           <span></span>
         </button>
       </div>
 
-      <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu" id="mobile-menu" aria-label="Navigation mobile" hidden>
         <a href="#missions" class="mobile-item">Missions</a>
         <a href="/projets" class="mobile-item">Projets</a>
         <a href="/asso" class="mobile-item">L'Asso</a>
@@ -252,18 +259,36 @@ const advancedTag =
       const mobileMenu = document.getElementById('mobile-menu');
 
       if (burgerBtn && mobileMenu) {
+        const setMenuState = (isOpen) => {
+          mobileMenu.classList.toggle('active', isOpen);
+          burgerBtn.classList.toggle('active', isOpen);
+          burgerBtn.setAttribute('aria-expanded', String(isOpen));
+          burgerBtn.setAttribute(
+            'aria-label',
+            isOpen ? 'Fermer le menu principal' : 'Ouvrir le menu principal',
+          );
+          mobileMenu.hidden = !isOpen;
+          document.body.style.overflow = isOpen ? 'hidden' : '';
+        };
+
+        setMenuState(false);
+
         burgerBtn.addEventListener('click', () => {
-          mobileMenu.classList.toggle('active');
-          burgerBtn.classList.toggle('active');
-          document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+          const isOpen = burgerBtn.getAttribute('aria-expanded') !== 'true';
+          setMenuState(isOpen);
         });
 
         document.querySelectorAll('.mobile-item').forEach((item) => {
           item.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            burgerBtn.classList.remove('active');
-            document.body.style.overflow = '';
+            setMenuState(false);
           });
+        });
+
+        document.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && burgerBtn.getAttribute('aria-expanded') === 'true') {
+            setMenuState(false);
+            burgerBtn.focus();
+          }
         });
       }
 
@@ -321,7 +346,18 @@ const advancedTag =
   .nav-right { display: flex; align-items: center; gap: 24px; }
   .nav-links { display: flex; gap: 28px; }
   .nav-item { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+  .nav-item[aria-current='page'] { color: var(--text-main); }
   .nav-item:hover { color: var(--brand-green); }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--brand-green);
+    outline-offset: 3px;
+  }
 
   .theme-btn { background: transparent; border: 1px solid var(--border-color); border-radius: 50%; width: 38px; height: 38px; color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
   .theme-btn:hover { border-color: var(--brand-green); background: rgba(128,128,128, 0.1); }
@@ -338,6 +374,7 @@ const advancedTag =
     transform: translateY(-150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 99; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   }
+  .mobile-menu[hidden] { display: none; }
   .mobile-menu.active { transform: translateY(0); }
   .mobile-item { font-size: 1.2rem; font-weight: 600; color: var(--text-main); padding: 10px 0; border-bottom: 1px solid var(--border-color); }
   .mobile-theme-toggle { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; color: var(--text-muted); }
