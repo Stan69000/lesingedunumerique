@@ -25,48 +25,108 @@ const { Content } = await render(post);
     <title>{post.data.title} - Le Singe Du Numérique</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={post.data.description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
       :root {
         --bg-body: #0b1120;
+        --bg-card: #151e32;
         --text-main: #f1f5f9;
         --text-muted: #94a3b8;
         --accent: #2dd4bf;
+        --accent-alt: #38bdf8;
         --border: #334155;
         --code-bg: #1e293b;
       }
 
+      * { box-sizing: border-box; }
+
       body {
         background-color: var(--bg-body);
         color: var(--text-main);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-family: 'Space Grotesk', sans-serif;
         margin: 0;
         line-height: 1.7;
       }
 
-      .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+      a { color: inherit; text-decoration: none; }
+
+      .page-shell {
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+      }
+
+      .glow-bg {
+        position: absolute;
+        z-index: 0;
+        border-radius: 50%;
+        filter: blur(90px);
+        opacity: 0.14;
+      }
+
+      .glow-left {
+        top: -80px;
+        left: -120px;
+        width: 320px;
+        height: 320px;
+        background: var(--accent);
+      }
+
+      .glow-right {
+        top: 80px;
+        right: -140px;
+        width: 420px;
+        height: 420px;
+        background: var(--accent-alt);
+      }
+
+      .container {
+        position: relative;
+        z-index: 1;
+        max-width: 860px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
 
       .nav-back {
-        display: inline-block; margin-bottom: 30px; color: var(--accent);
-        text-decoration: none; font-family: monospace; font-size: 0.95rem;
+        display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
       }
-      .nav-back:hover { opacity: 0.8; text-decoration: underline; }
+      .nav-back:hover { color: var(--accent); }
 
       header {
-        text-align: center; margin-bottom: 50px; padding-bottom: 30px;
-        border-bottom: 1px solid var(--border);
+        text-align: center; margin-bottom: 50px; padding: 30px;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 24px;
+        background: rgba(21, 30, 50, 0.72);
+        backdrop-filter: blur(10px);
       }
 
       .tags { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
       .tag {
         background: rgba(45, 212, 191, 0.1); color: var(--accent);
         padding: 4px 12px; border-radius: 20px; font-size: 0.85rem;
-        font-family: monospace; font-weight: 500;
+        font-family: 'JetBrains Mono', monospace; font-weight: 500;
       }
 
       h1 { font-size: 2.5rem; color: #fff; margin: 0 0 15px 0; line-height: 1.2; letter-spacing: -0.02em; }
-      .meta { color: var(--text-muted); font-family: monospace; font-size: 0.95rem; }
+      .meta { color: var(--text-muted); font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; }
 
-      .article-content { font-size: 1.15rem; color: #e2e8f0; }
+      .article-content {
+        font-size: 1.15rem;
+        color: #e2e8f0;
+        background: rgba(21, 30, 50, 0.5);
+        border: 1px solid rgba(255,255,255,0.06);
+        border-radius: 24px;
+        padding: 30px;
+      }
       .article-content :global(h2) { color: #fff; margin-top: 40px; font-size: 1.8rem; border-left: 4px solid var(--accent); padding-left: 15px; }
       .article-content :global(h3) { color: #fff; margin-top: 30px; font-size: 1.4rem; }
       .article-content :global(p) { margin-bottom: 1.5rem; line-height: 1.8; }
@@ -96,10 +156,24 @@ const { Content } = await render(post);
         margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border);
         text-align: center; color: var(--text-muted); font-size: 0.9rem;
       }
+
+      @media (max-width: 640px) {
+        header,
+        .article-content {
+          padding: 22px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+      }
     </style>
   </head>
   <body>
-    <div class="container">
+    <div class="page-shell">
+      <div class="glow-bg glow-left"></div>
+      <div class="glow-bg glow-right"></div>
+      <div class="container">
       <a href="/blog" class="nav-back">← Retour au blog</a>
 
       <article>
@@ -123,6 +197,7 @@ const { Content } = await render(post);
       <footer>
         <p>© 2026 Le Singe Du Numérique. Code éthique & Open Source.</p>
       </footer>
+      </div>
     </div>
   </body>
 </html>
