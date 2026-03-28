@@ -48,11 +48,17 @@ const currentPath = Astro.url.pathname;
 
         <div class="nav-right">
           <div class="nav-links">
-            <a href="#missions" class="nav-item" aria-current={currentPath === '/' ? 'page' : undefined}>Missions</a>
+            <a href="#missions" class="nav-item">Missions</a>
             <a href="/projets" class="nav-item">Projets</a>
             <a href="/asso" class="nav-item">L'Asso</a>
           </div>
-          <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème">
+          <button
+            id="theme-toggle"
+            class="theme-btn"
+            type="button"
+            aria-label="Activer le thème clair"
+            aria-pressed="false"
+          >
             <span class="icon-light">☀️</span>
             <span class="icon-dark">🌙</span>
           </button>
@@ -71,13 +77,27 @@ const currentPath = Astro.url.pathname;
         </button>
       </div>
 
-      <div class="mobile-menu" id="mobile-menu" aria-label="Navigation mobile" hidden>
+      <div
+        class="mobile-menu"
+        id="mobile-menu"
+        aria-label="Navigation mobile"
+        aria-hidden="true"
+        hidden
+      >
         <a href="#missions" class="mobile-item">Missions</a>
         <a href="/projets" class="mobile-item">Projets</a>
         <a href="/asso" class="mobile-item">L'Asso</a>
         <div class="mobile-theme-toggle">
           <span>Changer le thème</span>
-          <button id="mobile-theme-btn" class="theme-btn-small" aria-label="Changer le thème">🌙</button>
+          <button
+            id="mobile-theme-btn"
+            class="theme-btn-small"
+            type="button"
+            aria-label="Activer le thème clair"
+            aria-pressed="false"
+          >
+            🌙
+          </button>
         </div>
       </div>
     </nav>
@@ -204,6 +224,8 @@ const currentPath = Astro.url.pathname;
             <span>Le Singe Du Numérique</span>
           </div>
           <div class="footer-links">
+            <a href="/accessibilite">Accessibilité : non conforme</a>
+            <span class="footer-separator">•</span>
             <a href="#missions">Missions</a>
             <span class="footer-separator">•</span>
             <a href="/evenements">Événements</a>
@@ -216,11 +238,11 @@ const currentPath = Astro.url.pathname;
 
         <div class="footer-right">
           <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
-          <div class="social-icons" aria-label="Réseaux sociaux à venir">
-            <span class="social-icon" aria-label="GitHub à venir">🐙</span>
-            <span class="social-icon" aria-label="Twitter à venir">𝕏</span>
-            <span class="social-icon" aria-label="LinkedIn à venir">in</span>
-            <span class="social-icon" aria-label="Contact à venir">📧</span>
+          <div class="social-icons" aria-hidden="true">
+            <span class="social-icon">🐙</span>
+            <span class="social-icon">𝕏</span>
+            <span class="social-icon">in</span>
+            <span class="social-icon">📧</span>
           </div>
         </div>
       </div>
@@ -234,21 +256,38 @@ const currentPath = Astro.url.pathname;
       const themeBtn = document.getElementById('theme-toggle');
       const mobileThemeBtn = document.getElementById('mobile-theme-btn');
       const body = document.body;
+      let lastFocusedElement = null;
+
+      function syncThemeControls() {
+        const isLight = body.classList.contains('light-mode');
+        const icon = isLight ? '☀️' : '🌙';
+        const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
+
+        if (themeBtn) {
+          themeBtn.innerHTML = isLight
+            ? '<span class="icon-light">☀️</span>'
+            : '<span class="icon-dark">🌙</span>';
+          themeBtn.setAttribute('aria-label', actionLabel);
+          themeBtn.setAttribute('aria-pressed', String(isLight));
+        }
+
+        if (mobileThemeBtn) {
+          mobileThemeBtn.textContent = icon;
+          mobileThemeBtn.setAttribute('aria-label', actionLabel);
+          mobileThemeBtn.setAttribute('aria-pressed', String(isLight));
+        }
+      }
 
       if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light-mode');
-        if (mobileThemeBtn) mobileThemeBtn.textContent = '☀️';
       }
+
+      syncThemeControls();
 
       function toggleTheme() {
         body.classList.toggle('light-mode');
         const isLight = body.classList.contains('light-mode');
-        const icon = isLight ? '☀️' : '🌙';
-        if (themeBtn)
-          themeBtn.innerHTML = isLight
-            ? '<span class="icon-light">☀️</span>'
-            : '<span class="icon-dark">🌙</span>';
-        if (mobileThemeBtn) mobileThemeBtn.textContent = icon;
+        syncThemeControls();
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
       }
 
@@ -259,6 +298,14 @@ const currentPath = Astro.url.pathname;
       const mobileMenu = document.getElementById('mobile-menu');
 
       if (burgerBtn && mobileMenu) {
+        const mobileFocusableSelector =
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+        const getMenuFocusableElements = () =>
+          Array.from(mobileMenu.querySelectorAll(mobileFocusableSelector)).filter(
+            (element) => !element.hasAttribute('hidden'),
+          );
+
         const setMenuState = (isOpen) => {
           mobileMenu.classList.toggle('active', isOpen);
           burgerBtn.classList.toggle('active', isOpen);
@@ -268,7 +315,31 @@ const currentPath = Astro.url.pathname;
             isOpen ? 'Fermer le menu principal' : 'Ouvrir le menu principal',
           );
           mobileMenu.hidden = !isOpen;
+          mobileMenu.setAttribute('aria-hidden', String(!isOpen));
           document.body.style.overflow = isOpen ? 'hidden' : '';
+
+          const navRight = document.querySelector('.nav-right');
+          const mainContent = document.getElementById('main-content');
+          const footer = document.querySelector('.footer');
+
+          [navRight, mainContent, footer].forEach((element) => {
+            if (!element) return;
+            if (isOpen) {
+              element.setAttribute('inert', '');
+            } else {
+              element.removeAttribute('inert');
+            }
+          });
+
+          if (isOpen) {
+            lastFocusedElement = document.activeElement;
+            window.setTimeout(() => {
+              getMenuFocusableElements()[0]?.focus();
+            }, 0);
+          } else if (lastFocusedElement instanceof HTMLElement) {
+            lastFocusedElement.focus();
+            lastFocusedElement = null;
+          }
         };
 
         setMenuState(false);
@@ -285,9 +356,28 @@ const currentPath = Astro.url.pathname;
         });
 
         document.addEventListener('keydown', (event) => {
-          if (event.key === 'Escape' && burgerBtn.getAttribute('aria-expanded') === 'true') {
+          const menuIsOpen = burgerBtn.getAttribute('aria-expanded') === 'true';
+
+          if (event.key === 'Escape' && menuIsOpen) {
             setMenuState(false);
-            burgerBtn.focus();
+            return;
+          }
+
+          if (event.key === 'Tab' && menuIsOpen) {
+            const focusableElements = getMenuFocusableElements();
+            if (focusableElements.length === 0) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            const activeElement = document.activeElement;
+
+            if (event.shiftKey && activeElement === firstElement) {
+              event.preventDefault();
+              lastElement.focus();
+            } else if (!event.shiftKey && activeElement === lastElement) {
+              event.preventDefault();
+              firstElement.focus();
+            }
           }
         });
       }

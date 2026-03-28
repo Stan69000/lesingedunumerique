@@ -183,6 +183,18 @@ const { Content } = await render(post);
         text-align: center; color: var(--text-muted); font-size: 0.9rem;
       }
 
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent);
+      }
+
       @media (max-width: 640px) {
         header,
         .article-content {
@@ -227,6 +239,10 @@ const { Content } = await render(post);
 
       <footer>
         <p>© 2026 Le Singe Du Numérique. Code éthique & Open Source.</p>
+        <div class="footer-links">
+          <a href="/accessibilite">Accessibilité : non conforme</a>
+          <a href="/mentions-legales">Mentions légales</a>
+        </div>
       </footer>
       </div>
     </div>

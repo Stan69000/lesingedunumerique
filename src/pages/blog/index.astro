@@ -80,7 +80,7 @@ const currentPath = Astro.url.pathname;
             </div>
 
             <div class="filters-row">
-              <div class="filter-group">
+              <div class="filter-group" role="group" aria-labelledby="tag-filter-label">
                 <span class="filter-label" id="tag-filter-label">Tags</span>
                 <div class="tag-cloud">
                   <button type="button" class="cloud-tag is-active" data-tag="" aria-pressed="true">Tous</button>
@@ -158,7 +158,10 @@ const currentPath = Astro.url.pathname;
           <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
           <span>Le Singe Du Numérique</span>
         </div>
-        <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
+        <div class="footer-meta">
+          <a href="/accessibilite" class="footer-link">Accessibilité : non conforme</a>
+          <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
+        </div>
       </div>
     </footer>
 
@@ -653,7 +656,8 @@ const currentPath = Astro.url.pathname;
     font-size: 0.8rem;
     padding: 6px 10px;
     border-radius: 999px;
-    background: rgba(11, 17, 32, 0.28);
+    background: rgba(11, 17, 32, 0.48);
+    color: #f8fafc;
     backdrop-filter: blur(6px);
   }
 
@@ -712,6 +716,23 @@ const currentPath = Astro.url.pathname;
     align-items: center;
     gap: 12px;
     font-weight: 700;
+  }
+
+  .footer-meta {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .footer-link:hover {
+    color: var(--brand-green);
   }
 
   .footer-credit {
