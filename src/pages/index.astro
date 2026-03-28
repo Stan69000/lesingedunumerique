@@ -18,8 +18,10 @@ const beginnerTag =
   allTags.find((tag) => tag.toLowerCase().includes('debut')) ?? featuredTags[0]?.tag;
 const advancedTag =
   allTags.find((tag) => tag.toLowerCase().includes('avanc')) ?? featuredTags[1]?.tag;
+const currentPath = Astro.url.pathname;
 ---
 
+<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -35,10 +37,12 @@ const advancedTag =
   </head>
 
   <body>
-    <nav class="navbar">
+    <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+    <nav class="navbar" aria-label="Navigation principale">
       <div class="container nav-container">
         <a href="/" class="brand-logo">
-          <img src="/logo.svg" alt="Logo" class="navbar-logo" />
+          <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
 
@@ -48,148 +52,180 @@ const advancedTag =
             <a href="/projets" class="nav-item">Projets</a>
             <a href="/asso" class="nav-item">L'Asso</a>
           </div>
-          <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème">
+          <button
+            id="theme-toggle"
+            class="theme-btn"
+            type="button"
+            aria-label="Activer le thème clair"
+            aria-pressed="false"
+          >
             <span class="icon-light">☀️</span>
             <span class="icon-dark">🌙</span>
           </button>
         </div>
 
-        <button class="burger-btn" id="burger-btn" aria-label="Menu">
+        <button
+          class="burger-btn"
+          id="burger-btn"
+          aria-label="Ouvrir le menu principal"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+        >
           <span></span>
           <span></span>
           <span></span>
         </button>
       </div>
 
-      <div class="mobile-menu" id="mobile-menu">
+      <div
+        class="mobile-menu"
+        id="mobile-menu"
+        aria-label="Navigation mobile"
+        aria-hidden="true"
+        hidden
+      >
         <a href="#missions" class="mobile-item">Missions</a>
         <a href="/projets" class="mobile-item">Projets</a>
         <a href="/asso" class="mobile-item">L'Asso</a>
         <div class="mobile-theme-toggle">
           <span>Changer le thème</span>
-          <button id="mobile-theme-btn" class="theme-btn-small">🌙</button>
+          <button
+            id="mobile-theme-btn"
+            class="theme-btn-small"
+            type="button"
+            aria-label="Activer le thème clair"
+            aria-pressed="false"
+          >
+            🌙
+          </button>
         </div>
       </div>
     </nav>
 
-    <main class="hero-section">
-      <div class="glow-bg glow-green"></div>
-      <div class="glow-bg glow-orange"></div>
+    <main id="main-content">
+      <section class="hero-section">
+        <div class="glow-bg glow-green"></div>
+        <div class="glow-bg glow-orange"></div>
 
-      <div class="container hero-content">
-        <div class="hero-logo-wrapper">
-          <img src="/logo.svg" alt="Le Singe Du Numérique" class="hero-logo" />
+        <div class="container hero-content">
+          <div class="hero-logo-wrapper">
+            <img src="/logo.svg" alt="Le Singe Du Numérique" class="hero-logo" />
+          </div>
+
+          <h1 class="hero-title">
+            Explorez nos <span class="gradient-text">ressources</span>
+          </h1>
+
+          <p class="hero-desc">
+            Ateliers, tutoriels et projets solidaires. Trouvez l'information qu'il vous faut pour
+            coder mieux et ensemble.
+          </p>
+
+          <form class="search-wrapper" action="/blog" method="get">
+            <label class="sr-only" for="home-search">Recherche dans le blog</label>
+            <div class="search-bar">
+              <span class="search-icon" aria-hidden="true">
+                <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+              </span>
+              <input
+                id="home-search"
+                type="search"
+                name="search"
+                placeholder="Rechercher un article, un tutoriel..."
+                class="search-input"
+              />
+              <button type="submit" class="search-submit">Chercher</button>
+            </div>
+
+            <div class="search-meta">
+              <a href="/blog" class="filter-tag">
+                <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                <span>Filtrer sur le blog</span>
+              </a>
+              <span class="divider">|</span>
+              <span class="tag-count">{allTags.length} tags disponibles</span>
+            </div>
+
+            <div class="explore-link">
+              <a href="/blog">Explorer tous les tags →</a>
+            </div>
+          </form>
+
+          <div class="quick-actions">
+            {featuredTags[0] && (
+              <a href={`/blog?tag=${encodeURIComponent(featuredTags[0].tag)}`} class="quick-tag">
+                🔥 {featuredTags[0].tag}
+              </a>
+            )}
+            {beginnerTag && (
+              <a href={`/blog?tag=${encodeURIComponent(beginnerTag)}`} class="quick-tag">
+                🌱 {beginnerTag}
+              </a>
+            )}
+            {advancedTag && (
+              <a href={`/blog?tag=${encodeURIComponent(advancedTag)}`} class="quick-tag">
+                ⚡ {advancedTag}
+              </a>
+            )}
+          </div>
         </div>
+      </section>
 
-        <h1 class="hero-title">
-          Explorez nos <span class="gradient-text">ressources</span>
-        </h1>
-
-        <p class="hero-desc">
-          Ateliers, tutoriels et projets solidaires. Trouvez l'information qu'il vous faut pour
-          coder mieux et ensemble.
-        </p>
-
-        <form class="search-wrapper" action="/blog" method="get">
-          <div class="search-bar">
-            <span class="search-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-            </span>
-            <input
-              type="search"
-              name="search"
-              placeholder="Rechercher un article, un tutoriel..."
-              class="search-input"
-            />
-            <button type="submit" class="search-submit">Chercher</button>
+      <section id="missions" class="content-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Nos <span class="text-accent">Missions</span></h2>
+            <div class="line-deco"></div>
           </div>
 
-          <div class="search-meta">
-            <a href="/blog" class="filter-tag">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-              <span>Filtrer sur le blog</span>
-            </a>
-            <span class="divider">|</span>
-            <span class="tag-count">{allTags.length} tags disponibles</span>
-          </div>
+          <div class="grid">
+            <article class="card">
+              <div class="card-header card-green">
+                <span class="card-icon">🎓</span>
+              </div>
+              <div class="card-content">
+                <h3>Apprendre</h3>
+                <p>Ateliers hebdomadaires bienveillants pour passer de curieux à créateur.</p>
+                <div class="card-tags"><span>Pédagogie</span><span>Pratique</span></div>
+              </div>
+            </article>
 
-          <div class="explore-link">
-            <a href="/blog">Explorer tous les tags →</a>
-          </div>
-        </form>
+            <article class="card">
+              <div class="card-header card-orange">
+                <span class="card-icon">🤝</span>
+              </div>
+              <div class="card-content">
+                <h3>Partager</h3>
+                <p>Coupe de code solidaire : développement gratuit pour associations.</p>
+                <div class="card-tags"><span>Solidaire</span><span>Impact</span></div>
+              </div>
+            </article>
 
-        <div class="quick-actions">
-          {featuredTags[0] && (
-            <a href={`/blog?tag=${encodeURIComponent(featuredTags[0].tag)}`} class="quick-tag">
-              🔥 {featuredTags[0].tag}
-            </a>
-          )}
-          {beginnerTag && (
-            <a href={`/blog?tag=${encodeURIComponent(beginnerTag)}`} class="quick-tag">
-              🌱 {beginnerTag}
-            </a>
-          )}
-          {advancedTag && (
-            <a href={`/blog?tag=${encodeURIComponent(advancedTag)}`} class="quick-tag">
-              ⚡ {advancedTag}
-            </a>
-          )}
+            <article class="card">
+              <div class="card-header card-blue">
+                <span class="card-icon">⚖️</span>
+              </div>
+              <div class="card-content">
+                <h3>Protéger</h3>
+                <p>Promouvoir un numérique sobre, éthique et respectueux.</p>
+                <div class="card-tags"><span>Éthique</span><span>Débat</span></div>
+              </div>
+            </article>
+          </div>
         </div>
-      </div>
+      </section>
     </main>
-
-    <section id="missions" class="content-section">
-      <div class="container">
-        <div class="section-header">
-          <h2>Nos <span class="text-accent">Missions</span></h2>
-          <div class="line-deco"></div>
-        </div>
-
-        <div class="grid">
-          <article class="card">
-            <div class="card-header card-green">
-              <span class="card-icon">🎓</span>
-            </div>
-            <div class="card-content">
-              <h3>Apprendre</h3>
-              <p>Ateliers hebdomadaires bienveillants pour passer de curieux à créateur.</p>
-              <div class="card-tags"><span>Pédagogie</span><span>Pratique</span></div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-header card-orange">
-              <span class="card-icon">🤝</span>
-            </div>
-            <div class="card-content">
-              <h3>Partager</h3>
-              <p>Coupe de code solidaire : développement gratuit pour associations.</p>
-              <div class="card-tags"><span>Solidaire</span><span>Impact</span></div>
-            </div>
-          </article>
-
-          <article class="card">
-            <div class="card-header card-blue">
-              <span class="card-icon">⚖️</span>
-            </div>
-            <div class="card-content">
-              <h3>Protéger</h3>
-              <p>Promouvoir un numérique sobre, éthique et respectueux.</p>
-              <div class="card-tags"><span>Éthique</span><span>Débat</span></div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
 
     <footer class="footer">
       <div class="container footer-container">
         <div class="footer-left">
           <div class="footer-brand">
-            <img src="/logo.svg" alt="Logo" class="footer-logo" />
+            <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
             <span>Le Singe Du Numérique</span>
           </div>
           <div class="footer-links">
+            <a href="/accessibilite">Accessibilité : non conforme</a>
+            <span class="footer-separator">•</span>
             <a href="#missions">Missions</a>
             <span class="footer-separator">•</span>
             <a href="/evenements">Événements</a>
@@ -202,39 +238,56 @@ const advancedTag =
 
         <div class="footer-right">
           <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
-          <div class="social-icons">
-            <a href="#" class="social-icon" title="GitHub">🐙</a>
-            <a href="#" class="social-icon" title="Twitter">𝕏</a>
-            <a href="#" class="social-icon" title="LinkedIn">in</a>
-            <a href="#" class="social-icon" title="Contact">📧</a>
+          <div class="social-icons" aria-hidden="true">
+            <span class="social-icon">🐙</span>
+            <span class="social-icon">𝕏</span>
+            <span class="social-icon">in</span>
+            <span class="social-icon">📧</span>
           </div>
         </div>
       </div>
     </footer>
 
     <button id="back-to-top" class="back-to-top" aria-label="Haut">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg>
+      <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg>
     </button>
 
     <script>
       const themeBtn = document.getElementById('theme-toggle');
       const mobileThemeBtn = document.getElementById('mobile-theme-btn');
       const body = document.body;
+      let lastFocusedElement = null;
+
+      function syncThemeControls() {
+        const isLight = body.classList.contains('light-mode');
+        const icon = isLight ? '☀️' : '🌙';
+        const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
+
+        if (themeBtn) {
+          themeBtn.innerHTML = isLight
+            ? '<span class="icon-light">☀️</span>'
+            : '<span class="icon-dark">🌙</span>';
+          themeBtn.setAttribute('aria-label', actionLabel);
+          themeBtn.setAttribute('aria-pressed', String(isLight));
+        }
+
+        if (mobileThemeBtn) {
+          mobileThemeBtn.textContent = icon;
+          mobileThemeBtn.setAttribute('aria-label', actionLabel);
+          mobileThemeBtn.setAttribute('aria-pressed', String(isLight));
+        }
+      }
 
       if (localStorage.getItem('theme') === 'light') {
         body.classList.add('light-mode');
-        if (mobileThemeBtn) mobileThemeBtn.textContent = '☀️';
       }
+
+      syncThemeControls();
 
       function toggleTheme() {
         body.classList.toggle('light-mode');
         const isLight = body.classList.contains('light-mode');
-        const icon = isLight ? '☀️' : '🌙';
-        if (themeBtn)
-          themeBtn.innerHTML = isLight
-            ? '<span class="icon-light">☀️</span>'
-            : '<span class="icon-dark">🌙</span>';
-        if (mobileThemeBtn) mobileThemeBtn.textContent = icon;
+        syncThemeControls();
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
       }
 
@@ -245,18 +298,87 @@ const advancedTag =
       const mobileMenu = document.getElementById('mobile-menu');
 
       if (burgerBtn && mobileMenu) {
+        const mobileFocusableSelector =
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+        const getMenuFocusableElements = () =>
+          Array.from(mobileMenu.querySelectorAll(mobileFocusableSelector)).filter(
+            (element) => !element.hasAttribute('hidden'),
+          );
+
+        const setMenuState = (isOpen) => {
+          mobileMenu.classList.toggle('active', isOpen);
+          burgerBtn.classList.toggle('active', isOpen);
+          burgerBtn.setAttribute('aria-expanded', String(isOpen));
+          burgerBtn.setAttribute(
+            'aria-label',
+            isOpen ? 'Fermer le menu principal' : 'Ouvrir le menu principal',
+          );
+          mobileMenu.hidden = !isOpen;
+          mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+          document.body.style.overflow = isOpen ? 'hidden' : '';
+
+          const navRight = document.querySelector('.nav-right');
+          const mainContent = document.getElementById('main-content');
+          const footer = document.querySelector('.footer');
+
+          [navRight, mainContent, footer].forEach((element) => {
+            if (!element) return;
+            if (isOpen) {
+              element.setAttribute('inert', '');
+            } else {
+              element.removeAttribute('inert');
+            }
+          });
+
+          if (isOpen) {
+            lastFocusedElement = document.activeElement;
+            window.setTimeout(() => {
+              getMenuFocusableElements()[0]?.focus();
+            }, 0);
+          } else if (lastFocusedElement instanceof HTMLElement) {
+            lastFocusedElement.focus();
+            lastFocusedElement = null;
+          }
+        };
+
+        setMenuState(false);
+
         burgerBtn.addEventListener('click', () => {
-          mobileMenu.classList.toggle('active');
-          burgerBtn.classList.toggle('active');
-          document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+          const isOpen = burgerBtn.getAttribute('aria-expanded') !== 'true';
+          setMenuState(isOpen);
         });
 
         document.querySelectorAll('.mobile-item').forEach((item) => {
           item.addEventListener('click', () => {
-            mobileMenu.classList.remove('active');
-            burgerBtn.classList.remove('active');
-            document.body.style.overflow = '';
+            setMenuState(false);
           });
+        });
+
+        document.addEventListener('keydown', (event) => {
+          const menuIsOpen = burgerBtn.getAttribute('aria-expanded') === 'true';
+
+          if (event.key === 'Escape' && menuIsOpen) {
+            setMenuState(false);
+            return;
+          }
+
+          if (event.key === 'Tab' && menuIsOpen) {
+            const focusableElements = getMenuFocusableElements();
+            if (focusableElements.length === 0) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            const activeElement = document.activeElement;
+
+            if (event.shiftKey && activeElement === firstElement) {
+              event.preventDefault();
+              lastElement.focus();
+            } else if (!event.shiftKey && activeElement === lastElement) {
+              event.preventDefault();
+              firstElement.focus();
+            }
+          }
         });
       }
 
@@ -299,6 +421,9 @@ const advancedTag =
   body { margin: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Space Grotesk', sans-serif; line-height: 1.6; transition: background-color 0.5s, color 0.5s; }
   .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
   a { text-decoration: none; color: inherit; transition: 0.3s; }
+  .skip-link { position: absolute; left: 16px; top: -48px; z-index: 200; padding: 10px 14px; border-radius: 12px; background: #ffffff; color: #07131d; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+  .skip-link:focus { top: 16px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 
   .navbar { position: sticky; top: 0; z-index: 100; padding: 16px 0; background: rgba(11, 17, 32, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); transition: background 0.5s; }
   body.light-mode .navbar { background: rgba(248, 250, 252, 0.85); }
@@ -311,7 +436,18 @@ const advancedTag =
   .nav-right { display: flex; align-items: center; gap: 24px; }
   .nav-links { display: flex; gap: 28px; }
   .nav-item { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+  .nav-item[aria-current='page'] { color: var(--text-main); }
   .nav-item:hover { color: var(--brand-green); }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--brand-green);
+    outline-offset: 3px;
+  }
 
   .theme-btn { background: transparent; border: 1px solid var(--border-color); border-radius: 50%; width: 38px; height: 38px; color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
   .theme-btn:hover { border-color: var(--brand-green); background: rgba(128,128,128, 0.1); }
@@ -328,6 +464,7 @@ const advancedTag =
     transform: translateY(-150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 99; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
   }
+  .mobile-menu[hidden] { display: none; }
   .mobile-menu.active { transform: translateY(0); }
   .mobile-item { font-size: 1.2rem; font-weight: 600; color: var(--text-main); padding: 10px 0; border-bottom: 1px solid var(--border-color); }
   .mobile-theme-toggle { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; color: var(--text-muted); }

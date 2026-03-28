@@ -1,0 +1,147 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const reviewDate = '28 mars 2026';
+---
+
+<SiteLayout
+  title="Accessibilité | Le Singe Du Numérique"
+  description="Déclaration d’accessibilité, schéma pluriannuel et plan d’actions du site Le Singe Du Numérique."
+  eyebrow="Accessibilité"
+  headline="Déclaration"
+  accent="d’accessibilité"
+  intro="Cette page regroupe l’état de conformité actuel du site, le schéma pluriannuel de mise en accessibilité et le plan d’actions en cours."
+>
+  <section class="prose-block">
+    <h2>Engagement</h2>
+    <p>
+      Le Singe Du Numérique s’engage à rendre son site internet accessible conformément à
+      l’article 47 de la loi n° 2005-102 du 11 février 2005.
+    </p>
+    <p>
+      Cette déclaration d’accessibilité s’applique au site <strong>Le Singe Du Numérique</strong>.
+    </p>
+  </section>
+
+  <section class="prose-block">
+    <h2>État de conformité</h2>
+    <p>
+      Le site <strong>Le Singe Du Numérique</strong> est actuellement
+      <strong> non conforme </strong> avec le RGAA 4.1.2.
+    </p>
+    <p>
+      Ce statut est retenu car il n’existe pas encore de résultat d’audit RGAA en cours de validité
+      permettant de mesurer formellement le taux de conformité du site.
+    </p>
+  </section>
+
+  <section class="prose-block">
+    <h2>Résultat des tests</h2>
+    <p>
+      Aucune mesure officielle de conformité n’a encore été produite à ce jour. Les travaux en
+      cours reposent sur une revue interne de structure, de navigation clavier, de libellés, de
+      focus et de sémantique.
+    </p>
+    <p>
+      Un audit complet devra être mené sur un échantillon représentatif de pages avant toute
+      déclaration de conformité partielle ou totale.
+    </p>
+  </section>
+
+  <section class="prose-block">
+    <h2>Contenus non accessibles</h2>
+    <h3>Non-conformités connues</h3>
+    <ul>
+      <li>Les contrastes ne sont pas encore validés de manière systématique sur l’ensemble du thème.</li>
+      <li>Le menu mobile doit encore être renforcé pour la gestion du focus et de l’isolement du reste de la page.</li>
+      <li>Les composants de changement de thème ne restituent pas encore suffisamment leur état aux technologies d’assistance.</li>
+      <li>Les filtres du blog doivent encore être mieux regroupés sémantiquement.</li>
+      <li>La conformité n’a pas encore été vérifiée avec un lecteur d’écran sur un parcours complet.</li>
+    </ul>
+    <h3>Dérogations pour charge disproportionnée</h3>
+    <p>Aucune dérogation n’est invoquée à ce jour.</p>
+    <h3>Contenus non soumis à l’obligation d’accessibilité</h3>
+    <p>Aucun contenu exempté n’a été identifié à ce stade.</p>
+  </section>
+
+  <section class="prose-block">
+    <h2>Établissement de cette déclaration</h2>
+    <p>Cette déclaration a été établie le {reviewDate}. Elle a été mise à jour le {reviewDate}.</p>
+    <h3>Technologies utilisées</h3>
+    <ul>
+      <li>HTML5</li>
+      <li>CSS3</li>
+      <li>JavaScript</li>
+      <li>Astro</li>
+    </ul>
+    <h3>Environnement de test</h3>
+    <ul>
+      <li>Navigation clavier seule</li>
+      <li>Vérifications manuelles de structure, de libellés et d’ordre de navigation</li>
+      <li>Contrôles techniques via les diagnostics du navigateur et du build Astro</li>
+    </ul>
+    <h3>Pages vérifiées</h3>
+    <ul>
+      <li>Accueil</li>
+      <li>Blog</li>
+      <li>Article de blog</li>
+      <li>Pages éditoriales du site</li>
+    </ul>
+  </section>
+
+  <section class="prose-block">
+    <h2>Schéma pluriannuel 2026-2028</h2>
+    <p>
+      Le schéma pluriannuel de mise en accessibilité du site s’organise autour de trois axes :
+      audit, correction et maintien dans le temps.
+    </p>
+    <div class="info-grid">
+      <article class="info-card">
+        <h3>2026</h3>
+        <p>Stabiliser la structure du site, corriger les composants critiques et préparer un audit RGAA formel.</p>
+      </article>
+      <article class="info-card">
+        <h3>2027</h3>
+        <p>Traiter les écarts relevés par l’audit, documenter les composants et intégrer l’accessibilité dans les ajouts de contenu.</p>
+      </article>
+      <article class="info-card">
+        <h3>2028</h3>
+        <p>Maintenir la conformité dans le temps, suivre les régressions et mettre à jour la déclaration selon les évolutions du site.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="prose-block">
+    <h2>Plan d’actions 2026</h2>
+    <ul>
+      <li>Finaliser les composants interactifs critiques : navigation mobile, thème, filtres.</li>
+      <li>Mesurer les contrastes et corriger les associations de couleurs insuffisantes.</li>
+      <li>Valider les parcours avec lecteur d’écran sur desktop et mobile.</li>
+      <li>Structurer les pages légales et éditoriales de façon complète et stable.</li>
+      <li>Lancer un audit RGAA de référence et publier une mise à jour de cette déclaration à l’issue.</li>
+    </ul>
+  </section>
+
+  <section class="prose-block">
+    <h2>Retour d’information et contact</h2>
+    <p>
+      Si vous ne parvenez pas à accéder à un contenu ou à un service, vous pouvez écrire à
+      <a href="mailto:contact@lesingedunumerique.fr">contact@lesingedunumerique.fr</a>
+      pour être orienté vers une alternative accessible ou obtenir le contenu sous une autre forme.
+    </p>
+  </section>
+
+  <section class="prose-block">
+    <h2>Voies de recours</h2>
+    <p>
+      Si vous constatez un défaut d’accessibilité vous empêchant d’accéder à un contenu ou à une
+      fonctionnalité du site, que vous nous le signalez et que vous ne recevez pas de réponse
+      satisfaisante, vous pouvez saisir le Défenseur des droits.
+    </p>
+    <ul>
+      <li><a href="https://www.defenseurdesdroits.fr/nous-contacter-355">Écrire au Défenseur des droits</a></li>
+      <li><a href="https://www.defenseurdesdroits.fr/carte-des-delegues">Contacter un délégué près de chez vous</a></li>
+      <li>Envoyer un courrier : Défenseur des droits, Libre réponse 71120, 75342 Paris CEDEX 07</li>
+    </ul>
+  </section>
+</SiteLayout>

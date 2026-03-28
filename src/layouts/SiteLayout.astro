@@ -16,8 +16,10 @@ const {
   accent = '',
   intro,
 } = Astro.props;
+const currentPath = Astro.url.pathname;
 ---
 
+<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -34,24 +36,26 @@ const {
     />
   </head>
   <body>
-    <nav class="navbar">
+    <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+
+    <nav class="navbar" aria-label="Navigation principale">
       <div class="container nav-container">
         <a href="/" class="brand-logo">
-          <img src="/logo.svg" alt="Logo" class="navbar-logo" />
+          <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
 
         <div class="nav-links">
-          <a href="/projets" class="nav-item">Projets</a>
-          <a href="/asso" class="nav-item">L'Asso</a>
-          <a href="/evenements" class="nav-item">Événements</a>
-          <a href="/adhesion" class="nav-item">Adhérer</a>
-          <a href="/blog" class="nav-item">Blog</a>
+          <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+          <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L'Asso</a>
+          <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
+          <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Adhérer</a>
+          <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
         </div>
       </div>
     </nav>
 
-    <main>
+    <main id="main-content">
       <section class="hero-section">
         <div class="glow-bg glow-green"></div>
         <div class="glow-bg glow-orange"></div>
@@ -75,10 +79,12 @@ const {
     <footer class="footer">
       <div class="container footer-container">
         <div class="footer-brand">
-          <img src="/logo.svg" alt="Logo" class="footer-logo" />
+          <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
           <span>Le Singe Du Numérique</span>
         </div>
         <div class="footer-links">
+          <a href="/accessibilite">Accessibilité : non conforme</a>
+          <span class="footer-separator">•</span>
           <a href="/projets">Projets</a>
           <span class="footer-separator">•</span>
           <a href="/evenements">Événements</a>
@@ -120,6 +126,23 @@ const {
   a {
     color: inherit;
     text-decoration: none;
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 16px;
+    top: -48px;
+    z-index: 200;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #07131d;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+  }
+
+  .skip-link:focus {
+    top: 16px;
   }
 
   .container {
@@ -180,9 +203,29 @@ const {
     font-size: 0.85rem;
   }
 
+  .nav-item[aria-current='page'] {
+    color: var(--text-main);
+  }
+
   .nav-item:hover,
   .footer-links a:hover {
     color: var(--brand-green);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible,
+  [tabindex]:focus-visible {
+    outline: 3px solid var(--brand-green);
+    outline-offset: 3px;
+  }
+
+  .nav-item:focus-visible,
+  .footer-links a:focus-visible,
+  .brand-logo:focus-visible {
+    border-radius: 12px;
   }
 
   .hero-section {
