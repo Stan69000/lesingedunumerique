@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+
+// 1. Récupérer les articles
+const posts = await getCollection('blog');
+
+// 2. Trier (optionnel)
+posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Blog Test</title>
+  </head>
+  <body style="background:#0b1120; color:white; font-family:sans-serif; padding:20px;">
+    
+    <h1 style="text-align:center;">LISTE DES ARTICLES</h1>
+    <p style="text-align:center;"><a href="/" style="color:#2dd4bf;">← Retour Accueil</a></p>
+
+    <div style="max-width:800px; margin:0 auto; display:flex; flex-direction:column; gap:20px;">
+      
+      {posts.map((post) => (
+        <div style="border:1px solid #334155; padding:20px; border-radius:8px; background:#1e293b;">
+          
+          <h2>{post.data.title}</h2>
+          <p>{post.data.description}</p>
+          
+          <p>
+            Lien généré : <code>/blog/{post.id}/</code>
+          </p>
+          
+          <a href={`/blog/${post.id}/`} style="color:#2dd4bf; font-weight:bold;">
+            CLIQUEZ ICI POUR LIRE →
+          </a>
+          
+        </div>
+      ))}
+
+    </div>
+  </body>
+</html>

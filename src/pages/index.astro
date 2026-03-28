@@ -1,0 +1,407 @@
+---
+import '../styles/global.css';
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Le Singe Du Numérique</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap" rel="stylesheet">
+  </head>
+  
+  <body>
+    
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="container nav-container">
+        <a href="/" class="brand-logo">
+          <img src="/logo.svg" alt="Logo" class="navbar-logo" />
+          <span class="brand-text">Le Singe Du Numérique</span>
+        </a>
+        
+        <!-- Menu Desktop -->
+        <div class="nav-right">
+          <div class="nav-links">
+            <a href="#missions" class="nav-item">Missions</a>
+            <a href="#projets" class="nav-item">Projets</a>
+            <a href="#asso" class="nav-item">L'Asso</a>
+          </div>
+          <button id="theme-toggle" class="theme-btn" aria-label="Changer le thème">
+            <span class="icon-light">☀️</span>
+            <span class="icon-dark">🌙</span>
+          </button>
+        </div>
+
+        <!-- Bouton Burger (Mobile) -->
+        <button class="burger-btn" id="burger-btn" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <!-- Menu Mobile Déroulant -->
+      <div class="mobile-menu" id="mobile-menu">
+        <a href="#missions" class="mobile-item">Missions</a>
+        <a href="#projets" class="mobile-item">Projets</a>
+        <a href="#asso" class="mobile-item">L'Asso</a>
+        <div class="mobile-theme-toggle">
+          <span>Changer le thème</span>
+          <button id="mobile-theme-btn" class="theme-btn-small">🌙</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <main class="hero-section">
+      <div class="glow-bg glow-green"></div>
+      <div class="glow-bg glow-orange"></div>
+
+      <div class="container hero-content">
+        <div class="hero-logo-wrapper">
+          <img src="/logo.svg" alt="Le Singe Du Numérique" class="hero-logo" />
+        </div>
+
+        <h1 class="hero-title">
+          Explorez nos <span class="gradient-text">ressources</span>
+        </h1>
+        
+        <p class="hero-desc">
+          Ateliers, tutoriels et projets solidaires. Trouvez l'information qu'il vous faut pour coder mieux et ensemble.
+        </p>
+
+        <!-- BARRE DE RECHERCHE -->
+        <div class="search-wrapper">
+          <div class="search-bar">
+            <span class="search-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </span>
+            <input type="text" placeholder="Rechercher un article, un tutoriel..." class="search-input" />
+          </div>
+          
+          <div class="search-meta">
+            <div class="filter-tag">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <span>Filtrer par tag</span>
+            </div>
+            <span class="divider">|</span>
+            <span class="tag-count">25 tags disponibles</span>
+            <svg class="dropdown-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
+          
+          <div class="explore-link">
+            <a href="#tags">Explorer tous les tags →</a>
+          </div>
+        </div>
+
+        <div class="quick-actions">
+          <a href="#populaires" class="quick-tag">🔥 Populaires</a>
+          <a href="#debutant" class="quick-tag">🌱 Débutant</a>
+          <a href="#avance" class="quick-tag">⚡ Avancé</a>
+        </div>
+      </div>
+    </main>
+
+    <!-- SECTION MISSIONS -->
+    <section id="missions" class="content-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>Nos <span class="text-accent">Missions</span></h2>
+          <div class="line-deco"></div>
+        </div>
+
+        <div class="grid">
+          <article class="card">
+            <div class="card-header card-green">
+              <span class="card-icon">🎓</span>
+            </div>
+            <div class="card-content">
+              <h3>Apprendre</h3>
+              <p>Ateliers hebdomadaires bienveillants pour passer de curieux à créateur.</p>
+              <div class="card-tags"><span>Pédagogie</span><span>Pratique</span></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header card-orange">
+              <span class="card-icon">🤝</span>
+            </div>
+            <div class="card-content">
+              <h3>Partager</h3>
+              <p>Coupe de code solidaire : développement gratuit pour associations.</p>
+              <div class="card-tags"><span>Solidaire</span><span>Impact</span></div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-header card-blue">
+              <span class="card-icon">⚖️</span>
+            </div>
+            <div class="card-content">
+              <h3>Protéger</h3>
+              <p>Promouvoir un numérique sobre, éthique et respectueux.</p>
+              <div class="card-tags"><span>Éthique</span><span>Débat</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="footer-left">
+          <div class="footer-brand">
+            <img src="/logo.svg" alt="Logo" class="footer-logo" />
+            <span>Le Singe Du Numérique</span>
+          </div>
+          <div class="footer-links">
+            <a href="#missions">Missions</a>
+            <span class="footer-separator">•</span>
+            <a href="#evenements">Événements</a>
+            <span class="footer-separator">•</span>
+            <a href="#adhesion">Adhérer</a>
+            <span class="footer-separator">•</span>
+            <a href="#legal">Mentions légales</a>
+          </div>
+        </div>
+        
+        <div class="footer-right">
+          <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
+          <div class="social-icons">
+            <a href="#" class="social-icon" title="GitHub">🐙</a>
+            <a href="#" class="social-icon" title="Twitter">𝕏</a>
+            <a href="#" class="social-icon" title="LinkedIn">in</a>
+            <a href="#" class="social-icon" title="Contact">📧</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- BOUTON RETOUR EN HAUT -->
+    <button id="back-to-top" class="back-to-top" aria-label="Haut">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"/></svg>
+    </button>
+
+    <script>
+      // --- THÈME ---
+      const themeBtn = document.getElementById('theme-toggle');
+      const mobileThemeBtn = document.getElementById('mobile-theme-btn');
+      const body = document.body;
+      
+      if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light-mode');
+        if(mobileThemeBtn) mobileThemeBtn.textContent = '☀️';
+      }
+
+      function toggleTheme() {
+        body.classList.toggle('light-mode');
+        const isLight = body.classList.contains('light-mode');
+        const icon = isLight ? '☀️' : '🌙';
+        if(themeBtn) themeBtn.innerHTML = isLight ? '<span class="icon-light">☀️</span>' : '<span class="icon-dark">🌙</span>';
+        if(mobileThemeBtn) mobileThemeBtn.textContent = icon;
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      }
+
+      if(themeBtn) themeBtn.addEventListener('click', toggleTheme);
+      if(mobileThemeBtn) mobileThemeBtn.addEventListener('click', toggleTheme);
+
+      // --- MENU BURGER ---
+      const burgerBtn = document.getElementById('burger-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (burgerBtn && mobileMenu) {
+        burgerBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('active');
+          burgerBtn.classList.toggle('active');
+          document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Fermer le menu si on clique sur un lien
+        document.querySelectorAll('.mobile-item').forEach(item => {
+          item.addEventListener('click', () => {
+            mobileMenu.classList.remove('active');
+            burgerBtn.classList.remove('active');
+            document.body.style.overflow = '';
+          });
+        });
+      }
+
+      // --- RETOUR EN HAUT ---
+      const backBtn = document.getElementById('back-to-top');
+      window.addEventListener('scroll', () => {
+        if (window.scrollY > 400) backBtn.classList.add('visible');
+        else backBtn.classList.remove('visible');
+      });
+      backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    </script>
+  </body>
+</html>
+
+<style>
+  /* --- VARIABLES --- */
+  :root {
+    --bg-body: #0b1120; --bg-card: #151e32; --text-main: #f1f5f9; --text-muted: #94a3b8;
+    --brand-green: #2dd4bf; --brand-orange: #f97316; --brand-blue: #38bdf8;
+    --border-color: rgba(255, 255, 255, 0.08); --glow-opacity: 0.15;
+    --nav-height: 70px;
+  }
+
+  body.light-mode {
+    --bg-body: #f8fafc; --bg-card: #ffffff; --text-main: #1e293b; --text-muted: #64748b;
+    --brand-green: #0f766e; --brand-orange: #c2410c; --brand-blue: #0369a1;
+    --border-color: rgba(0, 0, 0, 0.08); --glow-opacity: 0.08;
+  }
+
+  body { margin: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Space Grotesk', sans-serif; line-height: 1.6; transition: background-color 0.5s, color 0.5s; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+  /* --- NAVBAR --- */
+  .navbar { position: sticky; top: 0; z-index: 100; padding: 16px 0; background: rgba(11, 17, 32, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); transition: background 0.5s; }
+  body.light-mode .navbar { background: rgba(248, 250, 252, 0.85); }
+  .nav-container { display: flex; justify-content: space-between; align-items: center; }
+  
+  .brand-logo { display: flex; align-items: center; gap: 12px; font-weight: 700; font-size: 1.1rem; color: var(--text-main); z-index: 101; }
+  .navbar-logo { height: 40px; width: auto; display: block; }
+  .brand-text { display: none; }
+  @media(min-width: 768px) { .brand-text { display: inline; } }
+
+  .nav-right { display: flex; align-items: center; gap: 24px; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-item { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+  .nav-item:hover { color: var(--brand-green); }
+
+  .theme-btn { background: transparent; border: 1px solid var(--border-color); border-radius: 50%; width: 38px; height: 38px; color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
+  .theme-btn:hover { border-color: var(--brand-green); background: rgba(128,128,128, 0.1); }
+  .icon-dark { display: block; } .icon-light { display: none; }
+  body.light-mode .icon-dark { display: none; } body.light-mode .icon-light { display: block; }
+
+  /* BURGER MENU */
+  .burger-btn { display: none; background: none; border: none; cursor: pointer; z-index: 101; flex-direction: column; gap: 5px; padding: 5px; }
+  .burger-btn span { display: block; width: 25px; height: 2px; background: var(--text-main); transition: 0.3s; }
+  
+  .mobile-menu {
+    position: fixed; top: var(--nav-height); left: 0; width: 100%;
+    background: var(--bg-card); border-bottom: 1px solid var(--border-color);
+    padding: 20px; display: flex; flex-direction: column; gap: 15px;
+    transform: translateY(-150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 99; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .mobile-menu.active { transform: translateY(0); }
+  .mobile-item { font-size: 1.2rem; font-weight: 600; color: var(--text-main); padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+  .mobile-theme-toggle { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; color: var(--text-muted); }
+  .theme-btn-small { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 20px; cursor: pointer; }
+
+  @media (max-width: 768px) {
+    .nav-right { display: none; }
+    .burger-btn { display: flex; }
+  }
+
+  /* --- HERO --- */
+  .hero-section { position: relative; padding: 3rem 0 5rem; text-align: center; overflow: hidden; }
+  .glow-bg { position: absolute; border-radius: 50%; filter: blur(90px); z-index: -1; opacity: var(--glow-opacity); animation: float 8s infinite ease-in-out; }
+  .glow-green { width: 400px; height: 400px; background: var(--brand-green); top: -100px; left: -100px; }
+  .glow-orange { width: 500px; height: 500px; background: var(--brand-orange); bottom: 0; right: -100px; animation-delay: 2s; }
+  @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, 30px); } }
+
+  .hero-logo-wrapper { margin-bottom: 2rem; }
+  .hero-logo { max-width: 260px; width: 100%; height: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); }
+
+  .hero-title { font-size: 3rem; font-weight: 800; line-height: 1.1; margin: 0 0 1rem 0; letter-spacing: -0.03em; color: var(--text-main); }
+  .gradient-text { background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.6; }
+
+  /* SEARCH */
+  .search-wrapper { max-width: 700px; margin: 0 auto 2rem; display: flex; flex-direction: column; gap: 12px; }
+  .search-bar { position: relative; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
+  .search-bar:focus-within { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
+  .search-icon { color: var(--text-muted); display: flex; align-items: center; }
+  .search-input { flex: 1; background: transparent; border: none; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
+  .search-input::placeholder { color: var(--text-muted); }
+
+  .search-meta { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+  .filter-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(128,128,128, 0.1); border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+  .filter-tag:hover { background: rgba(128,128,128, 0.15); }
+  .divider { opacity: 0.3; }
+  .tag-count { opacity: 0.7; }
+  .dropdown-arrow { opacity: 0.5; }
+  .explore-link { margin-top: 8px; }
+  .explore-link a { font-size: 0.9rem; color: var(--text-muted); text-decoration: underline; text-underline-offset: 4px; }
+  .explore-link a:hover { color: var(--brand-green); }
+
+  .quick-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+  .quick-tag { font-size: 0.85rem; padding: 6px 14px; background: rgba(128,128,128, 0.1); border-radius: 20px; color: var(--text-muted); transition: all 0.2s; }
+  .quick-tag:hover { background: rgba(45, 212, 191, 0.15); color: var(--brand-green); }
+
+  /* --- CONTENT --- */
+  .content-section { padding: 5rem 0; }
+  .section-header { margin-bottom: 3rem; display: flex; align-items: center; gap: 20px; }
+  .section-header h2 { font-size: 2.2rem; margin: 0; color: var(--text-main); }
+  .text-accent { color: var(--brand-green); }
+  .line-deco { height: 1px; flex-grow: 1; background: var(--border-color); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+  .card { background: var(--bg-card); border-radius: 20px; overflow: hidden; border: 1px solid var(--border-color); transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; display: flex; flex-direction: column; }
+  .card:hover { transform: translateY(-8px); border-color: var(--brand-green); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.2); }
+  .card-header { height: 140px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+  .card-green { background: linear-gradient(135deg, #10b981, #059669); }
+  .card-orange { background: linear-gradient(135deg, #f97316, #ea580c); }
+  .card-blue { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
+  .card-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
+  .card h3 { margin: 0 0 0.8rem 0; font-size: 1.4rem; color: var(--text-main); }
+  .card p { margin: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.6; flex-grow: 1; }
+  .card-tags { margin-top: 1.5rem; display: flex; gap: 8px; flex-wrap: wrap; }
+  .card-tags span { font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; padding: 4px 10px; border-radius: 12px; background: rgba(128,128,128, 0.1); color: var(--text-muted); }
+
+  /* --- FOOTER --- */
+  .footer { padding: 3rem 0; background: var(--bg-card); margin-top: 4rem; border-top: 1px solid var(--border-color); }
+  .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
+  .footer-left { display: flex; flex-direction: column; gap: 16px; }
+  .footer-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
+  .footer-logo { height: 30px; width: auto; }
+  .footer-links { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-muted); }
+  .footer-links a:hover { color: var(--brand-orange); }
+  .footer-separator { color: var(--border-color); }
+  .footer-right { display: flex; align-items: center; gap: 20px; }
+  .footer-credit { font-size: 0.9rem; color: var(--text-muted); }
+  .social-icons { display: flex; gap: 16px; }
+  .social-icon { font-size: 1.3rem; color: var(--text-muted); transition: transform 0.2s, color 0.2s; }
+  .social-icon:hover { color: var(--brand-orange); transform: translateY(-3px); }
+
+  /* --- BACK TO TOP --- */
+  .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--brand-green); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(45, 212, 191, 0.4); z-index: 90; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  .back-to-top:hover { transform: translateY(-5px); }
+
+  /* --- RESPONSIVE MOBILE & TABLETTE --- */
+  @media (max-width: 768px) {
+    .hero-title { font-size: 2.2rem; }
+    .hero-logo { max-width: 200px; }
+    .hero-desc { font-size: 1rem; }
+    
+    /* Search Meta passe en dessous sur mobile */
+    .search-meta { justify-content: center; flex-wrap: wrap; font-size: 0.8rem; }
+    .divider { display: none; } /* On cache la barre verticale sur mobile */
+    
+    .quick-actions { gap: 8px; }
+    .quick-tag { padding: 5px 12px; font-size: 0.8rem; }
+    
+    .section-header h2 { font-size: 1.8rem; }
+    .grid { grid-template-columns: 1fr; /* 1 seule colonne sur mobile */ }
+    
+    .footer-container { flex-direction: column; text-align: center; gap: 20px; }
+    .footer-left, .footer-right { align-items: center; }
+    .brand-text { display: none; }
+  }
+
+  @media (min-width: 769px) and (max-width: 1024px) {
+    /* Tablette */
+    .hero-title { font-size: 2.8rem; }
+    .grid { grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur tablette */ }
+  }
+</style>

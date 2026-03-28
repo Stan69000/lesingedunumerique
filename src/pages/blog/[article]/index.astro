@@ -1,0 +1,170 @@
+---
+import { getCollection } from 'astro:content';
+import { readFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { marked } from 'marked';
+
+// ---------------------------------------------------------
+// 1. FONCTION OBLIGATOIRE : Générer les routes
+// ---------------------------------------------------------
+export async function getStaticPaths() {
+  const allEntries = await getCollection('blog');
+  return allEntries.map((entry) => ({
+    params: { article: entry.id },
+  }));
+}
+
+// ---------------------------------------------------------
+// 2. LOGIQUE D'AFFICHAGE
+// ---------------------------------------------------------
+const { article } = Astro.params;
+const allEntries = await getCollection('blog');
+const post = allEntries.find(entry => entry.id === article);
+
+if (!post) {
+  return new Response('Not Found', { status: 404 });
+}
+
+// --- CORRECTION DU CHEMIN ---
+// On récupère le chemin absolu du dossier racine du projet
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// On remonte jusqu'à la racine du projet : 
+// [article] -> blog -> pages -> src -> (RACINE)
+// Donc on remonte de 4 niveaux : ../../../../
+const projectRoot = join(__dirname, '../../../../');
+
+// On construit le chemin vers le fichier markdown
+const filePath = join(projectRoot, 'src/content/blog/', post.id + '.md');
+
+let rawContent = "";
+try {
+  rawContent = readFileSync(filePath, 'utf-8');
+} catch (e) {
+  // En cas d'erreur, on affiche le chemin essayé pour déboguer
+  console.error("Erreur de lecture:", e.message);
+  console.error("Chemin essayé:", filePath);
+  rawContent = `# Erreur de lecture\nChemin: ${filePath}\nMessage: ${e.message}`;
+}
+
+// Séparer Frontmatter et Contenu
+const parts = rawContent.split('---');
+let markdownBody = "";
+if (parts.length >= 3) {
+  markdownBody = parts.slice(2).join('---');
+} else {
+  markdownBody = rawContent;
+}
+
+marked.setOptions({ breaks: true, gfm: true });
+const htmlContent = marked.parse(markdownBody);
+---
+
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{post.data.title} - Le Singe Du Numérique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={post.data.description} />
+    <style>
+      :root {
+        --bg-body: #0b1120;
+        --text-main: #f1f5f9;
+        --text-muted: #94a3b8;
+        --accent: #2dd4bf;
+        --border: #334155;
+        --code-bg: #1e293b;
+      }
+      
+      body {
+        background-color: var(--bg-body);
+        color: var(--text-main);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        line-height: 1.7;
+      }
+
+      .container { max-width: 800px; margin: 0 auto; padding: 40px 20px; }
+
+      .nav-back {
+        display: inline-block; margin-bottom: 30px; color: var(--accent);
+        text-decoration: none; font-family: monospace; font-size: 0.95rem;
+      }
+      .nav-back:hover { opacity: 0.8; text-decoration: underline; }
+
+      header {
+        text-align: center; margin-bottom: 50px; padding-bottom: 30px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .tags { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+      .tag {
+        background: rgba(45, 212, 191, 0.1); color: var(--accent);
+        padding: 4px 12px; border-radius: 20px; font-size: 0.85rem;
+        font-family: monospace; font-weight: 500;
+      }
+
+      h1 { font-size: 2.5rem; color: #fff; margin: 0 0 15px 0; line-height: 1.2; letter-spacing: -0.02em; }
+      .meta { color: var(--text-muted); font-family: monospace; font-size: 0.95rem; }
+
+      /* Styles du contenu Markdown généré */
+      .article-content { font-size: 1.15rem; color: #e2e8f0; }
+      .article-content h2 { color: #fff; margin-top: 40px; font-size: 1.8rem; border-left: 4px solid var(--accent); padding-left: 15px; }
+      .article-content h3 { color: #fff; margin-top: 30px; font-size: 1.4rem; }
+      .article-content p { margin-bottom: 1.5rem; line-height: 1.8; }
+      .article-content ul, .article-content ol { margin-bottom: 1.5rem; padding-left: 20px; color: var(--text-muted); }
+      .article-content li { margin-bottom: 0.5rem; }
+      
+      .article-content pre {
+        background: var(--code-bg); padding: 20px; border-radius: 8px;
+        overflow-x: auto; border: 1px solid var(--border);
+        font-family: 'Courier New', Courier, monospace; font-size: 0.9rem; color: #f1f5f9; margin: 25px 0;
+      }
+      .article-content code {
+        background: rgba(45, 212, 191, 0.1); color: var(--accent);
+        padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', Courier, monospace; font-size: 0.9em;
+      }
+      .article-content pre code { background: transparent; color: inherit; padding: 0; }
+      
+      .article-content blockquote {
+        border-left: 4px solid var(--accent); margin: 30px 0; padding-left: 20px;
+        color: var(--text-muted); font-style: italic;
+        background: rgba(255,255,255,0.02); padding: 15px 20px; border-radius: 0 8px 8px 0;
+      }
+      .article-content img { max-width: 100%; height: auto; border-radius: 8px; margin: 20px 0; border: 1px solid var(--border); }
+
+      footer {
+        margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border);
+        text-align: center; color: var(--text-muted); font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <a href="/blog" class="nav-back">← Retour au blog</a>
+
+      <article>
+        <header>
+          <div class="tags">
+            {post.data.tags.map(tag => (
+              <span class="tag">{tag}</span>
+            ))}
+          </div>
+          <h1>{post.data.title}</h1>
+          <div class="meta">
+            Par {post.data.author} • {post.data.pubDate.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}
+          </div>
+        </header>
+
+        <!-- Injection du HTML généré manuellement -->
+        <div class="article-content" set:html={htmlContent}></div>
+      </article>
+
+      <footer>
+        <p>© 2026 Le Singe Du Numérique. Code éthique & Open Source.</p>
+      </footer>
+    </div>
+  </body>
+</html>

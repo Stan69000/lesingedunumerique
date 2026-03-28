@@ -1,0 +1,62 @@
+/* --- DÉBUT DU FICHIER global.css --- */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Fond principal : Bleu nuit très sombre (élégant et reposant) */
+  --theme-bg: #0f172a;
+  
+  /* Fond des cartes/sections : Un peu plus clair pour contraster */
+  --theme-surface: #1e293b;
+  
+  /* Texte principal : Blanc cassé (moins agressif que le blanc pur) */
+  --theme-text: #f1f5f9;
+  
+  /* Texte secondaire : Gris clair pour les détails */
+  --theme-text-light: #94a3b8;
+  
+  /* Couleur "Vibe" : Violet électrique (comme Code Heroes) */
+  --theme-accent: #8b5cf6;
+  
+  /* Couleur au survol : Violet plus foncé */
+  --theme-accent-hover: #7c3aed;
+}
+
+/* Application des couleurs de base */
+body {
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Style des liens */
+a {
+  color: var(--theme-accent);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--theme-accent-hover);
+  text-decoration: underline;
+}
+
+/* Style des titres pour qu'ils ressortent bien */
+h1, h2, h3 {
+  color: #ffffff;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+/* Exemple de classe utilitaire pour les cartes (à utiliser plus tard) */
+.card {
+  background-color: var(--theme-surface);
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 20px;
+}
