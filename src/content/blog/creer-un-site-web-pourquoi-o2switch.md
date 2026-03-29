@@ -4,7 +4,7 @@ description: "Retour d’expérience sur le choix d’un hébergeur pour un site
 pubDate: 2026-03-29
 rubrique: "Technos"
 tags: ["Site web", "Hébergement", "Retour d'expérience"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Créer un site web : pourquoi choisir o2switch

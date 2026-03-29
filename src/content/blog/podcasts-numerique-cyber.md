@@ -2,9 +2,9 @@
 title: "Podcasts à suivre sur le numérique et la cybersécurité"
 description: "Une sélection structurée de podcasts pour débuter une veille, écouter des retours d’expérience et suivre les sujets numériques autrement."
 pubDate: 2026-03-29
-rubrique: "Technos"
+rubrique: "Veille"
 tags: ["Podcasts", "Veille", "Cybersécurité"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Podcasts à suivre sur le numérique et la cybersécurité

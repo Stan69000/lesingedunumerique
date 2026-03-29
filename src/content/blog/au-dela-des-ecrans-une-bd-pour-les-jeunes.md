@@ -8,7 +8,7 @@ tags:
   - Jeunesse
   - Ressources
   - Débutant
-author: Stan Bouchet
+author: "Stan Bouchet"
 ---
 
 # Au-delà des écrans : une BD pour ouvrir la discussion avec les jeunes

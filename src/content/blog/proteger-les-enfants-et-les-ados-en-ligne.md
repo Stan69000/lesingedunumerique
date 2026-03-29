@@ -4,7 +4,7 @@ description: "Des repères concrets, des règles simples et des ressources utile
 pubDate: 2026-03-29
 rubrique: "Technos"
 tags: ["Cybersécurité", "Familles", "Débutant"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Parler de cybersécurité aux enfants et aux ados

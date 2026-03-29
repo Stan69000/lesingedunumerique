@@ -4,7 +4,7 @@ description: "Un guide pratique et progressif pour sécuriser ses comptes, ses a
 pubDate: 2026-03-29
 rubrique: "Articles"
 tags: ["Cybersécurité", "Débutant", "Guide pratique"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Comment bien sécuriser sa vie numérique

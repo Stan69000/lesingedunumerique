@@ -4,7 +4,7 @@ description: "Retour sur un projet personnel ou professionnel né d’une envie 
 pubDate: 2026-03-29
 rubrique: "Articles"
 tags: ["Projet", "Retour d'expérience", "Vie de l'asso"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Projet Random Lunch : quand passion et travail se confondent

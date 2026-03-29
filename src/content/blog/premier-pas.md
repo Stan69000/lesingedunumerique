@@ -4,7 +4,7 @@ description: "Présentation du blog de l’association, de ses rubriques et de s
 pubDate: 2026-03-25
 rubrique: "Articles"
 tags: ["Vie de l'asso", "Débutant"]
-author: "Stanislas"
+author: "Stan Bouchet"
 ---
 
 # Bienvenue sur le blog du Singe

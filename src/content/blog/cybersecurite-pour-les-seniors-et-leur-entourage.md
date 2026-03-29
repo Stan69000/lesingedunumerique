@@ -4,7 +4,7 @@ description: "Des conseils concrets pour mieux protéger les seniors face aux ar
 pubDate: 2026-03-29
 rubrique: "Articles"
 tags: ["Cybersécurité", "Seniors", "Guide pratique"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Cybersécurité pour les seniors et leur entourage

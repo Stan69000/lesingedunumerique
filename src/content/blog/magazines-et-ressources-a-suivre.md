@@ -2,9 +2,9 @@
 title: "Magazines, médias et ressources à suivre"
 description: "Une sélection de médias et de ressources pour construire une veille numérique utile, lisible et adaptée à différents publics."
 pubDate: 2026-03-29
-rubrique: "Technos"
+rubrique: "Veille"
 tags: ["Veille", "Ressources", "Médias"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Magazines, médias et ressources à suivre

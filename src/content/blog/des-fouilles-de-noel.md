@@ -4,7 +4,7 @@ description: "Un billet plus personnel autour des objets, souvenirs et traces ma
 pubDate: 2026-03-29
 rubrique: "Articles"
 tags: ["Mémoire numérique", "Transmission", "Vie de l'asso"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Des fouilles de Noël : mémoire familiale et archéologie numérique

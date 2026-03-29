@@ -2,9 +2,9 @@
 title: "Livres pour mieux comprendre la cybersécurité"
 description: "Une sélection structurée de livres pour débuter, approfondir et transmettre des repères utiles autour de la cybersécurité."
 pubDate: 2026-03-29
-rubrique: "Technos"
+rubrique: "Veille"
 tags: ["Cybersécurité", "Débutant", "Ressources"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Livres pour mieux comprendre la cybersécurité

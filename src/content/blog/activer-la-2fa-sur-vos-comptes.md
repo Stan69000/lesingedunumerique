@@ -4,7 +4,7 @@ description: "Un guide simple pour comprendre la 2FA, savoir où l’activer en 
 pubDate: 2026-03-29
 rubrique: "Articles"
 tags: ["Cybersécurité", "2FA", "Guide pratique"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Comment activer la double authentification sur vos comptes

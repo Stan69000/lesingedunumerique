@@ -4,7 +4,7 @@ description: "Une sélection plus complète de fictions et de documentaires auto
 pubDate: 2026-03-29
 rubrique: "Technos"
 tags: ["Culture numérique", "Veille", "Ressources"]
-author: "Le Singe Du Numérique"
+author: "Stan Bouchet"
 ---
 
 # Films, séries et documentaires pour parler numérique autrement
