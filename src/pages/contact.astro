@@ -21,6 +21,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       <div id="contact-status" class="contact-status" hidden aria-live="polite"></div>
 
       <form class="contact-form" action="/contact.php" method="post">
+        <input type="hidden" name="form_started_at" value={Date.now().toString()} />
+
         <div class="field-pair">
           <label class="field">
             <span>Prénom <strong>*</strong></span>
@@ -55,10 +57,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
           <textarea name="message" rows="8" required></textarea>
         </label>
 
-        <label class="honeypot" aria-hidden="true">
-          <span>Ne pas remplir ce champ</span>
-          <input type="text" name="website" tabindex="-1" autocomplete="off" />
-        </label>
+        <div class="honeypot" hidden>
+          <label for="contact-website">Ne pas remplir ce champ</label>
+          <input id="contact-website" type="text" name="website" autocomplete="off" />
+        </div>
 
         <p class="form-note">
           <strong>*</strong> Champ obligatoire. Le téléphone reste facultatif.

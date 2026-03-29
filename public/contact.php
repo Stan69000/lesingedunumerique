@@ -23,6 +23,17 @@ if ($website !== '') {
     redirect_with_status('sent');
 }
 
+$startedAt = trim((string) ($_POST['form_started_at'] ?? ''));
+if ($startedAt === '' || !ctype_digit($startedAt)) {
+    redirect_with_status('invalid');
+}
+
+$submittedAt = (int) floor(microtime(true) * 1000);
+$elapsed = $submittedAt - (int) $startedAt;
+if ($elapsed < 2500) {
+    redirect_with_status('sent');
+}
+
 $firstName = trim((string) ($_POST['first_name'] ?? ''));
 $lastName = trim((string) ($_POST['last_name'] ?? ''));
 $email = trim((string) ($_POST['email'] ?? ''));

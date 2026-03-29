@@ -1,10 +1,14 @@
 ---
 title: "Au-delà des écrans : une BD pour ouvrir la discussion avec les jeunes"
-description: "Une recommandation de lecture pour aborder les usages numériques, les écrans et les réseaux avec un support plus accessible."
+description: Une recommandation de lecture pour aborder les usages numériques,
+  les écrans et les réseaux avec un support plus accessible.
 pubDate: 2026-03-29
-rubrique: "Technos"
-tags: ["Jeunesse", "Ressources", "Débutant"]
-author: "Le Singe Du Numérique"
+rubrique: Technos
+tags:
+  - Jeunesse
+  - Ressources
+  - Débutant
+author: Stan Bouchet
 ---
 
 # Au-delà des écrans : une BD pour ouvrir la discussion avec les jeunes
