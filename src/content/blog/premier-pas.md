@@ -2,6 +2,7 @@
 title: "Bienvenue sur le blog du Singe"
 description: "Notre premier article pour vous presenter la nouvelle identite."
 pubDate: 2026-03-25
+rubrique: "Articles"
 tags: ["Vie de l'asso", "Debutant"]
 author: "Stanislas"
 ---
