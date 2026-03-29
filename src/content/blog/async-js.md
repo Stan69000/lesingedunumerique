@@ -2,6 +2,7 @@
 title: "Comprendre l'asynchrone en JS"
 description: "Un guide complet pour enfin maîtriser les Promises et async/await sans maux de tête."
 pubDate: 2026-03-27
+rubrique: "Technos"
 tags: ["JavaScript", "Avancé", "Tuto"]
 author: "L'équipe Tech"
 ---

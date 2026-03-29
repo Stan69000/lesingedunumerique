@@ -6,18 +6,14 @@ const posts = await getCollection('blog');
 const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
   a.localeCompare(b, 'fr'),
 );
-const tagCounts = allTags
-  .map((tag) => ({
-    tag,
-    count: posts.filter((post) => post.data.tags.includes(tag)).length,
-  }))
-  .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag, 'fr'));
-
-const featuredTags = tagCounts.slice(0, 3);
-const beginnerTag =
-  allTags.find((tag) => tag.toLowerCase().includes('debut')) ?? featuredTags[0]?.tag;
-const advancedTag =
-  allTags.find((tag) => tag.toLowerCase().includes('avanc')) ?? featuredTags[1]?.tag;
+const beginnerTag = allTags.find((tag) => tag.toLowerCase().includes('debut'));
+const intermediateTag = allTags.find((tag) => tag.toLowerCase().includes('inter'));
+const advancedTag = allTags.find((tag) => tag.toLowerCase().includes('avanc'));
+const levelTags = [
+  { label: 'Débutant', emoji: '🌱', tag: beginnerTag },
+  { label: 'Intermédiaire', emoji: '🧭', tag: intermediateTag },
+  { label: 'Avancé', emoji: '⚡', tag: advancedTag },
+];
 ---
 
 <!DOCTYPE html>
@@ -117,13 +113,16 @@ const advancedTag =
             <img src="/logo.svg" alt="Le Singe Du Numérique" class="hero-logo" />
           </div>
 
+          <p class="eyebrow">Inclusion numérique et transformation associative</p>
           <h1 class="hero-title">
-            Explorez nos <span class="gradient-text">ressources</span>
+            Le numérique plus <span class="gradient-text">accessible</span> pour tous, plus utile
+            pour les associations
           </h1>
 
           <p class="hero-desc">
-            Ateliers, tutoriels et projets solidaires. Trouvez l'information qu'il vous faut pour
-            coder mieux et ensemble.
+            Le Singe Du Numérique agit pour la démocratisation et l&apos;inclusion numérique, et
+            accompagne aussi les associations locales dans leurs usages, leurs outils et leur
+            transformation numérique.
           </p>
 
           <form class="search-wrapper" action="/blog" method="get">
@@ -136,7 +135,7 @@ const advancedTag =
                 id="home-search"
                 type="search"
                 name="search"
-                placeholder="Rechercher un article, un tutoriel..."
+                placeholder="Rechercher une ressource, un article ou un sujet..."
                 class="search-input"
               />
               <button type="submit" class="search-submit">Rechercher</button>
@@ -157,20 +156,16 @@ const advancedTag =
           </form>
 
           <div class="quick-actions">
-            {featuredTags[0] && (
-              <a href={`/blog?tag=${encodeURIComponent(featuredTags[0].tag)}`} class="quick-tag">
-                🔥 {featuredTags[0].tag}
-              </a>
-            )}
-            {beginnerTag && (
-              <a href={`/blog?tag=${encodeURIComponent(beginnerTag)}`} class="quick-tag">
-                🌱 {beginnerTag}
-              </a>
-            )}
-            {advancedTag && (
-              <a href={`/blog?tag=${encodeURIComponent(advancedTag)}`} class="quick-tag">
-                ⚡ {advancedTag}
-              </a>
+            {levelTags.map((level) =>
+              level.tag ? (
+                <a href={`/blog?tag=${encodeURIComponent(level.tag)}`} class="quick-tag">
+                  {level.emoji} {level.label}
+                </a>
+              ) : (
+                <span class="quick-tag quick-tag-disabled" aria-disabled="true">
+                  {level.emoji} {level.label}
+                </span>
+              ),
             )}
           </div>
         </div>
@@ -179,43 +174,179 @@ const advancedTag =
       <section id="missions" class="content-section">
         <div class="container">
           <div class="section-header">
-            <h2>Nos <span class="text-accent">Missions</span></h2>
+            <h2>Deux axes, une même <span class="text-accent">ambition</span></h2>
             <div class="line-deco"></div>
           </div>
 
           <div class="grid">
             <article class="card">
               <div class="card-header card-green">
-                <span class="card-icon">🎓</span>
+                <span class="card-icon">👥</span>
               </div>
               <div class="card-content">
-                <h3>Apprendre</h3>
-                <p>Ateliers hebdomadaires bienveillants pour passer de curieux à créateur.</p>
-                <div class="card-tags"><span>Pédagogie</span><span>Pratique</span></div>
+                <h3>Pour tous les publics</h3>
+                <p>
+                  Ateliers pratiques, accompagnement aux usages, cybersécurité du quotidien et aide
+                  à la prise en main des outils numériques.
+                </p>
+                <div class="card-tags"><span>Inclusion</span><span>Pédagogie</span></div>
               </div>
             </article>
 
             <article class="card">
               <div class="card-header card-orange">
-                <span class="card-icon">🤝</span>
+                <span class="card-icon">🏛️</span>
               </div>
               <div class="card-content">
-                <h3>Partager</h3>
-                <p>Coupe de code solidaire : développement gratuit pour associations.</p>
-                <div class="card-tags"><span>Solidaire</span><span>Impact</span></div>
+                <h3>Pour les associations locales</h3>
+                <p>
+                  Conseil, assistance technique, choix d&apos;outils, logiciels libres et
+                  automatisation pour soutenir la transformation numérique du tissu associatif local.
+                </p>
+                <div class="card-tags"><span>Conseil</span><span>Terrain</span></div>
               </div>
             </article>
 
             <article class="card">
               <div class="card-header card-blue">
-                <span class="card-icon">⚖️</span>
+                <span class="card-icon">🌍</span>
               </div>
               <div class="card-content">
-                <h3>Protéger</h3>
-                <p>Promouvoir un numérique sobre, éthique et respectueux.</p>
-                <div class="card-tags"><span>Éthique</span><span>Débat</span></div>
+                <h3>Une approche accessible et locale</h3>
+                <p>
+                  L&apos;association adapte ses actions chaque année selon ses moyens et les besoins
+                  locaux, dans une démarche pédagogique, éthique et concrète.
+                </p>
+                <div class="card-tags"><span>Éthique</span><span>Libre</span></div>
               </div>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section content-section-alt">
+        <div class="container">
+          <div class="section-header">
+            <h2>Ce que nous <span class="text-accent">faisons</span></h2>
+            <div class="line-deco"></div>
+          </div>
+
+          <div class="grid">
+            <article class="card">
+              <div class="card-header card-green">
+                <span class="card-icon">🛡️</span>
+              </div>
+              <div class="card-content">
+                <h3>Cybersécurité du quotidien</h3>
+                <p>Protection des données, bons réflexes et usages plus sûrs du web, de l’ordinateur et du smartphone.</p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-header card-orange">
+                <span class="card-icon">💻</span>
+              </div>
+              <div class="card-content">
+                <h3>Matériel et autonomie numérique</h3>
+                <p>Aide au choix, à l’utilisation et à la prise en main de matériel informatique selon les besoins et les moyens.</p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-header card-blue">
+                <span class="card-icon">♻️</span>
+              </div>
+              <div class="card-content">
+                <h3>Logiciels libres et solutions éthiques</h3>
+                <p>Promotion d’outils plus respectueux, durables et adaptés aux personnes comme aux structures associatives.</p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-header card-green">
+                <span class="card-icon">🧰</span>
+              </div>
+              <div class="card-content">
+                <h3>Conseil aux associations</h3>
+                <p>Appui technique, mise en place d’outils numériques et accompagnement des usages pour la vie associative.</p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-header card-orange">
+                <span class="card-icon">⚙️</span>
+              </div>
+              <div class="card-content">
+                <h3>Scripts et automatisation</h3>
+                <p>Développement de solutions simples pour faire gagner du temps aux associations et alléger certaines tâches répétitives.</p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-header card-blue">
+                <span class="card-icon">🤝</span>
+              </div>
+              <div class="card-content">
+                <h3>Événements et entraide</h3>
+                <p>Tout événement favorisant le partage de connaissances, l’entraide et l’apprentissage dans une approche accessible.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Ressources, veille et <span class="text-accent">outils</span></h2>
+            <div class="line-deco"></div>
+          </div>
+
+          <div class="grid">
+            <article class="card">
+              <div class="card-header card-green">
+                <span class="card-icon">📝</span>
+              </div>
+              <div class="card-content">
+                <h3>Articles</h3>
+                <p>Guides, conseils pratiques, cybersécurité, protection des données et usages du numérique au quotidien.</p>
+                <div class="card-tags"><span>Conseils</span><span>Usages</span></div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-header card-orange">
+                <span class="card-icon">🔎</span>
+              </div>
+              <div class="card-content">
+                <h3>Veille</h3>
+                <p>Sélection de ressources, médias, podcasts, lectures et contenus utiles à suivre pour rester informé sans se perdre.</p>
+                <div class="card-tags"><span>Curation</span><span>Ressources</span></div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-header card-blue">
+                <span class="card-icon">🧪</span>
+              </div>
+              <div class="card-content">
+                <h3>Technos</h3>
+                <p>Logiciels libres, outils éthiques, automatisation et solutions techniques utiles pour les particuliers comme pour les associations.</p>
+                <div class="card-tags"><span>Libre</span><span>Outils</span></div>
+              </div>
+            </article>
+          </div>
+
+          <div class="cta-strip">
+            <p>
+              Les éventuels bénéfices tirés de prestations de service sont intégralement réinvestis
+              dans la réalisation de l’objet social.
+            </p>
+            <div class="cta-row">
+              <a href="/asso" class="cta-link">Découvrir l’association</a>
+              <a href="/projets" class="cta-link">Voir nos actions</a>
+              <a href="/blog" class="cta-link">Lire les ressources</a>
+            </div>
           </div>
         </div>
       </section>
@@ -596,8 +727,10 @@ const advancedTag =
   .quick-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
   .quick-tag { font-size: 0.85rem; padding: 6px 14px; background: rgba(128,128,128, 0.1); border-radius: 20px; color: var(--text-muted); transition: all 0.2s; }
   .quick-tag:hover { background: rgba(45, 212, 191, 0.15); color: var(--brand-green); }
+  .quick-tag-disabled { opacity: 0.55; cursor: default; }
 
   .content-section { padding: 5rem 0; }
+  .content-section-alt { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0)); }
   .section-header { margin-bottom: 3rem; display: flex; align-items: center; gap: 20px; }
   .section-header h2 { font-size: 2.2rem; margin: 0; color: var(--text-main); }
   .text-accent { color: var(--brand-green); }
@@ -615,6 +748,55 @@ const advancedTag =
   .card p { margin: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.6; flex-grow: 1; }
   .card-tags { margin-top: 1.5rem; display: flex; gap: 8px; flex-wrap: wrap; }
   .card-tags span { font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; padding: 4px 10px; border-radius: 12px; background: rgba(128,128,128, 0.1); color: var(--text-muted); }
+
+  .eyebrow {
+    margin: 0 0 1rem;
+    color: var(--brand-green);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .cta-strip {
+    margin-top: 2.5rem;
+    padding: 1.6rem;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    background: rgba(21, 30, 50, 0.55);
+    display: grid;
+    gap: 1rem;
+  }
+
+  .cta-strip p {
+    margin: 0;
+    color: var(--text-muted);
+    max-width: 760px;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+  .cta-link:hover {
+    border-color: var(--brand-green);
+    color: var(--brand-green);
+  }
 
   .footer { padding: 3rem 0; background: var(--bg-card); margin-top: 4rem; border-top: 1px solid var(--border-color); }
   .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
