@@ -1,0 +1,136 @@
+---
+interface Props {
+  title: string;
+  label?: string;
+  shareMessage?: string;
+}
+
+const {
+  title,
+  label = 'Partager cette page',
+  shareMessage = `À lire sur Le Singe Du Numérique : ${title}`,
+} = Astro.props;
+---
+
+<section
+  class="social-share"
+  data-share-widget
+  data-share-title={title}
+  data-share-message={shareMessage}
+  aria-label={label}
+>
+  <h2>{label}</h2>
+  <div class="social-share-links">
+    <a href="#" data-share-platform="facebook" target="_blank" rel="noopener noreferrer">
+      Partager sur Facebook
+    </a>
+    <a href="#" data-share-platform="x" target="_blank" rel="noopener noreferrer">
+      Partager sur X
+    </a>
+    <a href="#" data-share-platform="linkedin" target="_blank" rel="noopener noreferrer">
+      Partager sur LinkedIn
+    </a>
+    <a href="#" data-share-platform="whatsapp" target="_blank" rel="noopener noreferrer">
+      Partager sur WhatsApp
+    </a>
+    <button type="button" data-share-copy>Copier le lien</button>
+  </div>
+  <p class="social-share-feedback" aria-live="polite"></p>
+</section>
+
+<script is:inline>
+  document.querySelectorAll('[data-share-widget]').forEach((widget) => {
+    const title = widget.getAttribute('data-share-title') || document.title;
+    const message = widget.getAttribute('data-share-message') || title;
+    const url = window.location.href;
+    const encodedUrl = encodeURIComponent(url);
+    const encodedMessage = encodeURIComponent(message);
+
+    const urls = {
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedMessage}`,
+      x: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedMessage}`,
+      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+      whatsapp: `https://wa.me/?text=${encodeURIComponent(`${message} ${url}`)}`,
+    };
+
+    widget.querySelectorAll('[data-share-platform]').forEach((link) => {
+      const platform = link.getAttribute('data-share-platform');
+      if (platform && urls[platform]) {
+        link.setAttribute('href', urls[platform]);
+      }
+    });
+
+    const feedback = widget.querySelector('.social-share-feedback');
+    const copyButton = widget.querySelector('[data-share-copy]');
+    copyButton?.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(url);
+        if (feedback) feedback.textContent = 'Lien copié.';
+      } catch {
+        if (feedback) feedback.textContent = 'Impossible de copier le lien.';
+      }
+    });
+  });
+</script>
+
+<style>
+  .social-share {
+    margin-top: 12px;
+    padding: 22px;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(21, 30, 50, 0.65);
+  }
+
+  .social-share h2 {
+    margin: 0 0 14px;
+    font-size: 1.2rem;
+  }
+
+  .social-share-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+  }
+
+  .social-share-links a,
+  .social-share-links button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: inherit;
+    text-decoration: none;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .social-share-links a:hover,
+  .social-share-links button:hover {
+    border-color: rgba(45, 212, 191, 0.45);
+    color: #2dd4bf;
+  }
+
+  .social-share-feedback {
+    min-height: 1.2em;
+    margin: 12px 0 0;
+    color: #94a3b8;
+    font-size: 0.9rem;
+  }
+
+  :global(body.light-mode) .social-share {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  :global(body.light-mode) .social-share-feedback {
+    color: #64748b;
+  }
+</style>

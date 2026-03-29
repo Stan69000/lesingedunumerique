@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | Le Singe Du Numérique</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Space Grotesk", sans-serif;
+        background: #0b1120;
+        color: #f1f5f9;
+      }
+
+      .admin-loading {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 32px 20px;
+        background:
+          radial-gradient(circle at top left, rgba(45, 212, 191, 0.18), transparent 32%),
+          radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.14), transparent 32%),
+          #0b1120;
+      }
+
+      .admin-loading-card {
+        width: min(680px, 100%);
+        padding: 32px 28px;
+        border-radius: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(21, 30, 50, 0.78);
+        backdrop-filter: blur(14px);
+      }
+
+      .admin-loading-card h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2rem, 5vw, 3rem);
+        line-height: 1.05;
+      }
+
+      .admin-loading-card p {
+        margin: 0;
+        color: #cbd5e1;
+        line-height: 1.7;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="admin-loading" id="admin-loading">
+      <section class="admin-loading-card">
+        <h1>Administration du contenu</h1>
+        <p>
+          Chargement de l’interface d’édition du blog. En local, utilise le backend Decap local.
+          En production, l’authentification GitHub devra être branchée avant ouverture publique.
+        </p>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/decap-cms@^3.6.2/dist/decap-cms.js"></script>
+    <script>
+      const loading = document.getElementById('admin-loading');
+      const hideLoading = () => {
+        const cmsRoot = document.getElementById('nc-root');
+        if (cmsRoot && loading) {
+          loading.style.display = 'none';
+          observer.disconnect();
+        }
+      };
+
+      const observer = new MutationObserver(hideLoading);
+      observer.observe(document.body, { childList: true, subtree: true });
+      window.addEventListener('load', hideLoading);
+    </script>
+  </body>
+</html>

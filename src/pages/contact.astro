@@ -1,0 +1,347 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Contact | Le Singe Du Numérique"
+  description="Contacter Le Singe Du Numérique pour un atelier, un accompagnement, une question sur le numérique ou un besoin associatif local."
+  eyebrow="Contact"
+  headline="Parler d’un besoin,"
+  accent="poser une question"
+  intro="Que ce soit pour un atelier, un accompagnement, une idée de projet ou un besoin technique pour une association, tu peux nous écrire ici."
+  shareTitle="Contacter Le Singe Du Numérique"
+>
+  <div class="contact-grid">
+    <section class="prose-block contact-form-block">
+      <h2>Envoyer un message</h2>
+      <p class="contact-intro">
+        Le formulaire ci-dessous permet de contacter l’association sans afficher d’adresse mail sur le site.
+      </p>
+
+      <div id="contact-status" class="contact-status" hidden aria-live="polite"></div>
+
+      <form class="contact-form" action="/contact.php" method="post">
+        <input type="hidden" name="form_started_at" value={Date.now().toString()} />
+
+        <div class="field-pair">
+          <label class="field">
+            <span>Prénom <strong>*</strong></span>
+            <input type="text" name="first_name" autocomplete="given-name" required />
+          </label>
+
+          <label class="field">
+            <span>Nom <strong>*</strong></span>
+            <input type="text" name="last_name" autocomplete="family-name" required />
+          </label>
+        </div>
+
+        <div class="field-pair">
+          <label class="field">
+            <span>Mail <strong>*</strong></span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+
+          <label class="field">
+            <span>Téléphone</span>
+            <input type="tel" name="phone" autocomplete="tel" />
+          </label>
+        </div>
+
+        <label class="field">
+          <span>Objet <strong>*</strong></span>
+          <input type="text" name="subject" required />
+        </label>
+
+        <label class="field">
+          <span>Message <strong>*</strong></span>
+          <textarea name="message" rows="8" required></textarea>
+        </label>
+
+        <div class="honeypot" hidden>
+          <label for="contact-website">Ne pas remplir ce champ</label>
+          <input id="contact-website" type="text" name="website" autocomplete="off" />
+        </div>
+
+        <p class="form-note">
+          <strong>*</strong> Champ obligatoire. Le téléphone reste facultatif.
+        </p>
+
+        <div class="cta-row">
+          <button type="submit" class="cta-button">Envoyer le message</button>
+        </div>
+      </form>
+    </section>
+
+    <div class="contact-side">
+      <article class="info-card">
+        <h2>Téléphone de l’association</h2>
+        <p>
+          Un numéro provisoire est déjà disponible pour les premiers échanges.
+        </p>
+        <p class="contact-phone">
+          <a href="tel:+33771680601">07 71 68 06 01</a>
+        </p>
+      </article>
+
+      <article class="info-card">
+        <h2>Nous trouver</h2>
+        <p>
+          Le point de repère retenu pour le moment est la mairie de Fleurieux-sur-l’Arbresle.
+        </p>
+        <address class="contact-address">
+          21 place Benoît-Dubost<br />
+          69210 Fleurieux-sur-l’Arbresle
+        </address>
+        <div class="map-frame">
+          <iframe
+            title="Carte de Fleurieux-sur-l’Arbresle"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=4.6468%2C45.8344%2C4.6568%2C45.8386&layer=mapnik&marker=45.8364%2C4.6518"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+        <div class="cta-row">
+          <a
+            href="https://www.google.com/maps/dir/?api=1&destination=21+place+Benoit+Dubost,+69210+Fleurieux-sur-l%27Arbresle"
+            class="cta-button cta-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Préparer l’itinéraire
+          </a>
+          <a
+            href="https://www.openstreetmap.org/?mlat=45.8364&mlon=4.6518#map=18/45.8364/4.6518"
+            class="cta-button cta-secondary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Ouvrir la carte
+          </a>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <script is:inline>
+    const params = new URLSearchParams(window.location.search);
+    const statusNode = document.getElementById('contact-status');
+    const status = params.get('status');
+
+    if (statusNode && status) {
+      const messages = {
+        sent: {
+          text: 'Message envoyé. Nous reviendrons vers vous dès que possible.',
+          type: 'is-success',
+        },
+        missing: {
+          text: 'Le formulaire est incomplet. Merci de vérifier les champs obligatoires.',
+          type: 'is-error',
+        },
+        invalid: {
+          text: 'Certains champs sont invalides. Merci de vérifier votre saisie.',
+          type: 'is-error',
+        },
+        error: {
+          text: 'Un problème est survenu pendant l’envoi. Merci de réessayer un peu plus tard.',
+          type: 'is-error',
+        },
+        config: {
+          text: 'Le formulaire n’est pas encore configuré côté serveur.',
+          type: 'is-error',
+        },
+      };
+
+      const entry = messages[status];
+      if (entry) {
+        statusNode.hidden = false;
+        statusNode.textContent = entry.text;
+        statusNode.classList.add(entry.type);
+      }
+    }
+  </script>
+</SiteLayout>
+
+<style>
+  .contact-grid,
+  .contact-grid * {
+    box-sizing: border-box;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(300px, 0.9fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .contact-side {
+    display: grid;
+    gap: 28px;
+  }
+
+  .contact-form-block {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .contact-form-block::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at top left, rgba(45, 212, 191, 0.08), transparent 34%),
+      radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.07), transparent 36%);
+    pointer-events: none;
+  }
+
+  .contact-form-block > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .contact-intro {
+    margin: 0 0 10px;
+    max-width: 58ch;
+  }
+
+  .contact-status {
+    margin-bottom: 18px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-main);
+  }
+
+  .contact-status.is-success {
+    border-color: rgba(45, 212, 191, 0.3);
+    background: rgba(45, 212, 191, 0.08);
+  }
+
+  .contact-status.is-error {
+    border-color: rgba(249, 115, 22, 0.3);
+    background: rgba(249, 115, 22, 0.08);
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 20px;
+  }
+
+  .field-pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .field {
+    display: grid;
+    gap: 10px;
+    font-weight: 600;
+    min-width: 0;
+  }
+
+  .field span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    color: var(--text-main);
+  }
+
+  .field strong {
+    color: var(--brand-orange);
+    font-size: 0.9em;
+  }
+
+  .field input,
+  .field textarea {
+    width: 100%;
+    border: 1px solid var(--border-color);
+    border-radius: 18px;
+    padding: 15px 16px;
+    background: rgba(255, 255, 255, 0.045);
+    color: var(--text-main);
+    font: inherit;
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    min-width: 0;
+  }
+
+  .field input::placeholder,
+  .field textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.9;
+  }
+
+  .field input:hover,
+  .field textarea:hover {
+    border-color: rgba(45, 212, 191, 0.22);
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: rgba(45, 212, 191, 0.45);
+    box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.12);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 220px;
+  }
+
+  body.light-mode .field input,
+  body.light-mode .field textarea {
+    background: rgba(15, 23, 42, 0.03);
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .form-note {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .contact-phone a {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--text-main);
+  }
+
+  .contact-address {
+    color: var(--text-muted);
+    font-style: normal;
+    line-height: 1.7;
+    margin-bottom: 18px;
+  }
+
+  .map-frame {
+    overflow: hidden;
+    border-radius: 20px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .map-frame iframe {
+    display: block;
+    width: 100%;
+    min-height: 320px;
+    border: 0;
+  }
+
+  @media (max-width: 1180px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

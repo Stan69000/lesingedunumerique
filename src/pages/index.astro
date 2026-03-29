@@ -1,5 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import MaintenanceContent from '../components/MaintenanceContent.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import { siteSettings } from '../config/site';
 import '../styles/global.css';
 
 const posts = await getCollection('blog');
@@ -14,6 +17,32 @@ const levelTags = [
   { label: 'Intermédiaire', emoji: '🧭', tag: intermediateTag },
   { label: 'Avancé', emoji: '⚡', tag: advancedTag },
 ];
+const canonicalUrl = new URL('/', siteSettings.siteUrl).toString();
+const pageTitle = 'Le Singe Du Numérique | Inclusion numérique et appui aux associations';
+const pageDescription =
+  "Association pour la démocratisation du numérique, la cybersécurité du quotidien, les logiciels libres et l'accompagnement des associations locales.";
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteSettings.siteName,
+  url: siteSettings.siteUrl,
+  logo: `${siteSettings.siteUrl}/logo.svg`,
+  telephone: '+33771680601',
+  areaServed: 'Fleurieux-sur-l’Arbresle et environs',
+  sameAs: [],
+};
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteSettings.siteName,
+  url: siteSettings.siteUrl,
+  inLanguage: 'fr-FR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${siteSettings.siteUrl}/blog?search={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
 ---
 
 <!DOCTYPE html>
@@ -21,7 +50,21 @@ const levelTags = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Le Singe Du Numérique</title>
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:site_name" content={siteSettings.siteName} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content={`${siteSettings.siteUrl}/logo.svg`} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={`${siteSettings.siteUrl}/logo.svg`} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,9 +72,16 @@ const levelTags = [
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap"
       rel="stylesheet"
     />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
   </head>
 
   <body>
+    {
+      siteSettings.maintenanceMode ? (
+        <MaintenanceContent />
+      ) : (
+        <>
     <a class="skip-link" href="#main-content">Aller au contenu principal</a>
 
     <nav class="navbar" aria-label="Navigation principale">
@@ -47,6 +97,7 @@ const levelTags = [
             <a href="/asso" class="nav-item">L’association</a>
             <a href="/evenements" class="nav-item">Événements</a>
             <a href="/adhesion" class="nav-item">Rejoindre</a>
+            <a href="/contact" class="nav-item">Contact</a>
             <a href="/blog" class="nav-item">Blog</a>
           </div>
           <button
@@ -85,6 +136,7 @@ const levelTags = [
         <a href="/asso" class="mobile-item">L’association</a>
         <a href="/evenements" class="mobile-item">Événements</a>
         <a href="/adhesion" class="mobile-item">Rejoindre</a>
+        <a href="/contact" class="mobile-item">Contact</a>
         <a href="/blog" class="mobile-item">Blog</a>
         <div class="mobile-theme-toggle">
           <span>Changer le thème</span>
@@ -156,17 +208,13 @@ const levelTags = [
           </form>
 
           <div class="quick-actions">
-            {levelTags.map((level) =>
-              level.tag ? (
+            {levelTags
+              .filter((level) => level.tag)
+              .map((level) => (
                 <a href={`/blog?tag=${encodeURIComponent(level.tag)}`} class="quick-tag">
                   {level.emoji} {level.label}
                 </a>
-              ) : (
-                <span class="quick-tag quick-tag-disabled" aria-disabled="true">
-                  {level.emoji} {level.label}
-                </span>
-              ),
-            )}
+              ))}
           </div>
         </div>
       </section>
@@ -352,6 +400,12 @@ const levelTags = [
       </section>
     </main>
 
+    <section class="content-section">
+      <div class="container">
+        <ShareButtons title="Le Singe Du Numérique" label="Partager le site" />
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="container footer-container">
         <div class="footer-left">
@@ -370,19 +424,31 @@ const levelTags = [
             <span class="footer-separator">•</span>
             <a href="/adhesion">Rejoindre</a>
             <span class="footer-separator">•</span>
+            <a href="/contact">Contact</a>
+            <span class="footer-separator">•</span>
             <a href="/blog">Blog</a>
             <span class="footer-separator">•</span>
             <a href="/mentions-legales">Mentions légales</a>
           </div>
         </div>
 
-        <div class="footer-right">
-          <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
-          <div class="social-icons" aria-hidden="true">
-            <span class="social-icon">🐙</span>
-            <span class="social-icon">𝕏</span>
-            <span class="social-icon">in</span>
-            <span class="social-icon">📧</span>
+        <div class="footer-meta">
+          <span class="footer-credit">Fait avec ❤️ entre père et fils - Stan et Mikaël BOUCHET</span>
+          <div class="footer-socials">
+            <a href="https://www.linkedin.com/in/stanislas-bouchet/" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
+              <span>LinkedIn Stan</span>
+            </a>
+            <span class="footer-separator">•</span>
+            <a href="https://www.linkedin.com/in/mikael-bch/" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
+              <span>LinkedIn Mikaël</span>
+            </a>
+            <span class="footer-separator">•</span>
+            <a href="https://github.com/Stan69000/lesingedunumerique" target="_blank" rel="noopener noreferrer">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.35-3.87-1.35-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.17-3.07-.12-.29-.5-1.47.11-3.05 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.13-1.17 3.13-1.17.62 1.58.24 2.76.12 3.05.73.8 1.17 1.82 1.17 3.07 0 4.41-2.69 5.37-5.25 5.66.41.36.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+              <span>GitHub</span>
+            </a>
           </div>
         </div>
       </div>
@@ -529,6 +595,9 @@ const levelTags = [
       });
       backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
+        </>
+      )
+    }
   </body>
 </html>
 
@@ -575,7 +644,7 @@ const levelTags = [
 
   .nav-right { display: flex; align-items: center; gap: 24px; }
   .nav-links { display: flex; gap: 28px; }
-  .nav-item { font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-muted); font-weight: 500; }
+  .nav-item { font-size: 0.96rem; color: var(--text-muted); font-weight: 500; letter-spacing: -0.01em; }
   .nav-item[aria-current='page'] { color: var(--text-main); }
   .nav-item:hover { color: var(--brand-green); }
 
@@ -705,9 +774,9 @@ const levelTags = [
 
   .hero-title { font-size: 3rem; font-weight: 800; line-height: 1.1; margin: 0 0 1rem 0; letter-spacing: -0.03em; color: var(--text-main); }
   .gradient-text { background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.6; }
+  .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.8rem; line-height: 1.75; }
 
-  .search-wrapper { max-width: 700px; margin: 0 auto 2rem; display: flex; flex-direction: column; gap: 12px; }
+  .search-wrapper { max-width: 720px; margin: 0 auto 2.4rem; display: flex; flex-direction: column; gap: 14px; }
   .search-bar { position: relative; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
   .search-bar:focus-within { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
   .search-icon { color: var(--text-muted); display: flex; align-items: center; }
@@ -715,17 +784,17 @@ const levelTags = [
   .search-input::placeholder { color: var(--text-muted); }
   .search-submit { border: none; border-radius: 999px; padding: 10px 14px; background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); color: #07131d; font-weight: 700; cursor: pointer; }
 
-  .search-meta { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+  .search-meta { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.92rem; color: var(--text-muted); font-weight: 500; flex-wrap: wrap; }
   .filter-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(128,128,128, 0.1); border-radius: 6px; cursor: pointer; transition: background 0.2s; }
   .filter-tag:hover { background: rgba(128,128,128, 0.15); }
   .divider { opacity: 0.3; }
-  .tag-count { opacity: 0.7; }
+  .tag-count { opacity: 0.85; }
   .explore-link { margin-top: 8px; }
   .explore-link a { font-size: 0.9rem; color: var(--text-muted); text-decoration: underline; text-underline-offset: 4px; }
   .explore-link a:hover { color: var(--brand-green); }
 
-  .quick-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
-  .quick-tag { font-size: 0.85rem; padding: 6px 14px; background: rgba(128,128,128, 0.1); border-radius: 20px; color: var(--text-muted); transition: all 0.2s; }
+  .quick-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 1.8rem; }
+  .quick-tag { font-size: 0.92rem; font-weight: 500; padding: 8px 15px; background: rgba(128,128,128, 0.1); border-radius: 20px; color: var(--text-muted); transition: all 0.2s; }
   .quick-tag:hover { background: rgba(45, 212, 191, 0.15); color: var(--brand-green); }
   .quick-tag-disabled { opacity: 0.55; cursor: default; }
 
@@ -745,9 +814,9 @@ const levelTags = [
   .card-blue { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
   .card-content { padding: 1.5rem; flex-grow: 1; display: flex; flex-direction: column; }
   .card h3 { margin: 0 0 0.8rem 0; font-size: 1.4rem; color: var(--text-main); }
-  .card p { margin: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.6; flex-grow: 1; }
-  .card-tags { margin-top: 1.5rem; display: flex; gap: 8px; flex-wrap: wrap; }
-  .card-tags span { font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; padding: 4px 10px; border-radius: 12px; background: rgba(128,128,128, 0.1); color: var(--text-muted); }
+  .card p { margin: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.72; flex-grow: 1; }
+  .card-tags { margin-top: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap; }
+  .card-tags span { font-size: 0.82rem; font-weight: 500; padding: 5px 11px; border-radius: 12px; background: rgba(128,128,128, 0.1); color: var(--text-muted); }
 
   .eyebrow {
     margin: 0 0 1rem;
@@ -799,18 +868,19 @@ const levelTags = [
   }
 
   .footer { padding: 3rem 0; background: var(--bg-card); margin-top: 4rem; border-top: 1px solid var(--border-color); }
-  .footer-container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; }
-  .footer-left { display: flex; flex-direction: column; gap: 16px; }
+  .footer-container { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+  .footer-left { display: flex; flex-direction: column; gap: 16px; width: 100%; }
   .footer-brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
   .footer-logo { height: 30px; width: auto; }
-  .footer-links { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.9rem; color: var(--text-muted); }
+  .footer-links { display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.95rem; font-weight: 500; color: var(--text-muted); }
   .footer-links a:hover { color: var(--brand-orange); }
   .footer-separator { color: var(--border-color); }
-  .footer-right { display: flex; align-items: center; gap: 20px; }
-  .footer-credit { font-size: 0.9rem; color: var(--text-muted); }
-  .social-icons { display: flex; gap: 16px; }
-  .social-icon { font-size: 1.3rem; color: var(--text-muted); transition: transform 0.2s, color 0.2s; }
-  .social-icon:hover { color: var(--brand-orange); transform: translateY(-3px); }
+  .footer-meta { display: flex; align-items: center; justify-content: flex-start; gap: 14px; flex-wrap: wrap; width: 100%; }
+  .footer-credit { font-size: 0.95rem; color: var(--text-muted); text-align: left; }
+  .footer-socials { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; justify-content: flex-start; }
+  .footer-socials a { display: inline-flex; align-items: center; gap: 8px; font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
+  .footer-socials svg { width: 16px; height: 16px; flex: 0 0 16px; }
+  .footer-socials a:hover { color: var(--brand-orange); }
 
   .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--brand-green); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(45, 212, 191, 0.4); z-index: 90; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
   .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
@@ -822,14 +892,14 @@ const levelTags = [
     .hero-desc { font-size: 1rem; }
     .search-bar { flex-wrap: wrap; }
     .search-submit { width: 100%; }
-    .search-meta { justify-content: center; flex-wrap: wrap; font-size: 0.8rem; }
+    .search-meta { justify-content: center; font-size: 0.86rem; }
     .divider { display: none; }
     .quick-actions { gap: 8px; }
-    .quick-tag { padding: 5px 12px; font-size: 0.8rem; }
+    .quick-tag { padding: 6px 12px; font-size: 0.85rem; }
     .section-header h2 { font-size: 1.8rem; }
     .grid { grid-template-columns: 1fr; }
-    .footer-container { flex-direction: column; text-align: center; gap: 20px; }
-    .footer-left, .footer-right { align-items: center; }
+    .footer-container { text-align: left; gap: 20px; }
+    .footer-credit { white-space: normal; }
     .brand-text { display: none; }
   }
 

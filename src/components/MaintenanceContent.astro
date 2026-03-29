@@ -1,0 +1,99 @@
+---
+import { siteSettings } from '../config/site';
+---
+
+<main class="maintenance-screen">
+  <div class="maintenance-shell">
+    <img src="/logo.svg" alt="Le Singe Du Numérique" class="maintenance-logo" />
+    <p class="maintenance-kicker">Maintenance</p>
+    <h1>{siteSettings.maintenanceTitle}</h1>
+    <p>{siteSettings.maintenanceMessage}</p>
+    <div class="maintenance-actions">
+      <a href="/" class="maintenance-link">Revenir plus tard</a>
+      <a href="/mentions-legales" class="maintenance-link maintenance-link-secondary">
+        Mentions légales
+      </a>
+    </div>
+  </div>
+</main>
+
+<style>
+  .maintenance-screen {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 32px 20px;
+    background:
+      radial-gradient(circle at top left, rgba(45, 212, 191, 0.18), transparent 32%),
+      radial-gradient(circle at bottom right, rgba(56, 189, 248, 0.14), transparent 32%),
+      #0b1120;
+    color: #f1f5f9;
+  }
+
+  .maintenance-shell {
+    width: min(720px, 100%);
+    padding: 36px 28px;
+    border-radius: 28px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(21, 30, 50, 0.78);
+    backdrop-filter: blur(14px);
+    text-align: center;
+  }
+
+  .maintenance-logo {
+    height: 84px;
+    width: auto;
+    display: block;
+    margin: 0 auto 18px;
+  }
+
+  .maintenance-kicker {
+    margin: 0 0 12px;
+    color: #2dd4bf;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .maintenance-shell h1 {
+    margin: 0 0 14px;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    line-height: 1.05;
+  }
+
+  .maintenance-shell p {
+    margin: 0 auto;
+    max-width: 56ch;
+    color: #cbd5e1;
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .maintenance-actions {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+
+  .maintenance-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #2dd4bf, #38bdf8);
+    color: #061018;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .maintenance-link-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f1f5f9;
+  }
+</style>

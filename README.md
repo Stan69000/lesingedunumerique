@@ -148,6 +148,56 @@ Depuis la racine du projet :
 4. Ajouter des tags cohérents
 5. Lancer `npm run build` pour vérifier que le schéma Astro est respecté
 
+## Administration du contenu avec Decap CMS
+
+Une base `Decap CMS` est préparée dans :
+
+- `public/admin/index.html`
+- `public/admin/config.yml`
+
+Objectif actuel :
+
+- préparer une interface d’administration pour le blog
+- garder Git comme source de vérité
+- séparer la mise en place locale de l’authentification de production
+
+### Ce qui est prêt maintenant
+
+- collection `blog` configurée pour `src/content/blog`
+- champs compatibles avec `src/content.config.ts`
+- médias du blog configurés dans `public/blog`
+- interface accessible à l’URL `/admin`
+
+### Ce qui reste à faire avant un usage public complet
+
+- brancher l’authentification GitHub pour Decap CMS
+- définir le workflow de publication
+- relier clairement la publication Git au déploiement O2Switch
+
+### Test local de l’admin
+
+L’admin peut être préparée et testée localement avant la production.
+
+1. lancer le site :
+   - `npm run dev`
+2. lancer le backend local Decap dans un autre terminal :
+   - `npx decap-server`
+3. ouvrir :
+   - `http://localhost:4321/admin`
+
+Le `local_backend: true` dans `public/admin/config.yml` permet ce mode local.
+
+### Authentification de production
+
+En production, l’admin ne sera pas réellement utilisable publiquement tant que la partie OAuth GitHub n’est pas branchée.
+
+Dans `public/admin/config.yml`, ces lignes sont volontairement laissées à compléter plus tard :
+
+- `base_url`
+- `auth_endpoint`
+
+Cela évite de faire croire que l’admin publique est déjà finalisée.
+
 ## Branches Git
 
 Le travail se fait en général sur des branches `codex/...`, puis est fusionné dans `main`.

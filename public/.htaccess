@@ -1,0 +1,14 @@
+ErrorDocument 404 /404.html
+
+# Configuration du formulaire de contact pour O2Switch/PHP.
+# Décommente puis adapte ces deux lignes avant mise en production.
+# SetEnv CONTACT_RECIPIENT_EMAIL "contact@votre-domaine.fr"
+# SetEnv CONTACT_FROM_EMAIL "no-reply@votre-domaine.fr"
+
+# Pour un mode maintenance côté Apache sur O2Switch, décommente les lignes ci-dessous.
+# RewriteEngine On
+# RewriteCond %{REQUEST_URI} !^/maintenance\.html$
+# RewriteCond %{REQUEST_URI} !^/contact\.php$
+# RewriteCond %{REQUEST_URI} !^/favicon\.ico$
+# RewriteCond %{REQUEST_URI} !^/favicon\.svg$
+# RewriteRule ^.*$ /maintenance.html [R=302,L]
