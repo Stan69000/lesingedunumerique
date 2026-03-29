@@ -1,4 +1,8 @@
 ---
+import MaintenanceContent from '../components/MaintenanceContent.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import { siteSettings } from '../config/site';
+
 interface Props {
   title: string;
   description?: string;
@@ -6,6 +10,8 @@ interface Props {
   headline: string;
   accent?: string;
   intro?: string;
+  showShare?: boolean;
+  shareTitle?: string;
 }
 
 const {
@@ -15,8 +21,11 @@ const {
   headline,
   accent = '',
   intro,
+  showShare = true,
+  shareTitle = accent ? `${headline} ${accent}` : headline,
 } = Astro.props;
 const currentPath = Astro.url.pathname;
+const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
 ---
 
 <!DOCTYPE html>
@@ -26,6 +35,19 @@ const currentPath = Astro.url.pathname;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:site_name" content={siteSettings.siteName} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content={`${siteSettings.siteUrl}/logo.svg`} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteSettings.siteUrl}/logo.svg`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -36,112 +58,124 @@ const currentPath = Astro.url.pathname;
     />
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+    {
+      siteSettings.maintenanceMode ? (
+        <MaintenanceContent />
+      ) : (
+        <>
+          <a class="skip-link" href="#main-content">Aller au contenu principal</a>
 
-    <nav class="navbar" aria-label="Navigation principale">
-      <div class="container nav-container">
-        <a href="/" class="brand-logo">
-          <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
-          <span class="brand-text">Le Singe Du Numérique</span>
-        </a>
+          <nav class="navbar" aria-label="Navigation principale">
+            <div class="container nav-container">
+              <a href="/" class="brand-logo">
+                <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
+                <span class="brand-text">Le Singe Du Numérique</span>
+              </a>
 
-        <div class="nav-right">
-          <div class="nav-links">
-            <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
-            <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
-            <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
-            <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
-            <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
-          </div>
-          <button
-            id="theme-toggle"
-            class="theme-btn"
-            type="button"
-            aria-label="Activer le thème clair"
-            aria-pressed="false"
-          >
-            <span class="icon-light">☀️</span>
-            <span class="icon-dark">🌙</span>
-          </button>
-        </div>
-      </div>
-    </nav>
+              <div class="nav-right">
+                <div class="nav-links">
+                  <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+                  <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
+                  <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
+                  <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
+                  <a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
+                  <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+                </div>
+                <button
+                  id="theme-toggle"
+                  class="theme-btn"
+                  type="button"
+                  aria-label="Activer le thème clair"
+                  aria-pressed="false"
+                >
+                  <span class="icon-light">☀️</span>
+                  <span class="icon-dark">🌙</span>
+                </button>
+              </div>
+            </div>
+          </nav>
 
-    <main id="main-content">
-      <section class="hero-section">
-        <div class="glow-bg glow-green"></div>
-        <div class="glow-bg glow-orange"></div>
+          <main id="main-content">
+            <section class="hero-section">
+              <div class="glow-bg glow-green"></div>
+              <div class="glow-bg glow-orange"></div>
 
-        <div class="container hero-content">
-          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-          <h1 class="hero-title">
-            {headline} {accent && <span class="gradient-text">{accent}</span>}
-          </h1>
-          {intro && <p class="hero-desc">{intro}</p>}
-        </div>
-      </section>
+              <div class="container hero-content">
+                {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+                <h1 class="hero-title">
+                  {headline} {accent && <span class="gradient-text">{accent}</span>}
+                </h1>
+                {intro && <p class="hero-desc">{intro}</p>}
+              </div>
+            </section>
 
-      <section class="content-section">
-        <div class="container page-body">
-          <slot />
-        </div>
-      </section>
-    </main>
+            <section class="content-section">
+              <div class="container page-body">
+                <slot />
+                {showShare && <ShareButtons title={shareTitle} />}
+              </div>
+            </section>
+          </main>
 
-    <footer class="footer">
-      <div class="container footer-container">
-        <div class="footer-brand">
-          <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
-          <span>Le Singe Du Numérique</span>
-        </div>
-        <div class="footer-links">
-          <a href="/accessibilite">Accessibilité : non conforme</a>
-          <span class="footer-separator">•</span>
-          <a href="/projets">Projets</a>
-          <span class="footer-separator">•</span>
-          <a href="/asso">L’association</a>
-          <span class="footer-separator">•</span>
-          <a href="/evenements">Événements</a>
-          <span class="footer-separator">•</span>
-          <a href="/adhesion">Rejoindre</a>
-          <span class="footer-separator">•</span>
-          <a href="/blog">Blog</a>
-          <span class="footer-separator">•</span>
-          <a href="/mentions-legales">Mentions légales</a>
-        </div>
-      </div>
-    </footer>
+          <footer class="footer">
+            <div class="container footer-container">
+              <div class="footer-brand">
+                <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
+                <span>Le Singe Du Numérique</span>
+              </div>
+              <div class="footer-links">
+                <a href="/accessibilite">Accessibilité : non conforme</a>
+                <span class="footer-separator">•</span>
+                <a href="/projets">Projets</a>
+                <span class="footer-separator">•</span>
+                <a href="/asso">L’association</a>
+                <span class="footer-separator">•</span>
+                <a href="/evenements">Événements</a>
+                <span class="footer-separator">•</span>
+                <a href="/adhesion">Rejoindre</a>
+                <span class="footer-separator">•</span>
+                <a href="/contact">Contact</a>
+                <span class="footer-separator">•</span>
+                <a href="/blog">Blog</a>
+                <span class="footer-separator">•</span>
+                <a href="/mentions-legales">Mentions légales</a>
+              </div>
+            </div>
+          </footer>
 
-    <script>
-      const themeBtn = document.getElementById('theme-toggle');
-      const body = document.body;
+          <script>
+            const themeBtn = document.getElementById('theme-toggle');
+            const body = document.body;
 
-      function syncThemeControl() {
-        const isLight = body.classList.contains('light-mode');
-        const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
+            function syncThemeControl() {
+              const isLight = body.classList.contains('light-mode');
+              const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
 
-        if (themeBtn) {
-          themeBtn.innerHTML = isLight
-            ? '<span class="icon-light">☀️</span>'
-            : '<span class="icon-dark">🌙</span>';
-          themeBtn.setAttribute('aria-label', actionLabel);
-          themeBtn.setAttribute('aria-pressed', String(isLight));
-        }
-      }
+              if (themeBtn) {
+                themeBtn.innerHTML = isLight
+                  ? '<span class="icon-light">☀️</span>'
+                  : '<span class="icon-dark">🌙</span>';
+                themeBtn.setAttribute('aria-label', actionLabel);
+                themeBtn.setAttribute('aria-pressed', String(isLight));
+              }
+            }
 
-      if (localStorage.getItem('theme') === 'light') {
-        body.classList.add('light-mode');
-      }
+            if (localStorage.getItem('theme') === 'light') {
+              body.classList.add('light-mode');
+            }
 
-      syncThemeControl();
+            syncThemeControl();
 
-      themeBtn?.addEventListener('click', () => {
-        body.classList.toggle('light-mode');
-        const isLight = body.classList.contains('light-mode');
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        syncThemeControl();
-      });
-    </script>
+            themeBtn?.addEventListener('click', () => {
+              body.classList.toggle('light-mode');
+              const isLight = body.classList.contains('light-mode');
+              localStorage.setItem('theme', isLight ? 'light' : 'dark');
+              syncThemeControl();
+            });
+          </script>
+        </>
+      )
+    }
   </body>
 </html>
 

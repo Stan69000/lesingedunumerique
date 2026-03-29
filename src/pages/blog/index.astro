@@ -1,5 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import MaintenanceContent from '../../components/MaintenanceContent.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import { siteSettings } from '../../config/site';
 
 const posts = await getCollection('blog');
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -9,6 +12,18 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
   a.localeCompare(b, 'fr'),
 );
 const currentPath = Astro.url.pathname;
+const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
+const pageTitle = 'Blog | Le Singe Du Numérique';
+const pageDescription =
+  'Articles, veille et technos : des ressources utiles pour mieux comprendre le numérique, suivre des outils et découvrir des solutions concrètes.';
+const blogSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: `${siteSettings.siteName} — Blog`,
+  url: canonicalUrl,
+  description: pageDescription,
+  inLanguage: 'fr-FR',
+};
 ---
 
 <!DOCTYPE html>
@@ -16,11 +31,21 @@ const currentPath = Astro.url.pathname;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blog | Le Singe Du Numérique</title>
-    <meta
-      name="description"
-      content="Articles, veille et technos : des ressources utiles pour mieux comprendre le numérique, suivre des outils et découvrir des solutions concrètes."
-    />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:site_name" content={siteSettings.siteName} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content={`${siteSettings.siteUrl}/logo.svg`} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={`${siteSettings.siteUrl}/logo.svg`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,8 +54,14 @@ const currentPath = Astro.url.pathname;
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap"
       rel="stylesheet"
     />
+    <script type="application/ld+json" set:html={JSON.stringify(blogSchema)}></script>
   </head>
   <body>
+    {
+      siteSettings.maintenanceMode ? (
+        <MaintenanceContent />
+      ) : (
+        <>
     <a class="skip-link" href="#main-content">Aller au contenu principal</a>
 
     <nav class="navbar" aria-label="Navigation du blog">
@@ -45,6 +76,7 @@ const currentPath = Astro.url.pathname;
             <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
             <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
             <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
+            <a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
             <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
           </div>
           <button
@@ -183,6 +215,12 @@ const currentPath = Astro.url.pathname;
       </section>
     </main>
 
+    <section class="content-section">
+      <div class="container">
+        <ShareButtons title="Ressources, veille et technos" label="Partager le blog" />
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="container footer-container">
         <div class="footer-brand">
@@ -199,6 +237,8 @@ const currentPath = Astro.url.pathname;
           <a href="/evenements">Événements</a>
           <span class="footer-separator">•</span>
           <a href="/adhesion">Rejoindre</a>
+          <span class="footer-separator">•</span>
+          <a href="/contact">Contact</a>
           <span class="footer-separator">•</span>
           <a href="/blog">Blog</a>
           <span class="footer-separator">•</span>
@@ -341,6 +381,9 @@ const currentPath = Astro.url.pathname;
         syncThemeControl();
       });
     </script>
+        </>
+      )
+    }
   </body>
 </html>
 

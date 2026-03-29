@@ -1,5 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
+import MaintenanceContent from '../components/MaintenanceContent.astro';
+import ShareButtons from '../components/ShareButtons.astro';
+import { siteSettings } from '../config/site';
 import '../styles/global.css';
 
 const posts = await getCollection('blog');
@@ -14,6 +17,32 @@ const levelTags = [
   { label: 'Intermédiaire', emoji: '🧭', tag: intermediateTag },
   { label: 'Avancé', emoji: '⚡', tag: advancedTag },
 ];
+const canonicalUrl = new URL('/', siteSettings.siteUrl).toString();
+const pageTitle = 'Le Singe Du Numérique | Inclusion numérique et appui aux associations';
+const pageDescription =
+  "Association pour la démocratisation du numérique, la cybersécurité du quotidien, les logiciels libres et l'accompagnement des associations locales.";
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: siteSettings.siteName,
+  url: siteSettings.siteUrl,
+  logo: `${siteSettings.siteUrl}/logo.svg`,
+  telephone: '+33771680601',
+  areaServed: 'Fleurieux-sur-l’Arbresle et environs',
+  sameAs: [],
+};
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteSettings.siteName,
+  url: siteSettings.siteUrl,
+  inLanguage: 'fr-FR',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${siteSettings.siteUrl}/blog?search={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
 ---
 
 <!DOCTYPE html>
@@ -21,7 +50,21 @@ const levelTags = [
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Le Singe Du Numérique</title>
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:site_name" content={siteSettings.siteName} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content={`${siteSettings.siteUrl}/logo.svg`} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={`${siteSettings.siteUrl}/logo.svg`} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,9 +72,16 @@ const levelTags = [
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap"
       rel="stylesheet"
     />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
   </head>
 
   <body>
+    {
+      siteSettings.maintenanceMode ? (
+        <MaintenanceContent />
+      ) : (
+        <>
     <a class="skip-link" href="#main-content">Aller au contenu principal</a>
 
     <nav class="navbar" aria-label="Navigation principale">
@@ -47,6 +97,7 @@ const levelTags = [
             <a href="/asso" class="nav-item">L’association</a>
             <a href="/evenements" class="nav-item">Événements</a>
             <a href="/adhesion" class="nav-item">Rejoindre</a>
+            <a href="/contact" class="nav-item">Contact</a>
             <a href="/blog" class="nav-item">Blog</a>
           </div>
           <button
@@ -85,6 +136,7 @@ const levelTags = [
         <a href="/asso" class="mobile-item">L’association</a>
         <a href="/evenements" class="mobile-item">Événements</a>
         <a href="/adhesion" class="mobile-item">Rejoindre</a>
+        <a href="/contact" class="mobile-item">Contact</a>
         <a href="/blog" class="mobile-item">Blog</a>
         <div class="mobile-theme-toggle">
           <span>Changer le thème</span>
@@ -352,6 +404,12 @@ const levelTags = [
       </section>
     </main>
 
+    <section class="content-section">
+      <div class="container">
+        <ShareButtons title="Le Singe Du Numérique" label="Partager le site" />
+      </div>
+    </section>
+
     <footer class="footer">
       <div class="container footer-container">
         <div class="footer-left">
@@ -369,6 +427,8 @@ const levelTags = [
             <a href="/evenements">Événements</a>
             <span class="footer-separator">•</span>
             <a href="/adhesion">Rejoindre</a>
+            <span class="footer-separator">•</span>
+            <a href="/contact">Contact</a>
             <span class="footer-separator">•</span>
             <a href="/blog">Blog</a>
             <span class="footer-separator">•</span>
@@ -529,6 +589,9 @@ const levelTags = [
       });
       backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
+        </>
+      )
+    }
   </body>
 </html>
 

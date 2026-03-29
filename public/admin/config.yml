@@ -1,0 +1,74 @@
+local_backend: true
+
+backend:
+  name: github
+  repo: Stan69000/lesingedunumerique
+  branch: main
+  # À compléter en production si l'auth GitHub passe par un proxy OAuth.
+  # base_url: https://votre-service-auth.exemple
+  # auth_endpoint: auth
+
+site_url: https://lesingedunumerique.fr
+display_url: https://lesingedunumerique.fr
+logo_url: /logo.svg
+
+media_folder: public/blog
+public_folder: /blog
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  - name: blog
+    label: Blog
+    label_singular: Article
+    folder: src/content/blog
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{title}} — {{rubrique}}"
+    editor:
+      preview: false
+    fields:
+      - label: Titre
+        name: title
+        widget: string
+
+      - label: Description
+        name: description
+        widget: text
+
+      - label: Date de publication
+        name: pubDate
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+
+      - label: Rubrique
+        name: rubrique
+        widget: select
+        options:
+          - Articles
+          - Veille
+          - Technos
+
+      - label: Tags
+        name: tags
+        widget: list
+        allow_add: true
+        collapsed: false
+        hint: "Exemples : Débutant, Cybersécurité, Seniors, Libre"
+
+      - label: Auteur
+        name: author
+        widget: string
+        required: false
+        hint: "Nom affiché sur l’article. Exemple : Stan Bouchet"
+
+      - label: Contenu
+        name: body
+        widget: markdown
