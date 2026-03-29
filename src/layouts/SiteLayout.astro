@@ -268,8 +268,9 @@ const currentPath = Astro.url.pathname;
   .nav-item,
   .footer-links a {
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
   }
 
   .nav-item[aria-current='page'] {
@@ -384,6 +385,7 @@ const currentPath = Astro.url.pathname;
     margin: 0;
     color: var(--text-muted);
     font-size: 1.05rem;
+    line-height: 1.75;
   }
 
   .content-section {
@@ -428,6 +430,7 @@ const currentPath = Astro.url.pathname;
   :global(.prose-block p),
   :global(.prose-block li) {
     color: var(--text-muted);
+    line-height: 1.75;
   }
 
   :global(.prose-block) {
@@ -435,6 +438,10 @@ const currentPath = Astro.url.pathname;
     border: 1px solid var(--border-color);
     border-radius: 22px;
     padding: 28px;
+  }
+
+  :global(.prose-block h2) {
+    margin-top: 0;
   }
 
   body.light-mode :global(.prose-block) {

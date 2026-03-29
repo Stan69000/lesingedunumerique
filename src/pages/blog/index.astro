@@ -492,8 +492,9 @@ const currentPath = Astro.url.pathname;
 
   .nav-item,
   .footer-links a {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     color: var(--text-muted);
   }
 
@@ -590,9 +591,10 @@ const currentPath = Astro.url.pathname;
 
   .hero-desc {
     margin: 0 auto 1.5rem;
-    max-width: 620px;
+    max-width: 680px;
     color: var(--text-muted);
     font-size: 1.05rem;
+    line-height: 1.75;
   }
 
   .hero-meta {
@@ -605,13 +607,13 @@ const currentPath = Astro.url.pathname;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.03);
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.92rem;
+    font-weight: 500;
   }
 
   .search-panel {
     display: grid;
-    gap: 14px;
+    gap: 16px;
     text-align: left;
   }
 
@@ -664,19 +666,19 @@ const currentPath = Astro.url.pathname;
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 16px;
+    gap: 18px;
     flex-wrap: wrap;
   }
 
   .filter-group {
     display: grid;
-    gap: 10px;
+    gap: 12px;
   }
 
   .filter-label {
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
+    font-size: 0.92rem;
+    font-weight: 600;
   }
 
   .tag-cloud {
@@ -687,13 +689,13 @@ const currentPath = Astro.url.pathname;
 
   .cloud-tag,
   .tag-pill {
-    padding: 6px 12px;
+    padding: 8px 13px;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(255, 255, 255, 0.04);
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.76rem;
+    font-size: 0.88rem;
+    font-weight: 500;
   }
 
   .cloud-tag {
@@ -815,8 +817,8 @@ const currentPath = Astro.url.pathname;
   .post-content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1.4rem;
+    gap: 1.1rem;
+    padding: 1.6rem;
   }
 
   .rubrique-chip {
@@ -855,6 +857,7 @@ const currentPath = Astro.url.pathname;
   .post-content p {
     margin: 0;
     color: var(--text-muted);
+    line-height: 1.72;
   }
 
   .post-link {
