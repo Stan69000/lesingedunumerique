@@ -11,6 +11,7 @@ export async function getStaticPaths() {
 const { article } = Astro.params;
 const allEntries = await getCollection('blog');
 const post = allEntries.find((entry) => entry.id === article);
+const currentPath = Astro.url.pathname;
 
 if (!post) {
   return new Response('Not Found', { status: 404 });
@@ -44,6 +45,17 @@ const { Content } = await render(post);
         --accent-alt: #38bdf8;
         --border: #334155;
         --code-bg: #1e293b;
+      }
+
+      body.light-mode {
+        --bg-body: #f8fafc;
+        --bg-card: #ffffff;
+        --text-main: #1e293b;
+        --text-muted: #64748b;
+        --accent: #0f766e;
+        --accent-alt: #0369a1;
+        --border: #cbd5e1;
+        --code-bg: #e2e8f0;
       }
 
       * { box-sizing: border-box; }
@@ -116,16 +128,121 @@ const { Content } = await render(post);
       .container {
         position: relative;
         z-index: 1;
-        max-width: 860px;
+        max-width: 1100px;
         margin: 0 auto;
         padding: 40px 20px;
       }
 
-      .nav-back {
-        display: inline-flex; align-items: center; gap: 8px; margin-bottom: 30px; color: var(--text-muted);
-        font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;
+      .article-shell {
+        max-width: 860px;
+        margin: 0 auto;
       }
-      .nav-back:hover { color: var(--accent); }
+
+      .navbar {
+        margin-bottom: 30px;
+      }
+
+      body.light-mode .navbar {
+        background: rgba(248, 250, 252, 0.85);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 16px 0;
+      }
+
+      .navbar {
+        background: rgba(11, 17, 32, 0.85);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        padding: 16px 0;
+      }
+
+      .nav-container,
+      .footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .brand-logo,
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+      }
+
+      .navbar-logo,
+      .footer-logo {
+        height: 40px;
+        width: auto;
+        display: block;
+      }
+
+      .brand-text {
+        display: none;
+      }
+
+      .nav-links,
+      .footer-links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .nav-item,
+      .footer-links a {
+        color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85rem;
+      }
+
+      .nav-item[aria-current='page'] {
+        color: var(--text-main);
+      }
+
+      .nav-item:hover,
+      .footer-links a:hover {
+        color: var(--accent);
+      }
+
+      .theme-btn {
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        width: 38px;
+        height: 38px;
+        color: var(--text-main);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.1rem;
+      }
+
+      .theme-btn:hover {
+        border-color: var(--accent);
+        background: rgba(128, 128, 128, 0.1);
+      }
+
+      .icon-dark { display: block; }
+      .icon-light { display: none; }
+
+      body.light-mode .icon-dark { display: none; }
+      body.light-mode .icon-light { display: block; }
 
       header {
         text-align: center; margin-bottom: 50px; padding: 30px;
@@ -133,6 +250,10 @@ const { Content } = await render(post);
         border-radius: 24px;
         background: rgba(21, 30, 50, 0.72);
         backdrop-filter: blur(10px);
+      }
+
+      body.light-mode header {
+        background: rgba(255, 255, 255, 0.9);
       }
 
       .tags { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
@@ -152,6 +273,16 @@ const { Content } = await render(post);
         border: 1px solid rgba(255,255,255,0.06);
         border-radius: 24px;
         padding: 30px;
+      }
+
+      body.light-mode .article-content {
+        color: #334155;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      body.light-mode .article-content :global(h2),
+      body.light-mode .article-content :global(h3) {
+        color: #0f172a;
       }
       .article-content :global(h2) { color: #fff; margin-top: 40px; font-size: 1.8rem; border-left: 4px solid var(--accent); padding-left: 15px; }
       .article-content :global(h3) { color: #fff; margin-top: 30px; font-size: 1.4rem; }
@@ -180,22 +311,27 @@ const { Content } = await render(post);
 
       footer {
         margin-top: 60px; padding-top: 30px; border-top: 1px solid var(--border);
-        text-align: center; color: var(--text-muted); font-size: 0.9rem;
-      }
-
-      .footer-links {
-        display: flex;
-        justify-content: center;
-        gap: 14px;
-        flex-wrap: wrap;
-        margin-top: 12px;
-      }
-
-      .footer-links a:hover {
-        color: var(--accent);
+        color: var(--text-muted); font-size: 0.9rem;
       }
 
       @media (max-width: 640px) {
+        .nav-container,
+        .footer-container {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .nav-right {
+          width: 100%;
+          justify-content: space-between;
+          gap: 16px;
+          flex-wrap: wrap;
+        }
+
+        .brand-text {
+          display: inline;
+        }
+
         header,
         .article-content {
           padding: 22px;
@@ -213,9 +349,35 @@ const { Content } = await render(post);
       <div class="glow-bg glow-left"></div>
       <div class="glow-bg glow-right"></div>
       <div class="container">
-      <nav aria-label="Navigation de l'article">
-        <a href="/blog" class="nav-back">← Retour au blog</a>
+      <nav class="navbar" aria-label="Navigation principale">
+        <div class="nav-container">
+          <a href="/" class="brand-logo">
+            <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
+            <span class="brand-text">Le Singe Du Numérique</span>
+          </a>
+          <div class="nav-right">
+            <div class="nav-links">
+              <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+              <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
+              <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
+              <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
+              <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+            </div>
+            <button
+              id="theme-toggle"
+              class="theme-btn"
+              type="button"
+              aria-label="Activer le thème clair"
+              aria-pressed="false"
+            >
+              <span class="icon-light">☀️</span>
+              <span class="icon-dark">🌙</span>
+            </button>
+          </div>
+        </div>
       </nav>
+
+      <div class="article-shell">
 
       <main id="main-content">
       <article>
@@ -238,13 +400,54 @@ const { Content } = await render(post);
       </main>
 
       <footer>
-        <p>© 2026 Le Singe Du Numérique. Code éthique & Open Source.</p>
-        <div class="footer-links">
-          <a href="/accessibilite">Accessibilité : non conforme</a>
-          <a href="/mentions-legales">Mentions légales</a>
+        <div class="footer-container">
+          <div class="footer-brand">
+            <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
+            <span>Le Singe Du Numérique</span>
+          </div>
+          <div class="footer-links">
+            <a href="/accessibilite">Accessibilité : non conforme</a>
+            <a href="/projets">Projets</a>
+            <a href="/asso">L’association</a>
+            <a href="/evenements">Événements</a>
+            <a href="/adhesion">Rejoindre</a>
+            <a href="/blog">Blog</a>
+            <a href="/mentions-legales">Mentions légales</a>
+          </div>
         </div>
       </footer>
       </div>
+      </div>
     </div>
+    <script>
+      const themeBtn = document.getElementById('theme-toggle');
+      const body = document.body;
+
+      function syncThemeControl() {
+        const isLight = body.classList.contains('light-mode');
+        const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
+
+        if (themeBtn) {
+          themeBtn.innerHTML = isLight
+            ? '<span class="icon-light">☀️</span>'
+            : '<span class="icon-dark">🌙</span>';
+          themeBtn.setAttribute('aria-label', actionLabel);
+          themeBtn.setAttribute('aria-pressed', String(isLight));
+        }
+      }
+
+      if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light-mode');
+      }
+
+      syncThemeControl();
+
+      themeBtn?.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        const isLight = body.classList.contains('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        syncThemeControl();
+      });
+    </script>
   </body>
 </html>

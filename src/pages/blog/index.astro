@@ -38,7 +38,25 @@ const currentPath = Astro.url.pathname;
           <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
-        <a href="/" class="back-home" aria-current={currentPath === '/' ? 'page' : undefined}>← Retour à l'accueil</a>
+        <div class="nav-right">
+          <div class="nav-links">
+            <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+            <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
+            <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
+            <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
+            <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+          </div>
+          <button
+            id="theme-toggle"
+            class="theme-btn"
+            type="button"
+            aria-label="Activer le thème clair"
+            aria-pressed="false"
+          >
+            <span class="icon-light">☀️</span>
+            <span class="icon-dark">🌙</span>
+          </button>
+        </div>
       </div>
     </nav>
 
@@ -76,21 +94,21 @@ const currentPath = Astro.url.pathname;
                 class="search-input"
                 autocomplete="off"
               />
-              <button type="submit" class="search-button">Chercher</button>
+              <button type="submit" class="search-button">Rechercher</button>
             </div>
 
             <div class="filters-row">
               <div class="filter-group" role="group" aria-labelledby="tag-filter-label">
                 <span class="filter-label" id="tag-filter-label">Tags</span>
                 <div class="tag-cloud">
-                  <button type="button" class="cloud-tag is-active" data-tag="" aria-pressed="true">Tous</button>
+                  <button type="button" class="cloud-tag is-active" data-tag="" aria-pressed="true">Tous les tags</button>
                   {allTags.map((tag) => (
                     <button type="button" class="cloud-tag" data-tag={tag} aria-pressed="false">{tag}</button>
                   ))}
                 </div>
               </div>
 
-              <a href="/blog" class="reset-link">Réinitialiser</a>
+              <a href="/blog" class="reset-link">Réinitialiser les filtres</a>
             </div>
           </form>
         </div>
@@ -158,9 +176,20 @@ const currentPath = Astro.url.pathname;
           <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
           <span>Le Singe Du Numérique</span>
         </div>
-        <div class="footer-meta">
-          <a href="/accessibilite" class="footer-link">Accessibilité : non conforme</a>
-          <span class="footer-credit">Fait avec ❤️ et du code éthique © 2026</span>
+        <div class="footer-links">
+          <a href="/accessibilite">Accessibilité : non conforme</a>
+          <span class="footer-separator">•</span>
+          <a href="/projets">Projets</a>
+          <span class="footer-separator">•</span>
+          <a href="/asso">L’association</a>
+          <span class="footer-separator">•</span>
+          <a href="/evenements">Événements</a>
+          <span class="footer-separator">•</span>
+          <a href="/adhesion">Rejoindre</a>
+          <span class="footer-separator">•</span>
+          <a href="/blog">Blog</a>
+          <span class="footer-separator">•</span>
+          <a href="/mentions-legales">Mentions légales</a>
         </div>
       </div>
     </footer>
@@ -246,6 +275,35 @@ const currentPath = Astro.url.pathname;
       });
 
       applyFilters();
+
+      const themeBtn = document.getElementById('theme-toggle');
+      const body = document.body;
+
+      function syncThemeControl() {
+        const isLight = body.classList.contains('light-mode');
+        const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
+
+        if (themeBtn) {
+          themeBtn.innerHTML = isLight
+            ? '<span class="icon-light">☀️</span>'
+            : '<span class="icon-dark">🌙</span>';
+          themeBtn.setAttribute('aria-label', actionLabel);
+          themeBtn.setAttribute('aria-pressed', String(isLight));
+        }
+      }
+
+      if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light-mode');
+      }
+
+      syncThemeControl();
+
+      themeBtn?.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        const isLight = body.classList.contains('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        syncThemeControl();
+      });
     </script>
   </body>
 </html>
@@ -261,6 +319,18 @@ const currentPath = Astro.url.pathname;
     --brand-blue: #38bdf8;
     --border-color: rgba(255, 255, 255, 0.08);
     --glow-opacity: 0.15;
+  }
+
+  body.light-mode {
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --brand-green: #0f766e;
+    --brand-orange: #c2410c;
+    --brand-blue: #0369a1;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --glow-opacity: 0.08;
   }
 
   * {
@@ -340,11 +410,21 @@ const currentPath = Astro.url.pathname;
     border-bottom: 1px solid var(--border-color);
   }
 
+  body.light-mode .navbar {
+    background: rgba(248, 250, 252, 0.85);
+  }
+
   .nav-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
   }
 
   .brand-logo {
@@ -366,19 +446,54 @@ const currentPath = Astro.url.pathname;
     display: none;
   }
 
-  .back-home {
+  .nav-links,
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .nav-item,
+  .footer-links a {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
     color: var(--text-muted);
   }
 
-  .back-home:hover {
+  .nav-item:hover,
+  .footer-links a:hover {
     color: var(--brand-green);
   }
 
-  .back-home[aria-current='page'] {
+  .nav-item[aria-current='page'] {
     color: var(--text-main);
   }
+
+  .theme-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    color: var(--text-main);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .theme-btn:hover {
+    border-color: var(--brand-green);
+    background: rgba(128, 128, 128, 0.1);
+  }
+
+  .icon-dark { display: block; }
+  .icon-light { display: none; }
+
+  body.light-mode .icon-dark { display: none; }
+  body.light-mode .icon-light { display: block; }
 
   .hero-section {
     position: relative;
@@ -703,6 +818,10 @@ const currentPath = Astro.url.pathname;
     border-top: 1px solid var(--border-color);
   }
 
+  body.light-mode .footer {
+    background: rgba(255, 255, 255, 0.88);
+  }
+
   .footer-container {
     display: flex;
     justify-content: space-between;
@@ -718,26 +837,8 @@ const currentPath = Astro.url.pathname;
     font-weight: 700;
   }
 
-  .footer-meta {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    flex-wrap: wrap;
-  }
-
-  .footer-link {
+  .footer-separator {
     color: var(--text-muted);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-  }
-
-  .footer-link:hover {
-    color: var(--brand-green);
-  }
-
-  .footer-credit {
-    color: var(--text-muted);
-    font-size: 0.95rem;
   }
 
   @media (min-width: 768px) {
@@ -758,6 +859,13 @@ const currentPath = Astro.url.pathname;
     .section-header {
       flex-direction: column;
       align-items: flex-start;
+    }
+
+    .nav-right {
+      width: 100%;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
     .search-bar {
