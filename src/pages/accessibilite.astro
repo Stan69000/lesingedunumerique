@@ -1,7 +1,7 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 
-const reviewDate = '28 mars 2026';
+const reviewDate = '29 mars 2026';
 ---
 
 <SiteLayout
@@ -38,13 +38,15 @@ const reviewDate = '28 mars 2026';
   <section class="prose-block">
     <h2>Résultat des tests</h2>
     <p>
-      Aucune mesure officielle de conformité n’a encore été produite à ce jour. Les travaux en
-      cours reposent sur une revue interne de structure, de navigation clavier, de libellés, de
-      focus et de sémantique.
+      Aucune mesure officielle de conformité n’a encore été produite à ce jour. Les travaux menés
+      jusqu’ici reposent sur une revue interne de structure, de navigation clavier, de libellés,
+      de focus, de sémantique et de comportements dynamiques.
     </p>
     <p>
-      Un audit complet devra être mené sur un échantillon représentatif de pages avant toute
-      déclaration de conformité partielle ou totale.
+      Les tests internes clavier et VoiceOver sont considérés comme concluants à ce stade sur les
+      parcours principaux du site. Ils devront toutefois être confirmés par des tests utilisateurs
+      et par un audit complet sur un échantillon représentatif de pages avant toute déclaration de
+      conformité partielle ou totale.
     </p>
   </section>
 
@@ -52,11 +54,9 @@ const reviewDate = '28 mars 2026';
     <h2>Contenus non accessibles</h2>
     <h3>Non-conformités connues</h3>
     <ul>
-      <li>Les contrastes ne sont pas encore validés de manière systématique sur l’ensemble du thème.</li>
-      <li>Le menu mobile doit encore être renforcé pour la gestion du focus et de l’isolement du reste de la page.</li>
-      <li>Les composants de changement de thème ne restituent pas encore suffisamment leur état aux technologies d’assistance.</li>
-      <li>Les filtres du blog doivent encore être mieux regroupés sémantiquement.</li>
-      <li>La conformité n’a pas encore été vérifiée avec un lecteur d’écran sur un parcours complet.</li>
+      <li>La conformité n’est pas encore établie par un audit RGAA formel en cours de validité.</li>
+      <li>Les parcours principaux ont été revus en interne, mais ils n’ont pas encore été confirmés par des tests utilisateurs.</li>
+      <li>Les pages légales et administratives doivent encore être complétées avec les informations définitives de l’association et de l’hébergement.</li>
     </ul>
     <h3>Dérogations pour charge disproportionnée</h3>
     <p>Aucune dérogation n’est invoquée à ce jour.</p>
@@ -77,6 +77,7 @@ const reviewDate = '28 mars 2026';
     <h3>Environnement de test</h3>
     <ul>
       <li>Navigation clavier seule</li>
+      <li>VoiceOver sur macOS</li>
       <li>Vérifications manuelles de structure, de libellés et d’ordre de navigation</li>
       <li>Contrôles techniques via les diagnostics du navigateur et du build Astro</li>
     </ul>
@@ -114,9 +115,8 @@ const reviewDate = '28 mars 2026';
   <section class="prose-block">
     <h2>Plan d’actions 2026</h2>
     <ul>
-      <li>Finaliser les composants interactifs critiques : navigation mobile, thème, filtres.</li>
-      <li>Mesurer les contrastes et corriger les associations de couleurs insuffisantes.</li>
-      <li>Valider les parcours avec lecteur d’écran sur desktop et mobile.</li>
+      <li>Confirmer les résultats internes par des tests utilisateurs sur les parcours clés.</li>
+      <li>Maintenir le niveau d’accessibilité atteint lors de l’ajout de nouvelles pages et de nouveaux composants.</li>
       <li>Structurer les pages légales et éditoriales de façon complète et stable.</li>
       <li>Lancer un audit RGAA de référence et publier une mise à jour de cette déclaration à l’issue.</li>
     </ul>

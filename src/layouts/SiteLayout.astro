@@ -45,12 +45,24 @@ const currentPath = Astro.url.pathname;
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
 
-        <div class="nav-links">
-          <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
-          <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L'Asso</a>
-          <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
-          <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Adhérer</a>
-          <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+        <div class="nav-right">
+          <div class="nav-links">
+            <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+            <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
+            <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
+            <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
+            <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+          </div>
+          <button
+            id="theme-toggle"
+            class="theme-btn"
+            type="button"
+            aria-label="Activer le thème clair"
+            aria-pressed="false"
+          >
+            <span class="icon-light">☀️</span>
+            <span class="icon-dark">🌙</span>
+          </button>
         </div>
       </div>
     </nav>
@@ -87,14 +99,49 @@ const currentPath = Astro.url.pathname;
           <span class="footer-separator">•</span>
           <a href="/projets">Projets</a>
           <span class="footer-separator">•</span>
+          <a href="/asso">L’association</a>
+          <span class="footer-separator">•</span>
           <a href="/evenements">Événements</a>
           <span class="footer-separator">•</span>
-          <a href="/adhesion">Adhérer</a>
+          <a href="/adhesion">Rejoindre</a>
+          <span class="footer-separator">•</span>
+          <a href="/blog">Blog</a>
           <span class="footer-separator">•</span>
           <a href="/mentions-legales">Mentions légales</a>
         </div>
       </div>
     </footer>
+
+    <script>
+      const themeBtn = document.getElementById('theme-toggle');
+      const body = document.body;
+
+      function syncThemeControl() {
+        const isLight = body.classList.contains('light-mode');
+        const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
+
+        if (themeBtn) {
+          themeBtn.innerHTML = isLight
+            ? '<span class="icon-light">☀️</span>'
+            : '<span class="icon-dark">🌙</span>';
+          themeBtn.setAttribute('aria-label', actionLabel);
+          themeBtn.setAttribute('aria-pressed', String(isLight));
+        }
+      }
+
+      if (localStorage.getItem('theme') === 'light') {
+        body.classList.add('light-mode');
+      }
+
+      syncThemeControl();
+
+      themeBtn?.addEventListener('click', () => {
+        body.classList.toggle('light-mode');
+        const isLight = body.classList.contains('light-mode');
+        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        syncThemeControl();
+      });
+    </script>
   </body>
 </html>
 
@@ -109,6 +156,18 @@ const currentPath = Astro.url.pathname;
     --brand-blue: #38bdf8;
     --border-color: rgba(255, 255, 255, 0.08);
     --glow-opacity: 0.15;
+  }
+
+  body.light-mode {
+    --bg-body: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --brand-green: #0f766e;
+    --brand-orange: #c2410c;
+    --brand-blue: #0369a1;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --glow-opacity: 0.08;
   }
 
   * {
@@ -161,6 +220,10 @@ const currentPath = Astro.url.pathname;
     border-bottom: 1px solid var(--border-color);
   }
 
+  body.light-mode .navbar {
+    background: rgba(248, 250, 252, 0.85);
+  }
+
   .nav-container,
   .footer-container {
     display: flex;
@@ -196,6 +259,12 @@ const currentPath = Astro.url.pathname;
     flex-wrap: wrap;
   }
 
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
   .nav-item,
   .footer-links a {
     color: var(--text-muted);
@@ -211,6 +280,31 @@ const currentPath = Astro.url.pathname;
   .footer-links a:hover {
     color: var(--brand-green);
   }
+
+  .theme-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    color: var(--text-main);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+  }
+
+  .theme-btn:hover {
+    border-color: var(--brand-green);
+    background: rgba(128, 128, 128, 0.1);
+  }
+
+  .icon-dark { display: block; }
+  .icon-light { display: none; }
+
+  body.light-mode .icon-dark { display: none; }
+  body.light-mode .icon-light { display: block; }
 
   a:focus-visible,
   button:focus-visible,
@@ -343,6 +437,10 @@ const currentPath = Astro.url.pathname;
     padding: 28px;
   }
 
+  body.light-mode :global(.prose-block) {
+    background: rgba(255, 255, 255, 0.88);
+  }
+
   :global(.cta-row) {
     display: flex;
     gap: 14px;
@@ -378,6 +476,13 @@ const currentPath = Astro.url.pathname;
     .footer-container {
       flex-direction: column;
       align-items: flex-start;
+    }
+
+    .nav-right {
+      width: 100%;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
   }
 </style>
