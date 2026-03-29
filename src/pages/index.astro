@@ -111,7 +111,9 @@ const advancedTag =
         <div class="glow-bg glow-orange"></div>
 
         <div class="container hero-content">
-          <div class="hero-logo-wrapper">
+          <div class="hero-logo-wrapper" aria-hidden="true">
+            <span class="hero-logo-aura hero-logo-aura-primary"></span>
+            <span class="hero-logo-aura hero-logo-aura-secondary"></span>
             <img src="/logo.svg" alt="Le Singe Du Numérique" class="hero-logo" />
           </div>
 
@@ -488,8 +490,87 @@ const advancedTag =
   .glow-orange { width: 500px; height: 500px; background: var(--brand-orange); bottom: 0; right: -100px; animation-delay: 2s; }
   @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, 30px); } }
 
-  .hero-logo-wrapper { margin-bottom: 2rem; }
-  .hero-logo { max-width: 260px; width: 100%; height: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2)); }
+  .hero-logo-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    isolation: isolate;
+  }
+
+  .hero-logo-aura {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(28px);
+    opacity: 0.28;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .hero-logo-aura-primary {
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(45, 212, 191, 0.85) 0%, rgba(45, 212, 191, 0) 72%);
+    animation: logoAuraPulse 5.5s ease-in-out infinite;
+  }
+
+  .hero-logo-aura-secondary {
+    width: 280px;
+    height: 280px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(56, 189, 248, 0) 72%);
+    animation: logoAuraDrift 7s ease-in-out infinite;
+  }
+
+  .hero-logo {
+    max-width: 260px;
+    width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+    transform-origin: center;
+    animation:
+      logoReveal 900ms cubic-bezier(0.22, 1, 0.36, 1) both,
+      logoFloat 7s ease-in-out 950ms infinite;
+  }
+
+  @keyframes logoReveal {
+    0% {
+      opacity: 0;
+      transform: translateY(18px) scale(0.94);
+      filter: drop-shadow(0 0 0 rgba(0,0,0,0));
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
+    }
+  }
+
+  @keyframes logoFloat {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.018); }
+  }
+
+  @keyframes logoAuraPulse {
+    0%, 100% { transform: scale(0.94); opacity: 0.2; }
+    50% { transform: scale(1.08); opacity: 0.34; }
+  }
+
+  @keyframes logoAuraDrift {
+    0%, 100% { transform: translate3d(0, 0, 0) scale(0.98); opacity: 0.18; }
+    50% { transform: translate3d(10px, -10px, 0) scale(1.04); opacity: 0.28; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .glow-bg,
+    .hero-logo,
+    .hero-logo-aura {
+      animation: none !important;
+      transform: none !important;
+    }
+  }
 
   .hero-title { font-size: 3rem; font-weight: 800; line-height: 1.1; margin: 0 0 1rem 0; letter-spacing: -0.03em; color: var(--text-main); }
   .gradient-text { background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
