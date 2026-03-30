@@ -4,13 +4,12 @@ backend:
   name: github
   repo: Stan69000/lesingedunumerique
   branch: main
-  # À compléter en production si l'auth GitHub passe par un service OAuth séparé.
-  # site_domain: lesingedunumerique.fr
-  # base_url: https://oauth.lesingedunumerique.fr
-  # auth_endpoint: oauth
+  site_domain: sc3bost7423.universe.wf
+  base_url: https://lesingedunumerique-oauth.vercel.app
+  auth_endpoint: oauth
 
-site_url: https://lesingedunumerique.fr
-display_url: https://lesingedunumerique.fr
+site_url: http://sc3bost7423.universe.wf
+display_url: http://sc3bost7423.universe.wf
 logo_url: /logo.svg
 
 media_folder: public/blog
