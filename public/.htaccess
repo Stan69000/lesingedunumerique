@@ -1,5 +1,9 @@
 ErrorDocument 404 /404.html
 
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
 # Configuration du formulaire de contact pour O2Switch/PHP.
 # Décommente puis adapte ces deux lignes avant mise en production.
 # SetEnv CONTACT_RECIPIENT_EMAIL "contact@votre-domaine.fr"
