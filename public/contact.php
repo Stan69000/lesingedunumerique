@@ -4,6 +4,11 @@ declare(strict_types=1);
 $recipient = getenv('CONTACT_RECIPIENT_EMAIL') ?: '';
 $fromEmail = getenv('CONTACT_FROM_EMAIL') ?: 'no-reply@lesingedunumerique.fr';
 
+function sanitize_mail_header_value(string $value): string
+{
+    return trim(str_replace(["\r", "\n"], ' ', $value));
+}
+
 function redirect_with_status(string $status): never
 {
     header('Location: /contact/?status=' . rawurlencode($status), true, 303);
@@ -49,8 +54,8 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     redirect_with_status('invalid');
 }
 
-$safeSubject = str_replace(["\r", "\n"], ' ', $subject);
-$safeName = trim($firstName . ' ' . $lastName);
+$safeSubject = sanitize_mail_header_value($subject);
+$safeName = sanitize_mail_header_value(trim($firstName . ' ' . $lastName));
 
 $bodyLines = [
     "Nouveau message depuis le site Le Singe Du Numérique",

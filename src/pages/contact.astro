@@ -20,8 +20,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
       <div id="contact-status" class="contact-status" hidden aria-live="polite"></div>
 
-      <form class="contact-form" action="/contact.php" method="post">
-        <input type="hidden" name="form_started_at" value={Date.now().toString()} />
+      <form class="contact-form" action="/contact.php" method="post" data-contact-form>
+        <input type="hidden" name="form_started_at" value="" />
 
         <div class="field-pair">
           <label class="field">
@@ -98,6 +98,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
             src="https://www.openstreetmap.org/export/embed.html?bbox=4.6468%2C45.8344%2C4.6568%2C45.8386&layer=mapnik&marker=45.8364%2C4.6518"
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade"
+            sandbox="allow-scripts allow-same-origin allow-popups"
           ></iframe>
         </div>
         <div class="cta-row">
@@ -126,6 +127,12 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     const params = new URLSearchParams(window.location.search);
     const statusNode = document.getElementById('contact-status');
     const status = params.get('status');
+    const contactForm = document.querySelector('[data-contact-form]');
+    const startedAtField = contactForm?.querySelector('input[name="form_started_at"]');
+
+    if (startedAtField) {
+      startedAtField.value = Date.now().toString();
+    }
 
     if (statusNode && status) {
       const messages = {
