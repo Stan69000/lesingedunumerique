@@ -7,7 +7,6 @@
     <meta name="robots" content="noindex, nofollow" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
-    <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url" />
     <style>
       :root {
         color-scheme: dark;
@@ -67,6 +66,81 @@
     <script src="https://unpkg.com/decap-cms@^3.3.3/dist/decap-cms.js"></script>
     <script>
       const loading = document.getElementById('admin-loading');
+      const isLocal =
+        window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+
+      window.CMS.init({
+        local_backend: isLocal,
+        backend: {
+          name: 'github',
+          repo: 'Stan69000/lesingedunumerique',
+          branch: 'main',
+          site_domain: 'sc3bost7423.universe.wf',
+          base_url: 'https://lesingedunumerique-oauth.vercel.app',
+          auth_endpoint: 'oauth',
+        },
+        site_url: 'http://sc3bost7423.universe.wf',
+        display_url: 'http://sc3bost7423.universe.wf',
+        logo_url: '/logo.svg',
+        media_folder: 'public/blog',
+        public_folder: '/blog',
+        slug: {
+          encoding: 'ascii',
+          clean_accents: true,
+        },
+        collections: [
+          {
+            name: 'blog',
+            label: 'Blog',
+            label_singular: 'Article',
+            folder: 'src/content/blog',
+            create: true,
+            delete: true,
+            extension: 'md',
+            format: 'frontmatter',
+            slug: '{{slug}}',
+            summary: '{{title}} — {{rubrique}}',
+            editor: {
+              preview: false,
+            },
+            fields: [
+              { label: 'Titre', name: 'title', widget: 'string' },
+              { label: 'Description', name: 'description', widget: 'text' },
+              {
+                label: 'Date de publication',
+                name: 'pubDate',
+                widget: 'datetime',
+                format: 'YYYY-MM-DD',
+                date_format: 'YYYY-MM-DD',
+                time_format: false,
+              },
+              {
+                label: 'Rubrique',
+                name: 'rubrique',
+                widget: 'select',
+                options: ['Articles', 'Veille', 'Technos'],
+              },
+              {
+                label: 'Tags',
+                name: 'tags',
+                widget: 'list',
+                allow_add: true,
+                collapsed: false,
+                hint: 'Exemples : Débutant, Cybersécurité, Seniors, Libre',
+              },
+              {
+                label: 'Auteur',
+                name: 'author',
+                widget: 'string',
+                required: false,
+                hint: 'Nom affiché sur l’article. Exemple : Stan Bouchet',
+              },
+              { label: 'Contenu', name: 'body', widget: 'markdown' },
+            ],
+          },
+        ],
+      });
+
       const hideLoading = () => {
         const cmsRoot = document.getElementById('nc-root');
         if (cmsRoot && loading) {
