@@ -1,0 +1,60 @@
+---
+const now = new Date().toLocaleString('fr-FR');
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Decap OAuth Service</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: #0b1120;
+        color: #e2e8f0;
+        font-family: ui-sans-serif, system-ui, sans-serif;
+      }
+
+      main {
+        width: min(720px, calc(100vw - 48px));
+        padding: 32px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        background: rgba(21, 30, 50, 0.9);
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: 1.8rem;
+      }
+
+      p {
+        margin: 0 0 12px;
+        line-height: 1.6;
+      }
+
+      code {
+        padding: 2px 6px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Service OAuth Decap</h1>
+      <p>Ce projet Vercel sert uniquement les routes <code>/oauth</code> et <code>/oauth/callback</code> pour l’administration du blog.</p>
+      <p>Il ne doit pas être indexé ni utilisé comme site public principal.</p>
+      <p>Dernier rendu local : {now}</p>
+    </main>
+  </body>
+</html>

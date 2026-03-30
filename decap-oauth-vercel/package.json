@@ -1,0 +1,16 @@
+{
+  "name": "decap-oauth-vercel",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/vercel": "^8.2.7",
+    "astro": "^5.14.2",
+    "astro-decap-cms-oauth": "^0.5.1"
+  }
+}

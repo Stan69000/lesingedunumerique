@@ -4,9 +4,10 @@ backend:
   name: github
   repo: Stan69000/lesingedunumerique
   branch: main
-  # À compléter en production si l'auth GitHub passe par un proxy OAuth.
-  # base_url: https://votre-service-auth.exemple
-  # auth_endpoint: auth
+  # À compléter en production si l'auth GitHub passe par un service OAuth séparé.
+  # site_domain: lesingedunumerique.fr
+  # base_url: https://oauth.lesingedunumerique.fr
+  # auth_endpoint: oauth
 
 site_url: https://lesingedunumerique.fr
 display_url: https://lesingedunumerique.fr
