@@ -1,0 +1,53 @@
+Le Singe Du Numérique
+Copyright (c) 2026 Stan et Mikaël Bouchet
+
+Ce dépôt contient à la fois :
+
+1. Des contenus éditoriaux et médias
+2. Du code source et des fichiers techniques
+3. Des éléments d'identité visuelle et de marque
+
+Contenus éditoriaux et médias
+
+Sauf mention contraire, les contenus éditoriaux et médias produits pour le site
+de l'association sont mis à disposition selon la licence :
+
+Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les
+Mêmes Conditions 4.0 International (CC BY-NC-SA 4.0)
+
+Texte de référence :
+https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+Cela couvre notamment, sauf mention contraire :
+
+- les articles du blog dans `src/content/blog/`
+- les textes éditoriaux du site
+- les documents dans `public/docs/`
+- les photos et visuels éditoriaux créés pour le site
+
+Code source et fichiers techniques
+
+Le code source, la configuration du projet, les composants Astro, les scripts,
+les styles, les gabarits, ainsi que les autres fichiers techniques du dépôt ne
+sont pas placés sous licence Creative Commons. Ils restent protégés par le droit
+d'auteur et ne peuvent pas être réutilisés, reproduits ou redistribués sans
+autorisation écrite préalable.
+
+Cela couvre notamment :
+
+- `src/` hors contenus explicitement éditoriaux
+- `public/admin/`
+- `public/contact.php`
+- `astro.config.mjs`
+- `package.json`
+- `package-lock.json`
+
+Identité visuelle et marque
+
+Le nom "Le Singe Du Numérique", le logo, la charte visuelle et les éléments
+d'identité associés sont réservés. Aucun droit sur la marque, le nom de domaine,
+ou l'identité visuelle n'est accordé par la présence de ce dépôt ni par la
+licence CC BY-NC-SA 4.0 appliquée aux contenus.
+
+En cas de doute sur la réutilisation d'un élément du dépôt, considérer que les
+droits sont réservés et demander une autorisation préalable.
