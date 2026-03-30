@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-$recipient = getenv('CONTACT_RECIPIENT_EMAIL') ?: '';
-$fromEmail = getenv('CONTACT_FROM_EMAIL') ?: 'no-reply@lesingedunumerique.fr';
+$recipient = getenv('CONTACT_RECIPIENT_EMAIL') ?: 'contact@lesingedunumerique.fr';
+$fromEmail = getenv('CONTACT_FROM_EMAIL') ?: 'contact@lesingedunumerique.fr';
 
 function sanitize_mail_header_value(string $value): string
 {
@@ -17,10 +17,6 @@ function redirect_with_status(string $status): never
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect_with_status('error');
-}
-
-if ($recipient === '') {
-    redirect_with_status('config');
 }
 
 $website = trim((string) ($_POST['website'] ?? ''));
