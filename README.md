@@ -150,5 +150,5 @@ Le dépôt utilise une séparation claire :
 
 Voir :
 
-- [LICENSE](/Users/stanbouchet/agreeable-aperture/LICENSE)
-- [LICENSE-CONTENT.md](/Users/stanbouchet/agreeable-aperture/LICENSE-CONTENT.md)
+- [LICENSE](./LICENSE)
+- [LICENSE-CONTENT.md](./LICENSE-CONTENT.md)
