@@ -59,6 +59,9 @@ collections:
       - label: Tags
         name: tags
         widget: list
+        required: true
+        default:
+          - Test
         allow_add: true
         collapsed: false
         hint: "Exemples : Débutant, Cybersécurité, Seniors, Libre"
@@ -66,7 +69,8 @@ collections:
       - label: Auteur
         name: author
         widget: string
-        required: false
+        required: true
+        default: "Stan Bouchet"
         hint: "Nom affiché sur l’article. Exemple : Stan Bouchet"
 
       - label: Contenu
