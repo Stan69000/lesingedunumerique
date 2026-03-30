@@ -131,8 +131,38 @@ En local :
 2. lancer le backend local avec `npx decap-server`
 3. ouvrir `/admin`
 
-La mise en ligne de l'administration nécessite encore la configuration de
-l'authentification et du workflow de publication.
+En production :
+
+- site public : `https://lesingedunumerique.fr`
+- administration : `https://lesingedunumerique-oauth.vercel.app/admin/`
+
+L'administration publique ne doit pas être servie depuis O2Switch.
+
+## Déploiement O2Switch
+
+Le site public est déployé automatiquement depuis `main` via GitHub Actions.
+
+Le workflow :
+
+1. installe les dépendances
+2. build le site Astro
+3. envoie le contenu de `dist/` vers O2Switch
+
+Secrets GitHub à renseigner dans le dépôt :
+
+- `O2SWITCH_FTP_SERVER`
+- `O2SWITCH_FTP_USERNAME`
+- `O2SWITCH_FTP_PASSWORD`
+- `O2SWITCH_REMOTE_DIR`
+
+Valeur attendue pour `O2SWITCH_REMOTE_DIR` :
+
+- le chemin distant exact de la racine web du site, par exemple `/lesingedunumerique.fr/`
+
+Note :
+
+- le workflow n'envoie pas `admin/` sur O2Switch
+- l'administration reste servie uniquement sur Vercel
 
 ## Accessibilité
 
