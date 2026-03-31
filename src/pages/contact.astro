@@ -1,5 +1,7 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 ---
 
 <SiteLayout
@@ -22,40 +24,50 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
       <form class="contact-form" action="/contact.php" method="post" data-contact-form>
         <input type="hidden" name="form_started_at" value="" />
+        <input type="hidden" name="csrf_token" value="" />
 
         <div class="field-pair">
           <label class="field">
             <span>Prénom <strong>*</strong></span>
-            <input type="text" name="first_name" autocomplete="given-name" required />
+            <input type="text" name="first_name" autocomplete="given-name" maxlength="80" required />
           </label>
 
           <label class="field">
             <span>Nom <strong>*</strong></span>
-            <input type="text" name="last_name" autocomplete="family-name" required />
+            <input type="text" name="last_name" autocomplete="family-name" maxlength="80" required />
           </label>
         </div>
 
         <div class="field-pair">
           <label class="field">
             <span>Mail <strong>*</strong></span>
-            <input type="email" name="email" autocomplete="email" required />
+            <input type="email" name="email" autocomplete="email" maxlength="254" required />
           </label>
 
           <label class="field">
             <span>Téléphone</span>
-            <input type="tel" name="phone" autocomplete="tel" />
+            <input type="tel" name="phone" autocomplete="tel" maxlength="40" />
           </label>
         </div>
 
         <label class="field">
           <span>Objet <strong>*</strong></span>
-          <input type="text" name="subject" required />
+          <input type="text" name="subject" maxlength="150" required />
         </label>
 
         <label class="field">
           <span>Message <strong>*</strong></span>
-          <textarea name="message" rows="8" required></textarea>
+          <textarea name="message" rows="8" maxlength="5000" required></textarea>
         </label>
+
+        {turnstileSiteKey && (
+          <div
+            class="cf-turnstile"
+            data-sitekey={turnstileSiteKey}
+            data-theme="auto"
+            data-action="contact_form"
+          ></div>
+        )}
 
         <div class="honeypot" hidden>
           <label for="contact-website">Ne pas remplir ce champ</label>
@@ -123,15 +135,43 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     </div>
   </div>
 
+  {turnstileSiteKey && (
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  )}
+
   <script is:inline>
     const params = new URLSearchParams(window.location.search);
     const statusNode = document.getElementById('contact-status');
     const status = params.get('status');
     const contactForm = document.querySelector('[data-contact-form]');
     const startedAtField = contactForm?.querySelector('input[name="form_started_at"]');
+    const csrfField = contactForm?.querySelector('input[name="csrf_token"]');
+
+    function getCookie(name) {
+      return document.cookie
+        .split(';')
+        .map((entry) => entry.trim())
+        .find((entry) => entry.startsWith(`${name}=`))
+        ?.split('=')[1];
+    }
+
+    function generateToken() {
+      const bytes = new Uint8Array(32);
+      window.crypto.getRandomValues(bytes);
+      return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+    }
 
     if (startedAtField) {
       startedAtField.value = Date.now().toString();
+    }
+
+    if (csrfField) {
+      let token = getCookie('contact_csrf');
+      if (!token || !/^[a-f0-9]{64}$/.test(token)) {
+        token = generateToken();
+        document.cookie = `contact_csrf=${token}; Path=/; SameSite=Strict${location.protocol === 'https:' ? '; Secure' : ''}`;
+      }
+      csrfField.value = token;
     }
 
     if (statusNode && status) {
@@ -146,6 +186,10 @@ import SiteLayout from '../layouts/SiteLayout.astro';
         },
         invalid: {
           text: 'Certains champs sont invalides. Merci de vérifier votre saisie.',
+          type: 'is-error',
+        },
+        captcha: {
+          text: 'La vérification anti-robot a échoué. Merci de réessayer.',
           type: 'is-error',
         },
         error: {

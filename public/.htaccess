@@ -6,11 +6,12 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 <IfModule mod_headers.c>
   Header always set X-Frame-Options "SAMEORIGIN"
-  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self'; frame-src 'self' https://www.openstreetmap.org; upgrade-insecure-requests"
+  Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; object-src 'none'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' https://unpkg.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://challenges.cloudflare.com; frame-src 'self' https://www.openstreetmap.org https://challenges.cloudflare.com; upgrade-insecure-requests"
 </IfModule>
 
 # Configuration du formulaire de contact pour O2Switch/PHP.
-# Décommente puis adapte ces deux lignes avant mise en production.
+# Décommente puis adapte ces lignes avant mise en production.
+# SetEnv TURNSTILE_SECRET_KEY "votre-secret-turnstile"
 # SetEnv CONTACT_RECIPIENT_EMAIL "contact@votre-domaine.fr"
 # SetEnv CONTACT_FROM_EMAIL "no-reply@votre-domaine.fr"
 
