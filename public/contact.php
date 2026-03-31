@@ -1,9 +1,29 @@
 <?php
 declare(strict_types=1);
 
-$recipient = getenv('CONTACT_RECIPIENT_EMAIL') ?: 'contact@lesingedunumerique.fr';
-$fromEmail = getenv('CONTACT_FROM_EMAIL') ?: 'contact@lesingedunumerique.fr';
-$turnstileSecret = getenv('TURNSTILE_SECRET_KEY') ?: '';
+function env_value(string $key, string $default = ''): string
+{
+    $value = getenv($key);
+    if (is_string($value) && $value !== '') {
+        return $value;
+    }
+
+    $serverValue = $_SERVER[$key] ?? '';
+    if (is_string($serverValue) && $serverValue !== '') {
+        return $serverValue;
+    }
+
+    $envValue = $_ENV[$key] ?? '';
+    if (is_string($envValue) && $envValue !== '') {
+        return $envValue;
+    }
+
+    return $default;
+}
+
+$recipient = env_value('CONTACT_RECIPIENT_EMAIL', 'contact@lesingedunumerique.fr');
+$fromEmail = env_value('CONTACT_FROM_EMAIL', 'contact@lesingedunumerique.fr');
+$turnstileSecret = env_value('TURNSTILE_SECRET_KEY');
 
 const MAX_FIRST_NAME_LENGTH = 80;
 const MAX_LAST_NAME_LENGTH = 80;
