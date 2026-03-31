@@ -88,6 +88,7 @@ const articleSchema = {
         --accent-alt: #38bdf8;
         --border: #334155;
         --code-bg: #1e293b;
+        --nav-height: 70px;
       }
 
       body.light-mode {
@@ -339,6 +340,80 @@ const articleSchema = {
       body.light-mode .icon-dark { display: none; }
       body.light-mode .icon-light { display: block; }
 
+      .burger-btn {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 21;
+        flex-direction: column;
+        gap: 5px;
+        padding: 5px;
+      }
+
+      .burger-btn span {
+        display: block;
+        width: 25px;
+        height: 2px;
+        background: var(--text-main);
+        transition: 0.3s;
+      }
+
+      .mobile-menu {
+        position: fixed;
+        top: var(--nav-height);
+        left: 0;
+        width: 100%;
+        background: var(--bg-card);
+        border-bottom: 1px solid var(--border);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        transform: translateY(-150%);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 19;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+      }
+
+      .mobile-menu[hidden] {
+        display: none;
+      }
+
+      .mobile-menu.active {
+        transform: translateY(0);
+      }
+
+      .mobile-item {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--text-main);
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .mobile-item[aria-current='page'] {
+        color: var(--accent);
+      }
+
+      .mobile-theme-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        color: var(--text-muted);
+      }
+
+      .theme-btn-small {
+        background: var(--bg-body);
+        border: 1px solid var(--border);
+        color: var(--text-main);
+        padding: 8px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+
       header {
         text-align: center; margin-bottom: 50px; padding: 30px;
         border: 1px solid rgba(255,255,255,0.08);
@@ -496,17 +571,17 @@ const articleSchema = {
       }
 
       @media (max-width: 640px) {
-        .nav-container,
         .footer-container {
           flex-direction: column;
           align-items: flex-start;
         }
 
         .nav-right {
-          width: 100%;
-          justify-content: space-between;
-          gap: 16px;
-          flex-wrap: wrap;
+          display: none;
+        }
+
+        .burger-btn {
+          display: flex;
         }
 
         header,
@@ -576,6 +651,45 @@ const articleSchema = {
                   >
                     <span class="icon-light">☀️</span>
                     <span class="icon-dark">🌙</span>
+                  </button>
+                </div>
+
+                <button
+                  class="burger-btn"
+                  id="burger-btn"
+                  aria-label="Ouvrir le menu principal"
+                  aria-controls="mobile-menu"
+                  aria-expanded="false"
+                >
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </button>
+              </div>
+
+              <div
+                class="mobile-menu"
+                id="mobile-menu"
+                aria-label="Navigation mobile"
+                aria-hidden="true"
+                hidden
+              >
+                <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+                <a href="/asso" class="mobile-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
+                <a href="/evenements" class="mobile-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
+                <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
+                <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
+                <a href="/blog" class="mobile-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+                <div class="mobile-theme-toggle">
+                  <span>Changer le thème</span>
+                  <button
+                    id="mobile-theme-btn"
+                    class="theme-btn-small"
+                    type="button"
+                    aria-label="Activer le thème clair"
+                    aria-pressed="false"
+                  >
+                    🌙
                   </button>
                 </div>
               </div>
@@ -662,11 +776,14 @@ const articleSchema = {
     }
     <script>
       const themeBtn = document.getElementById('theme-toggle');
+      const mobileThemeBtn = document.getElementById('mobile-theme-btn');
       const body = document.body;
       const backToTop = document.getElementById('back-to-top');
+      let lastFocusedElement = null;
 
       function syncThemeControl() {
         const isLight = body.classList.contains('light-mode');
+        const icon = isLight ? '☀️' : '🌙';
         const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
 
         if (themeBtn) {
@@ -676,6 +793,12 @@ const articleSchema = {
           themeBtn.setAttribute('aria-label', actionLabel);
           themeBtn.setAttribute('aria-pressed', String(isLight));
         }
+
+        if (mobileThemeBtn) {
+          mobileThemeBtn.textContent = icon;
+          mobileThemeBtn.setAttribute('aria-label', actionLabel);
+          mobileThemeBtn.setAttribute('aria-pressed', String(isLight));
+        }
       }
 
       if (localStorage.getItem('theme') === 'light') {
@@ -684,12 +807,103 @@ const articleSchema = {
 
       syncThemeControl();
 
-      themeBtn?.addEventListener('click', () => {
+      function toggleTheme() {
         body.classList.toggle('light-mode');
         const isLight = body.classList.contains('light-mode');
         localStorage.setItem('theme', isLight ? 'light' : 'dark');
         syncThemeControl();
-      });
+      }
+
+      themeBtn?.addEventListener('click', toggleTheme);
+      mobileThemeBtn?.addEventListener('click', toggleTheme);
+
+      const burgerBtn = document.getElementById('burger-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+
+      if (burgerBtn && mobileMenu) {
+        const mobileFocusableSelector =
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+        const getMenuFocusableElements = () =>
+          Array.from(mobileMenu.querySelectorAll(mobileFocusableSelector)).filter(
+            (element) => !element.hasAttribute('hidden'),
+          );
+
+        const setMenuState = (isOpen) => {
+          mobileMenu.classList.toggle('active', isOpen);
+          burgerBtn.classList.toggle('active', isOpen);
+          burgerBtn.setAttribute('aria-expanded', String(isOpen));
+          burgerBtn.setAttribute(
+            'aria-label',
+            isOpen ? 'Fermer le menu principal' : 'Ouvrir le menu principal',
+          );
+          mobileMenu.hidden = !isOpen;
+          mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+          document.body.style.overflow = isOpen ? 'hidden' : '';
+
+          const navRight = document.querySelector('.nav-right');
+          const mainContent = document.getElementById('main-content');
+          const footer = document.querySelector('footer');
+
+          [navRight, mainContent, footer].forEach((element) => {
+            if (!element) return;
+            if (isOpen) {
+              element.setAttribute('inert', '');
+            } else {
+              element.removeAttribute('inert');
+            }
+          });
+
+          if (isOpen) {
+            lastFocusedElement = document.activeElement;
+            window.setTimeout(() => {
+              getMenuFocusableElements()[0]?.focus();
+            }, 0);
+          } else if (lastFocusedElement instanceof HTMLElement) {
+            lastFocusedElement.focus();
+            lastFocusedElement = null;
+          }
+        };
+
+        setMenuState(false);
+
+        burgerBtn.addEventListener('click', () => {
+          const isOpen = burgerBtn.getAttribute('aria-expanded') !== 'true';
+          setMenuState(isOpen);
+        });
+
+        document.querySelectorAll('.mobile-item').forEach((item) => {
+          item.addEventListener('click', () => {
+            setMenuState(false);
+          });
+        });
+
+        document.addEventListener('keydown', (event) => {
+          const menuIsOpen = burgerBtn.getAttribute('aria-expanded') === 'true';
+
+          if (event.key === 'Escape' && menuIsOpen) {
+            setMenuState(false);
+            return;
+          }
+
+          if (event.key === 'Tab' && menuIsOpen) {
+            const focusableElements = getMenuFocusableElements();
+            if (focusableElements.length === 0) return;
+
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+            const activeElement = document.activeElement;
+
+            if (event.shiftKey && activeElement === firstElement) {
+              event.preventDefault();
+              lastElement.focus();
+            } else if (!event.shiftKey && activeElement === lastElement) {
+              event.preventDefault();
+              firstElement.focus();
+            }
+          }
+        });
+      }
 
       function syncBackToTop() {
         if (!backToTop) return;
