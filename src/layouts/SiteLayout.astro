@@ -163,40 +163,51 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
                   <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
                   <span>Le Singe Du Numérique</span>
                 </div>
-                <div class="footer-links">
-                  <a href="/accessibilite">Accessibilité : non conforme</a>
-                  <span class="footer-separator">•</span>
-                  <a href="/projets">Projets</a>
-                  <span class="footer-separator">•</span>
-                  <a href="/asso">L’association</a>
-                  <span class="footer-separator">•</span>
-                  <a href="/evenements">Événements</a>
-                  <span class="footer-separator">•</span>
-                  <a href="/adhesion">Rejoindre</a>
-                  <span class="footer-separator">•</span>
-                  <a href="/contact">Contact</a>
-                  <span class="footer-separator">•</span>
-                  <a href="/blog">Blog</a>
-                  <span class="footer-separator">•</span>
-                  <a href="https://le-singe-du-numerique.betteruptime.com/" target="_blank" rel="noopener noreferrer">Statut des services</a>
-                  <span class="footer-separator">•</span>
-                  <a href="/mentions-legales">Mentions légales</a>
+                <div class="footer-line">
+                  <span class="footer-line-label">Menu</span>
+                  <div class="footer-line-content footer-links">
+                    <a href="/projets">Projets</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/asso">L’association</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/evenements">Événements</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/adhesion">Rejoindre</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/contact">Contact</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/blog">Blog</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/mentions-legales">Mentions légales</a>
+                  </div>
                 </div>
-              </div>
-              <div class="footer-meta">
-                <span class="footer-credit">Fait avec ❤️ entre père et fils - Stan et Mikaël BOUCHET</span>
-                <a
-                  id="service-status-link"
-                  class="service-status"
-                  href="https://le-singe-du-numerique.betteruptime.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-live="polite"
-                >
-                  <span id="service-status-dot" class="status-dot status-checking" aria-hidden="true"></span>
-                  <span id="service-status-text">Statut : vérification...</span>
-                </a>
-                <div class="footer-socials">
+                <div class="footer-line">
+                  <span class="footer-line-label">Statut</span>
+                  <div class="footer-line-content">
+                    <a
+                      id="service-status-link"
+                      class="service-status"
+                      href="https://le-singe-du-numerique.betteruptime.com/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-live="polite"
+                    >
+                      <span id="service-status-dot" class="status-dot status-checking" aria-hidden="true"></span>
+                      <span id="service-status-text">Statut : vérification...</span>
+                    </a>
+                    <span class="footer-separator">•</span>
+                    <a href="/accessibilite">Accessibilité : non conforme</a>
+                  </div>
+                </div>
+                <div class="footer-line">
+                  <span class="footer-line-label">Crédit</span>
+                  <div class="footer-line-content">
+                    <span class="footer-credit">Fait avec ❤️ entre père et fils - Stan et Mikaël BOUCHET</span>
+                  </div>
+                </div>
+                <div class="footer-line">
+                  <span class="footer-line-label">Réseaux</span>
+                  <div class="footer-line-content footer-socials">
                   <a href="https://www.linkedin.com/in/stanislas-bouchet/" target="_blank" rel="noopener noreferrer">
                     <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
                     <span>LinkedIn Stan</span>
@@ -352,7 +363,7 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
             function setServiceStatus(state) {
               if (!serviceStatusDot || !serviceStatusText) return;
 
-              serviceStatusDot.classList.remove('status-checking', 'status-ok', 'status-ko');
+              serviceStatusDot.classList.remove('status-checking', 'status-ok', 'status-ko', 'status-local');
 
               if (state === 'ok') {
                 serviceStatusDot.classList.add('status-ok');
@@ -366,11 +377,26 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
                 return;
               }
 
+              if (state === 'local') {
+                serviceStatusDot.classList.add('status-local');
+                serviceStatusText.textContent = 'Statut : vérif en production';
+                return;
+              }
+
               serviceStatusDot.classList.add('status-checking');
               serviceStatusText.textContent = 'Statut : vérification...';
             }
 
             async function refreshServiceStatus() {
+              if (
+                location.hostname === 'localhost'
+                || location.hostname === '127.0.0.1'
+                || location.hostname.endsWith('.local')
+              ) {
+                setServiceStatus('local');
+                return;
+              }
+
               setServiceStatus('checking');
 
               try {
@@ -507,8 +533,30 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
   .footer-main {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
     width: 100%;
+  }
+
+  .footer-line {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 12px;
+    align-items: start;
+  }
+
+  .footer-line-label {
+    font-size: 0.86rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .footer-line-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
   }
 
   .navbar-logo,
@@ -551,15 +599,6 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
   .nav-item:hover,
   .footer-links a:hover {
     color: var(--brand-green);
-  }
-
-  .footer-meta {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 14px;
-    flex-wrap: wrap;
-    width: 100%;
   }
 
   .footer-credit {
@@ -627,6 +666,10 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
 
   .status-dot.status-ko {
     background: #ef4444;
+  }
+
+  .status-dot.status-local {
+    background: var(--brand-blue);
   }
 
   .theme-btn {
@@ -907,6 +950,11 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
     .footer-container {
       flex-direction: column;
       align-items: flex-start;
+    }
+
+    .footer-line {
+      grid-template-columns: 1fr;
+      gap: 6px;
     }
 
     .nav-right {
