@@ -627,8 +627,14 @@ const websiteSchema = {
     --glow-opacity: 0.08;
   }
 
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
   body { margin: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Space Grotesk', sans-serif; line-height: 1.6; transition: background-color 0.5s, color 0.5s; }
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+  .container { width: min(100%, 1100px); max-width: 1100px; margin: 0 auto; padding: 0 24px; }
   a { text-decoration: none; color: inherit; transition: 0.3s; }
   .skip-link { position: absolute; left: 16px; top: -48px; z-index: 200; padding: 10px 14px; border-radius: 12px; background: #ffffff; color: #07131d; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
   .skip-link:focus { top: 16px; }
@@ -776,11 +782,11 @@ const websiteSchema = {
   .gradient-text { background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
   .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.8rem; line-height: 1.75; }
 
-  .search-wrapper { max-width: 720px; margin: 0 auto 2.4rem; display: flex; flex-direction: column; gap: 14px; }
-  .search-bar { position: relative; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
+  .search-wrapper { width: 100%; max-width: 720px; margin: 0 auto 2.4rem; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .search-bar { position: relative; width: 100%; min-width: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
   .search-bar:focus-within { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
   .search-icon { color: var(--text-muted); display: flex; align-items: center; }
-  .search-input { flex: 1; background: transparent; border: none; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
+  .search-input { flex: 1; min-width: 0; background: transparent; border: none; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
   .search-input::placeholder { color: var(--text-muted); }
   .search-submit { border: none; border-radius: 999px; padding: 10px 14px; background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); color: #07131d; font-weight: 700; cursor: pointer; }
 
@@ -843,6 +849,22 @@ const websiteSchema = {
     max-width: 760px;
   }
 
+  body.light-mode .cta-strip {
+    background:
+      linear-gradient(135deg, rgba(15, 118, 110, 0.1), rgba(3, 105, 161, 0.08)),
+      rgba(255, 255, 255, 0.94);
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 36px -28px rgba(15, 23, 42, 0.25);
+  }
+
+  body.light-mode .cta-strip p {
+    color: #475569;
+  }
+
+  body.light-mode .cta-link {
+    background: rgba(255, 255, 255, 0.82);
+  }
+
   .cta-row {
     display: flex;
     gap: 12px;
@@ -887,12 +909,16 @@ const websiteSchema = {
   .back-to-top:hover { transform: translateY(-5px); }
 
   @media (max-width: 768px) {
+    .container { padding: 0 16px; }
     .hero-title { font-size: 2.2rem; }
     .hero-logo { max-width: 200px; }
     .hero-desc { font-size: 1rem; }
-    .search-bar { flex-wrap: wrap; }
+    .search-wrapper { max-width: 100%; }
+    .search-bar { flex-wrap: wrap; padding: 14px 16px; }
     .search-submit { width: 100%; }
-    .search-meta { justify-content: center; font-size: 0.86rem; }
+    .search-meta { justify-content: center; font-size: 0.86rem; gap: 8px; }
+    .filter-tag { max-width: 100%; }
+    .explore-link a { display: inline-block; max-width: 100%; }
     .divider { display: none; }
     .quick-actions { gap: 8px; }
     .quick-tag { padding: 6px 12px; font-size: 0.85rem; }

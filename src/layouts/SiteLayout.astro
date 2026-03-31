@@ -235,6 +235,13 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
     color: var(--text-main);
     font-family: 'Space Grotesk', sans-serif;
     line-height: 1.6;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  html {
+    max-width: 100%;
+    overflow-x: clip;
   }
 
   a {
@@ -260,6 +267,7 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
   }
 
   .container {
+    width: min(100%, 1100px);
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 24px;
@@ -583,6 +591,10 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
   }
 
   @media (max-width: 760px) {
+    .container {
+      padding: 0 16px;
+    }
+
     .nav-container,
     .footer-container {
       flex-direction: column;
