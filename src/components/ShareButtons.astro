@@ -20,27 +20,27 @@ const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
   data-share-message={shareMessage}
   aria-labelledby={headingId}
 >
-  <p id={headingId} class="social-share-title">{label}</p>
+  <h2 id={headingId} class="social-share-title">{label}</h2>
   <ul class="social-share-links">
     <li>
-      <a href="#" data-share-platform="facebook" target="_blank" rel="noopener noreferrer">
+      <button type="button" data-share-platform="facebook">
         Partager sur Facebook
-      </a>
+      </button>
     </li>
     <li>
-      <a href="#" data-share-platform="x" target="_blank" rel="noopener noreferrer">
+      <button type="button" data-share-platform="x">
         Partager sur X
-      </a>
+      </button>
     </li>
     <li>
-      <a href="#" data-share-platform="linkedin" target="_blank" rel="noopener noreferrer">
+      <button type="button" data-share-platform="linkedin">
         Partager sur LinkedIn
-      </a>
+      </button>
     </li>
     <li>
-      <a href="#" data-share-platform="whatsapp" target="_blank" rel="noopener noreferrer">
+      <button type="button" data-share-platform="whatsapp">
         Partager sur WhatsApp
-      </a>
+      </button>
     </li>
     <li>
       <button type="button" data-share-copy>Copier le lien</button>
@@ -64,10 +64,12 @@ const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
       whatsapp: `https://wa.me/?text=${encodeURIComponent(`${message} ${url}`)}`,
     };
 
-    widget.querySelectorAll('[data-share-platform]').forEach((link) => {
-      const platform = link.getAttribute('data-share-platform');
+    widget.querySelectorAll('[data-share-platform]').forEach((button) => {
+      const platform = button.getAttribute('data-share-platform');
       if (platform && urls[platform]) {
-        link.setAttribute('href', urls[platform]);
+        button.addEventListener('click', () => {
+          window.open(urls[platform], '_blank', 'noopener,noreferrer');
+        });
       }
     });
 
@@ -109,7 +111,6 @@ const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     padding: 0;
   }
 
-  .social-share-links a,
   .social-share-links button {
     display: inline-flex;
     align-items: center;
@@ -127,7 +128,6 @@ const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     white-space: nowrap;
   }
 
-  .social-share-links a:hover,
   .social-share-links button:hover {
     border-color: rgba(45, 212, 191, 0.45);
     color: #2dd4bf;
