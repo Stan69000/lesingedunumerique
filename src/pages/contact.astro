@@ -78,9 +78,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAA
           <strong>*</strong> Champ obligatoire. Le téléphone reste facultatif.
         </p>
 
-        <div class="cta-row">
-          <button type="submit" class="cta-button">Envoyer le message</button>
-        </div>
+        <ul class="cta-row">
+          <li><button type="submit" class="cta-button">Envoyer le message</button></li>
+        </ul>
       </form>
     </section>
 
@@ -113,24 +113,28 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAA
             sandbox="allow-scripts allow-same-origin allow-popups"
           ></iframe>
         </div>
-        <div class="cta-row">
-          <a
-            href="https://www.google.com/maps/dir/?api=1&destination=21+place+Benoit+Dubost,+69210+Fleurieux-sur-l%27Arbresle"
-            class="cta-button cta-secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Préparer l’itinéraire
-          </a>
-          <a
-            href="https://www.openstreetmap.org/?mlat=45.8364&mlon=4.6518#map=18/45.8364/4.6518"
-            class="cta-button cta-secondary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Ouvrir la carte
-          </a>
-        </div>
+        <ul class="cta-row">
+          <li>
+            <a
+              href="https://www.google.com/maps/dir/?api=1&destination=21+place+Benoit+Dubost,+69210+Fleurieux-sur-l%27Arbresle"
+              class="cta-button cta-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Préparer l’itinéraire
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://www.openstreetmap.org/?mlat=45.8364&mlon=4.6518#map=18/45.8364/4.6518"
+              class="cta-button cta-secondary"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ouvrir la carte
+            </a>
+          </li>
+        </ul>
       </article>
     </div>
   </div>

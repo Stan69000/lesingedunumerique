@@ -66,19 +66,19 @@ const blogSchema = {
 
     <nav class="navbar" aria-label="Navigation du blog">
       <div class="container nav-container">
-        <a href="/" class="brand-logo">
-          <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
+        <a href="/" class="brand-logo" aria-label="Le Singe Du Numérique, accueil">
+          <img src="/logo.svg" alt="" aria-hidden="true" class="navbar-logo" />
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
         <div class="nav-right">
-          <div class="nav-links">
-            <a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
-            <a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
-            <a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
-            <a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
-            <a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
-            <a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
-          </div>
+          <ul class="nav-links">
+            <li><a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a></li>
+            <li><a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a></li>
+            <li><a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a></li>
+            <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
+            <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
+            <li><a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a></li>
+          </ul>
           <button
             id="theme-toggle"
             class="theme-btn"
@@ -263,26 +263,20 @@ const blogSchema = {
       <div class="container footer-container">
         <div class="footer-main">
           <div class="footer-brand">
-            <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
+            <img src="/logo.svg" alt="" aria-hidden="true" class="footer-logo" />
             <span>Le Singe Du Numérique</span>
           </div>
           <div class="footer-line">
             <span class="footer-line-label">Menu</span>
-            <div class="footer-line-content footer-links">
-              <a href="/projets">Projets</a>
-              <span class="footer-separator">•</span>
-              <a href="/asso">L’association</a>
-              <span class="footer-separator">•</span>
-              <a href="/evenements">Événements</a>
-              <span class="footer-separator">•</span>
-              <a href="/adhesion">Rejoindre</a>
-              <span class="footer-separator">•</span>
-              <a href="/contact">Contact</a>
-              <span class="footer-separator">•</span>
-              <a href="/blog">Blog</a>
-              <span class="footer-separator">•</span>
-              <a href="/mentions-legales">Mentions légales</a>
-            </div>
+            <ul class="footer-line-content footer-links">
+              <li><a href="/projets">Projets</a></li>
+              <li><a href="/asso">L’association</a></li>
+              <li><a href="/evenements">Événements</a></li>
+              <li><a href="/adhesion">Rejoindre</a></li>
+              <li><a href="/contact">Contact</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/mentions-legales">Mentions légales</a></li>
+            </ul>
           </div>
           <div class="footer-line">
             <span class="footer-line-label">Statut</span>
@@ -303,22 +297,26 @@ const blogSchema = {
           </div>
           <div class="footer-line">
             <span class="footer-line-label">Réseaux</span>
-            <div class="footer-line-content footer-socials">
-            <a href="https://www.linkedin.com/in/stanislas-bouchet/" target="_blank" rel="noopener noreferrer">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
-              <span>LinkedIn Stan</span>
-            </a>
-            <span class="footer-separator">•</span>
-            <a href="https://www.linkedin.com/in/mikael-bch/" target="_blank" rel="noopener noreferrer">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
-              <span>LinkedIn Mikaël</span>
-            </a>
-            <span class="footer-separator">•</span>
-            <a href="https://github.com/Stan69000/lesingedunumerique" target="_blank" rel="noopener noreferrer">
-              <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.35-3.87-1.35-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.17-3.07-.12-.29-.5-1.47.11-3.05 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.13-1.17 3.13-1.17.62 1.58.24 2.76.12 3.05.73.8 1.17 1.82 1.17 3.07 0 4.41-2.69 5.37-5.25 5.66.41.36.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
-              <span>GitHub</span>
-            </a>
-          </div>
+            <ul class="footer-line-content footer-socials">
+              <li>
+                <a href="https://www.linkedin.com/in/stanislas-bouchet/" target="_blank" rel="noopener noreferrer">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
+                  <span>LinkedIn Stan</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/mikael-bch/" target="_blank" rel="noopener noreferrer">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
+                  <span>LinkedIn Mikaël</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/Stan69000/lesingedunumerique" target="_blank" rel="noopener noreferrer">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.35-3.87-1.35-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.17-3.07-.12-.29-.5-1.47.11-3.05 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.13-1.17 3.13-1.17.62 1.58.24 2.76.12 3.05.73.8 1.17 1.82 1.17 3.07 0 4.41-2.69 5.37-5.25 5.66.41.36.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+                  <span>GitHub</span>
+                </a>
+              </li>
+            </ul>
         </div>
       </div>
     </footer>
@@ -571,6 +569,8 @@ const blogSchema = {
     --brand-orange: #f97316;
     --brand-blue: #38bdf8;
     --border-color: rgba(255, 255, 255, 0.08);
+    --field-border: rgba(148, 163, 184, 0.52);
+    --field-placeholder: #cbd5e1;
     --glow-opacity: 0.15;
     --nav-height: 70px;
   }
@@ -584,6 +584,8 @@ const blogSchema = {
     --brand-orange: #c2410c;
     --brand-blue: #0369a1;
     --border-color: rgba(0, 0, 0, 0.08);
+    --field-border: rgba(51, 65, 85, 0.38);
+    --field-placeholder: #334155;
     --glow-opacity: 0.08;
   }
 
@@ -706,6 +708,9 @@ const blogSchema = {
     align-items: center;
     gap: 18px;
     flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .nav-item,
@@ -916,7 +921,7 @@ const blogSchema = {
     gap: 14px;
     padding: 14px 16px;
     background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--field-border);
     border-radius: 16px;
   }
 
@@ -941,7 +946,8 @@ const blogSchema = {
   }
 
   .search-input::placeholder {
-    color: var(--text-muted);
+    color: var(--field-placeholder);
+    opacity: 1;
   }
 
   .search-button {
@@ -1218,10 +1224,6 @@ const blogSchema = {
     flex-wrap: wrap;
   }
 
-  .footer-separator {
-    color: var(--text-muted);
-  }
-
   .footer-credit {
     color: var(--text-muted);
     font-size: 0.95rem;
@@ -1234,6 +1236,16 @@ const blogSchema = {
     gap: 12px;
     align-items: center;
     justify-content: flex-start;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer-links li:not(:last-child)::after,
+  .footer-socials li:not(:last-child)::after {
+    content: '•';
+    color: var(--text-muted);
+    margin-left: 18px;
   }
 
   .footer-socials a {

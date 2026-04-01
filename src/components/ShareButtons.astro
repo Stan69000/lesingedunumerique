@@ -20,21 +20,31 @@ const {
   aria-label={label}
 >
   <h2>{label}</h2>
-  <div class="social-share-links">
-    <a href="#" data-share-platform="facebook" target="_blank" rel="noopener noreferrer">
-      Partager sur Facebook
-    </a>
-    <a href="#" data-share-platform="x" target="_blank" rel="noopener noreferrer">
-      Partager sur X
-    </a>
-    <a href="#" data-share-platform="linkedin" target="_blank" rel="noopener noreferrer">
-      Partager sur LinkedIn
-    </a>
-    <a href="#" data-share-platform="whatsapp" target="_blank" rel="noopener noreferrer">
-      Partager sur WhatsApp
-    </a>
-    <button type="button" data-share-copy>Copier le lien</button>
-  </div>
+  <ul class="social-share-links">
+    <li>
+      <a href="#" data-share-platform="facebook" target="_blank" rel="noopener noreferrer">
+        Partager sur Facebook
+      </a>
+    </li>
+    <li>
+      <a href="#" data-share-platform="x" target="_blank" rel="noopener noreferrer">
+        Partager sur X
+      </a>
+    </li>
+    <li>
+      <a href="#" data-share-platform="linkedin" target="_blank" rel="noopener noreferrer">
+        Partager sur LinkedIn
+      </a>
+    </li>
+    <li>
+      <a href="#" data-share-platform="whatsapp" target="_blank" rel="noopener noreferrer">
+        Partager sur WhatsApp
+      </a>
+    </li>
+    <li>
+      <button type="button" data-share-copy>Copier le lien</button>
+    </li>
+  </ul>
   <p class="social-share-feedback" aria-live="polite"></p>
 </section>
 
@@ -92,6 +102,9 @@ const {
     gap: 0.75rem;
     flex-wrap: wrap;
     font-size: 0.95rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .social-share-links a,

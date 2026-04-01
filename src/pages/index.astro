@@ -86,20 +86,20 @@ const websiteSchema = {
 
     <nav class="navbar" aria-label="Navigation principale">
       <div class="container nav-container">
-        <a href="/" class="brand-logo">
-          <img src="/logo.svg" alt="Le Singe Du Numérique" class="navbar-logo" />
+        <a href="/" class="brand-logo" aria-label="Le Singe Du Numérique, accueil">
+          <img src="/logo.svg" alt="" aria-hidden="true" class="navbar-logo" />
           <span class="brand-text">Le Singe Du Numérique</span>
         </a>
 
         <div class="nav-right">
-          <div class="nav-links">
-            <a href="/projets" class="nav-item">Projets</a>
-            <a href="/asso" class="nav-item">L’association</a>
-            <a href="/evenements" class="nav-item">Événements</a>
-            <a href="/adhesion" class="nav-item">Rejoindre</a>
-            <a href="/contact" class="nav-item">Contact</a>
-            <a href="/blog" class="nav-item">Blog</a>
-          </div>
+          <ul class="nav-links">
+            <li><a href="/projets" class="nav-item">Projets</a></li>
+            <li><a href="/asso" class="nav-item">L’association</a></li>
+            <li><a href="/evenements" class="nav-item">Événements</a></li>
+            <li><a href="/adhesion" class="nav-item">Rejoindre</a></li>
+            <li><a href="/contact" class="nav-item">Contact</a></li>
+            <li><a href="/blog" class="nav-item">Blog</a></li>
+          </ul>
           <button
             id="theme-toggle"
             class="theme-btn"
@@ -390,11 +390,11 @@ const websiteSchema = {
               Les éventuels bénéfices tirés de prestations de service sont intégralement réinvestis
               dans la réalisation de l’objet social.
             </p>
-            <div class="cta-row">
-              <a href="/asso" class="cta-link">Découvrir l’association</a>
-              <a href="/projets" class="cta-link">Voir nos actions</a>
-              <a href="/blog" class="cta-link">Lire les ressources</a>
-            </div>
+            <ul class="cta-row">
+              <li><a href="/asso" class="cta-link">Découvrir l’association</a></li>
+              <li><a href="/projets" class="cta-link">Voir nos actions</a></li>
+              <li><a href="/blog" class="cta-link">Lire les ressources</a></li>
+            </ul>
           </div>
         </div>
       </section>
@@ -410,26 +410,20 @@ const websiteSchema = {
       <div class="container footer-container">
         <div class="footer-main">
           <div class="footer-brand">
-            <img src="/logo.svg" alt="Le Singe Du Numérique" class="footer-logo" />
+            <img src="/logo.svg" alt="" aria-hidden="true" class="footer-logo" />
             <span>Le Singe Du Numérique</span>
           </div>
           <div class="footer-line">
             <span class="footer-line-label">Menu</span>
-            <div class="footer-line-content footer-links">
-              <a href="/projets">Projets</a>
-              <span class="footer-separator">•</span>
-              <a href="/asso">L’association</a>
-              <span class="footer-separator">•</span>
-              <a href="/evenements">Événements</a>
-              <span class="footer-separator">•</span>
-              <a href="/adhesion">Rejoindre</a>
-              <span class="footer-separator">•</span>
-              <a href="/contact">Contact</a>
-              <span class="footer-separator">•</span>
-              <a href="/blog">Blog</a>
-              <span class="footer-separator">•</span>
-              <a href="/mentions-legales">Mentions légales</a>
-            </div>
+            <ul class="footer-line-content footer-links">
+              <li><a href="/projets">Projets</a></li>
+              <li><a href="/asso">L’association</a></li>
+              <li><a href="/evenements">Événements</a></li>
+              <li><a href="/adhesion">Rejoindre</a></li>
+              <li><a href="/contact">Contact</a></li>
+              <li><a href="/blog">Blog</a></li>
+              <li><a href="/mentions-legales">Mentions légales</a></li>
+            </ul>
           </div>
           <div class="footer-line">
             <span class="footer-line-label">Statut</span>
@@ -457,22 +451,26 @@ const websiteSchema = {
           </div>
           <div class="footer-line">
             <span class="footer-line-label">Réseaux</span>
-            <div class="footer-line-content footer-socials">
-              <a href="https://www.linkedin.com/in/stanislas-bouchet/" target="_blank" rel="noopener noreferrer">
-                <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
-                <span>LinkedIn Stan</span>
-              </a>
-              <span class="footer-separator">•</span>
-              <a href="https://www.linkedin.com/in/mikael-bch/" target="_blank" rel="noopener noreferrer">
-                <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
-                <span>LinkedIn Mikaël</span>
-              </a>
-              <span class="footer-separator">•</span>
-              <a href="https://github.com/Stan69000/lesingedunumerique" target="_blank" rel="noopener noreferrer">
-                <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.35-3.87-1.35-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.17-3.07-.12-.29-.5-1.47.11-3.05 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.13-1.17 3.13-1.17.62 1.58.24 2.76.12 3.05.73.8 1.17 1.82 1.17 3.07 0 4.41-2.69 5.37-5.25 5.66.41.36.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
-                <span>GitHub</span>
-              </a>
-            </div>
+            <ul class="footer-line-content footer-socials">
+              <li>
+                <a href="https://www.linkedin.com/in/stanislas-bouchet/" target="_blank" rel="noopener noreferrer">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
+                  <span>LinkedIn Stan</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://www.linkedin.com/in/mikael-bch/" target="_blank" rel="noopener noreferrer">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 7.06c1.08 0 1.75-.72 1.75-1.62-.02-.92-.67-1.62-1.73-1.62S3.5 4.52 3.5 5.44c0 .9.69 1.62 1.73 1.62h.02ZM20.5 20h-3.38v-6.15c0-1.54-.55-2.59-1.92-2.59-1.05 0-1.67.7-1.95 1.38-.1.24-.13.58-.13.92V20H9.74s.04-10.57 0-11.5h3.38v1.63c.45-.69 1.26-1.67 3.06-1.67 2.23 0 3.9 1.46 3.9 4.59V20Z"/></svg>
+                  <span>LinkedIn Mikaël</span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/Stan69000/lesingedunumerique" target="_blank" rel="noopener noreferrer">
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.38 7.86 10.9.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.87-1.35-3.87-1.35-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.75 1.18 1.75 1.18 1.02 1.75 2.68 1.25 3.33.96.1-.74.4-1.25.72-1.54-2.55-.29-5.23-1.27-5.23-5.67 0-1.25.45-2.27 1.17-3.07-.12-.29-.5-1.47.11-3.05 0 0 .96-.31 3.14 1.17a10.9 10.9 0 0 1 5.72 0c2.18-1.48 3.13-1.17 3.13-1.17.62 1.58.24 2.76.12 3.05.73.8 1.17 1.82 1.17 3.07 0 4.41-2.69 5.37-5.25 5.66.41.36.77 1.05.77 2.12 0 1.53-.01 2.76-.01 3.14 0 .3.2.66.79.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/></svg>
+                  <span>GitHub</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -696,6 +694,8 @@ const websiteSchema = {
     --brand-orange: #f97316;
     --brand-blue: #38bdf8;
     --border-color: rgba(255, 255, 255, 0.08);
+    --field-border: rgba(148, 163, 184, 0.52);
+    --field-placeholder: #cbd5e1;
     --glow-opacity: 0.15;
     --nav-height: 70px;
   }
@@ -709,6 +709,8 @@ const websiteSchema = {
     --brand-orange: #c2410c;
     --brand-blue: #0369a1;
     --border-color: rgba(0, 0, 0, 0.08);
+    --field-border: rgba(51, 65, 85, 0.38);
+    --field-placeholder: #334155;
     --glow-opacity: 0.08;
   }
 
@@ -740,7 +742,7 @@ const websiteSchema = {
   @media(min-width: 768px) { .brand-text { display: inline; } }
 
   .nav-right { display: flex; align-items: center; gap: 24px; }
-  .nav-links { display: flex; gap: 28px; }
+  .nav-links { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
   .nav-item { font-size: 0.96rem; color: var(--text-muted); font-weight: 500; letter-spacing: -0.01em; }
   .nav-item[aria-current='page'] { color: var(--text-main); }
   .nav-item:hover { color: var(--brand-green); }
@@ -874,11 +876,11 @@ const websiteSchema = {
   .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.8rem; line-height: 1.75; }
 
   .search-wrapper { width: 100%; max-width: 720px; margin: 0 auto 2.4rem; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-  .search-bar { position: relative; width: 100%; min-width: 0; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
+  .search-bar { position: relative; width: 100%; min-width: 0; background: var(--bg-card); border: 1px solid var(--field-border); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
   .search-bar:focus-within { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
   .search-icon { color: var(--text-muted); display: flex; align-items: center; }
   .search-input { flex: 1; min-width: 0; background: transparent; border: none; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
-  .search-input::placeholder { color: var(--text-muted); }
+  .search-input::placeholder { color: var(--field-placeholder); opacity: 1; }
   .search-submit { border: none; border-radius: 999px; padding: 10px 14px; background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); color: #07131d; font-weight: 700; cursor: pointer; }
 
   .search-meta { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.92rem; color: var(--text-muted); font-weight: 500; flex-wrap: wrap; }
@@ -950,6 +952,9 @@ const websiteSchema = {
     display: flex;
     gap: 12px;
     flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .cta-link {
@@ -978,12 +983,13 @@ const websiteSchema = {
   .footer-line-content { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
   .footer-brand { display: flex; align-items: center; gap: 12px; font-weight: 700; }
   .footer-logo { height: 40px; width: auto; display: block; }
-  .footer-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+  .footer-links { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
   .footer-links a { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; letter-spacing: -0.01em; }
   .footer-links a:hover { color: var(--brand-green); }
-  .footer-separator { color: var(--text-muted); }
+  .footer-links li:not(:last-child)::after,
+  .footer-socials li:not(:last-child)::after { content: '•'; color: var(--text-muted); margin-left: 18px; }
   .footer-credit { color: var(--text-muted); font-size: 0.95rem; text-align: left; }
-  .footer-socials { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 12px; }
+  .footer-socials { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 12px; list-style: none; margin: 0; padding: 0; }
   .footer-socials a { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
   .footer-socials svg { width: 16px; height: 16px; flex: 0 0 16px; }
   .footer-socials a:hover { color: var(--brand-green); }
