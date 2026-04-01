@@ -696,6 +696,8 @@ const websiteSchema = {
     --border-color: rgba(255, 255, 255, 0.08);
     --field-border: rgba(148, 163, 184, 0.52);
     --field-placeholder: #cbd5e1;
+    --field-input-bg: #101a31;
+    --field-input-border: #8ca0ba;
     --glow-opacity: 0.15;
     --nav-height: 70px;
   }
@@ -711,6 +713,8 @@ const websiteSchema = {
     --border-color: rgba(0, 0, 0, 0.08);
     --field-border: rgba(51, 65, 85, 0.38);
     --field-placeholder: #334155;
+    --field-input-bg: #ffffff;
+    --field-input-border: #475569;
     --glow-opacity: 0.08;
   }
 
@@ -879,7 +883,8 @@ const websiteSchema = {
   .search-bar { position: relative; width: 100%; min-width: 0; background: var(--bg-card); border: 1px solid var(--field-border); border-radius: 14px; padding: 16px 20px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
   .search-bar:focus-within { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
   .search-icon { color: var(--text-muted); display: flex; align-items: center; }
-  .search-input { flex: 1; min-width: 0; background: transparent; border: none; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
+  .search-input { flex: 1; min-width: 0; background: var(--field-input-bg); border: 1px solid var(--field-input-border); border-radius: 10px; padding: 10px 12px; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
+  .search-input:focus-visible { border-color: var(--brand-green); box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2); }
   .search-input::placeholder { color: var(--field-placeholder); opacity: 1; }
   .search-submit { border: none; border-radius: 999px; padding: 10px 14px; background: linear-gradient(135deg, var(--brand-green), var(--brand-blue)); color: #07131d; font-weight: 700; cursor: pointer; }
 

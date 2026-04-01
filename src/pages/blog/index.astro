@@ -571,6 +571,8 @@ const blogSchema = {
     --border-color: rgba(255, 255, 255, 0.08);
     --field-border: rgba(148, 163, 184, 0.52);
     --field-placeholder: #cbd5e1;
+    --field-input-bg: #101a31;
+    --field-input-border: #8ca0ba;
     --glow-opacity: 0.15;
     --nav-height: 70px;
   }
@@ -586,6 +588,8 @@ const blogSchema = {
     --border-color: rgba(0, 0, 0, 0.08);
     --field-border: rgba(51, 65, 85, 0.38);
     --field-placeholder: #334155;
+    --field-input-bg: #ffffff;
+    --field-input-border: #475569;
     --glow-opacity: 0.08;
   }
 
@@ -939,10 +943,17 @@ const blogSchema = {
   .search-input {
     flex: 1;
     min-width: 0;
-    border: none;
+    border: 1px solid var(--field-input-border);
     outline: none;
-    background: transparent;
+    background: var(--field-input-bg);
+    border-radius: 10px;
+    padding: 10px 12px;
     color: var(--text-main);
+  }
+
+  .search-input:focus-visible {
+    border-color: var(--brand-green);
+    box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2);
   }
 
   .search-input::placeholder {
