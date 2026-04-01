@@ -180,8 +180,8 @@ const websiteSchema = {
             transformation numérique.
           </p>
 
-          <form class="search-wrapper" action="/blog" method="get">
-            <label class="sr-only" for="home-search">Recherche dans le blog</label>
+          <form class="search-wrapper" action="/blog" method="get" role="search" aria-label="Recherche dans les articles du blog">
+            <label class="sr-only" for="home-search">Recherche dans les articles du blog</label>
             <div class="search-bar">
               <span class="search-icon" aria-hidden="true">
                 <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
@@ -192,9 +192,15 @@ const websiteSchema = {
                 name="search"
                 placeholder="Rechercher une ressource, un article ou un sujet..."
                 class="search-input"
+                autocomplete="off"
+                aria-describedby="home-search-help home-search-error"
               />
-              <button type="submit" class="search-submit">Rechercher</button>
+              <button type="submit" class="search-submit" aria-label="Rechercher dans le blog">Rechercher</button>
             </div>
+            <p id="home-search-help" class="search-assist">
+              Astuce : saisis au moins 2 caractères (ex. « cybersécurité », « bénévolat », « atelier »).
+            </p>
+            <p id="home-search-error" class="search-error" hidden aria-live="polite"></p>
 
             <div class="search-meta">
               <a href="/blog" class="filter-tag">
@@ -423,7 +429,9 @@ const websiteSchema = {
               <li><a href="/asso">L’association</a></li>
               <li><a href="/evenements">Événements</a></li>
               <li><a href="/adhesion">Rejoindre</a></li>
+              <li><a href="/contact">Contact</a></li>
               <li><a href="/blog">Blog</a></li>
+              <li><a href="/plan-du-site">Plan du site</a></li>
               <li><a href="/mentions-legales">Mentions légales</a></li>
             </ul>
           </div>
@@ -483,6 +491,52 @@ const websiteSchema = {
     </button>
 
     <script>
+      const MIN_SAFE_ANIMATION_MS = 400;
+
+      function parseAnimationTimeToMs(rawValue) {
+        const value = (rawValue || '').trim();
+        if (!value || value === '0' || value === '0s' || value === '0ms') return 0;
+        if (value.endsWith('ms')) return Number.parseFloat(value);
+        if (value.endsWith('s')) return Number.parseFloat(value) * 1000;
+        return Number.parseFloat(value) || 0;
+      }
+
+      function toMsString(valueMs) {
+        return `${Math.max(MIN_SAFE_ANIMATION_MS, Math.round(valueMs))}ms`;
+      }
+
+      function enforceMinimumAnimationDuration() {
+        const allNodes = Array.from(document.querySelectorAll('*'));
+        allNodes.forEach((node) => {
+          const computed = window.getComputedStyle(node);
+          if (computed.animationName === 'none') return;
+
+          const durations = computed.animationDuration
+            .split(',')
+            .map((entry) => entry.trim())
+            .filter(Boolean);
+
+          if (durations.length === 0) return;
+
+          const hasTooFastAnimation = durations.some(
+            (duration) => parseAnimationTimeToMs(duration) > 0
+              && parseAnimationTimeToMs(duration) < MIN_SAFE_ANIMATION_MS,
+          );
+
+          if (!hasTooFastAnimation) return;
+
+          const clampedDurations = durations.map((duration) => {
+            const valueMs = parseAnimationTimeToMs(duration);
+            if (valueMs <= 0) return duration;
+            return toMsString(valueMs);
+          });
+
+          node.style.animationDuration = clampedDurations.join(', ');
+        });
+      }
+
+      window.addEventListener('load', enforceMinimumAnimationDuration);
+
       const themeBtn = document.getElementById('theme-toggle');
       const mobileThemeBtn = document.getElementById('mobile-theme-btn');
       const body = document.body;
@@ -677,6 +731,40 @@ const websiteSchema = {
         refreshServiceStatus();
         window.setInterval(refreshServiceStatus, 60000);
       }
+
+      const homeSearchForm = document.querySelector('form.search-wrapper[role="search"]');
+      const homeSearchInput = document.getElementById('home-search');
+      const homeSearchError = document.getElementById('home-search-error');
+
+      function clearHomeSearchError() {
+        if (!homeSearchInput || !homeSearchError) return;
+        homeSearchInput.removeAttribute('aria-invalid');
+        homeSearchError.hidden = true;
+        homeSearchError.textContent = '';
+      }
+
+      homeSearchInput?.addEventListener('input', clearHomeSearchError);
+
+      homeSearchForm?.addEventListener('submit', (event) => {
+        if (!homeSearchInput || !homeSearchError) return;
+        const query = homeSearchInput.value.trim();
+
+        if (query.length === 0) {
+          clearHomeSearchError();
+          return;
+        }
+
+        if (query.length < 2) {
+          event.preventDefault();
+          homeSearchInput.setAttribute('aria-invalid', 'true');
+          homeSearchError.hidden = false;
+          homeSearchError.textContent = 'Recherche trop courte. Essaie avec au moins 2 caractères.';
+          homeSearchInput.focus();
+          return;
+        }
+
+        clearHomeSearchError();
+      });
 
       const backBtn = document.getElementById('back-to-top');
       window.addEventListener('scroll', () => {
@@ -897,8 +985,11 @@ const websiteSchema = {
   .search-input { flex: 1; min-width: 0; background: var(--field-input-bg); border: 1px solid var(--field-input-border); border-radius: 10px; padding: 10px 12px; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
   .search-input:focus-visible { border-color: var(--brand-green); box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2); }
   .search-input::placeholder { color: var(--field-placeholder); opacity: 1; }
+  .search-input[aria-invalid='true'] { border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2); }
   .search-submit { border: 1px solid transparent; border-radius: 999px; padding: 10px 14px; background: var(--action-bg); color: var(--action-text); font-weight: 700; cursor: pointer; }
   .search-submit:hover { filter: brightness(0.95); }
+  .search-assist { margin: -2px 4px 0; font-size: 0.85rem; color: var(--text-muted); text-align: left; }
+  .search-error { margin: -2px 4px 0; font-size: 0.85rem; color: #ef4444; text-align: left; font-weight: 600; }
 
   .search-meta { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.92rem; color: var(--text-muted); font-weight: 500; flex-wrap: wrap; }
   .filter-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(128,128,128, 0.1); border-radius: 6px; cursor: pointer; transition: background 0.2s; }

@@ -173,7 +173,9 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
                     <li><a href="/asso">L’association</a></li>
                     <li><a href="/evenements">Événements</a></li>
                     <li><a href="/adhesion">Rejoindre</a></li>
+                    <li><a href="/contact">Contact</a></li>
                     <li><a href="/blog">Blog</a></li>
+                    <li><a href="/plan-du-site">Plan du site</a></li>
                     <li><a href="/mentions-legales">Mentions légales</a></li>
                   </ul>
                 </div>
@@ -228,6 +230,52 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
           </footer>
 
           <script>
+            const MIN_SAFE_ANIMATION_MS = 400;
+
+            function parseAnimationTimeToMs(rawValue) {
+              const value = (rawValue || '').trim();
+              if (!value || value === '0' || value === '0s' || value === '0ms') return 0;
+              if (value.endsWith('ms')) return Number.parseFloat(value);
+              if (value.endsWith('s')) return Number.parseFloat(value) * 1000;
+              return Number.parseFloat(value) || 0;
+            }
+
+            function toMsString(valueMs) {
+              return `${Math.max(MIN_SAFE_ANIMATION_MS, Math.round(valueMs))}ms`;
+            }
+
+            function enforceMinimumAnimationDuration() {
+              const allNodes = Array.from(document.querySelectorAll('*'));
+              allNodes.forEach((node) => {
+                const computed = window.getComputedStyle(node);
+                if (computed.animationName === 'none') return;
+
+                const durations = computed.animationDuration
+                  .split(',')
+                  .map((entry) => entry.trim())
+                  .filter(Boolean);
+
+                if (durations.length === 0) return;
+
+                const hasTooFastAnimation = durations.some(
+                  (duration) => parseAnimationTimeToMs(duration) > 0
+                    && parseAnimationTimeToMs(duration) < MIN_SAFE_ANIMATION_MS,
+                );
+
+                if (!hasTooFastAnimation) return;
+
+                const clampedDurations = durations.map((duration) => {
+                  const valueMs = parseAnimationTimeToMs(duration);
+                  if (valueMs <= 0) return duration;
+                  return toMsString(valueMs);
+                });
+
+                node.style.animationDuration = clampedDurations.join(', ');
+              });
+            }
+
+            window.addEventListener('load', enforceMinimumAnimationDuration);
+
             const themeBtn = document.getElementById('theme-toggle');
             const mobileThemeBtn = document.getElementById('mobile-theme-btn');
             const body = document.body;

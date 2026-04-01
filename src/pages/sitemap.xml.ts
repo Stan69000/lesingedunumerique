@@ -12,6 +12,7 @@ export async function GET() {
     '/adhesion',
     '/contact',
     '/blog',
+    '/plan-du-site',
     '/accessibilite',
     '/mentions-legales',
   ];
