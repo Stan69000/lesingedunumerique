@@ -93,6 +93,7 @@ const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     border-radius: 22px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     background: rgba(21, 30, 50, 0.65);
+    color: var(--text-main);
   }
 
   .social-share-title {
@@ -119,8 +120,8 @@ const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
     padding: 0 14px;
     border-radius: 999px;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(255, 255, 255, 0.04);
-    color: inherit;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-main);
     text-decoration: none;
     font: inherit;
     font-weight: 600;
@@ -129,8 +130,8 @@ const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
   }
 
   .social-share-links button:hover {
-    border-color: rgba(45, 212, 191, 0.45);
-    color: #2dd4bf;
+    border-color: rgba(94, 234, 212, 0.65);
+    color: #99f6e4;
   }
 
   .social-share-feedback {
@@ -143,6 +144,17 @@ const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')
   :global(body.light-mode) .social-share {
     background: rgba(255, 255, 255, 0.88);
     border-color: rgba(0, 0, 0, 0.08);
+  }
+
+  :global(body.light-mode) .social-share-links button {
+    background: rgba(15, 23, 42, 0.06);
+    border-color: rgba(15, 23, 42, 0.18);
+    color: #1e293b;
+  }
+
+  :global(body.light-mode) .social-share-links button:hover {
+    border-color: rgba(15, 118, 110, 0.5);
+    color: #0f766e;
   }
 
   :global(body.light-mode) .social-share-feedback {
