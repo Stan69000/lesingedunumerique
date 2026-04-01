@@ -714,13 +714,14 @@ const articleSchema = {
                 </button>
               </div>
 
-              <div
-                class="mobile-menu"
-                id="mobile-menu"
-                aria-label="Navigation mobile"
-                aria-hidden="true"
-                hidden
-              >
+            <div
+              class="mobile-menu"
+              id="mobile-menu"
+              aria-label="Navigation mobile"
+              aria-hidden="true"
+              inert
+              hidden
+            >
                 <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
                 <a href="/asso" class="mobile-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
                 <a href="/evenements" class="mobile-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
@@ -901,6 +902,11 @@ const articleSchema = {
           );
           mobileMenu.hidden = !isOpen;
           mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+          if (isOpen) {
+            mobileMenu.removeAttribute('inert');
+          } else {
+            mobileMenu.setAttribute('inert', '');
+          }
           document.body.style.overflow = isOpen ? 'hidden' : '';
 
           const navRight = document.querySelector('.nav-right');

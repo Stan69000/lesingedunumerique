@@ -130,6 +130,7 @@ const websiteSchema = {
         id="mobile-menu"
         aria-label="Navigation mobile"
         aria-hidden="true"
+        inert
         hidden
       >
         <a href="/projets" class="mobile-item">Projets</a>
@@ -544,6 +545,11 @@ const websiteSchema = {
           );
           mobileMenu.hidden = !isOpen;
           mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+          if (isOpen) {
+            mobileMenu.removeAttribute('inert');
+          } else {
+            mobileMenu.setAttribute('inert', '');
+          }
           document.body.style.overflow = isOpen ? 'hidden' : '';
 
           const navRight = document.querySelector('.nav-right');

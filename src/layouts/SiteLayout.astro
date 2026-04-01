@@ -111,6 +111,7 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
               id="mobile-menu"
               aria-label="Navigation mobile"
               aria-hidden="true"
+              inert
               hidden
             >
               <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
@@ -289,6 +290,11 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
                 );
                 mobileMenu.hidden = !isOpen;
                 mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+                if (isOpen) {
+                  mobileMenu.removeAttribute('inert');
+                } else {
+                  mobileMenu.setAttribute('inert', '');
+                }
                 document.body.style.overflow = isOpen ? 'hidden' : '';
 
                 const navRight = document.querySelector('.nav-right');
