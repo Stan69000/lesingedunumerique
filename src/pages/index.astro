@@ -354,6 +354,70 @@ const websiteSchema = {
       <section class="content-section">
         <div class="container">
           <div class="section-header">
+            <h2>Notre action <span class="text-accent">associative</span></h2>
+            <div class="line-deco"></div>
+          </div>
+
+          <div class="association-copy">
+            <article class="association-block">
+              <h3>Pour qui ?</h3>
+              <p>
+                L’association agit pour les habitants, les bénévoles et les structures locales qui
+                ont besoin d’un appui numérique. Notre objectif est l’inclusion numérique: rendre
+                les usages plus simples, plus sûrs et plus autonomes.
+              </p>
+            </article>
+
+            <article class="association-block">
+              <h3>Comment intervenons-nous ?</h3>
+              <p>
+                Nos actions se construisent selon les besoins du territoire: ateliers, entraide,
+                sensibilisation, appui technique et orientation vers des ressources adaptées. Nous
+                privilégions des outils accessibles, durables et compréhensibles par tous.
+              </p>
+            </article>
+
+            <article class="association-block">
+              <h3>Ancrage local</h3>
+              <p>
+                Nous intervenons principalement à Fleurieux-sur-l’Arbresle et dans les communes
+                voisines, en présentiel ou à distance selon les possibilités de l’association.
+              </p>
+            </article>
+
+            <article class="association-block">
+              <h3>Exemples d’actions</h3>
+              <p>
+                Sensibilisation à la cybersécurité du quotidien, prise en main d’outils numériques,
+                découverte des logiciels libres, amélioration de l’organisation numérique
+                associative, et partage de bonnes pratiques.
+              </p>
+            </article>
+          </div>
+
+          <div class="association-faq">
+            <h3>Questions fréquentes</h3>
+            <ul class="association-faq-list">
+              <li>
+                <strong>Faut-il être expert&nbsp;?</strong> Non, nos actions sont ouvertes à tous
+                les niveaux.
+              </li>
+              <li>
+                <strong>Est-ce réservé aux associations&nbsp;?</strong> Non, l’association agit
+                aussi pour les particuliers.
+              </li>
+              <li>
+                <strong>Comment participer&nbsp;?</strong> Via la page Contact ou en rejoignant nos
+                actions locales.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-section">
+        <div class="container">
+          <div class="section-header">
             <h2>Ressources, veille et <span class="text-accent">outils</span></h2>
             <div class="line-deco"></div>
           </div>
@@ -1095,6 +1159,54 @@ const websiteSchema = {
   .cta-link:hover {
     border-color: var(--brand-green);
     color: var(--brand-green);
+  }
+
+  .association-copy {
+    display: grid;
+    gap: 18px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .association-block {
+    margin: 0;
+    padding: 18px 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+  }
+
+  .association-block h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    color: var(--text-main);
+  }
+
+  .association-block p {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.72;
+  }
+
+  .association-faq {
+    margin-top: 24px;
+    padding: 18px 20px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+  }
+
+  .association-faq h3 {
+    margin: 0 0 12px;
+    font-size: 1.1rem;
+    color: var(--text-main);
+  }
+
+  .association-faq-list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-muted);
+    display: grid;
+    gap: 8px;
   }
 
   .footer { border-top: 1px solid var(--border-color); padding: 28px 0 40px; margin-top: 4rem; background: var(--bg-card); }
