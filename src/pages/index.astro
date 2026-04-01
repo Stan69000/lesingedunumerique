@@ -487,7 +487,13 @@ const websiteSchema = {
       </div>
     </footer>
 
-    <button id="back-to-top" class="back-to-top" aria-label="Retour en haut de page">
+    <button
+      id="back-to-top"
+      class="back-to-top"
+      aria-label="Retour en haut de page"
+      aria-hidden="true"
+      tabindex="-1"
+    >
       <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg>
     </button>
 
@@ -767,11 +773,19 @@ const websiteSchema = {
       });
 
       const backBtn = document.getElementById('back-to-top');
+      const syncBackToTopVisibility = () => {
+        if (!(backBtn instanceof HTMLButtonElement)) return;
+        const shouldShow = window.scrollY > 400;
+        backBtn.classList.toggle('visible', shouldShow);
+        backBtn.setAttribute('aria-hidden', String(!shouldShow));
+        backBtn.tabIndex = shouldShow ? 0 : -1;
+      };
+
+      syncBackToTopVisibility();
       window.addEventListener('scroll', () => {
-        if (window.scrollY > 400) backBtn.classList.add('visible');
-        else backBtn.classList.remove('visible');
+        syncBackToTopVisibility();
       });
-      backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+      backBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
         </>
       )
