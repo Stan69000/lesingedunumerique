@@ -573,6 +573,8 @@ const blogSchema = {
     --field-placeholder: #cbd5e1;
     --field-input-bg: #101a31;
     --field-input-border: #8ca0ba;
+    --action-bg: #14b8a6;
+    --action-text: #052e2b;
     --glow-opacity: 0.15;
     --nav-height: 70px;
   }
@@ -590,6 +592,8 @@ const blogSchema = {
     --field-placeholder: #334155;
     --field-input-bg: #ffffff;
     --field-input-border: #475569;
+    --action-bg: #0f766e;
+    --action-text: #f8fafc;
     --glow-opacity: 0.08;
   }
 
@@ -885,9 +889,7 @@ const blogSchema = {
   }
 
   .gradient-text {
-    background: linear-gradient(135deg, var(--brand-green), var(--brand-blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--brand-green);
   }
 
   .hero-desc {
@@ -962,13 +964,17 @@ const blogSchema = {
   }
 
   .search-button {
-    border: none;
+    border: 1px solid transparent;
     border-radius: 999px;
     padding: 10px 14px;
-    background: linear-gradient(135deg, var(--brand-green), var(--brand-blue));
-    color: #07131d;
+    background: var(--action-bg);
+    color: var(--action-text);
     font-weight: 700;
     cursor: pointer;
+  }
+
+  .search-button:hover {
+    filter: brightness(0.95);
   }
 
   .filters-row {
