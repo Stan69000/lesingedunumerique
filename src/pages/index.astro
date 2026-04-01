@@ -799,9 +799,9 @@ const websiteSchema = {
   }
 
   .hero-section { position: relative; padding: 3rem 0 5rem; text-align: center; overflow: hidden; }
-  .glow-bg { position: absolute; border-radius: 50%; filter: blur(90px); z-index: -1; opacity: var(--glow-opacity); animation: float 8s infinite ease-in-out; }
+  .glow-bg { position: absolute; border-radius: 50%; filter: blur(90px); z-index: -1; opacity: var(--glow-opacity); animation: float 2.2s ease-in-out 2 both; }
   .glow-green { width: 400px; height: 400px; background: var(--brand-green); top: -100px; left: -100px; }
-  .glow-orange { width: 500px; height: 500px; background: var(--brand-orange); bottom: 0; right: -100px; animation-delay: 2s; }
+  .glow-orange { width: 500px; height: 500px; background: var(--brand-orange); bottom: 0; right: -100px; animation-delay: 0.6s; }
   @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, 30px); } }
 
   .hero-logo-wrapper {
@@ -826,14 +826,14 @@ const websiteSchema = {
     width: 220px;
     height: 220px;
     background: radial-gradient(circle, rgba(45, 212, 191, 0.85) 0%, rgba(45, 212, 191, 0) 72%);
-    animation: logoAuraPulse 5.5s ease-in-out infinite;
+    animation: logoAuraPulse 1.8s ease-in-out 2 both;
   }
 
   .hero-logo-aura-secondary {
     width: 280px;
     height: 280px;
     background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(56, 189, 248, 0) 72%);
-    animation: logoAuraDrift 7s ease-in-out infinite;
+    animation: logoAuraDrift 2s ease-in-out 2 both;
   }
 
   .hero-logo {
@@ -846,7 +846,7 @@ const websiteSchema = {
     transform-origin: center;
     animation:
       logoReveal 900ms cubic-bezier(0.22, 1, 0.36, 1) both,
-      logoFloat 7s ease-in-out 950ms infinite;
+      logoFloat 1.6s ease-in-out 950ms 2 both;
   }
 
   @keyframes logoReveal {
