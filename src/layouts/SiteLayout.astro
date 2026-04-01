@@ -65,75 +65,77 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
         <>
           <a class="skip-link" href="#main-content">Aller au contenu principal</a>
 
-          <nav class="navbar" aria-label="Navigation principale">
-            <div class="container nav-container">
-              <a href="/" class="brand-logo" aria-label="Le Singe Du Numérique, accueil">
-                <img src="/logo.svg" alt="" aria-hidden="true" class="navbar-logo" />
-                <span class="brand-text">Le Singe Du Numérique</span>
-              </a>
+          <header>
+            <nav class="navbar" aria-label="Navigation principale">
+              <div class="container nav-container">
+                <a href="/" class="brand-logo" aria-label="Le Singe Du Numérique, accueil">
+                  <img src="/logo.svg" alt="" aria-hidden="true" class="navbar-logo" />
+                  <span class="brand-text">Le Singe Du Numérique</span>
+                </a>
 
-              <div class="nav-right">
-                <ul class="nav-links">
-                  <li><a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a></li>
-                  <li><a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a></li>
-                  <li><a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a></li>
-                  <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
-                  <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
-                  <li><a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a></li>
-                </ul>
+                <div class="nav-right">
+                  <ul class="nav-links">
+                    <li><a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a></li>
+                    <li><a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a></li>
+                    <li><a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a></li>
+                    <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
+                    <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
+                    <li><a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a></li>
+                  </ul>
+                  <button
+                    id="theme-toggle"
+                    class="theme-btn"
+                    type="button"
+                    aria-label="Activer le thème clair"
+                    aria-pressed="false"
+                  >
+                    <span class="icon-light">☀️</span>
+                    <span class="icon-dark">🌙</span>
+                  </button>
+                </div>
+
                 <button
-                  id="theme-toggle"
-                  class="theme-btn"
-                  type="button"
-                  aria-label="Activer le thème clair"
-                  aria-pressed="false"
+                  class="burger-btn"
+                  id="burger-btn"
+                  aria-label="Ouvrir le menu principal"
+                  aria-controls="mobile-menu"
+                  aria-expanded="false"
                 >
-                  <span class="icon-light">☀️</span>
-                  <span class="icon-dark">🌙</span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
                 </button>
               </div>
 
-              <button
-                class="burger-btn"
-                id="burger-btn"
-                aria-label="Ouvrir le menu principal"
-                aria-controls="mobile-menu"
-                aria-expanded="false"
+              <div
+                class="mobile-menu"
+                id="mobile-menu"
+                aria-label="Navigation mobile"
+                aria-hidden="true"
+                inert
+                hidden
               >
-                <span></span>
-                <span></span>
-                <span></span>
-              </button>
-            </div>
-
-            <div
-              class="mobile-menu"
-              id="mobile-menu"
-              aria-label="Navigation mobile"
-              aria-hidden="true"
-              inert
-              hidden
-            >
-              <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
-              <a href="/asso" class="mobile-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
-              <a href="/evenements" class="mobile-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
-              <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
-              <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
-              <a href="/blog" class="mobile-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
-              <div class="mobile-theme-toggle">
-                <span>Changer le thème</span>
-                <button
-                  id="mobile-theme-btn"
-                  class="theme-btn-small"
-                  type="button"
-                  aria-label="Activer le thème clair"
-                  aria-pressed="false"
-                >
-                  🌙
-                </button>
+                <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+                <a href="/asso" class="mobile-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
+                <a href="/evenements" class="mobile-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
+                <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
+                <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
+                <a href="/blog" class="mobile-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+                <div class="mobile-theme-toggle">
+                  <span>Changer le thème</span>
+                  <button
+                    id="mobile-theme-btn"
+                    class="theme-btn-small"
+                    type="button"
+                    aria-label="Activer le thème clair"
+                    aria-pressed="false"
+                  >
+                    🌙
+                  </button>
+                </div>
               </div>
-            </div>
-          </nav>
+            </nav>
+          </header>
 
           <main id="main-content">
             <section class="hero-section">

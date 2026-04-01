@@ -10,6 +10,7 @@ const {
   label = 'Partager cette page',
   shareMessage = `À lire sur Le Singe Du Numérique : ${title}`,
 } = Astro.props;
+const headingId = `share-title-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') || 'page'}`;
 ---
 
 <section
@@ -17,9 +18,9 @@ const {
   data-share-widget
   data-share-title={title}
   data-share-message={shareMessage}
-  aria-label={label}
+  aria-labelledby={headingId}
 >
-  <h2>{label}</h2>
+  <p id={headingId} class="social-share-title">{label}</p>
   <ul class="social-share-links">
     <li>
       <a href="#" data-share-platform="facebook" target="_blank" rel="noopener noreferrer">
@@ -92,9 +93,10 @@ const {
     background: rgba(21, 30, 50, 0.65);
   }
 
-  .social-share h2 {
+  .social-share-title {
     margin: 0 0 14px;
     font-size: 1.2rem;
+    font-weight: 700;
   }
 
   .social-share-links {
