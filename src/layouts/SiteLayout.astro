@@ -167,7 +167,7 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
                   <span>Le Singe Du Numérique</span>
                 </div>
                 <div class="footer-line">
-                  <span class="footer-line-label">Menu</span>
+                  <h2 class="footer-line-label">Menu</h2>
                   <ul class="footer-line-content footer-links">
                     <li><a href="/projets">Projets</a></li>
                     <li><a href="/asso">L’association</a></li>
@@ -180,7 +180,7 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
                   </ul>
                 </div>
                 <div class="footer-line">
-                  <span class="footer-line-label">Statut</span>
+                  <h2 class="footer-line-label">Statut</h2>
                   <div class="footer-line-content">
                     <a
                       id="service-status-link"
@@ -195,16 +195,18 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
                     </a>
                     <span class="footer-separator">•</span>
                     <a href="/accessibilite">Accessibilité : non conforme</a>
+                    <span class="footer-separator">•</span>
+                    <a href="/contact">Aide : Contact</a>
                   </div>
                 </div>
                 <div class="footer-line">
-                  <span class="footer-line-label">Crédit</span>
+                  <h2 class="footer-line-label">Crédit</h2>
                   <div class="footer-line-content">
                     <span class="footer-credit">Fait avec ❤️ entre père et fils - Stan et Mikaël BOUCHET</span>
                   </div>
                 </div>
                 <div class="footer-line">
-                  <span class="footer-line-label">Réseaux</span>
+                  <h2 class="footer-line-label">Réseaux</h2>
                   <ul class="footer-line-content footer-socials">
                     <li>
                       <a href="https://www.linkedin.com/in/stanislas-bouchet/" target="_blank" rel="noopener noreferrer">
@@ -470,7 +472,6 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
 
             if (serviceStatusDot && serviceStatusText) {
               refreshServiceStatus();
-              window.setInterval(refreshServiceStatus, 60000);
             }
           </script>
         </>
@@ -598,6 +599,7 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
   }
 
   .footer-line-label {
+    margin: 0;
     font-size: 0.86rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
