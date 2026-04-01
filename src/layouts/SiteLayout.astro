@@ -181,23 +181,23 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
                 </div>
                 <div class="footer-line">
                   <h2 class="footer-line-label">Statut</h2>
-                  <div class="footer-line-content">
-                    <a
-                      id="service-status-link"
-                      class="service-status"
-                      href="https://le-singe-du-numerique.betteruptime.com/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-live="polite"
-                    >
-                      <span id="service-status-dot" class="status-dot status-checking" aria-hidden="true"></span>
-                      <span id="service-status-text">Statut : vérification...</span>
-                    </a>
-                    <span class="footer-separator">•</span>
-                    <a href="/accessibilite">Accessibilité : non conforme</a>
-                    <span class="footer-separator">•</span>
-                    <a href="/contact">Aide : Contact</a>
-                  </div>
+                  <ul class="footer-line-content footer-status">
+                    <li>
+                      <a
+                        id="service-status-link"
+                        class="service-status"
+                        href="https://le-singe-du-numerique.betteruptime.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-live="polite"
+                      >
+                        <span id="service-status-dot" class="status-dot status-checking" aria-hidden="true"></span>
+                        <span id="service-status-text">Statut : vérification...</span>
+                      </a>
+                    </li>
+                    <li><a href="/accessibilite">Accessibilité : non conforme</a></li>
+                    <li><a href="/contact">Aide : Contact</a></li>
+                  </ul>
                 </div>
                 <div class="footer-line">
                   <h2 class="footer-line-label">Crédit</h2>
@@ -677,10 +677,21 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
   }
 
   .footer-links li:not(:last-child)::after,
+  .footer-status li:not(:last-child)::after,
   .footer-socials li:not(:last-child)::after {
     content: '•';
     color: var(--text-muted);
     margin-left: 18px;
+  }
+
+  .footer-status {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .footer-socials a {
@@ -930,10 +941,6 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
   .footer {
     border-top: 1px solid var(--border-color);
     padding: 28px 0 40px;
-  }
-
-  .footer-separator {
-    color: var(--text-muted);
   }
 
   :global(.info-grid) {

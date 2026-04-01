@@ -436,23 +436,23 @@ const websiteSchema = {
           </div>
           <div class="footer-line">
             <h2 class="footer-line-label">Statut</h2>
-            <div class="footer-line-content">
-              <a
-                id="service-status-link"
-                class="service-status"
-                href="https://le-singe-du-numerique.betteruptime.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-live="polite"
-              >
-                <span id="service-status-dot" class="status-dot status-checking" aria-hidden="true"></span>
-                <span id="service-status-text">Statut : vérification...</span>
-              </a>
-              <span class="footer-separator">•</span>
-              <a href="/accessibilite">Accessibilité : non conforme</a>
-              <span class="footer-separator">•</span>
-              <a href="/contact">Aide : Contact</a>
-            </div>
+            <ul class="footer-line-content footer-status">
+              <li>
+                <a
+                  id="service-status-link"
+                  class="service-status"
+                  href="https://le-singe-du-numerique.betteruptime.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-live="polite"
+                >
+                  <span id="service-status-dot" class="status-dot status-checking" aria-hidden="true"></span>
+                  <span id="service-status-text">Statut : vérification...</span>
+                </a>
+              </li>
+              <li><a href="/accessibilite">Accessibilité : non conforme</a></li>
+              <li><a href="/contact">Aide : Contact</a></li>
+            </ul>
           </div>
           <div class="footer-line">
             <h2 class="footer-line-label">Crédit</h2>
@@ -1109,7 +1109,9 @@ const websiteSchema = {
   .footer-links a { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; letter-spacing: -0.01em; }
   .footer-links a:hover { color: var(--brand-green); }
   .footer-links li:not(:last-child)::after,
+  .footer-status li:not(:last-child)::after,
   .footer-socials li:not(:last-child)::after { content: '•'; color: var(--text-muted); margin-left: 18px; }
+  .footer-status { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
   .footer-credit { color: var(--text-muted); font-size: 0.95rem; text-align: left; }
   .footer-socials { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-start; gap: 12px; list-style: none; margin: 0; padding: 0; }
   .footer-socials a { color: var(--text-muted); font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
