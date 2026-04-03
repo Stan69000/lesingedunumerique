@@ -13,6 +13,8 @@
     --field-input-border: #8ca0ba;
     --action-bg: #14b8a6;
     --action-text: #052e2b;
+    --chip-bg: rgba(148, 163, 184, 0.16);
+    --chip-text: #e2e8f0;
     --glow-opacity: 0.15;
     --nav-height: 70px;
   }
@@ -32,6 +34,8 @@
     --field-input-border: #475569;
     --action-bg: #0f766e;
     --action-text: #f8fafc;
+    --chip-bg: #e2e8f0;
+    --chip-text: #1e293b;
     --glow-opacity: 0.08;
   }
 
@@ -44,7 +48,14 @@
   html,
   body {
     max-width: 100%;
-    overflow-x: clip;
+    overflow-x: hidden;
+  }
+
+  img,
+  svg,
+  iframe,
+  video {
+    max-width: 100%;
   }
 
   body { margin: 0; background-color: var(--bg-body); color: var(--text-main); font-family: 'Space Grotesk', sans-serif; line-height: 1.6; transition: background-color 0.5s, color 0.5s; }
@@ -210,8 +221,8 @@
   .search-error { margin: -2px 4px 0; font-size: 0.85rem; color: #ef4444; text-align: left; font-weight: 600; }
 
   .search-meta { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.92rem; color: var(--text-muted); font-weight: 500; flex-wrap: wrap; }
-  .filter-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: rgba(128,128,128, 0.1); border: 1px solid transparent; border-radius: 6px; color: inherit; font: inherit; cursor: pointer; transition: background 0.2s; }
-  .filter-tag:hover { background: rgba(128,128,128, 0.15); }
+  .filter-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--chip-bg); border: 1px solid transparent; border-radius: 6px; color: var(--chip-text); font: inherit; cursor: pointer; transition: background 0.2s, color 0.2s; }
+  .filter-tag:hover { background: rgba(45, 212, 191, 0.18); color: var(--text-main); }
   .divider { opacity: 0.3; }
   .tag-count { opacity: 0.85; }
   .explore-link { margin-top: 8px; }
@@ -219,13 +230,13 @@
   .explore-link a:hover { color: var(--brand-green); }
 
   .quick-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 1.8rem; }
-  .quick-tag { font-size: 0.92rem; font-weight: 500; padding: 8px 15px; background: rgba(128,128,128, 0.1); border-radius: 20px; color: var(--text-muted); transition: all 0.2s; }
+  .quick-tag { font-size: 0.92rem; font-weight: 500; padding: 8px 15px; background: var(--chip-bg); border-radius: 20px; color: var(--chip-text); transition: all 0.2s; }
   .quick-tag:hover { background: rgba(45, 212, 191, 0.15); color: var(--brand-green); }
   .quick-tag-disabled { opacity: 0.55; cursor: default; }
 
   .content-section { padding: 5rem 0; }
   .content-section-alt { background: var(--bg-body); }
-  .section-header { margin-bottom: 3rem; display: flex; align-items: center; gap: 20px; }
+  .section-header { margin-bottom: 3rem; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
   .section-header h2 { font-size: 2.2rem; margin: 0; color: var(--text-main); background: var(--bg-card); padding: 0.15em 0.4em; border-radius: 10px; border: 1px solid var(--border-color); }
   .text-accent { color: var(--brand-green); }
   .line-deco { height: 1px; flex-grow: 1; background: var(--border-color); }
@@ -241,7 +252,7 @@
   .card h3 { margin: 0 0 0.8rem 0; font-size: 1.4rem; color: var(--text-main); }
   .card p { margin: 0; color: var(--text-muted); font-size: 1rem; line-height: 1.72; flex-grow: 1; }
   .card-tags { margin-top: 1.5rem; display: flex; gap: 10px; flex-wrap: wrap; }
-  .card-tags span { font-size: 0.82rem; font-weight: 500; padding: 5px 11px; border-radius: 12px; background: rgba(128,128,128, 0.1); color: var(--text-muted); }
+  .card-tags span { font-size: 0.82rem; font-weight: 500; padding: 5px 11px; border-radius: 12px; background: var(--chip-bg); color: var(--chip-text); }
 
   .eyebrow {
     margin: 0 0 1rem;
@@ -408,4 +419,20 @@
   @media (min-width: 769px) and (max-width: 1024px) {
     .hero-title { font-size: 2.8rem; }
     .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  .footer-line-content,
+  .footer-socials a,
+  .service-status {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 1100px) {
+    .search-bar {
+      flex-wrap: wrap;
+    }
+
+    .search-submit {
+      width: 100%;
+    }
   }
