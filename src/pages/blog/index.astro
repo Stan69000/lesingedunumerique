@@ -7,6 +7,22 @@ import { siteSettings } from '../../config/site';
 const posts = await getCollection('blog');
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
+const FRENCH_READING_WPM = 200;
+const estimateReadingTimeMinutes = (markdown: string) => {
+  const cleanedText = markdown
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/`[^`]*`/g, ' ')
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/[#>*_~\-]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const wordCount = cleanedText ? cleanedText.split(' ').length : 0;
+  return Math.max(1, Math.ceil(wordCount / FRENCH_READING_WPM));
+};
+
 const rubriques = ['Articles', 'Veille', 'Technos'];
 const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
   a.localeCompare(b, 'fr'),
@@ -216,6 +232,7 @@ const blogSchema = {
                 post.data.author ?? '',
                 ...post.data.tags,
               ].join(' ');
+              const readingTimeMinutes = estimateReadingTimeMinutes(post.body);
               return (
                 <article
                   class={`post-card ${index === 0 ? 'featured' : ''}`}
@@ -243,6 +260,7 @@ const blogSchema = {
 
                     <h3>{post.data.title}</h3>
                     <p>{post.data.description}</p>
+                    <p class="post-meta">{readingTimeMinutes} min de lecture</p>
 
                     <a href={`/blog/${post.id}/`} class="post-link">
                       Lire l'article →
@@ -1191,6 +1209,14 @@ const blogSchema = {
     margin: 0;
     color: var(--text-muted);
     line-height: 1.72;
+  }
+
+  .post-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--text-muted);
   }
 
   .post-link {
