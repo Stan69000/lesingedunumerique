@@ -3,6 +3,22 @@ declare(strict_types=1);
 
 function env_value(string $key, string $default = ''): string
 {
+    static $localConfig = null;
+    if ($localConfig === null) {
+        $localConfigPath = __DIR__ . '/contact-config.local.php';
+        if (is_file($localConfigPath)) {
+            $loaded = require $localConfigPath;
+            $localConfig = is_array($loaded) ? $loaded : [];
+        } else {
+            $localConfig = [];
+        }
+    }
+
+    $localValue = $localConfig[$key] ?? '';
+    if (is_string($localValue) && trim($localValue) !== '') {
+        return trim($localValue);
+    }
+
     $value = getenv($key);
     if (is_string($value) && trim($value) !== '') {
         return trim($value);

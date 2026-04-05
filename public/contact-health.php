@@ -6,19 +6,35 @@ header('Cache-Control: no-store');
 
 function env_value(string $key): string
 {
+    static $localConfig = null;
+    if ($localConfig === null) {
+        $localConfigPath = __DIR__ . '/contact-config.local.php';
+        if (is_file($localConfigPath)) {
+            $loaded = require $localConfigPath;
+            $localConfig = is_array($loaded) ? $loaded : [];
+        } else {
+            $localConfig = [];
+        }
+    }
+
+    $localValue = $localConfig[$key] ?? '';
+    if (is_string($localValue) && trim($localValue) !== '') {
+        return trim($localValue);
+    }
+
     $value = getenv($key);
     if (is_string($value) && trim($value) !== '') {
-        return $value;
+        return trim($value);
     }
 
     $serverValue = $_SERVER[$key] ?? '';
     if (is_string($serverValue) && trim($serverValue) !== '') {
-        return $serverValue;
+        return trim($serverValue);
     }
 
     $envValue = $_ENV[$key] ?? '';
     if (is_string($envValue) && trim($envValue) !== '') {
-        return $envValue;
+        return trim($envValue);
     }
 
     return '';
