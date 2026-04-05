@@ -28,6 +28,8 @@ jobs:
         run: npm ci
 
       - name: Build site
+        env:
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY }}
         run: npm run build
 
       - name: Deploy dist to O2Switch
