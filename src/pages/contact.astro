@@ -1,7 +1,8 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 
-const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAACyoDrOsiI8F6Bt-';
+const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '').trim();
+const hasTurnstileSiteKey = turnstileSiteKey !== '';
 ---
 
 <SiteLayout
@@ -22,7 +23,13 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAA
 
       <div id="contact-status" class="contact-status" hidden aria-live="polite"></div>
 
-      <form class="contact-form" action="/contact.php" method="post" data-contact-form>
+      <form
+        class="contact-form"
+        action="/contact.php"
+        method="post"
+        data-contact-form
+        data-turnstile-enabled={hasTurnstileSiteKey ? 'true' : 'false'}
+      >
         <input type="hidden" name="form_started_at" value="" />
         <input type="hidden" name="csrf_token" value="" />
 
@@ -60,7 +67,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAA
           <textarea name="message" rows="8" maxlength="5000" required></textarea>
         </label>
 
-        {turnstileSiteKey && (
+        {hasTurnstileSiteKey && (
           <div
             class="cf-turnstile"
             data-sitekey={turnstileSiteKey}
@@ -139,7 +146,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAA
     </aside>
   </div>
 
-  {turnstileSiteKey && (
+  {hasTurnstileSiteKey && (
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   )}
 
@@ -148,6 +155,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAA
     const statusNode = document.getElementById('contact-status');
     const status = params.get('status');
     const contactForm = document.querySelector('[data-contact-form]');
+    const isTurnstileEnabled = contactForm?.dataset.turnstileEnabled === 'true';
     const startedAtField = contactForm?.querySelector('input[name="form_started_at"]');
     const csrfField = contactForm?.querySelector('input[name="csrf_token"]');
 
@@ -178,6 +186,12 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAA
       csrfField.value = token;
     }
 
+    if (statusNode && !isTurnstileEnabled && !status) {
+      statusNode.hidden = false;
+      statusNode.textContent = 'Le formulaire n’est pas encore configuré côté serveur.';
+      statusNode.classList.add('is-error');
+    }
+
     if (statusNode && status) {
       const messages = {
         sent: {
@@ -194,6 +208,10 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '0x4AAAAAA
         },
         captcha: {
           text: 'La vérification anti-robot a échoué. Merci de réessayer.',
+          type: 'is-error',
+        },
+        captcha_missing: {
+          text: 'La vérification anti-robot n’a pas été détectée. Merci de recharger la page et de réessayer.',
           type: 'is-error',
         },
         error: {

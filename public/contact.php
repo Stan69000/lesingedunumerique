@@ -4,18 +4,18 @@ declare(strict_types=1);
 function env_value(string $key, string $default = ''): string
 {
     $value = getenv($key);
-    if (is_string($value) && $value !== '') {
-        return $value;
+    if (is_string($value) && trim($value) !== '') {
+        return trim($value);
     }
 
     $serverValue = $_SERVER[$key] ?? '';
-    if (is_string($serverValue) && $serverValue !== '') {
-        return $serverValue;
+    if (is_string($serverValue) && trim($serverValue) !== '') {
+        return trim($serverValue);
     }
 
     $envValue = $_ENV[$key] ?? '';
-    if (is_string($envValue) && $envValue !== '') {
-        return $envValue;
+    if (is_string($envValue) && trim($envValue) !== '') {
+        return trim($envValue);
     }
 
     return $default;
@@ -45,6 +45,11 @@ function redirect_with_status(string $status): never
     header('Cache-Control: no-store');
     header('Location: /contact/?status=' . rawurlencode($status), true, 303);
     exit;
+}
+
+function log_contact_issue(string $message): void
+{
+    error_log('[contact] ' . $message);
 }
 
 function is_valid_email_address(string $email): bool
@@ -154,10 +159,16 @@ function post_form(string $url, array $fields): ?string
     return is_string($response) ? $response : null;
 }
 
-function verify_turnstile(string $secret, string $token, string $remoteIp): bool
+function verify_turnstile(string $secret, string $token, string $remoteIp): string
 {
-    if ($secret === '' || $token === '') {
-        return false;
+    if ($secret === '') {
+        log_contact_issue('turnstile secret missing');
+        return 'config';
+    }
+
+    if ($token === '') {
+        log_contact_issue('turnstile token missing in POST payload');
+        return 'captcha_missing';
     }
 
     $payload = [
@@ -170,11 +181,46 @@ function verify_turnstile(string $secret, string $token, string $remoteIp): bool
 
     $rawResponse = post_form(TURNSTILE_VERIFY_ENDPOINT, $payload);
     if ($rawResponse === null) {
-        return false;
+        log_contact_issue('turnstile siteverify request failed');
+        return 'error';
     }
 
     $decoded = json_decode($rawResponse, true);
-    return is_array($decoded) && (($decoded['success'] ?? false) === true);
+    if (!is_array($decoded)) {
+        log_contact_issue('turnstile siteverify returned invalid JSON');
+        return 'error';
+    }
+
+    if (($decoded['success'] ?? false) === true) {
+        return 'ok';
+    }
+
+    $errorCodes = $decoded['error-codes'] ?? [];
+    if (!is_array($errorCodes)) {
+        log_contact_issue('turnstile siteverify failed without error-codes');
+        return 'captcha';
+    }
+
+    $codesForLog = [];
+    foreach ($errorCodes as $code) {
+        if (is_string($code) && $code !== '') {
+            $codesForLog[] = $code;
+        }
+    }
+    if ($codesForLog !== []) {
+        log_contact_issue('turnstile siteverify failed: ' . implode(',', $codesForLog));
+    }
+
+    foreach ($errorCodes as $code) {
+        if ($code === 'missing-input-secret' || $code === 'invalid-input-secret') {
+            return 'config';
+        }
+        if ($code === 'missing-input-response') {
+            return 'captcha_missing';
+        }
+    }
+
+    return 'captcha';
 }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -199,8 +245,9 @@ if (is_rate_limited($ipAddress)) {
 }
 
 $turnstileToken = trim((string) ($_POST['cf-turnstile-response'] ?? ''));
-if (!verify_turnstile($turnstileSecret, $turnstileToken, $ipAddress)) {
-    redirect_with_status('captcha');
+$turnstileStatus = verify_turnstile($turnstileSecret, $turnstileToken, $ipAddress);
+if ($turnstileStatus !== 'ok') {
+    redirect_with_status($turnstileStatus);
 }
 
 $csrfToken = trim((string) ($_POST['csrf_token'] ?? ''));
