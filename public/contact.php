@@ -163,7 +163,7 @@ function verify_turnstile(string $secret, string $token, string $remoteIp): stri
 {
     if ($secret === '') {
         log_contact_issue('turnstile secret missing');
-        return 'config';
+        return 'config_turnstile_missing';
     }
 
     if ($token === '') {
@@ -213,7 +213,7 @@ function verify_turnstile(string $secret, string $token, string $remoteIp): stri
 
     foreach ($errorCodes as $code) {
         if ($code === 'missing-input-secret' || $code === 'invalid-input-secret') {
-            return 'config';
+            return 'config_turnstile_secret';
         }
         if ($code === 'missing-input-response') {
             return 'captcha_missing';
@@ -228,11 +228,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 if (!validate_config_emails($recipient, $fromEmail)) {
-    redirect_with_status('config');
+    redirect_with_status('config_email');
 }
 
 if ($turnstileSecret === '') {
-    redirect_with_status('config');
+    redirect_with_status('config_turnstile_missing');
 }
 
 if (!has_valid_same_origin()) {

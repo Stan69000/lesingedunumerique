@@ -222,6 +222,18 @@ const hasTurnstileSiteKey = turnstileSiteKey !== '';
           text: 'Le formulaire n’est pas encore configuré côté serveur.',
           type: 'is-error',
         },
+        config_email: {
+          text: 'Configuration serveur invalide: adresse e-mail de destination ou d’envoi incorrecte.',
+          type: 'is-error',
+        },
+        config_turnstile_missing: {
+          text: 'Configuration serveur invalide: clé secrète Turnstile absente.',
+          type: 'is-error',
+        },
+        config_turnstile_secret: {
+          text: 'Configuration serveur invalide: clé secrète Turnstile incorrecte.',
+          type: 'is-error',
+        },
       };
 
       const entry = messages[status];
