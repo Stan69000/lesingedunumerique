@@ -1,130 +1,72 @@
 ---
-title: "Magazines, médias et ressources à suivre"
-description: "Une sélection de médias et de ressources pour construire une veille numérique utile, lisible et adaptée à différents publics."
+title: Magazines, médias et ressources à suivre
+description: Une sélection de médias et de ressources pour construire une veille
+  numérique utile, lisible et adaptée à différents publics.
 pubDate: 2026-03-29
-rubrique: "Veille"
-tags: ["Veille", "Ressources", "Médias"]
-author: "Stan Bouchet"
+rubrique: Veille
+tags:
+  - Veille
+  - Ressources
+  - Médias
+author: Stan Bouchet
 ---
-
 # Magazines, médias et ressources à suivre
 
-Quand on veut rester en veille, le plus dur n'est pas de trouver des sources. C'est de trouver les bonnes, puis de garder une routine réaliste.
+Quand on veut rester en veille numérique, le plus dur n'est pas de trouver des sources. C'est de trouver les bonnes, puis de tenir une routine réaliste.
 
-Cette sélection est pensée comme un point de départ, dans une version simple à parcourir et utile au quotidien.
+Cette sélection est pensée comme un point de départ — simple à parcourir, utile au quotidien, adaptée selon votre niveau et vos intérêts.
 
 ## Repères rapides
 
-Si tu veux aller à l’essentiel :
+* **pour une veille grand public en français** : *Numerama*, *Clubic*
+* **pour un public jeune** : *Geek Junior*
+* **pour une veille plus spécialisée cyber** : *MISC*, *LeMagIT*, *ZDNet Sécurité*
+* **pour compléter en anglais** : *Ars Technica* et *Dark Reading*
 
-- **pour une veille grand public en français** : *01net*, *Numerama*, *Clubic*
-- **pour un public jeune** : *Geek Junior*
-- **pour une veille plus spécialisée cyber** : *MISC*, *LeMagIT*, *ZDNet Sécurité*
-- **pour compléter en anglais** : *Ars Technica* et *Dark Reading*
-
-## Aller directement à
-
-- [Grand public en français](#grand-public-fr)
-- [Plus spécialisés](#specialises)
-- [Ressources en anglais](#anglais)
-
-<h2 id="grand-public-fr">Grand public en français</h2>
-
-### 01net
-
-- **Pourquoi le suivre ?** actualité tech, sécurité, tests et dossiers accessibles.
-- **Public :** grand public
-- **Lien :** [Site officiel](https://www.01net.com/)
+## Grand public en français
 
 ### Numerama
 
-- **Pourquoi le suivre ?** très utile pour croiser numérique, culture, société et enjeux contemporains.
-- **Public :** grand public, médiation
-- **Lien :** [Site officiel](https://www.numerama.com/)
-
-### Le Monde Informatique
-
-- **Pourquoi le suivre ?** une source intéressante pour relier actualité tech et usages professionnels.
-- **Public :** large, associatif, semi-pro
-- **Lien :** [Site officiel](https://www.lemondeinformatique.fr/)
+* **Pourquoi le suivre ?** Très utile pour croiser numérique, culture, société et enjeux contemporains. Un angle plus éditorial que la pure actualité tech.
+* **Public :** grand public, médiation
+* **Lien :** [Site officiel](https://www.numerama.com/)
 
 ### Clubic
 
-- **Pourquoi le suivre ?** pour les tests, les guides pratiques et une veille high-tech assez accessible.
-- **Public :** grand public
-- **Lien :** [Site officiel](https://www.clubic.com/)
+* **Pourquoi le suivre ?** Pour les tests, les guides pratiques et une veille high-tech assez accessible. Idéal pour accompagner un achat ou comprendre un outil.
+* **Public :** grand public
+* **Lien :** [Site officiel](https://www.clubic.com/)
 
 ### Geek Junior
 
-- **Pourquoi le suivre ?** particulièrement utile pour un public jeune, familial ou éducatif.
-- **Public :** adolescents, familles, médiation
-- **Lien :** [Site officiel](https://www.geekjunior.fr/)
+* **Pourquoi le suivre ?** Un média numérique pensé pour les enfants et les ados, utile aussi pour les parents et les médiateurs qui cherchent des ressources adaptées.
+* **Public :** jeunesse, familles, éducateurs
+* **Lien :** [Site officiel](https://www.geekjunior.fr/)
 
-<h2 id="specialises">Sources plus spécialisées</h2>
+## Plus spécialisés
 
-### MISC
+### MISC Magazine
 
-- **Pourquoi le suivre ?** une référence francophone pour des sujets cyber plus avancés.
-- **Public :** averti, technique
-- **Lien :** [Site officiel](https://www.miscmag.com/)
+* **Pourquoi le suivre ?** La référence française pour les sujets cybersécurité plus techniques. Articles de fond, cas pratiques, perspectives d'experts.
+* **Public :** avertis, techniciens, personnes qui veulent aller plus loin
+* **Lien :** [Site officiel](https://www.miscmag.com/)
+
+### ZDNet Sécurité
+
+* **Pourquoi le suivre ?** Pour une veille sécurité complète et régulière, avec un bon suivi des incidents, vulnérabilités et actualités du secteur.
+* **Public :** intermédiaire à avancé
+* **Lien :** [Site officiel](https://www.zdnet.fr/)
 
 ### LeMagIT
 
-- **Pourquoi le suivre ?** analyses, retours terrain et sujets sécurité utiles pour les structures et les organisations.
-- **Public :** associatif, pro, veille structurée
-- **Lien :** [Site officiel](https://www.lemagit.fr/)
+* **Pourquoi le suivre ?** Utile pour relier actualité tech et usages professionnels ou associatifs. Bon équilibre entre accessibilité et profondeur.
+* **Public :** large, semi-pro, associatif
+* **Lien :** [Site officiel](https://www.lemagit.fr/)
 
-### ZDNet France – Sécurité
+## Pour aller plus loin
 
-- **Pourquoi le suivre ?** une bonne porte d'entrée pour les actualités sécurité en français.
-- **Public :** intermédiaire à avancé
-- **Lien :** [Section sécurité](https://www.zdnet.fr/actualites/securite/)
+Cette sélection se concentre sur les médias écrits. Pour compléter avec d'autres formats :
 
-### Global Security Mag
-
-- **Pourquoi le suivre ?** plus orienté cyber professionnelle, utile pour repérer des tendances et des sujets de fond.
-- **Public :** averti
-- **Lien :** [Site officiel](https://www.globalsecuritymag.fr/)
-
-<h2 id="anglais">Ressources en anglais</h2>
-
-### Ars Technica
-
-- **Pourquoi le suivre ?** pour des analyses solides, souvent plus approfondies que de simples brèves d’actualité.
-- **Public :** curieux, veille internationale
-- **Lien :** [Site officiel](https://arstechnica.com/)
-
-### Dark Reading
-
-- **Pourquoi le suivre ?** une référence pour la veille cybersécurité plus professionnelle.
-- **Public :** cyber, technique, veille spécialisée
-- **Lien :** [Site officiel](https://www.darkreading.com/)
-
-### TechCrunch
-
-- **Pourquoi le suivre ?** pour les tendances tech, les startups et l'écosystème innovation.
-- **Public :** veille généraliste
-- **Lien :** [Site officiel](https://techcrunch.com/)
-
-### PCMag
-
-- **Pourquoi le suivre ?** tests, comparatifs et contenus orientés produits et usages.
-- **Public :** grand public, semi-tech
-- **Lien :** [Site officiel](https://www.pcmag.com/)
-
-## Comment construire une veille sobre
-
-Une veille utile ne repose pas sur la quantité.
-
-Le plus efficace est souvent de combiner :
-
-- 2 ou 3 sources généralistes
-- 1 ou 2 sources plus spécialisées
-- un rythme de lecture réaliste
-
-L'objectif n'est pas de tout savoir. L'objectif est de :
-
-- repérer les sujets importants
-- nourrir les contenus du site
-- préparer des ateliers ou des échanges
-- recommander des ressources fiables
+* [Podcasts à suivre sur le numérique et la cybersécurité](/blog/podcasts-numerique-cyber/)
+* [Livres pour mieux comprendre la cybersécurité](/blog/livres-cyber-pour-demarrer/)
+* [Films, séries et documentaires pour parler numérique autrement](/blog/films-series-documentaires-numerique/)
