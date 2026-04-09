@@ -96,20 +96,25 @@ jobs:
 
           DEFAULT_URLS="https://lesingedunumerique.fr/\nhttps://lesingedunumerique.fr/sitemap.xml"
           RAW_URLS="${HEALTHCHECK_URLS:-$DEFAULT_URLS}"
+          MAX_ATTEMPTS=8
+          SLEEP_SECONDS=10
 
           printf "%b\n" "$RAW_URLS" | tr ',' '\n' | sed '/^[[:space:]]*$/d' > health_urls.txt
+
+          # Give the host a short warm-up window after FTPS sync before probing endpoints.
+          sleep "$SLEEP_SECONDS"
 
           while IFS= read -r url; do
             attempt=1
             passed=0
-            while [ "$attempt" -le 3 ]; do
-              echo "Healthcheck attempt ${attempt}/3: ${url}"
+            while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
+              echo "Healthcheck attempt ${attempt}/${MAX_ATTEMPTS}: ${url}"
               if curl --fail --silent --show-error --location --max-time 20 "$url" > /dev/null; then
                 passed=1
                 break
               fi
               attempt=$((attempt + 1))
-              sleep 5
+              sleep "$SLEEP_SECONDS"
             done
 
             if [ "$passed" -ne 1 ]; then
