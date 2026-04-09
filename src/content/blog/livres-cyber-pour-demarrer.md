@@ -61,4 +61,4 @@ Cette sélection se concentre sur les livres. Pour compléter avec d'autres form
 * [Films, séries et documentaires pour parler numérique autrement](/blog/films-series-documentaires-numerique/)
 
 ## Vous connaissez d'autres références ? 
-Contactez-nous (/contact)
+* [Contactez-nous](/contact/)
