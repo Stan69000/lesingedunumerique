@@ -10,6 +10,10 @@ concurrency:
   group: deploy-o2switch-production
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -24,24 +28,128 @@ jobs:
           node-version: 22.12.0
           cache: npm
 
-      - name: Install dependencies
+      - name: Install dependencies (root)
         run: npm ci
+
+      - name: Security audit (root)
+        run: npm audit --audit-level=high
 
       - name: Build site
         env:
           PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY }}
         run: npm run build
 
-      - name: Deploy dist to O2Switch
+      - name: Upload candidate artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-candidate
+          path: dist/
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Download candidate artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dist-candidate
+          path: ./dist-candidate
+
+      - name: Download last known good artifact
+        uses: dawidd6/action-download-artifact@v9
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: deploy-o2switch.yml
+          branch: main
+          name: last-known-good-dist
+          path: ./last-known-good
+          if_no_artifact_found: warn
+
+      - name: Check if backup is available
+        id: backup
+        run: |
+          if [ -d ./last-known-good ] && [ "$(find ./last-known-good -type f | wc -l | tr -d ' ')" -gt 0 ]; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "exists=false" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy candidate to O2Switch
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.O2SWITCH_FTP_SERVER }}
           username: ${{ secrets.O2SWITCH_FTP_USERNAME }}
           password: ${{ secrets.O2SWITCH_FTP_PASSWORD }}
           protocol: ftps
-          local-dir: ./dist/
+          local-dir: ./dist-candidate/
           server-dir: ${{ secrets.O2SWITCH_REMOTE_DIR }}
           exclude: |
             **/.git*
             **/.DS_Store
             admin/**
+
+      - name: Healthcheck production
+        id: healthcheck
+        continue-on-error: true
+        env:
+          HEALTHCHECK_URLS: ${{ secrets.O2SWITCH_HEALTHCHECK_URLS }}
+        run: |
+          set -eu
+
+          DEFAULT_URLS="https://lesingedunumerique.fr/\nhttps://lesingedunumerique.fr/sitemap.xml"
+          RAW_URLS="${HEALTHCHECK_URLS:-$DEFAULT_URLS}"
+
+          printf "%b\n" "$RAW_URLS" | tr ',' '\n' | sed '/^[[:space:]]*$/d' > health_urls.txt
+
+          while IFS= read -r url; do
+            attempt=1
+            passed=0
+            while [ "$attempt" -le 3 ]; do
+              echo "Healthcheck attempt ${attempt}/3: ${url}"
+              if curl --fail --silent --show-error --location --max-time 20 "$url" > /dev/null; then
+                passed=1
+                break
+              fi
+              attempt=$((attempt + 1))
+              sleep 5
+            done
+
+            if [ "$passed" -ne 1 ]; then
+              echo "Healthcheck failed for ${url}"
+              exit 1
+            fi
+          done < health_urls.txt
+
+      - name: Rollback to last known good (automatic)
+        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.O2SWITCH_FTP_SERVER }}
+          username: ${{ secrets.O2SWITCH_FTP_USERNAME }}
+          password: ${{ secrets.O2SWITCH_FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./last-known-good/
+          server-dir: ${{ secrets.O2SWITCH_REMOTE_DIR }}
+          exclude: |
+            **/.git*
+            **/.DS_Store
+            admin/**
+
+      - name: Fail deployment if rollback happened
+        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
+        run: |
+          echo "Deployment failed healthchecks and has been rolled back automatically."
+          exit 1
+
+      - name: Fail deployment if rollback was not possible
+        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists != 'true'
+        run: |
+          echo "Deployment failed healthchecks and no last known good backup was available to rollback."
+          exit 1
+
+      - name: Publish new last known good artifact
+        if: steps.healthcheck.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: last-known-good-dist
+          path: ./dist-candidate/
+          if-no-files-found: error
+          retention-days: 90

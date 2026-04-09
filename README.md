@@ -142,11 +142,22 @@ L'administration publique ne doit pas être servie depuis O2Switch.
 
 Le site public est déployé automatiquement depuis `main` via GitHub Actions.
 
-Le workflow :
+Les workflows :
 
-1. installe les dépendances
-2. build le site Astro
-3. envoie le contenu de `dist/` vers O2Switch
+1. `Security CI` sur PR et `main` :
+   - `npm audit` (racine + `decap-oauth-vercel`)
+   - build Astro (racine + `decap-oauth-vercel`)
+   - scan de secrets (`gitleaks`)
+2. `Dependabot Auto Merge` :
+   - auto-approve + auto-merge pour les mises à jour `patch`/`minor`
+   - les mises à jour `major` restent manuelles
+3. `Deploy O2Switch` sur `main` :
+   - installe les dépendances
+   - exécute `npm audit --audit-level=high`
+   - build le site Astro
+   - déploie `dist/` vers O2Switch (FTPS)
+   - exécute des healthchecks post-déploiement
+   - déclenche un rollback automatique vers le dernier artefact sain si un healthcheck échoue
 
 Secrets GitHub à renseigner dans le dépôt :
 
@@ -154,15 +165,22 @@ Secrets GitHub à renseigner dans le dépôt :
 - `O2SWITCH_FTP_USERNAME`
 - `O2SWITCH_FTP_PASSWORD`
 - `O2SWITCH_REMOTE_DIR`
+- `O2SWITCH_HEALTHCHECK_URLS` (optionnel)
 
 Valeur attendue pour `O2SWITCH_REMOTE_DIR` :
 
 - le chemin distant exact de la racine web du site, par exemple `/lesingedunumerique.fr/`
 
+Valeur possible pour `O2SWITCH_HEALTHCHECK_URLS` :
+
+- liste d'URLs séparées par des virgules ou des retours ligne, par exemple :
+  `https://lesingedunumerique.fr/,https://lesingedunumerique.fr/sitemap.xml`
+
 Note :
 
 - le workflow n'envoie pas `admin/` sur O2Switch
 - l'administration reste servie uniquement sur Vercel
+- au premier déploiement, s'il n'existe pas encore d'artefact sain, un rollback automatique n'est pas possible
 
 ## Accessibilité
 

@@ -1,0 +1,33 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "03:00"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: direct
+      - dependency-type: indirect
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+      - "security"
+
+  - package-ecosystem: npm
+    directory: "/decap-oauth-vercel"
+    schedule:
+      interval: daily
+      time: "03:15"
+      timezone: "Europe/Paris"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: direct
+      - dependency-type: indirect
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+      - "security"

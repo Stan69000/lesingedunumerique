@@ -1,0 +1,53 @@
+name: Security CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  security-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22.12.0
+          cache: npm
+
+      - name: Install dependencies (root)
+        run: npm ci
+
+      - name: Security audit (root)
+        run: npm audit --audit-level=high
+
+      - name: Build (root)
+        env:
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY }}
+        run: npm run build
+
+      - name: Install dependencies (decap-oauth-vercel)
+        working-directory: decap-oauth-vercel
+        run: npm ci
+
+      - name: Security audit (decap-oauth-vercel)
+        working-directory: decap-oauth-vercel
+        run: npm audit --audit-level=high
+
+      - name: Build (decap-oauth-vercel)
+        working-directory: decap-oauth-vercel
+        env:
+          OAUTH_GITHUB_CLIENT_ID: ci-placeholder-client-id
+          OAUTH_GITHUB_CLIENT_SECRET: ci-placeholder-client-secret
+        run: npm run build
+
+      - name: Secret scan (gitleaks)
+        uses: gitleaks/gitleaks-action@v2
