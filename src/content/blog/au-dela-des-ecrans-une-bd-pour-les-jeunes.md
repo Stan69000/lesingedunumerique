@@ -8,7 +8,7 @@ tags:
   - Jeunesse
   - Ressources
   - Débutant
-author: "Stan Bouchet"
+author: Stan Bouchet
 ---
 
 # Au-delà des écrans : une BD pour ouvrir la discussion avec les jeunes
@@ -73,7 +73,7 @@ Quelques questions simples peuvent accompagner la lecture :
 
 ## Télécharger, partager, réutiliser
 
-Si tu veux utiliser directement cette ressource :
+Si vous voulez utiliser directement cette ressource :
 
 - [ouvrir le PDF](/docs/Au-dela-des-ecrans.pdf)
 - l'imprimer pour un atelier ou un échange en groupe
