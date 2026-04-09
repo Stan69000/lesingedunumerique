@@ -1,10 +1,14 @@
 ---
-title: "Podcasts à suivre sur le numérique et la cybersécurité"
-description: "Une sélection structurée de podcasts pour débuter une veille, écouter des retours d’expérience et suivre les sujets numériques autrement."
+title: Podcasts à suivre sur le numérique et la cybersécurité
+description: Une sélection structurée de podcasts pour débuter une veille,
+  écouter des retours d’expérience et suivre les sujets numériques autrement.
 pubDate: 2026-03-29
-rubrique: "Veille"
-tags: ["Podcasts", "Veille", "Cybersécurité"]
-author: "Stan Bouchet"
+rubrique: Veille
+tags:
+  - Podcasts
+  - Veille
+  - Cybersécurité
+author: Stan Bouchet
 ---
 
 # Podcasts à suivre sur le numérique et la cybersécurité
@@ -15,7 +19,7 @@ Cette sélection propose des points d'entrée utiles, accessibles et transmissib
 
 ## Repères rapides
 
-Si tu veux commencer simplement :
+Si vous voulez commencer simplement :
 
 - **pour l’actualité tech francophone** : *Le Rendez-vous Tech*
 - **pour une veille plus large** : *Tech Café*
@@ -108,7 +112,7 @@ Si tu veux commencer simplement :
 
 ## Comment se constituer une veille simple
 
-Tu n’as pas besoin d’en suivre dix.
+Pas besoin d’en suivre dix ^^
 
 Une base très suffisante peut ressembler à ceci :
 
