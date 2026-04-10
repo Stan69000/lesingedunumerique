@@ -15,7 +15,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
     "astro": "^6.1.1",
-    "marked": "^17.0.5",
+    "marked": "^18.0.0",
     "tailwindcss": "^4.2.2"
   }
 }
