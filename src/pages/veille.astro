@@ -140,6 +140,17 @@ const structuredData = {
   },
 };
 
+const hasMissingInoreaderAuthWarning = (veille.warnings || []).some((warning) =>
+  String(warning || '').toLowerCase().includes('missing inoreader auth'),
+);
+const publicWarnings = (veille.warnings || [])
+  .map((warning) => String(warning || '').trim())
+  .filter(Boolean)
+  .filter((warning) => !warning.toLowerCase().includes('missing inoreader auth'));
+if (hasMissingInoreaderAuthWarning) {
+  publicWarnings.unshift('Alimentation en direct temporairement indisponible. Affichage depuis le cache.');
+}
+
 const franceSourceRegex =
   /(france|gouv|anssi|cybermalveillance|franceinfo|francebleu|bfm|ouest-france|le parisien|la depeche|actu\.fr|numerama|clubic|zataz|le monde)/i;
 
@@ -219,13 +230,7 @@ Restez vigilant face aux menaces qui évoluent en permanence.`}
       </div>
     </div>
 
-    {
-      veille.warnings.length > 0 && (
-        <p class="warning-box">
-          Mode dégradé partiel : {veille.warnings.join(' | ')}
-        </p>
-      )
-    }
+    {publicWarnings.length > 0 && <p class="warning-box">Mode dégradé partiel : {publicWarnings.join(' | ')}</p>}
   </section>
 
   <section class="action-strip" aria-label="Actions rapides">

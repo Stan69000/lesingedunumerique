@@ -37,6 +37,15 @@ jobs:
       - name: Build site
         env:
           PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY }}
+          INOREADER_TOKEN: ${{ secrets.INOREADER_TOKEN }}
+          INOREADER_ACCESS_TOKEN: ${{ secrets.INOREADER_ACCESS_TOKEN }}
+          INOREADER_CLIENT_ID: ${{ secrets.INOREADER_CLIENT_ID }}
+          INOREADER_CLIENT_SECRET: ${{ secrets.INOREADER_CLIENT_SECRET }}
+          INOREADER_REFRESH_TOKEN: ${{ secrets.INOREADER_REFRESH_TOKEN }}
+          INOREADER_OAUTH_TOKEN_URL: ${{ vars.INOREADER_OAUTH_TOKEN_URL }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ANTHROPIC_MODEL: ${{ vars.ANTHROPIC_MODEL }}
+          VEILLE_ENABLE_ENRICHMENT: "false"
         run: npm run build
 
       - name: Upload candidate artifact
