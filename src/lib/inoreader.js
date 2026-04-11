@@ -26,7 +26,7 @@ export const VEILLE_BLOCKS = [
   },
   {
     key: 'cyber',
-    title: 'Actu cyber',
+    title: 'Actu',
     labelEnv: 'INOREADER_LABEL_CYBER',
     streamEnv: 'INOREADER_STREAM_CYBER',
     extraStreamsEnv: 'INOREADER_EXTRA_STREAMS_CYBER',

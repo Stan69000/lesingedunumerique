@@ -22,7 +22,7 @@ const blocMeta = {
     rss: '/veille-failles.xml',
   },
   cyber: {
-    title: 'Actu cyber',
+    title: 'Actu',
     rss: '/veille-cyber.xml',
   },
   associations: {
@@ -61,9 +61,9 @@ const visibleArticles = sortedArticles.filter((article) => bypassGeoFilter || is
 ---
 
 <SiteLayout
-  title={`${meta.title} | Actu Cyber`}
+  title={`${meta.title} | Actu`}
   description={`Veille publique - ${meta.title.toLowerCase()}.`}
-  eyebrow="Actu Cyber"
+  eyebrow="Actu"
   headline={meta.title}
   intro="Version ciblée de la veille publique pour ce bloc uniquement."
   showShare={false}
