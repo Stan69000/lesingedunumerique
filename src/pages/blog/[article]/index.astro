@@ -312,6 +312,36 @@ const articleSchema = {
         color: var(--text-main);
       }
 
+      .rss-nav-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 0.36rem 0.72rem;
+        color: var(--accent);
+        font-size: 0.84rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        text-decoration: none;
+        line-height: 1;
+      }
+
+      .rss-nav-link svg {
+        width: 14px;
+        height: 14px;
+      }
+
+      .rss-nav-link[aria-current='page'] {
+        border-color: var(--accent);
+      }
+
+      .rss-nav-link:hover {
+        border-color: var(--accent);
+        filter: brightness(1.06);
+      }
+
       .nav-item:hover,
       .footer-links a:hover {
         color: var(--accent);
@@ -708,7 +738,12 @@ const articleSchema = {
                     <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
                     <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
                     <li><a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a></li>
+                    <li><a href="/veille" class="nav-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu Cyber</a></li>
                   </ul>
+                  <a href="/flux" class="rss-nav-link" aria-current={currentPath === '/flux' ? 'page' : undefined} aria-label="Acceder aux flux RSS">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.18 17.82a2.18 2.18 0 1 1 0-4.36 2.18 2.18 0 0 1 0 4.36ZM4 4v3.27c7.03 0 12.73 5.7 12.73 12.73H20C20 11.16 12.84 4 4 4Zm0 6.54v3.27A6.2 6.2 0 0 1 10.2 20h3.27A9.47 9.47 0 0 0 4 10.54Z"/></svg>
+                    <span>RSS</span>
+                  </a>
                   <button
                     id="theme-toggle"
                     class="theme-btn"
@@ -748,6 +783,8 @@ const articleSchema = {
                 <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
                 <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
                 <a href="/blog" class="mobile-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+                <a href="/veille" class="mobile-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu Cyber</a>
+                <a href="/flux" class="mobile-item" aria-current={currentPath === '/flux' ? 'page' : undefined}>Flux RSS</a>
                 <div class="mobile-theme-toggle">
                   <span>Changer le thème</span>
                   <button
