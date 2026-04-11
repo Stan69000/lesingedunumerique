@@ -34,6 +34,30 @@ const meta = blocMeta[bloc];
 
 const veille = await getVeilleData();
 const section = veille.sections.find((item) => item.key === bloc);
+
+const franceSourceRegex =
+  /(france|gouv|anssi|cybermalveillance|franceinfo|francebleu|bfm|ouest-france|le parisien|la depeche|actu\.fr|numerama|clubic|zataz|le monde)/i;
+
+function isFranceArticle(article) {
+  const source = String(article?.source || '');
+  const sourceLower = source.toLowerCase();
+  const url = String(article?.url || '');
+  if (sourceLower.includes('fuité aujourd') || sourceLower.includes('bonjourlafuite')) return true;
+  if (franceSourceRegex.test(source)) return true;
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    if (host.includes('bonjourlafuite.eu.org')) return true;
+    return host.endsWith('.fr') || host.includes('france');
+  } catch {
+    return false;
+  }
+}
+
+const sortedArticles = [...(section?.articles || [])].sort(
+  (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
+);
+const bypassGeoFilter = bloc === 'failles';
+const visibleArticles = sortedArticles.filter((article) => bypassGeoFilter || isFranceArticle(article));
 ---
 
 <SiteLayout
@@ -50,11 +74,11 @@ const section = veille.sections.find((item) => item.key === bloc);
   </p>
 
   {
-    !section || section.articles.length === 0 ? (
+    !section || visibleArticles.length === 0 ? (
       <p class="empty-state">Aucun article disponible pour ce bloc.</p>
     ) : (
       <div class="veille-grid">
-        {section.articles.map((article) => (
+        {visibleArticles.map((article) => (
           <article class="veille-card">
             <p class="card-meta">
               <span>{article.source}</span>
