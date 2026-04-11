@@ -1,0 +1,112 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const sections = [
+  {
+    title: 'Arnaques et phishing (France)',
+    items: [
+      { name: 'Cybermalveillance.gouv.fr', url: 'https://www.cybermalveillance.gouv.fr/' },
+      { name: 'Service-Public.fr', url: 'https://www.service-public.fr/' },
+      { name: 'Franceinfo', url: 'https://www.francetvinfo.fr/' },
+      { name: 'Ouest-France', url: 'https://www.ouest-france.fr/' },
+    ],
+  },
+  {
+    title: 'Failles et alertes sécurité',
+    items: [
+      { name: 'BonjourLaFuite', url: 'https://bonjourlafuite.eu.org/' },
+      { name: 'CERT-FR', url: 'https://www.cert.ssi.gouv.fr/' },
+      { name: 'ANSSI', url: 'https://cyber.gouv.fr/' },
+      { name: 'Numerama (cyber)', url: 'https://www.numerama.com/' },
+    ],
+  },
+  {
+    title: 'Actu cyber',
+    items: [
+      { name: 'Le Monde Informatique', url: 'https://www.lemondeinformatique.fr/' },
+      { name: 'Clubic', url: 'https://www.clubic.com/' },
+      { name: 'ZATAZ', url: 'https://www.zataz.com/' },
+      { name: 'Le Monde (numérique)', url: 'https://www.lemonde.fr/' },
+    ],
+  },
+  {
+    title: 'Actu associations',
+    items: [
+      { name: 'Associations.gouv.fr', url: 'https://www.associations.gouv.fr/' },
+      { name: 'Service-Public.fr (association)', url: 'https://www.service-public.fr/associations' },
+      { name: 'Banque de France (prévention)', url: 'https://www.banque-france.fr/' },
+    ],
+  },
+];
+---
+
+<SiteLayout
+  title="Sources de veille | Actu Cyber"
+  description="Liste des sources prioritaires utilisées pour la veille publique."
+  eyebrow="Actu Cyber"
+  headline="Sources"
+  accent="de veille"
+  intro="Cette page liste les sources que nous privilégions pour limiter le bruit et améliorer la fiabilité des contenus."
+  showShare={false}
+>
+  <p class="source-note">
+    Filtrage par défaut sur la France. Tu peux activer l'international depuis la page <a href="/veille">/veille</a>.
+  </p>
+
+  <div class="sources-grid">
+    {
+      sections.map((section) => (
+        <section class="source-card">
+          <h2>{section.title}</h2>
+          <ul>
+            {section.items.map((item) => (
+              <li>
+                <a href={item.url} target="_blank" rel="noopener noreferrer">{item.name}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))
+    }
+  </div>
+</SiteLayout>
+
+<style>
+  .source-note {
+    margin: 0 0 1rem;
+    color: var(--text-muted);
+  }
+
+  .sources-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .source-card {
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-card);
+    padding: 1rem;
+  }
+
+  .source-card h2 {
+    margin: 0 0 0.6rem;
+    font-size: 1.1rem;
+  }
+
+  .source-card ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .source-card a {
+    color: var(--text-main);
+  }
+
+  .source-card a:hover {
+    color: var(--brand-green);
+  }
+</style>

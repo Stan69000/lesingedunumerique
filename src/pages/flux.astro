@@ -1,0 +1,138 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+
+const rssFeeds = [
+  {
+    title: 'Blog',
+    description: 'Tous les derniers articles du blog.',
+    href: '/blog.xml',
+  },
+  {
+    title: 'Veille complete',
+    description: 'Tous les blocs de veille dans un seul flux.',
+    href: '/veille.xml',
+  },
+  {
+    title: 'Veille - Dernieres arnaques',
+    description: 'Flux dedie aux arnaques et campagnes frauduleuses.',
+    href: '/veille-arnaques.xml',
+  },
+  {
+    title: 'Veille - Dernieres failles de securite',
+    description: 'Flux dedie aux failles et vulnérabilites de securite.',
+    href: '/veille-failles.xml',
+  },
+  {
+    title: 'Veille - Actu cyber',
+    description: 'Flux dedie a l actualite cyber generale.',
+    href: '/veille-cyber.xml',
+  },
+  {
+    title: 'Veille - Actu associations',
+    description: 'Flux dedie a l actualite associative.',
+    href: '/veille-associations.xml',
+  },
+];
+---
+
+<SiteLayout
+  title="Flux RSS | Le Singe Du Numerique"
+  description="Abonnement RSS au blog et aux blocs de veille publique."
+  eyebrow="Flux RSS"
+  headline="Abonnements RSS"
+  accent="blog et veille"
+  intro="Choisis un ou plusieurs flux pour suivre les publications sans passer par les reseaux sociaux."
+  showShare={false}
+>
+  <section class="flux-grid">
+    {
+      rssFeeds.map((feed) => (
+        <article class="flux-card">
+          <h2>{feed.title}</h2>
+          <p>{feed.description}</p>
+          <div class="flux-actions">
+            <a href={feed.href}>Ouvrir le flux</a>
+            <button type="button" data-copy={feed.href}>Copier l URL</button>
+          </div>
+        </article>
+      ))
+    }
+  </section>
+
+  <p class="flux-help">
+    Astuce: colle le lien RSS dans ton lecteur prefere (Inoreader, Feedly, NetNewsWire, Thunderbird...).
+  </p>
+
+  <script>
+    const copyButtons = Array.from(document.querySelectorAll('button[data-copy]'));
+    copyButtons.forEach((button) => {
+      button.addEventListener('click', async () => {
+        const href = button.getAttribute('data-copy');
+        if (!href) return;
+        const absoluteUrl = new URL(href, window.location.origin).toString();
+        await navigator.clipboard.writeText(absoluteUrl);
+        const previous = button.textContent;
+        button.textContent = 'Copie';
+        window.setTimeout(() => {
+          button.textContent = previous;
+        }, 1200);
+      });
+    });
+  </script>
+</SiteLayout>
+
+<style>
+  .flux-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .flux-card {
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-card);
+    padding: 1rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .flux-card h2 {
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  .flux-card p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .flux-actions {
+    display: inline-flex;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+  }
+
+  .flux-actions a,
+  .flux-actions button {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--text-main);
+    background: transparent;
+    padding: 0.45rem 0.8rem;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .flux-actions a:hover,
+  .flux-actions button:hover {
+    border-color: var(--brand-green);
+    color: var(--brand-green);
+  }
+
+  .flux-help {
+    margin: 1.3rem 0 0;
+    color: var(--text-muted);
+  }
+</style>

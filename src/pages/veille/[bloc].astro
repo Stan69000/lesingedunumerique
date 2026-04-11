@@ -1,0 +1,193 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { getVeilleData } from '../../lib/veille.js';
+
+export async function getStaticPaths() {
+  return [
+    { params: { bloc: 'arnaques' } },
+    { params: { bloc: 'failles' } },
+    { params: { bloc: 'cyber' } },
+    { params: { bloc: 'associations' } },
+  ];
+}
+
+const { bloc } = Astro.params;
+const blocMeta = {
+  arnaques: {
+    title: 'Dernières arnaques',
+    rss: '/veille-arnaques.xml',
+  },
+  failles: {
+    title: 'Dernières fuites de données',
+    rss: '/veille-failles.xml',
+  },
+  cyber: {
+    title: 'Actu cyber',
+    rss: '/veille-cyber.xml',
+  },
+  associations: {
+    title: 'Actu associations',
+    rss: '/veille-associations.xml',
+  },
+};
+const meta = blocMeta[bloc];
+
+const veille = await getVeilleData();
+const section = veille.sections.find((item) => item.key === bloc);
+---
+
+<SiteLayout
+  title={`${meta.title} | Actu Cyber`}
+  description={`Veille publique - ${meta.title.toLowerCase()}.`}
+  eyebrow="Actu Cyber"
+  headline={meta.title}
+  intro="Version ciblée de la veille publique pour ce bloc uniquement."
+  showShare={false}
+>
+  <p class="bloc-actions">
+    <a href="/veille">Retour à la veille complète</a>
+    <a href={meta.rss}>S'abonner au flux RSS du bloc</a>
+  </p>
+
+  {
+    !section || section.articles.length === 0 ? (
+      <p class="empty-state">Aucun article disponible pour ce bloc.</p>
+    ) : (
+      <div class="veille-grid">
+        {section.articles.map((article) => (
+          <article class="veille-card">
+            <p class="card-meta">
+              <span>{article.source}</span>
+              <span aria-hidden="true">•</span>
+              <time datetime={article.publishedAt}>
+                {new Date(article.publishedAt).toLocaleString('fr-FR', {
+                  dateStyle: 'medium',
+                  timeStyle: 'short',
+                })}
+              </time>
+            </p>
+            <h2>{article.title}</h2>
+            <p>{article.summary || 'Aucun résumé disponible pour cet article.'}</p>
+
+            {article.enrichment && (
+              <details class="enrichment-box">
+                <summary>Voir la synthèse</summary>
+                <dl>
+                  <dt>De quoi parle-t-on ?</dt>
+                  <dd>{article.enrichment.about}</dd>
+                  <dt>Qui est concerné ?</dt>
+                  <dd>{article.enrichment.concerned}</dd>
+                  <dt>Comment se protéger ?</dt>
+                  <dd>{article.enrichment.protection}</dd>
+                  <dt>En cas d'incident ?</dt>
+                  <dd>{article.enrichment.incident}</dd>
+                </dl>
+              </details>
+            )}
+
+            <a href={article.url} target="_blank" rel="noopener noreferrer" class="source-link">
+              Lire la source
+            </a>
+          </article>
+        ))}
+      </div>
+    )
+  }
+</SiteLayout>
+
+<style>
+  .bloc-actions {
+    margin: 0 0 1rem;
+    display: inline-flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+
+  .bloc-actions a {
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    padding: 0.45rem 0.8rem;
+    color: var(--text-main);
+    text-decoration: none;
+  }
+
+  .bloc-actions a:hover {
+    border-color: var(--brand-green);
+    color: var(--brand-green);
+  }
+
+  .empty-state {
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    color: var(--text-muted);
+  }
+
+  .veille-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .veille-card {
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1rem;
+    background: var(--bg-card);
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .card-meta {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    display: inline-flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+  }
+
+  .veille-card h2 {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+
+  .veille-card p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .enrichment-box {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 0.6rem 0.75rem;
+    background: rgba(56, 189, 248, 0.07);
+  }
+
+  .enrichment-box summary {
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .enrichment-box dl {
+    margin: 0.7rem 0 0;
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .enrichment-box dt {
+    font-weight: 700;
+  }
+
+  .enrichment-box dd {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .source-link {
+    color: var(--brand-green);
+    font-weight: 700;
+    text-decoration: none;
+  }
+</style>
