@@ -15,6 +15,7 @@ export async function GET() {
     '/veille',
     '/veille/arnaques',
     '/veille/failles',
+    '/veille/actu-generaliste',
     '/veille/cyber',
     '/veille/associations',
     '/flux',

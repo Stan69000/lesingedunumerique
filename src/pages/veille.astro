@@ -3,7 +3,9 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import { getVeilleData } from '../lib/veille.js';
 
 const veille = await getVeilleData();
-const allArticles = veille.sections.flatMap((section) => section.articles);
+const homeSectionKeys = new Set(['arnaques', 'failles']);
+const homeSections = veille.sections.filter((section) => homeSectionKeys.has(section.key));
+const allArticles = homeSections.flatMap((section) => section.articles);
 
 function normalizeText(value = '') {
   return String(value)
@@ -122,9 +124,9 @@ const allTags = [
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
-  name: 'Notre veille automatique',
+  name: 'Cyber Veille',
   description:
-    "Veille cybersécurité: arnaques, fuites de données, actualité cyber et monde associatif. Mise à jour à 7h00, 13h00 et 18h00.",
+    'Ne laissez pas les arnaques vous surprendre. Mise à jour à 7h00, 13h00 et 18h00.',
   inLanguage: 'fr-FR',
   mainEntity: {
     '@type': 'ItemList',
@@ -171,20 +173,16 @@ function isFranceArticle(article) {
 ---
 
 <SiteLayout
-  title="Notre veille automatique | Actu"
-  description="Consultez les dernières arnaques, les fuites de données, l’actualité cyber et les informations liées au monde associatif. Veille mise à jour à 7h00, 13h00 et 18h00."
-  eyebrow="Actu"
-  headline="Notre veille"
-  accent="automatique"
-  intro={`Consultez les dernières arnaques, les failles critiques, l’actualité cyber et les informations liées au monde associatif.
-Chaque carte vous redirige vers la source d’origine pour en savoir plus.
+  title="Cyber Veille"
+  description="Ne laissez pas les arnaques vous surprendre. Savoir, c’est déjà une protection. Mise à jour à 7h00, 13h00 et 18h00."
+  eyebrow="Veille"
+  headline="Cyber Veille"
+  accent="cyber"
+  intro={`⚠️ Ne laissez pas les arnaques vous surprendre
 
-Les contenus sont sélectionnés et regroupés pour vous offrir une veille claire et utile au quotidien.
-Une section dédiée à l’actualité associative est également disponible en bas de page.
-
-🔄 Les informations sont mises à jour à 7h00, 13h00 et 18h00 afin de vous garantir une veille récente et pertinente.
-
-Restez vigilant face aux menaces qui évoluent en permanence.`}
+Savoir, c’est déjà une protection.
+Informez-vous, partagez, protégez-vous… et protégez les autres.
+Mise à jour à 7h00, 13h00 et 18h00.`}
   showShare={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
@@ -249,7 +247,7 @@ Restez vigilant face aux menaces qui évoluent en permanence.`}
   </section>
 
   {
-    veille.sections.map((section) => {
+    homeSections.map((section) => {
       const visibleArticles = [...section.articles].sort(
         (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
       );

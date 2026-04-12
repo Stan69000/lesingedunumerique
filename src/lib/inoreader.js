@@ -10,8 +10,7 @@ export const VEILLE_BLOCKS = [
     streamEnv: 'INOREADER_STREAM_SCAMS',
     extraStreamsEnv: 'INOREADER_EXTRA_STREAMS_SCAMS',
     defaultExtraStreams: [
-      'https://news.google.com/rss/search?q=((phishing%20OR%20smishing%20OR%20vishing%20OR%20%22faux%20conseiller%20bancaire%22%20OR%20%22faux%20livreur%22%20OR%20%22faux%20colis%22%20OR%20arnaque)%20(cyber%20OR%20internet%20OR%20sms%20OR%20email%20OR%20bancaire))%20(site:franceinfo.fr%20OR%20site:cybermalveillance.gouv.fr%20OR%20site:service-public.fr%20OR%20site:economie.gouv.fr)&hl=fr&gl=FR&ceid=FR:fr',
-      'https://news.google.com/rss/search?q=((escroquerie%20OR%20arnaque)%20(%22carte%20bancaire%22%20OR%20iban%20OR%20%22donn%C3%A9es%20personnelles%22%20OR%20identit%C3%A9))%20(site:franceinfo.fr%20OR%20site:service-public.fr%20OR%20site:economie.gouv.fr)&hl=fr&gl=FR&ceid=FR:fr',
+      'https://www.inoreader.com/feed/https%3A%2F%2Fwww.google.fr%2Falerts%2Ffeeds%2F01273499914718871183%2F5082566693348274241',
     ],
     suggestedLabel: 'site-asso-arnaques',
   },
