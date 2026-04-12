@@ -44,6 +44,14 @@ function sortByDateDesc(items) {
   return [...items].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 }
 
+function isRecentEnough(article, maxAgeDays) {
+  if (!maxAgeDays || Number.isNaN(maxAgeDays) || maxAgeDays <= 0) return true;
+  const publishedMs = new Date(article?.publishedAt || '').getTime();
+  if (!Number.isFinite(publishedMs)) return false;
+  const ageMs = Date.now() - publishedMs;
+  return ageMs <= maxAgeDays * 24 * 60 * 60 * 1000;
+}
+
 function articleFingerprint(article) {
   return `${article.normalizedUrl || article.url || ''}::${article.title?.toLowerCase?.() || ''}`;
 }
@@ -137,6 +145,7 @@ function hasFlashSchema(enrichment) {
 export async function getVeilleData() {
   const maxItemsPerSection = getEnvNumber('VEILLE_MAX_ITEMS_PER_SECTION', 50);
   const cacheTtlDays = getEnvNumber('VEILLE_CACHE_MAX_DAYS', 180);
+  const fallbackMaxAgeDays = getEnvNumber('VEILLE_FALLBACK_MAX_AGE_DAYS', 30);
   const enableEnrichment = getEnv('VEILLE_ENABLE_ENRICHMENT') === 'true';
   const autoEnrichScamsLimit = Math.max(0, getEnvNumber('VEILLE_AUTO_ENRICH_SCAMS_LIMIT', 1));
   const autoEnrichScamsMaxAgeHours = Math.max(0, getEnvNumber('VEILLE_AUTO_ENRICH_SCAMS_MAX_AGE_HOURS', 0));
@@ -161,7 +170,7 @@ export async function getVeilleData() {
       title: block.title,
       label: block.defaultLabel,
       live: false,
-      articles: sortByDateDesc(fallbackMap.get(block.key) || []).slice(0, maxItemsPerSection),
+      articles: sortByDateDesc((fallbackMap.get(block.key) || []).filter((article) => isRecentEnough(article, fallbackMaxAgeDays))).slice(0, maxItemsPerSection),
     }));
     const dedupedSections = dedupeCrossSection(sections);
     const topScamAlerts = (dedupedSections.find((section) => section.key === 'arnaques')?.articles || [])
@@ -253,7 +262,7 @@ export async function getVeilleData() {
   const sectionsWithFallback = sectionsWithCache.map((section) => {
     if (section.articles.length > 0) return section;
 
-    const cachedItems = sortByDateDesc(cacheByBlock.get(section.key) || []).slice(0, maxItemsPerSection);
+    const cachedItems = sortByDateDesc((cacheByBlock.get(section.key) || []).filter((article) => isRecentEnough(article, fallbackMaxAgeDays))).slice(0, maxItemsPerSection);
     if (cachedItems.length === 0) return section;
 
     return {
