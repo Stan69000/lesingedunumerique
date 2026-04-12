@@ -340,6 +340,13 @@ function extractXmlTagValue(block, tagName) {
   return decodeXmlEntities(match[1].replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').trim());
 }
 
+function extractXmlTagAttribute(block, tagName, attributeName) {
+  const regex = new RegExp(`<${tagName}\\b[^>]*\\b${attributeName}=["']([^"']+)["'][^>]*\\/?>`, 'i');
+  const match = block.match(regex);
+  if (!match) return '';
+  return decodeXmlEntities(match[1].trim());
+}
+
 function parseExternalRss(xml) {
   const itemRegex = /<item\b[\s\S]*?<\/item>/gi;
   const items = [];
@@ -369,6 +376,38 @@ function parseExternalRss(xml) {
     });
 
     match = itemRegex.exec(xml);
+  }
+
+  if (items.length > 0) {
+    return items;
+  }
+
+  const entryRegex = /<entry\b[\s\S]*?<\/entry>/gi;
+  match = entryRegex.exec(xml);
+
+  while (match) {
+    const block = match[0];
+    const title = extractXmlTagValue(block, 'title');
+    const link = extractXmlTagAttribute(block, 'link', 'href') || extractXmlTagValue(block, 'link');
+    const description = extractXmlTagValue(block, 'summary') || extractXmlTagValue(block, 'content');
+    const source = extractXmlTagValue(block, 'name') || extractXmlTagValue(block, 'author');
+    const guid = extractXmlTagValue(block, 'id') || link || title;
+    const pubDateRaw = extractXmlTagValue(block, 'published') || extractXmlTagValue(block, 'updated');
+    const publishedMs = pubDateRaw ? new Date(pubDateRaw).getTime() : NaN;
+    const published =
+      Number.isFinite(publishedMs) && publishedMs > 0 ? Math.floor(publishedMs / 1000) : Math.floor(Date.now() / 1000);
+
+    items.push({
+      id: guid,
+      title,
+      canonical: [{ href: link }],
+      origin: { title: source || 'Source externe' },
+      summary: { content: description },
+      published,
+      categories: [],
+    });
+
+    match = entryRegex.exec(xml);
   }
 
   return items;
