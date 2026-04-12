@@ -85,7 +85,10 @@ function normalizeUrl(url) {
         parsed.searchParams.delete(key);
       }
     }
-    parsed.hash = '';
+    const keepHashAsIdentity = parsed.pathname === '/' && !parsed.search && Boolean(parsed.hash);
+    if (!keepHashAsIdentity) {
+      parsed.hash = '';
+    }
     let normalized = parsed.toString();
     if (normalized.endsWith('/')) {
       normalized = normalized.slice(0, -1);
@@ -346,10 +349,11 @@ function parseExternalRss(xml) {
   while (match) {
     const block = match[0];
     const title = extractXmlTagValue(block, 'title');
-    const link = extractXmlTagValue(block, 'link');
+    const guidRaw = extractXmlTagValue(block, 'guid');
+    const link = extractXmlTagValue(block, 'link') || guidRaw;
     const description = extractXmlTagValue(block, 'description');
     const source = extractXmlTagValue(block, 'source') || extractXmlTagValue(block, 'dc:creator');
-    const guid = extractXmlTagValue(block, 'guid') || link || title;
+    const guid = guidRaw || link || title;
     const pubDateRaw = extractXmlTagValue(block, 'pubDate');
     const publishedMs = pubDateRaw ? new Date(pubDateRaw).getTime() : NaN;
     const published =
@@ -508,22 +512,24 @@ function dedupeArticles(articles) {
   const byUrl = new Map();
 
   for (const article of articles) {
-    if (!article.url) continue;
-
     const existingById = byId.get(article.id);
     if (existingById) {
       existingById.tags = [...new Set([...existingById.tags, ...article.tags])];
       continue;
     }
 
-    const existingByUrl = byUrl.get(article.normalizedUrl);
-    if (existingByUrl) {
-      existingByUrl.tags = [...new Set([...existingByUrl.tags, ...article.tags])];
-      continue;
+    if (article.normalizedUrl) {
+      const existingByUrl = byUrl.get(article.normalizedUrl);
+      if (existingByUrl) {
+        existingByUrl.tags = [...new Set([...existingByUrl.tags, ...article.tags])];
+        continue;
+      }
     }
 
     byId.set(article.id, article);
-    byUrl.set(article.normalizedUrl, article);
+    if (article.normalizedUrl) {
+      byUrl.set(article.normalizedUrl, article);
+    }
   }
 
   return [...byId.values()].sort(
