@@ -381,7 +381,7 @@ Mise à jour à 7h00, 13h00 et 18h00.`}
         const cardsInSection = Array.from(section.querySelectorAll('.veille-card'));
         const limit = sectionLimits.get(section) ?? DEFAULT_VISIBLE_PER_SECTION;
         const sectionKey = section.getAttribute('data-section') || '';
-        const bypassGeoFilter = sectionKey === 'failles';
+        const bypassGeoFilter = sectionKey === 'failles' || sectionKey === 'arnaques';
         let matchingCount = 0;
         let visibleCount = 0;
 
