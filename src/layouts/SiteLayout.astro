@@ -26,6 +26,7 @@ const {
 } = Astro.props;
 const currentPath = Astro.url.pathname;
 const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
+const isVeillePage = currentPath.startsWith('/veille');
 ---
 
 <!DOCTYPE html>
@@ -149,7 +150,7 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
               <div class="glow-bg glow-green"></div>
               <div class="glow-bg glow-orange"></div>
 
-              <div class="container hero-content">
+              <div class:list={['container', 'hero-content', { 'hero-content-wide': isVeillePage }]}>
                 {eyebrow && <p class="eyebrow">{eyebrow}</p>}
                 <h1 class="hero-title">
                   {headline} {accent && <span class="gradient-text">{accent}</span>}
@@ -926,6 +927,14 @@ const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
     position: relative;
     z-index: 1;
     max-width: 780px;
+  }
+
+  .hero-content-wide {
+    max-width: 1100px;
+  }
+
+  .hero-content-wide .hero-desc {
+    max-width: 100%;
   }
 
   .glow-bg {
