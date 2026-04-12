@@ -6,12 +6,13 @@ export const VEILLE_BLOCKS = [
   {
     key: 'arnaques',
     title: 'Dernières arnaques',
+    forcedStream:
+      'https://www.inoreader.com/feed/https%3A%2F%2Fwww.google.fr%2Falerts%2Ffeeds%2F01273499914718871183%2F5082566693348274241',
+    forceOnlyStream: true,
     labelEnv: 'INOREADER_LABEL_SCAMS',
     streamEnv: 'INOREADER_STREAM_SCAMS',
     extraStreamsEnv: 'INOREADER_EXTRA_STREAMS_SCAMS',
-    defaultExtraStreams: [
-      'https://www.inoreader.com/feed/https%3A%2F%2Fwww.google.fr%2Falerts%2Ffeeds%2F01273499914718871183%2F5082566693348274241',
-    ],
+    defaultExtraStreams: [],
     suggestedLabel: 'site-asso-arnaques',
   },
   {
@@ -507,6 +508,15 @@ async function fetchInoreaderStream(target, authorizationHeader, { pageSize, max
 }
 
 async function fetchBlockItems(block, authorizationHeader, { pageSize, maxPages }) {
+  if (block.forceOnlyStream && block.stream) {
+    const items = await fetchInoreaderStream(
+      { label: block.label, stream: block.stream },
+      authorizationHeader,
+      { pageSize, maxPages },
+    );
+    return { items, errors: [], configured: true };
+  }
+
   const targets = [];
   if (block.stream) {
     targets.push({ label: block.label, stream: block.stream });
@@ -633,7 +643,7 @@ export async function fetchInoreaderData() {
   const blockLabels = VEILLE_BLOCKS.map((block) => ({
     ...block,
     label: getEnv(block.labelEnv) || '',
-    stream: getEnv(block.streamEnv) || '',
+    stream: block.forcedStream || getEnv(block.streamEnv) || '',
   }));
 
   const sections = [];
