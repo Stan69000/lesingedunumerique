@@ -269,6 +269,13 @@ Restez vigilant face aux menaces qui évoluent en permanence.`}
           <span> article(s) correspondant aux filtres</span>
           {!section.live && <span> • alimentation temporairement en cache</span>}
         </p>
+        {section.key === 'failles' && (
+          <p class="section-alert">
+            Client de ce site ? Vos infos peuvent fuiter ailleurs.
+            Changez vos mots de passe (surtout s’ils sont réutilisés) et utilisez-en un différent par service, avec
+            une <a href="/blog/activer-la-2fa-sur-vos-comptes">double sécurité</a>.
+          </p>
+        )}
 
         {visibleArticles.length === 0 ? (
           <p class="empty-state">Aucun article disponible pour le moment.</p>
@@ -724,6 +731,21 @@ Restez vigilant face aux menaces qui évoluent en permanence.`}
   .section-subtitle {
     margin: 0.4rem 0 1rem;
     color: var(--text-muted);
+  }
+
+  .section-alert {
+    margin: -0.2rem 0 1rem;
+    color: var(--text-main);
+  }
+
+  .section-alert a {
+    color: var(--brand-green);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .section-alert a:hover {
+    text-decoration: underline;
   }
 
   .empty-state {
