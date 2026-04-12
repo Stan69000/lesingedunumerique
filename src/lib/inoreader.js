@@ -473,7 +473,8 @@ async function fetchBlockItems(block, authorizationHeader, { pageSize, maxPages 
   }
 
   const configuredExtraStreams = parseExtraStreams(getEnv(block.extraStreamsEnv) || '');
-  const extraStreams = configuredExtraStreams.length > 0 ? configuredExtraStreams : block.defaultExtraStreams || [];
+  const defaultExtraStreams = Array.isArray(block.defaultExtraStreams) ? block.defaultExtraStreams : [];
+  const extraStreams = [...new Set([...defaultExtraStreams, ...configuredExtraStreams])];
 
   for (const stream of extraStreams) {
     targets.push({ label: block.label, stream });
