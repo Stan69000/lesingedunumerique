@@ -667,7 +667,7 @@ export async function fetchInoreaderData() {
 
     if (hasAnyData) {
       const normalized = blockResult.items.map((item) => normalizeArticle(item, block.key));
-      const cleaned = block.key === 'arnaques' ? keepOnlyScamArticles(normalized) : normalized;
+      const cleaned = normalized;
       sections.push({
         key: block.key,
         title: block.title,
