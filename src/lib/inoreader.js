@@ -67,6 +67,18 @@ function stripHtml(input = '') {
   return decodeHtmlEntities(String(input).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
 }
 
+function unwrapGoogleRedirect(url = '') {
+  try {
+    const parsed = new URL(url);
+    const host = parsed.hostname.toLowerCase();
+    if (!host.includes('google.') || parsed.pathname !== '/url') return url;
+    const target = parsed.searchParams.get('url') || parsed.searchParams.get('q') || '';
+    return target || url;
+  } catch {
+    return url;
+  }
+}
+
 function getBestUrl(item) {
   if (item?.canonical?.[0]?.href) return item.canonical[0].href;
   if (item?.alternate?.[0]?.href) return item.alternate[0].href;
@@ -171,14 +183,42 @@ function toTagList(item) {
     });
 }
 
+const THEME_TAG_RULES = [
+  { tag: 'phishing', terms: ['phishing', 'hameconnage', 'hameçonnage'] },
+  { tag: 'smishing', terms: ['smishing', 'sms frauduleux', 'sms'] },
+  { tag: 'vishing', terms: ['vishing', 'appel frauduleux', 'faux conseiller'] },
+  { tag: 'fuite de données', terms: ['fuite de donnees', 'fuite de données', 'data breach'] },
+  { tag: 'fraude bancaire', terms: ['fraude bancaire', 'carte bancaire', 'iban', 'banque'] },
+  { tag: 'usurpation d identite', terms: ['usurpation', "usurpation d'identite", "usurpation d’identité"] },
+  { tag: 'malware', terms: ['malware', 'rancongiciel', 'rançongiciel', 'ransomware'] },
+];
+
+function detectThemeTags(text = '') {
+  const normalized = String(text)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  const tags = [];
+  for (const rule of THEME_TAG_RULES) {
+    if (rule.terms.some((term) => normalized.includes(term.normalize('NFD').replace(/[\u0300-\u036f]/g, '')))) {
+      tags.push(rule.tag);
+    }
+    if (tags.length >= 3) break;
+  }
+  return tags;
+}
+
 function normalizeArticle(item, blockKey) {
-  const rawUrl = getBestUrl(item);
+  const rawUrl = unwrapGoogleRedirect(getBestUrl(item));
   const url = normalizeUrl(rawUrl);
   const title = stripHtml(item?.title || 'Article sans titre');
   const source = normalizeSourceLabel(item?.origin?.title || '', url, blockKey);
   const summaryHtml = item?.summary?.content || item?.content?.content || '';
   const summary = stripHtml(summaryHtml);
   const id = String(item?.id || `${title}-${url}`);
+  const baseTags = toTagList(item);
+  const inferredThemeTags = blockKey === 'arnaques' && baseTags.length === 0 ? detectThemeTags(`${title} ${summary}`) : [];
 
   return {
     id,
@@ -188,7 +228,7 @@ function normalizeArticle(item, blockKey) {
     source,
     publishedAt: getPublishedAt(item),
     summary,
-    tags: toTagList(item),
+    tags: [...new Set([...baseTags, ...inferredThemeTags])],
     blockKey,
   };
 }
@@ -341,11 +381,33 @@ function extractXmlTagValue(block, tagName) {
   return decodeXmlEntities(match[1].replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').trim());
 }
 
+function extractXmlTagValues(block, tagName) {
+  const regex = new RegExp(`<${tagName}[^>]*>([\\s\\S]*?)<\\/${tagName}>`, 'gi');
+  const values = [];
+  let match = regex.exec(block);
+  while (match) {
+    values.push(decodeXmlEntities(match[1].replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').trim()));
+    match = regex.exec(block);
+  }
+  return values.filter(Boolean);
+}
+
 function extractXmlTagAttribute(block, tagName, attributeName) {
   const regex = new RegExp(`<${tagName}\\b[^>]*\\b${attributeName}=["']([^"']+)["'][^>]*\\/?>`, 'i');
   const match = block.match(regex);
   if (!match) return '';
   return decodeXmlEntities(match[1].trim());
+}
+
+function extractAtomCategoryTerms(block) {
+  const regex = /<category\b[^>]*\bterm=["']([^"']+)["'][^>]*\/?>/gi;
+  const values = [];
+  let match = regex.exec(block);
+  while (match) {
+    values.push(decodeXmlEntities(match[1].trim()));
+    match = regex.exec(block);
+  }
+  return values.filter(Boolean);
 }
 
 function parseExternalRss(xml) {
@@ -362,6 +424,7 @@ function parseExternalRss(xml) {
     const source = extractXmlTagValue(block, 'source') || extractXmlTagValue(block, 'dc:creator');
     const guid = guidRaw || link || title;
     const pubDateRaw = extractXmlTagValue(block, 'pubDate');
+    const categories = extractXmlTagValues(block, 'category');
     const publishedMs = pubDateRaw ? new Date(pubDateRaw).getTime() : NaN;
     const published =
       Number.isFinite(publishedMs) && publishedMs > 0 ? Math.floor(publishedMs / 1000) : Math.floor(Date.now() / 1000);
@@ -373,7 +436,7 @@ function parseExternalRss(xml) {
       origin: { title: source || 'Source externe' },
       summary: { content: description },
       published,
-      categories: [],
+      categories,
     });
 
     match = itemRegex.exec(xml);
@@ -394,6 +457,7 @@ function parseExternalRss(xml) {
     const source = extractXmlTagValue(block, 'name') || extractXmlTagValue(block, 'author');
     const guid = extractXmlTagValue(block, 'id') || link || title;
     const pubDateRaw = extractXmlTagValue(block, 'published') || extractXmlTagValue(block, 'updated');
+    const categories = extractAtomCategoryTerms(block);
     const publishedMs = pubDateRaw ? new Date(pubDateRaw).getTime() : NaN;
     const published =
       Number.isFinite(publishedMs) && publishedMs > 0 ? Math.floor(publishedMs / 1000) : Math.floor(Date.now() / 1000);
@@ -405,7 +469,7 @@ function parseExternalRss(xml) {
       origin: { title: source || 'Source externe' },
       summary: { content: description },
       published,
-      categories: [],
+      categories,
     });
 
     match = entryRegex.exec(xml);
