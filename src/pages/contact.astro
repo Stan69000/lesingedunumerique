@@ -1,7 +1,12 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 
-const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '').trim();
+const turnstileSiteKey = (
+  import.meta.env.PUBLIC_TURNSTILE_SITE_KEY
+  ?? import.meta.env.PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY
+  ?? import.meta.env.TURNSTILE_SITE_KEY
+  ?? ''
+).trim();
 const hasTurnstileSiteKey = turnstileSiteKey !== '';
 ---
 
@@ -72,7 +77,11 @@ const hasTurnstileSiteKey = turnstileSiteKey !== '';
             class="cf-turnstile"
             data-sitekey={turnstileSiteKey}
             data-theme="auto"
+            data-size="normal"
+            data-appearance="always"
             data-action="contact_form"
+            data-callback="onContactTurnstileSuccess"
+            data-error-callback="onContactTurnstileError"
           ></div>
         )}
 
@@ -158,6 +167,8 @@ const hasTurnstileSiteKey = turnstileSiteKey !== '';
     const isTurnstileEnabled = contactForm?.dataset.turnstileEnabled === 'true';
     const startedAtField = contactForm?.querySelector('input[name="form_started_at"]');
     const csrfField = contactForm?.querySelector('input[name="csrf_token"]');
+    const turnstileWidget = contactForm?.querySelector('.cf-turnstile');
+    let pendingTurnstileSubmit = false;
 
     function getCookie(name) {
       return document.cookie
@@ -243,6 +254,44 @@ const hasTurnstileSiteKey = turnstileSiteKey !== '';
         statusNode.classList.add(entry.type);
       }
     }
+
+    window.onContactTurnstileSuccess = () => {
+      if (!pendingTurnstileSubmit || !contactForm) {
+        return;
+      }
+      pendingTurnstileSubmit = false;
+      contactForm.requestSubmit();
+    };
+
+    window.onContactTurnstileError = () => {
+      pendingTurnstileSubmit = false;
+      if (!statusNode) {
+        return;
+      }
+      statusNode.hidden = false;
+      statusNode.textContent = 'La vérification anti-robot est indisponible. Merci de réessayer.';
+      statusNode.classList.add('is-error');
+    };
+
+    contactForm?.addEventListener('submit', (event) => {
+      if (!isTurnstileEnabled || !turnstileWidget) {
+        return;
+      }
+
+      const tokenField = contactForm.querySelector('input[name="cf-turnstile-response"]');
+      const token = tokenField?.value?.trim() ?? '';
+      if (token !== '') {
+        return;
+      }
+
+      if (!window.turnstile || typeof window.turnstile.execute !== 'function') {
+        return;
+      }
+
+      event.preventDefault();
+      pendingTurnstileSubmit = true;
+      window.turnstile.execute(turnstileWidget);
+    });
   </script>
 </SiteLayout>
 
