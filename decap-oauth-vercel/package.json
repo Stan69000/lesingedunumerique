@@ -9,8 +9,8 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/vercel": "^8.2.7",
-    "astro": "^5.14.2",
+    "@astrojs/vercel": "^10.0.4",
+    "astro": "^6.1.6",
     "astro-decap-cms-oauth": "^0.5.2"
   }
 }

@@ -23,6 +23,12 @@ updates:
       time: "03:15"
       timezone: "Europe/Paris"
     open-pull-requests-limit: 10
+    groups:
+      astro-stack:
+        patterns:
+          - "astro"
+          - "@astrojs/vercel"
+          - "astro-decap-cms-oauth"
     allow:
       - dependency-type: direct
       - dependency-type: indirect
