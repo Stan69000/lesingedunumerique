@@ -37,9 +37,28 @@ function env_value(string $key, string $default = ''): string
     return $default;
 }
 
+function first_env_value(array $keys, string $default = ''): string
+{
+    foreach ($keys as $key) {
+        if (!is_string($key) || $key === '') {
+            continue;
+        }
+        $value = env_value($key);
+        if ($value !== '') {
+            return $value;
+        }
+    }
+
+    return $default;
+}
+
 $recipient = env_value('CONTACT_RECIPIENT_EMAIL', 'contact@lesingedunumerique.fr');
 $fromEmail = env_value('CONTACT_FROM_EMAIL', 'contact@lesingedunumerique.fr');
-$turnstileSecret = env_value('TURNSTILE_SECRET_KEY');
+$turnstileSecret = first_env_value([
+    'TURNSTILE_SECRET_KEY',
+    'CLOUDFLARE_TURNSTILE_SECRET_KEY',
+    'CF_TURNSTILE_SECRET_KEY',
+]);
 
 const MAX_FIRST_NAME_LENGTH = 80;
 const MAX_LAST_NAME_LENGTH = 80;

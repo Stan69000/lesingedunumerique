@@ -40,6 +40,21 @@ function env_value(string $key): string
     return '';
 }
 
+function first_env_value(array $keys): string
+{
+    foreach ($keys as $key) {
+        if (!is_string($key) || $key === '') {
+            continue;
+        }
+        $value = env_value($key);
+        if ($value !== '') {
+            return $value;
+        }
+    }
+
+    return '';
+}
+
 function post_form(string $url, array $fields): ?string
 {
     $body = http_build_query($fields);
@@ -75,7 +90,11 @@ function post_form(string $url, array $fields): ?string
 
 $recipient = env_value('CONTACT_RECIPIENT_EMAIL');
 $fromEmail = env_value('CONTACT_FROM_EMAIL');
-$turnstileSecret = env_value('TURNSTILE_SECRET_KEY');
+$turnstileSecret = first_env_value([
+    'TURNSTILE_SECRET_KEY',
+    'CLOUDFLARE_TURNSTILE_SECRET_KEY',
+    'CF_TURNSTILE_SECRET_KEY',
+]);
 
 $required = [
     'TURNSTILE_SECRET_KEY' => $turnstileSecret,
