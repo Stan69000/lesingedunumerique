@@ -343,10 +343,9 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
   <button
     id="back-to-top"
     class="back-to-top"
-    aria-label="Retour en haut de page"
-    aria-hidden="true"
-    tabindex="-1"
+    aria-label="Revenir en haut de la page"
   >
+    <span class="sr-only">Revenir en haut de la page</span>
     <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg>
   </button>
 
@@ -480,8 +479,6 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
       if (!(backBtn instanceof HTMLButtonElement)) return;
       const shouldShow = window.scrollY > 400;
       backBtn.classList.toggle('visible', shouldShow);
-      backBtn.setAttribute('aria-hidden', String(!shouldShow));
-      backBtn.tabIndex = shouldShow ? 0 : -1;
     };
 
     syncBackToTopVisibility();
@@ -881,7 +878,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
     height: 50px;
     border-radius: 50%;
     background: var(--brand-green);
-    color: #fff;
+    color: var(--bg-body);
     border: none;
     cursor: pointer;
     display: flex;

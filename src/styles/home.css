@@ -13,8 +13,13 @@
     --field-input-border: #8ca0ba;
     --action-bg: #14b8a6;
     --action-text: #052e2b;
-    --chip-bg: rgba(148, 163, 184, 0.16);
-    --chip-text: #e2e8f0;
+    --chip-bg: #334155;
+    --chip-text: #f8fafc;
+    --chip-bg-hover: #475569;
+    --chip-text-hover: #ffffff;
+    --chip-border: #64748b;
+    --icon-btn-bg: rgba(11, 17, 32, 0.9);
+    --icon-btn-border: #94a3b8;
     --glow-opacity: 0.15;
     --nav-height: 70px;
   }
@@ -36,6 +41,11 @@
     --action-text: #f8fafc;
     --chip-bg: #e2e8f0;
     --chip-text: #1e293b;
+    --chip-bg-hover: #cbd5e1;
+    --chip-text-hover: #0f172a;
+    --chip-border: #94a3b8;
+    --icon-btn-bg: #ffffff;
+    --icon-btn-border: #475569;
     --glow-opacity: 0.08;
   }
 
@@ -98,8 +108,9 @@
   .icon-dark { display: block; } .icon-light { display: none; }
   body.light-mode .icon-dark { display: none; } body.light-mode .icon-light { display: block; }
 
-  .burger-btn { display: none; background: none; border: none; cursor: pointer; z-index: 101; flex-direction: column; gap: 5px; padding: 5px; }
-  .burger-btn span { display: block; width: 25px; height: 2px; background: var(--text-main); transition: 0.3s; }
+  .burger-btn { display: none; background: var(--icon-btn-bg); border: 1px solid var(--icon-btn-border); color: var(--text-main); cursor: pointer; z-index: 101; flex-direction: column; gap: 5px; padding: 7px; border-radius: 10px; }
+  .burger-btn:hover { border-color: var(--brand-green); }
+  .burger-btn span { display: block; width: 25px; height: 2px; background: currentColor; transition: 0.3s; }
 
   .mobile-menu {
     position: fixed; top: var(--nav-height); left: 0; width: 100%;
@@ -225,8 +236,8 @@
   .search-error { margin: -2px 4px 0; font-size: 0.85rem; color: #ef4444; text-align: left; font-weight: 600; }
 
   .search-meta { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 0.92rem; color: var(--text-muted); font-weight: 500; flex-wrap: wrap; }
-  .filter-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--chip-bg); border: 1px solid transparent; border-radius: 6px; color: var(--chip-text); font: inherit; cursor: pointer; transition: background 0.2s, color 0.2s; }
-  .filter-tag:hover { background: rgba(45, 212, 191, 0.18); color: var(--text-main); }
+  .filter-tag { display: flex; align-items: center; gap: 6px; padding: 4px 10px; background: var(--chip-bg); border: 1px solid var(--chip-border); border-radius: 6px; color: var(--chip-text); font: inherit; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+  .filter-tag:hover { background: var(--chip-bg-hover); color: var(--chip-text-hover); border-color: var(--chip-text-hover); }
   .divider { opacity: 0.3; }
   .tag-count { opacity: 0.85; }
   .explore-link { margin-top: 8px; }
@@ -392,7 +403,7 @@
   .status-dot.status-ko { background: #ef4444; }
   .status-dot.status-local { background: var(--brand-blue); }
 
-  .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--brand-green); color: #fff; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(45, 212, 191, 0.4); z-index: 90; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+  .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--brand-green); color: var(--bg-body); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(45, 212, 191, 0.4); z-index: 90; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
   .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
   .back-to-top:hover { transform: translateY(-5px); }
 
