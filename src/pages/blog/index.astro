@@ -839,20 +839,26 @@ const blogSchema = {
 
   .burger-btn {
     display: none;
-    background: none;
-    border: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
     cursor: pointer;
     z-index: 21;
     flex-direction: column;
     gap: 5px;
-    padding: 5px;
+    padding: 7px;
+    border-radius: 10px;
+  }
+
+  .burger-btn:hover {
+    border-color: var(--brand-green);
   }
 
   .burger-btn span {
     display: block;
     width: 25px;
     height: 2px;
-    background: var(--text-main);
+    background: currentColor;
     transition: 0.3s;
   }
 
