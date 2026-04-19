@@ -438,20 +438,26 @@ const articleSchema = {
 
       .burger-btn {
         display: none;
-        background: none;
-        border: none;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        color: var(--text-main);
         cursor: pointer;
         z-index: 21;
         flex-direction: column;
         gap: 5px;
-        padding: 5px;
+        padding: 7px;
+        border-radius: 10px;
+      }
+
+      .burger-btn:hover {
+        border-color: var(--brand-green);
       }
 
       .burger-btn span {
         display: block;
         width: 25px;
         height: 2px;
-        background: var(--text-main);
+        background: currentColor;
         transition: 0.3s;
       }
 
@@ -642,7 +648,7 @@ const articleSchema = {
         height: 50px;
         border-radius: 50%;
         background: var(--accent);
-        color: #fff;
+        color: var(--bg-body);
         border: none;
         cursor: pointer;
         display: flex;
@@ -897,8 +903,9 @@ const articleSchema = {
                     </div>
                   </div>
                 </footer>
-                <button id="back-to-top" class="back-to-top" aria-label="Retour en haut de page">
-                  ↑
+                <button id="back-to-top" class="back-to-top" aria-label="Revenir en haut de la page">
+                  <span class="sr-only">Revenir en haut de la page</span>
+                  <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg>
                 </button>
               </div>
             </div>
