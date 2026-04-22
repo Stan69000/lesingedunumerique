@@ -1095,6 +1095,19 @@ const isVeillePage = currentPath.startsWith('/veille');
   }
 
   @media (max-width: 760px) {
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 120;
+    }
+
+    #main-content {
+      padding-top: var(--nav-height);
+    }
+
     .container {
       padding: 0 16px;
     }
