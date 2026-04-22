@@ -126,6 +126,19 @@
   .theme-btn-small { background: var(--bg-body); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 20px; cursor: pointer; }
 
   @media (max-width: 768px) {
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 120;
+    }
+
+    #main-content {
+      padding-top: var(--nav-height);
+    }
+
     .nav-right { display: none; }
     .burger-btn { display: flex; }
   }
