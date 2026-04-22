@@ -1407,6 +1407,19 @@ const blogSchema = {
   }
 
   @media (max-width: 640px) {
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      z-index: 120;
+    }
+
+    #main-content {
+      padding-top: var(--nav-height);
+    }
+
     .footer-container,
     .section-header {
       flex-direction: column;
