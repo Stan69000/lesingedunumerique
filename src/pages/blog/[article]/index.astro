@@ -516,7 +516,7 @@ const articleSchema = {
         cursor: pointer;
       }
 
-      header {
+      .article-header {
         text-align: center; margin-bottom: 50px; padding: 30px;
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 24px;
@@ -524,7 +524,7 @@ const articleSchema = {
         backdrop-filter: blur(10px);
       }
 
-      body.light-mode header {
+      body.light-mode .article-header {
         background: rgba(255, 255, 255, 0.9);
       }
 
@@ -686,7 +686,7 @@ const articleSchema = {
           display: flex;
         }
 
-        header,
+        .article-header,
         .article-content {
           padding: 22px;
         }
@@ -811,7 +811,7 @@ const articleSchema = {
               <div class="article-shell">
                 <main id="main-content">
                   <article>
-                    <header>
+                    <header class="article-header">
                       <div class="tags">
                         {post.data.tags.map((tag) => (
                           <a href={`/blog?tag=${encodeURIComponent(tag)}`} class="tag">{tag}</a>
