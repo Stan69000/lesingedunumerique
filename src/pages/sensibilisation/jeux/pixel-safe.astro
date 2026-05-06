@@ -146,13 +146,16 @@ const breadcrumbSchema = {
 
   :global(.game-badge) {
     margin: 0;
-    border: 1px solid rgba(86, 226, 241, 0.35);
+    border: 1px solid rgba(122, 228, 255, 0.45);
     border-radius: 999px;
-    padding: 4px 10px;
-    font-size: 0.82rem;
+    padding: 6px 12px;
+    font-size: 0.78rem;
     font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
     color: rgba(187, 245, 253, 0.95);
-    background: rgba(36, 91, 136, 0.28);
+    background: linear-gradient(180deg, rgba(38, 102, 145, 0.38), rgba(24, 74, 122, 0.3));
+    box-shadow: inset 0 1px 0 rgba(207, 247, 255, 0.14);
   }
 
   :global(.mini-link) {
@@ -161,22 +164,32 @@ const breadcrumbSchema = {
 
   :global(.risk-tags) {
     list-style: none;
-    margin: 10px 0 0;
+    margin: 12px 0 0;
     padding: 0;
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
+    gap: 9px;
   }
 
   :global(.risk-tags li) {
     border-radius: 999px;
-    border: 1px solid rgba(119, 145, 184, 0.45);
-    background: rgba(13, 29, 56, 0.66);
-    color: rgba(212, 226, 245, 0.94);
-    font-size: 0.76rem;
-    letter-spacing: 0.02em;
+    border: 1px solid rgba(126, 165, 216, 0.5);
+    background: linear-gradient(180deg, rgba(17, 42, 79, 0.9), rgba(12, 30, 58, 0.88));
+    color: rgba(222, 237, 255, 0.96);
+    font-size: 0.74rem;
+    letter-spacing: 0.03em;
+    font-weight: 600;
     text-transform: uppercase;
-    padding: 4px 9px;
+    padding: 6px 11px;
+    line-height: 1;
+    box-shadow: inset 0 1px 0 rgba(208, 228, 255, 0.12);
+    transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  }
+
+  :global(.risk-tags li:hover) {
+    border-color: rgba(152, 213, 255, 0.74);
+    background: linear-gradient(180deg, rgba(22, 55, 99, 0.95), rgba(15, 39, 74, 0.92));
+    transform: translateY(-1px);
   }
 
   :global(.cta-row) {
@@ -226,7 +239,7 @@ const breadcrumbSchema = {
     }
   }
 
-  @medià (prefers-reduced-motion: reduce) {
+  @media (prefers-reduced-motion: reduce) {
     :global(.reveal) {
       opacity: 1;
       transform: none;
@@ -234,7 +247,7 @@ const breadcrumbSchema = {
     }
   }
 
-  @medià (max-width: 720px) {
+  @media (max-width: 720px) {
     :global(.game-frame) {
       height: 86vh;
       min-height: 680px;
