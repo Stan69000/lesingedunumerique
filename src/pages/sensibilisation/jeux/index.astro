@@ -21,7 +21,7 @@ const breadcrumbSchema = {
   ],
 };
 
-const itemListSchema = {
+const itemListSchemà = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'Jeux de sensibilisation numérique',
@@ -44,11 +44,11 @@ const itemListSchema = {
 
 <SiteLayout
   title="Jeux de sensibilisation numérique et cybersécurité | Le Singe Du Numerique"
-  description="Découvrez des jeux pédagogiques gratuits pour sensibiliser enfants, adolescents et adultes aux risques numériques: phishing, cyberharcèlement, réseaux sociaux et protection des données."
+  description="Decouvrez des jeux pédagogiques gratuits pour sensibiliser enfants, adolescents et adultes aux risques numériques: phishing, cyberharcèlement, réseaux sociaux et protection des données."
   eyebrow="Sensibilisation"
   headline="Nos jeux"
   accent="pédagogiques"
-  intro="Jeux gratuits de sensibilisation au numérique et à la cybersécurité, utilisés en famille, en atelier et en milieu associatif."
+  intro="Jeux gratuits de sensibilisation au numérique et à la cybersécurité, utilises en famille, en atelier et en milieu associatif."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
@@ -59,7 +59,7 @@ const itemListSchema = {
       <h2 id="games-hub-title">Jouer pour ancrer les bons réflexes</h2>
       <p>
         Cette bibliothèque rassemble nos jeux de prévention numérique pour s'entraîner face aux arnaques,
-        au cyberharcèlement, à la désinformation et aux attaques en ligne.
+        au cyberharcèlement, à la desinformation et aux attaques en ligne.
       </p>
       <div class="hub-stats" aria-label="Aperçu des jeux disponibles">
         <p><strong>2</strong> jeux disponibles</p>
@@ -87,8 +87,8 @@ const itemListSchema = {
         </p>
         <ul class="risk-tags" aria-label="Thèmes de PIXEL SAFE">
           <li>Phishing</li>
-          <li>Cyberharcèlement</li>
-          <li>Réseaux sociaux</li>
+          <li>Cyberharcelement</li>
+          <li>Reseaux sociaux</li>
           <li>Données perso</li>
         </ul>
         <a class="cta-button cta-secondary" href="/sensibilisation/jeux/pixel-safe">Jouer à PIXEL SAFE</a>
@@ -111,7 +111,7 @@ const itemListSchema = {
           <li>Mails suspects</li>
           <li>Mots de passe</li>
           <li>Deepfakes</li>
-          <li>Sécurité réseau</li>
+          <li>Securite reseau</li>
         </ul>
         <a class="cta-button cta-secondary" href="/sensibilisation/jeux/sentinel">Jouer à SENTINEL</a>
       </article>
@@ -140,43 +140,233 @@ const itemListSchema = {
 </SiteLayout>
 
 <style>
-  :global(.games-hub) { display: grid; gap: 22px; }
-  :global(.games-hub h2), :global(.games-hub h3) { margin: 0; }
-  :global(.hub-intro-card), :global(.hub-panel), :global(.game-card) {
-    position: relative; background: linear-gradient(160deg, rgba(18, 30, 60, 0.9), rgba(10, 18, 40, 0.94));
-    border: 1px solid rgba(144, 177, 222, 0.24); border-radius: 20px; padding: clamp(1rem, 2.2vw, 1.55rem); overflow: hidden;
+  :global(.games-hub) {
+    display: grid;
+    gap: 22px;
   }
-  :global(.hub-intro-card::before), :global(.game-card::before) { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(95, 232, 255, 0.08), transparent 46%); pointer-events: none; }
-  :global(.hub-intro-card::after), :global(.game-card::after) { content: ''; position: absolute; inset: auto -80px -100px auto; width: 180px; aspect-ratio: 1; background: radial-gradient(circle, rgba(71, 255, 228, 0.2), transparent 70%); pointer-events: none; }
-  :global(.hub-kicker) { margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; font-size: 0.82rem; color: rgba(86, 226, 241, 0.96); }
-  :global(.hub-stats) { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-  :global(.hub-stats p) { margin: 0; padding: 8px 10px; border: 1px solid rgba(130, 167, 214, 0.3); border-radius: 12px; background: rgba(10, 24, 47, 0.5); font-size: 0.95rem; }
-  :global(.hub-stats strong) { color: rgba(135, 255, 236, 0.95); }
-  :global(.anchor-row) { margin: 14px 0 0; }
-  :global(.anchor-row .cta-button) { min-width: 220px; }
-  :global(.games-grid) { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; scroll-margin-top: 120px; }
-  :global(.game-card) { display: grid; gap: 12px; transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease; }
-  :global(.game-card:hover) { transform: translateY(-4px); border-color: rgba(86, 226, 241, 0.55); box-shadow: 0 14px 34px rgba(2, 7, 20, 0.35); }
-  :global(.game-preview) { min-height: 78px; border: 1px solid rgba(134, 171, 219, 0.34); border-radius: 13px; display: flex; align-items: end; padding: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(226, 245, 255, 0.95); }
-  :global(.preview-pixel) { background: linear-gradient(135deg, rgba(59, 198, 173, 0.28), rgba(30, 100, 169, 0.2)), repeating-linear-gradient(90deg, rgba(130, 240, 220, 0.14) 0 8px, rgba(18, 34, 63, 0.08) 8px 16px); }
-  :global(.preview-sentinel) { background: linear-gradient(135deg, rgba(110, 199, 255, 0.24), rgba(95, 122, 255, 0.16)), radial-gradient(circle at 80% 30%, rgba(150, 235, 255, 0.2), transparent 45%); }
-  :global(.game-head) { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  :global(.game-icon) { width: 38px; height: 38px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(86, 226, 241, 0.35); background: rgba(36, 91, 136, 0.24); color: rgba(187, 245, 253, 0.95); }
-  :global(.game-icon svg) { width: 21px; height: 21px; }
-  :global(.game-badge) { margin: 0; border: 1px solid rgba(86, 226, 241, 0.35); border-radius: 999px; padding: 4px 10px; font-size: 0.82rem; font-weight: 600; color: rgba(187, 245, 253, 0.95); background: rgba(36, 91, 136, 0.28); }
-  :global(.risk-tags) { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 7px; }
-  :global(.risk-tags li) { border-radius: 999px; border: 1px solid rgba(119, 145, 184, 0.45); background: rgba(13, 29, 56, 0.66); color: rgba(212, 226, 245, 0.94); font-size: 0.76rem; letter-spacing: 0.02em; text-transform: uppercase; padding: 4px 9px; }
-  :global(.hub-bottom-grid) { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  :global(.hub-panel ul) { margin: 10px 0 0; padding-left: 18px; }
-  :global(.hub-panel li + li) { margin-top: 6px; }
-  :global(.reveal) { opacity: 0; transform: translateY(8px); animation: hubReveal 0.62s ease forwards; }
+
+  :global(.games-hub h2),
+  :global(.games-hub h3) {
+    margin: 0;
+  }
+
+  :global(.hub-intro-card),
+  :global(.hub-panel),
+  :global(.game-card) {
+    position: relative;
+    background: linear-gradient(160deg, rgba(18, 30, 60, 0.9), rgba(10, 18, 40, 0.94));
+    border: 1px solid rgba(144, 177, 222, 0.24);
+    border-radius: 20px;
+    padding: clamp(1rem, 2.2vw, 1.55rem);
+    overflow: hidden;
+  }
+
+  :global(.hub-intro-card::before),
+  :global(.game-card::before) {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(95, 232, 255, 0.08), transparent 46%);
+    pointer-events: none;
+  }
+
+  :global(.hub-intro-card::after),
+  :global(.game-card::after) {
+    content: '';
+    position: absolute;
+    inset: auto -80px -100px auto;
+    width: 180px;
+    aspect-ratio: 1;
+    background: radial-gradient(circle, rgba(71, 255, 228, 0.2), transparent 70%);
+    pointer-events: none;
+  }
+
+  :global(.hub-kicker) {
+    margin: 0 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: rgba(86, 226, 241, 0.96);
+  }
+
+  :global(.hub-stats) {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+  }
+
+  :global(.hub-stats p) {
+    margin: 0;
+    padding: 8px 10px;
+    border: 1px solid rgba(130, 167, 214, 0.3);
+    border-radius: 12px;
+    background: rgba(10, 24, 47, 0.5);
+    font-size: 0.95rem;
+  }
+
+  :global(.hub-stats strong) {
+    color: rgba(135, 255, 236, 0.95);
+  }
+
+  :global(.anchor-row) {
+    margin: 14px 0 0;
+  }
+
+  :global(.anchor-row .cta-button) {
+    min-width: 220px;
+  }
+
+  :global(.games-grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 14px;
+    scroll-margin-top: 120px;
+  }
+
+  :global(.game-card) {
+    display: grid;
+    gap: 12px;
+    transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+  }
+
+  :global(.game-card:hover) {
+    transform: translateY(-4px);
+    border-color: rgba(86, 226, 241, 0.55);
+    box-shadow: 0 14px 34px rgba(2, 7, 20, 0.35);
+  }
+
+  :global(.game-preview) {
+    min-height: 78px;
+    border: 1px solid rgba(134, 171, 219, 0.34);
+    border-radius: 13px;
+    display: flex;
+    align-items: end;
+    padding: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(226, 245, 255, 0.95);
+  }
+
+  :global(.preview-pixel) {
+    background:
+      linear-gradient(135deg, rgba(59, 198, 173, 0.28), rgba(30, 100, 169, 0.2)),
+      repeating-linear-gradient(90deg, rgba(130, 240, 220, 0.14) 0 8px, rgba(18, 34, 63, 0.08) 8px 16px);
+  }
+
+  :global(.preview-sentinel) {
+    background:
+      linear-gradient(135deg, rgba(110, 199, 255, 0.24), rgba(95, 122, 255, 0.16)),
+      radial-gradient(circle at 80% 30%, rgba(150, 235, 255, 0.2), transparent 45%);
+  }
+
+  :global(.game-head) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  :global(.game-icon) {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(86, 226, 241, 0.35);
+    background: rgba(36, 91, 136, 0.24);
+    color: rgba(187, 245, 253, 0.95);
+  }
+
+  :global(.game-icon svg) {
+    width: 21px;
+    height: 21px;
+  }
+
+  :global(.game-badge) {
+    margin: 0;
+    border: 1px solid rgba(86, 226, 241, 0.35);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(187, 245, 253, 0.95);
+    background: rgba(36, 91, 136, 0.28);
+  }
+
+  :global(.risk-tags) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  :global(.risk-tags li) {
+    border-radius: 999px;
+    border: 1px solid rgba(119, 145, 184, 0.45);
+    background: rgba(13, 29, 56, 0.66);
+    color: rgba(212, 226, 245, 0.94);
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+  }
+
+  :global(.hub-bottom-grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+  }
+
+  :global(.hub-panel ul) {
+    margin: 10px 0 0;
+    padding-left: 18px;
+  }
+
+  :global(.hub-panel li + li) {
+    margin-top: 6px;
+  }
+
+  :global(.reveal) {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: hubReveal 0.62s ease forwards;
+  }
+
   :global(.reveal-0) { animation-delay: 0.03s; }
   :global(.reveal-1) { animation-delay: 0.08s; }
   :global(.reveal-2) { animation-delay: 0.14s; }
-  @keyframes hubReveal { to { opacity: 1; transform: translateY(0); } }
-  @media (prefers-reduced-motion: reduce) { :global(.reveal) { opacity: 1; transform: none; animation: none; } }
-  @media (max-width: 640px) {
-    :global(.hub-intro-card), :global(.hub-panel), :global(.game-card) { border-radius: 16px; }
-    :global(.anchor-row .cta-button) { width: 100%; min-width: 0; }
+
+  @keyframes hubReveal {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @medià (prefers-reduced-motion: reduce) {
+    :global(.reveal) {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+
+  @medià (max-width: 640px) {
+    :global(.hub-intro-card),
+    :global(.hub-panel),
+    :global(.game-card) {
+      border-radius: 16px;
+    }
+
+    :global(.anchor-row .cta-button) {
+      width: 100%;
+      min-width: 0;
+    }
   }
 </style>
