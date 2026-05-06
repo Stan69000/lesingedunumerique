@@ -115,7 +115,6 @@
     .nav-links { gap: 12px; }
     .nav-right { gap: 16px; }
   }
-
   a:focus-visible,
   button:focus-visible,
   input:focus-visible,
