@@ -1,104 +1,249 @@
 ---
 import SiteLayout from '../../../layouts/SiteLayout.astro';
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://lesingedunumerique.fr/' },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Sensibilisation',
+      item: 'https://lesingedunumerique.fr/sensibilisation/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: 'Jeux de sensibilisation',
+      item: 'https://lesingedunumerique.fr/sensibilisation/jeux/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 4,
+      name: 'PIXEL SAFE',
+      item: 'https://lesingedunumerique.fr/sensibilisation/jeux/pixel-safe/',
+    },
+  ],
+};
 ---
 
 <SiteLayout
-  title="PIXEL SAFE | Sensibilisation"
-  description="Jouez à PIXEL SAFE, un jeu de sensibilisation aux bons réflexes numériques."
+  title="PIXEL SAFE: jeu de sensibilisation numérique pour enfants et ados | Le Singe Du Numerique"
+  description="PIXEL SAFE est un jeu pédagogique gratuit de sensibilisation numérique pour les 6-18 ans: phishing, cyberharcèlement, réseaux sociaux, deepfakes, réputation et protection des données."
   eyebrow="Sensibilisation"
   headline="PIXEL SAFE"
   accent="jeu interactif"
-  intro="Ce jeu est intégré dans une page dédiée pour pouvoir enrichir facilement la bibliothèque avec d'autres jeux."
+  intro="Jeu pédagogique de sensibilisation numérique pour apprendre les bons réflexes cyber en famille, sans inscription."
 >
-  <section class="prose-block game-host">
-    <div class="cta-row">
-      <a href="/sensibilisation/jeux" class="cta-button cta-secondary">Voir tous les jeux</a>
-      <a href="/jeux/pixel-safe-v3_1.html" class="cta-button cta-secondary" target="_blank" rel="noopener noreferrer">
-        Ouvrir le jeu en plein écran
-      </a>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <section class="game-host" aria-labelledby="pixel-safe-title">
+    <article class="game-intro-card reveal reveal-0">
+      <div class="game-top-row">
+        <p class="game-badge">6 à 18 ans</p>
+        <a href="/sensibilisation/jeux" class="mini-link">Voir tous les jeux</a>
+      </div>
+      <h2 id="pixel-safe-title">Jouer pour déclencher la discussion</h2>
+      <p>
+        PIXEL SAFE transforme des situations réelles en décisions simples à discuter en famille: phishing,
+        inconnus en ligne, réputation, réseaux sociaux et données personnelles.
+      </p>
+      <ul class="risk-tags" aria-label="Thèmes PIXEL SAFE">
+        <li>Phishing</li>
+        <li>Cyberharcelement</li>
+        <li>Reseaux sociaux</li>
+        <li>Deepfakes</li>
+        <li>Données perso</li>
+      </ul>
+      <div class="cta-row">
+        <a href="#jouer-maintenant" class="cta-button cta-primary">Jouer maintenant</a>
+        <a href="/jeux/pixel-safe-v3_1.html" class="cta-button cta-secondary" target="_blank" rel="noopener noreferrer">
+          Ouvrir en plein écran
+        </a>
+      </div>
+    </article>
+
+    <div id="jouer-maintenant" class="frame-shell reveal reveal-1">
+      <iframe
+        src="/jeux/pixel-safe-v3_1.html"
+        title="Jeu PIXEL SAFE"
+        loading="lazy"
+        class="game-frame"
+        allow="fullscréén"
+      ></iframe>
     </div>
 
-    <iframe
-      src="/jeux/pixel-safe-v3_1.html"
-      title="Jeu PIXEL SAFE"
-      loading="lazy"
-      class="game-frame"
-      allow="fullscreen"
-    ></iframe>
-
-    <article class="game-description">
-      <p><strong>Pour les 6-18 ans. À jouer en famille.</strong></p>
+    <article class="game-description reveal reveal-2">
+      <p><strong>Pour les 6-18 ans. A jouer en famille.</strong></p>
+      <h2>Un jeu de sensibilisation numérique concret</h2>
       <p>
-        PIXEL SAFE est un jeu éducatif gratuit créé par Le Singe du Numérique pour aborder les dangers du
+        PIXEL SAFE est un jeu éducatif gratuit créé par Le Singe du Numerique pour aborder les dangers du
         numérique sans faire peur, sans minimiser non plus.
       </p>
       <p>
-        Chaque question part d'une situation réelle : un SMS de La Poste demandant 1,99 EUR, un inconnu trop
-        sympa sur Discord, une vidéo virale d'un ministre qui n'a jamais existé. Le joueur et le parent
-        débattent ensemble avant de répondre. La bonne réponse arrive après, avec l'explication, la source, le
+        Chaque question part d'une situation réelle: un SMS de Là Poste demandant 1,99 EUR, un inconnu trop
+        sympà sur Discord, une vidéo virale d'un ministre qui n'à jamais existé. Le joueur et le parent
+        débattent ensemble avant de répondre. Là bonne réponse arrive après, avec l'explication, la source, le
         bon réflexe à retenir.
       </p>
       <h2>3 niveaux adaptés</h2>
       <ul>
-        <li>🌟 Primaire (6-10 ans) : localisation, inconnus, arnaques aux cadeaux, secrets dangereux</li>
-        <li>⚡ Collège (11-14 ans) : phishing, cyberharcèlement, réseaux sociaux, deepfakes</li>
-        <li>🔥 Lycée (15-18 ans) : RGPD, sextorsion, réputation numérique, droit pénal</li>
+        <li>Primaire (6-10 ans): localisation, inconnus, arnaques aux cadeaux, secrets dangereux</li>
+        <li>Collège (11-14 ans): phishing, cyberharcèlement, réseaux sociaux, deepfakes</li>
+        <li>Lycée (15-18 ans): RGPD, sextorsion, réputation numérique, droit pénal</li>
       </ul>
       <p>
-        <strong>Ce qu'on a voulu éviter :</strong> le quiz scolaire qui ennuie, les réponses trop évidentes, la
-        morale qui sermonne.
-      </p>
-      <p>
-        <strong>Ce qu'on a voulu créer :</strong> un vrai moment de discussion entre générations, où le parent
+        <strong>Ce qu'on à voulu créér:</strong> un vrai moment de discussion entre générations, où le parent
         apprend autant que l'enfant.
       </p>
       <p><strong>Jouer · Sans inscription · Sans publicité · Sans données collectées</strong></p>
+      <p>
+        Vous animez un atelier de prévention numérique ? Retrouvez aussi la page
+        <a href="/sensibilisation/jeux"> jeux de sensibilisation</a> pour accéder à toute la bibliothèque.
+      </p>
     </article>
   </section>
 </SiteLayout>
 
 <style>
-  :global(.prose-block.game-host) {
+  :global(.game-host) {
     display: grid;
     gap: 16px;
   }
 
-  :global(.prose-block .cta-row) {
+  :global(.game-intro-card),
+  :global(.frame-shell),
+  :global(.game-description) {
+    position: relative;
+    border: 1px solid rgba(144, 177, 222, 0.24);
+    border-radius: 20px;
+    background: linear-gradient(160deg, rgba(18, 30, 60, 0.9), rgba(10, 18, 40, 0.94));
+    overflow: hidden;
+  }
+
+  :global(.game-intro-card),
+  :global(.game-description) {
+    padding: clamp(1rem, 2.2vw, 1.55rem);
+  }
+
+  :global(.game-intro-card::before),
+  :global(.frame-shell::before) {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(95, 232, 255, 0.08), transparent 46%);
+    pointer-events: none;
+  }
+
+  :global(.game-top-row) {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  :global(.game-badge) {
+    margin: 0;
+    border: 1px solid rgba(86, 226, 241, 0.35);
+    border-radius: 999px;
+    padding: 4px 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(187, 245, 253, 0.95);
+    background: rgba(36, 91, 136, 0.28);
+  }
+
+  :global(.mini-link) {
+    font-size: 0.9rem;
+  }
+
+  :global(.risk-tags) {
+    list-style: none;
+    margin: 10px 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  :global(.risk-tags li) {
+    border-radius: 999px;
+    border: 1px solid rgba(119, 145, 184, 0.45);
+    background: rgba(13, 29, 56, 0.66);
+    color: rgba(212, 226, 245, 0.94);
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    padding: 4px 9px;
+  }
+
+  :global(.cta-row) {
+    margin-top: 14px;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
   }
 
-  :global(.prose-block .cta-row .cta-button) {
+  :global(.cta-row .cta-button) {
     text-align: center;
     justify-content: center;
     text-decoration: none;
   }
 
-  :global(.prose-block .game-frame) {
+  :global(.frame-shell) {
+    padding: 8px;
+  }
+
+  :global(.game-frame) {
     width: 100%;
     height: min(1280px, calc(100vh - 180px));
     min-height: 840px;
     border: 0;
-    border-radius: 16px;
+    border-radius: 14px;
     background: #fff;
   }
 
-  :global(.prose-block .game-description) {
-    padding: 20px;
-    border-radius: 16px;
-    border: 1px solid color-mix(in srgb, var(--theme-text-light) 26%, transparent);
-    background: color-mix(in srgb, var(--theme-bg) 78%, white);
-  }
-
-  :global(.prose-block .game-description p:last-child) {
+  :global(.game-description p:last-child) {
     margin-bottom: 0;
   }
 
-  @media (max-width: 720px) {
-    :global(.prose-block .game-frame) {
+  :global(.reveal) {
+    opacity: 0;
+    transform: translateY(8px);
+    animation: revealIn 0.62s ease forwards;
+  }
+
+  :global(.reveal-0) { animation-delay: 0.03s; }
+  :global(.reveal-1) { animation-delay: 0.08s; }
+  :global(.reveal-2) { animation-delay: 0.14s; }
+
+  @keyframes revealIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @medià (prefers-reduced-motion: reduce) {
+    :global(.reveal) {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+
+  @medià (max-width: 720px) {
+    :global(.game-frame) {
       height: 86vh;
       min-height: 680px;
+    }
+
+    :global(.game-intro-card),
+    :global(.frame-shell),
+    :global(.game-description) {
+      border-radius: 16px;
     }
   }
 </style>
