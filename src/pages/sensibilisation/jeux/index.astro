@@ -15,7 +15,15 @@ import SiteLayout from '../../../layouts/SiteLayout.astro';
     <div class="games-grid" role="list">
       <article class="game-card" role="listitem">
         <h3>PIXEL SAFE</h3>
-        <p>Un jeu interactif pour apprendre les bons réflexes numériques selon différents niveaux.</p>
+        <p><strong>Pour les 6-18 ans, à jouer en famille.</strong></p>
+        <p>
+          Un jeu éducatif gratuit pour parler arnaques, réseaux sociaux, cyberharcèlement, réputation et droit
+          numérique sans dramatiser.
+        </p>
+        <p>
+          3 niveaux adaptés (primaire, collège, lycée), des situations réelles et des explications claires pour
+          apprendre ensemble parent et enfant.
+        </p>
         <a class="cta-button cta-secondary" href="/sensibilisation/jeux/pixel-safe">Jouer à PIXEL SAFE</a>
       </article>
     </div>
@@ -45,6 +53,9 @@ import SiteLayout from '../../../layouts/SiteLayout.astro';
 
   :global(.prose-block .game-card p) {
     margin: 0;
+  }
+
+  :global(.prose-block .game-card p:last-of-type) {
     flex: 1;
   }
 
