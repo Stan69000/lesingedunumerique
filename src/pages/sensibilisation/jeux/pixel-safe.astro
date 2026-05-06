@@ -25,6 +25,35 @@ import SiteLayout from '../../../layouts/SiteLayout.astro';
       class="game-frame"
       allow="fullscreen"
     ></iframe>
+
+    <article class="game-description">
+      <p><strong>Pour les 6-18 ans. À jouer en famille.</strong></p>
+      <p>
+        PIXEL SAFE est un jeu éducatif gratuit créé par Le Singe du Numérique pour aborder les dangers du
+        numérique sans faire peur, sans minimiser non plus.
+      </p>
+      <p>
+        Chaque question part d'une situation réelle : un SMS de La Poste demandant 1,99 EUR, un inconnu trop
+        sympa sur Discord, une vidéo virale d'un ministre qui n'a jamais existé. Le joueur et le parent
+        débattent ensemble avant de répondre. La bonne réponse arrive après, avec l'explication, la source, le
+        bon réflexe à retenir.
+      </p>
+      <h2>3 niveaux adaptés</h2>
+      <ul>
+        <li>🌟 Primaire (6-10 ans) : localisation, inconnus, arnaques aux cadeaux, secrets dangereux</li>
+        <li>⚡ Collège (11-14 ans) : phishing, cyberharcèlement, réseaux sociaux, deepfakes</li>
+        <li>🔥 Lycée (15-18 ans) : RGPD, sextorsion, réputation numérique, droit pénal</li>
+      </ul>
+      <p>
+        <strong>Ce qu'on a voulu éviter :</strong> le quiz scolaire qui ennuie, les réponses trop évidentes, la
+        morale qui sermonne.
+      </p>
+      <p>
+        <strong>Ce qu'on a voulu créer :</strong> un vrai moment de discussion entre générations, où le parent
+        apprend autant que l'enfant.
+      </p>
+      <p><strong>Jouer · Sans inscription · Sans publicité · Sans données collectées</strong></p>
+    </article>
   </section>
 </SiteLayout>
 
@@ -48,15 +77,28 @@ import SiteLayout from '../../../layouts/SiteLayout.astro';
 
   :global(.prose-block .game-frame) {
     width: 100%;
-    min-height: 82vh;
+    height: min(1280px, calc(100vh - 180px));
+    min-height: 840px;
     border: 0;
     border-radius: 16px;
     background: #fff;
   }
 
+  :global(.prose-block .game-description) {
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--theme-text-light) 26%, transparent);
+    background: color-mix(in srgb, var(--theme-bg) 78%, white);
+  }
+
+  :global(.prose-block .game-description p:last-child) {
+    margin-bottom: 0;
+  }
+
   @media (max-width: 720px) {
     :global(.prose-block .game-frame) {
-      min-height: 74vh;
+      height: 86vh;
+      min-height: 680px;
     }
   }
 </style>
