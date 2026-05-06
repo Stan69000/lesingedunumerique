@@ -1,0 +1,102 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="SENTINEL | Sensibilisation"
+  description="Jouez à SENTINEL, une simulation immersive pour découvrir les réflexes de cybersécurité."
+  eyebrow="Sensibilisation"
+  headline="SENTINEL"
+  accent="simulation immersive"
+  intro="Un jeu de cybersécurité en trois modes pour enquêter, décider et progresser comme un agent."
+>
+  <section class="prose-block game-host">
+    <div class="cta-row">
+      <a href="/sensibilisation/jeux" class="cta-button cta-secondary">Voir tous les jeux</a>
+      <a href="/jeux/sentinel.html" class="cta-button cta-secondary" target="_blank" rel="noopener noreferrer">
+        Ouvrir le jeu en plein écran
+      </a>
+    </div>
+
+    <iframe
+      src="/jeux/sentinel.html"
+      title="Jeu SENTINEL"
+      loading="lazy"
+      class="game-frame"
+      allow="fullscreen"
+    ></iframe>
+
+    <article class="game-description">
+      <p><strong>Devenez agent. Montez en grade. Défendez le numérique.</strong></p>
+      <p>
+        SENTINEL est un jeu de simulation cybersécurité créé par Le Singe du Numérique. Vous incarnez un agent
+        en formation au sein d'une agence fictive et vous progressez à travers trois modes complémentaires.
+      </p>
+      <p>
+        ⚡ Mode Arcade : quatre mini-jeux pour tester vos réflexes. Classifiez de vrais emails (légitimes ou
+        phishing ?), construisez le mot de passe le plus solide possible, bloquez des attaques réseau en temps
+        réel, débusquez les deepfakes parmi de vrais contenus.
+      </p>
+      <p>
+        💻 Mode Terminal : un vrai faux terminal de commandes. Analysez un poste compromis, remontez une fuite
+        de données, gérez un ransomware en cours de propagation. Les commandes, les logs, les décisions, comme
+        un vrai analyste.
+      </p>
+      <p>
+        🗂️ Mode Aventure : des opérations scénarisées avec dialogues, choix et conséquences réelles. Une PME
+        sous chantage numérique, une usurpation d'identité à démêler. Chaque mauvaise décision coûte de la
+        crédibilité.
+      </p>
+      <p>
+        Votre progression est sauvegardée : XP, grades (de Recrue à Sentinel), badges, journal des opérations.
+      </p>
+      <p><strong>Jouer · Sans inscription · Sans publicité · Sans données collectées</strong></p>
+    </article>
+  </section>
+</SiteLayout>
+
+<style>
+  :global(.prose-block.game-host) {
+    display: grid;
+    gap: 16px;
+  }
+
+  :global(.prose-block .cta-row) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  :global(.prose-block .cta-row .cta-button) {
+    text-align: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  :global(.prose-block .game-frame) {
+    width: 100%;
+    height: min(1280px, calc(100vh - 180px));
+    min-height: 840px;
+    border: 0;
+    border-radius: 16px;
+    background: #fff;
+  }
+
+  :global(.prose-block .game-description) {
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid color-mix(in srgb, var(--theme-text-light) 26%, transparent);
+    background: color-mix(in srgb, var(--theme-bg) 78%, white);
+  }
+
+  :global(.prose-block .game-description p:last-child) {
+    margin-bottom: 0;
+  }
+
+  @media (max-width: 720px) {
+    :global(.prose-block .game-frame) {
+      height: 86vh;
+      min-height: 680px;
+    }
+  }
+</style>
