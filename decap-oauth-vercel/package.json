@@ -12,5 +12,8 @@
     "@astrojs/vercel": "^10.0.6",
     "astro": "^6.2.2",
     "astro-decap-cms-oauth": "^0.5.2"
+  },
+  "overrides": {
+    "path-to-regexp": "^6.3.0"
   }
 }

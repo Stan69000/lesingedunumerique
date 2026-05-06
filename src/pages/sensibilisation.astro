@@ -1,0 +1,46 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Sensibilisation | Le Singe Du Numérique"
+  description="Des modules de sensibilisation numérique arrivent très prochainement sur Le Singe Du Numérique."
+  eyebrow="Sensibilisation"
+  headline="Des modules"
+  accent="arrivent très vite"
+  intro="Nous préparons actuellement un espace dédié à des modules courts, utiles et accessibles pour sensibiliser aux bons réflexes numériques."
+>
+  <section class="prose-block">
+    <h2>Ouverture imminente</h2>
+    <p>Le contenu est en cours de finalisation et sera publié très prochainement.</p>
+    <p>Reviens vite : les premiers modules de sensibilisation arrivent.</p>
+    <ul class="cta-row">
+      <li><a href="/blog" class="cta-button cta-secondary">Voir le blog en attendant</a></li>
+      <li><a href="/contact" class="cta-button cta-secondary">Proposer un besoin</a></li>
+    </ul>
+  </section>
+</SiteLayout>
+
+<style>
+  :global(.prose-block .cta-row) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+    align-items: stretch;
+  }
+
+  :global(.prose-block .cta-row li) {
+    display: flex;
+  }
+
+  :global(.prose-block .cta-row .cta-button) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 58px;
+    width: 100%;
+    text-align: center;
+    text-decoration: none !important;
+    line-height: 1.2;
+  }
+</style>
