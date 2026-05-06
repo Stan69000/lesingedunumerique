@@ -654,7 +654,7 @@ const isVeillePage = currentPath.startsWith('/veille');
     display: flex;
     align-items: center;
     gap: 18px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -669,9 +669,10 @@ const isVeillePage = currentPath.startsWith('/veille');
   .nav-item,
   .footer-links a {
     color: var(--text-muted);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     font-weight: 500;
     letter-spacing: -0.01em;
+    white-space: nowrap;
   }
 
   .nav-item[aria-current='page'] {
@@ -1094,6 +1095,20 @@ const isVeillePage = currentPath.startsWith('/veille');
   @media (min-width: 768px) {
     .brand-text {
       display: inline;
+    }
+  }
+
+  @media (max-width: 1240px) {
+    .brand-text {
+      display: none;
+    }
+
+    .nav-links {
+      gap: 14px;
+    }
+
+    .nav-right {
+      gap: 16px;
     }
   }
 
