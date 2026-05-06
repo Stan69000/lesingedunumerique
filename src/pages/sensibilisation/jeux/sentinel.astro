@@ -34,7 +34,7 @@ const breadcrumbSchema = {
   eyebrow="Sensibilisation"
   headline="SENTINEL"
   accent="simulation immersive"
-  intro="Un jeu de cybersécurité en trois modes pour enqueter, decider et progresser comme un agent."
+  intro="Un jeu de cybersécurité en trois modes pour enquêter, décider et progresser comme un agent."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
@@ -47,13 +47,13 @@ const breadcrumbSchema = {
       <h2 id="sentinel-title">Jouer pour entraîner les réflexes cyber</h2>
       <p>
         SENTINEL vous place dans des situations de défense numérique réalistes: analyse, priorisation,
-        decision rapide et consequences sur la mission.
+        décision rapide et conséquences sur la mission.
       </p>
       <ul class="risk-tags" aria-label="Thèmes SENTINEL">
         <li>Mails suspects</li>
         <li>Mots de passe</li>
         <li>Deepfakes</li>
-        <li>Securite reseau</li>
+        <li>Sécurité réseau</li>
         <li>Gestion de crise</li>
       </ul>
       <div class="cta-row">
@@ -70,12 +70,12 @@ const breadcrumbSchema = {
         title="Jeu SENTINEL"
         loading="lazy"
         class="game-frame"
-        allow="fullscréén"
+        allow="fullscreen"
       ></iframe>
     </div>
 
     <article class="game-description reveal reveal-2">
-      <p><strong>Devenez agent. Montez en grade. Defendez le numérique.</strong></p>
+      <p><strong>Devenez agent. Montez en grade. Défendez le numérique.</strong></p>
       <h2>Simulation cybersécurité pour s'entraîner</h2>
       <p>
         SENTINEL est un jeu de simulation cybersécurité créé par Le Singe du Numerique. Vous incarnez un agent
@@ -83,7 +83,7 @@ const breadcrumbSchema = {
       </p>
       <p>
         Mode Arcade: quatre mini-jeux pour tester vos réflexes. Classifiez de vrais emails (légitimes ou
-        phishing ?), construisez le mot de passe le plus solide possible, bloquez des attaques reseau en temps
+        phishing ?), construisez le mot de passe le plus solide possible, bloquez des attaques réseau en temps
         réel, débusquez les deepfakes parmi de vrais contenus.
       </p>
       <p>
@@ -91,11 +91,11 @@ const breadcrumbSchema = {
         données, gérez un ransomware en cours de propagation.
       </p>
       <p>
-        Mode Aventure: des operations scénarisées avec dialogues, choix et consequences réelles. Chaque
-        mauvaise decision coute de la crédibilité.
+        Mode Aventure: des opérations scénarisées avec dialogues, choix et conséquences réelles. Chaque
+        mauvaise décision coûte de la crédibilité.
       </p>
       <p>
-        Votre progression est sauvegardée: XP, grades (de Recrue à Sentinel), badges, journal des operations.
+        Votre progression est sauvegardée: XP, grades (de Recrue à Sentinel), badges, journal des opérations.
       </p>
       <p><strong>Jouer · Sans inscription · Sans publicité · Sans données collectées</strong></p>
       <p>
@@ -107,143 +107,32 @@ const breadcrumbSchema = {
 </SiteLayout>
 
 <style>
-  :global(.game-host) {
-    display: grid;
-    gap: 16px;
+  :global(.game-host) { display: grid; gap: 16px; }
+  :global(.game-intro-card), :global(.frame-shell), :global(.game-description) {
+    position: relative; border: 1px solid rgba(144, 177, 222, 0.24); border-radius: 20px;
+    background: linear-gradient(160deg, rgba(18, 30, 60, 0.9), rgba(10, 18, 40, 0.94)); overflow: hidden;
   }
-
-  :global(.game-intro-card),
-  :global(.frame-shell),
-  :global(.game-description) {
-    position: relative;
-    border: 1px solid rgba(144, 177, 222, 0.24);
-    border-radius: 20px;
-    background: linear-gradient(160deg, rgba(18, 30, 60, 0.9), rgba(10, 18, 40, 0.94));
-    overflow: hidden;
-  }
-
-  :global(.game-intro-card),
-  :global(.game-description) {
-    padding: clamp(1rem, 2.2vw, 1.55rem);
-  }
-
-  :global(.game-intro-card::before),
-  :global(.frame-shell::before) {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, rgba(95, 232, 255, 0.08), transparent 46%);
-    pointer-events: none;
-  }
-
-  :global(.game-top-row) {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-
-  :global(.game-badge) {
-    margin: 0;
-    border: 1px solid rgba(86, 226, 241, 0.35);
-    border-radius: 999px;
-    padding: 4px 10px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: rgba(187, 245, 253, 0.95);
-    background: rgba(36, 91, 136, 0.28);
-  }
-
-  :global(.mini-link) {
-    font-size: 0.9rem;
-  }
-
-  :global(.risk-tags) {
-    list-style: none;
-    margin: 10px 0 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-  }
-
-  :global(.risk-tags li) {
-    border-radius: 999px;
-    border: 1px solid rgba(119, 145, 184, 0.45);
-    background: rgba(13, 29, 56, 0.66);
-    color: rgba(212, 226, 245, 0.94);
-    font-size: 0.76rem;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    padding: 4px 9px;
-  }
-
-  :global(.cta-row) {
-    margin-top: 14px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-  }
-
-  :global(.cta-row .cta-button) {
-    text-align: center;
-    justify-content: center;
-    text-decoration: none;
-  }
-
-  :global(.frame-shell) {
-    padding: 8px;
-  }
-
-  :global(.game-frame) {
-    width: 100%;
-    height: min(1280px, calc(100vh - 180px));
-    min-height: 840px;
-    border: 0;
-    border-radius: 14px;
-    background: #fff;
-  }
-
-  :global(.game-description p:last-child) {
-    margin-bottom: 0;
-  }
-
-  :global(.reveal) {
-    opacity: 0;
-    transform: translateY(8px);
-    animation: revealIn 0.62s ease forwards;
-  }
-
+  :global(.game-intro-card), :global(.game-description) { padding: clamp(1rem, 2.2vw, 1.55rem); }
+  :global(.game-intro-card::before), :global(.frame-shell::before) { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(95, 232, 255, 0.08), transparent 46%); pointer-events: none; }
+  :global(.game-top-row) { display: flex; justify-content: space-between; gap: 10px; align-items: center; flex-wrap: wrap; }
+  :global(.game-badge) { margin: 0; border: 1px solid rgba(122, 228, 255, 0.45); border-radius: 999px; padding: 6px 12px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; color: rgba(187, 245, 253, 0.95); background: linear-gradient(180deg, rgba(38, 102, 145, 0.38), rgba(24, 74, 122, 0.3)); box-shadow: inset 0 1px 0 rgba(207, 247, 255, 0.14); }
+  :global(.mini-link) { font-size: 0.9rem; }
+  :global(.risk-tags) { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 9px; }
+  :global(.risk-tags li) { border-radius: 999px; border: 1px solid rgba(126, 165, 216, 0.5); background: linear-gradient(180deg, rgba(17, 42, 79, 0.9), rgba(12, 30, 58, 0.88)); color: rgba(222, 237, 255, 0.96); font-size: 0.74rem; letter-spacing: 0.03em; font-weight: 600; text-transform: uppercase; padding: 6px 11px; line-height: 1; box-shadow: inset 0 1px 0 rgba(208, 228, 255, 0.12); transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease; }
+  :global(.risk-tags li:hover) { border-color: rgba(152, 213, 255, 0.74); background: linear-gradient(180deg, rgba(22, 55, 99, 0.95), rgba(15, 39, 74, 0.92)); transform: translateY(-1px); }
+  :global(.cta-row) { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+  :global(.cta-row .cta-button) { text-align: center; justify-content: center; text-decoration: none; }
+  :global(.frame-shell) { padding: 8px; }
+  :global(.game-frame) { width: 100%; height: min(1280px, calc(100vh - 180px)); min-height: 840px; border: 0; border-radius: 14px; background: #fff; }
+  :global(.game-description p:last-child) { margin-bottom: 0; }
+  :global(.reveal) { opacity: 0; transform: translateY(8px); animation: revealIn 0.62s ease forwards; }
   :global(.reveal-0) { animation-delay: 0.03s; }
   :global(.reveal-1) { animation-delay: 0.08s; }
   :global(.reveal-2) { animation-delay: 0.14s; }
-
-  @keyframes revealIn {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @medià (prefers-reduced-motion: reduce) {
-    :global(.reveal) {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
-  }
-
-  @medià (max-width: 720px) {
-    :global(.game-frame) {
-      height: 86vh;
-      min-height: 680px;
-    }
-
-    :global(.game-intro-card),
-    :global(.frame-shell),
-    :global(.game-description) {
-      border-radius: 16px;
-    }
+  @keyframes revealIn { to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) { :global(.reveal) { opacity: 1; transform: none; animation: none; } }
+  @media (max-width: 720px) {
+    :global(.game-frame) { height: 86vh; min-height: 680px; }
+    :global(.game-intro-card), :global(.frame-shell), :global(.game-description) { border-radius: 16px; }
   }
 </style>
