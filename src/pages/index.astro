@@ -97,6 +97,7 @@ const currentPath = Astro.url.pathname;
         <div class="nav-right">
           <ul class="nav-links">
             <li><a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a></li>
+            <li><a href="/sensibilisation" class="nav-item" aria-current={currentPath === '/sensibilisation' ? 'page' : undefined}>Sensibilisation</a></li>
             <li><a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a></li>
             <li><a href="/evenements" class="nav-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a></li>
             <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
@@ -142,6 +143,7 @@ const currentPath = Astro.url.pathname;
         hidden
       >
         <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
+        <a href="/sensibilisation" class="mobile-item" aria-current={currentPath === '/sensibilisation' ? 'page' : undefined}>Sensibilisation</a>
         <a href="/asso" class="mobile-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
         <a href="/evenements" class="mobile-item" aria-current={currentPath === '/evenements' ? 'page' : undefined}>Événements</a>
         <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
@@ -498,6 +500,7 @@ const currentPath = Astro.url.pathname;
             <h2 class="footer-line-label">Menu</h2>
             <ul class="footer-line-content footer-links">
               <li><a href="/projets">Projets</a></li>
+              <li><a href="/sensibilisation">Sensibilisation</a></li>
               <li><a href="/asso">L’association</a></li>
               <li><a href="/evenements">Événements</a></li>
               <li><a href="/adhesion">Rejoindre</a></li>
