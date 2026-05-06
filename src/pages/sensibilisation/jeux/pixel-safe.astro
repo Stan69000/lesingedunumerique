@@ -1,0 +1,62 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="PIXEL SAFE | Sensibilisation"
+  description="Jouez à PIXEL SAFE, un jeu de sensibilisation aux bons réflexes numériques."
+  eyebrow="Sensibilisation"
+  headline="PIXEL SAFE"
+  accent="jeu interactif"
+  intro="Ce jeu est intégré dans une page dédiée pour pouvoir enrichir facilement la bibliothèque avec d'autres jeux."
+>
+  <section class="prose-block game-host">
+    <div class="cta-row">
+      <a href="/sensibilisation/jeux" class="cta-button cta-secondary">Voir tous les jeux</a>
+      <a href="/jeux/pixel-safe-v3_1.html" class="cta-button cta-secondary" target="_blank" rel="noopener noreferrer">
+        Ouvrir le jeu en plein écran
+      </a>
+    </div>
+
+    <iframe
+      src="/jeux/pixel-safe-v3_1.html"
+      title="Jeu PIXEL SAFE"
+      loading="lazy"
+      class="game-frame"
+      allow="fullscreen"
+    ></iframe>
+  </section>
+</SiteLayout>
+
+<style>
+  :global(.prose-block.game-host) {
+    display: grid;
+    gap: 16px;
+  }
+
+  :global(.prose-block .cta-row) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+  }
+
+  :global(.prose-block .cta-row .cta-button) {
+    text-align: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  :global(.prose-block .game-frame) {
+    width: 100%;
+    min-height: 82vh;
+    border: 0;
+    border-radius: 16px;
+    background: #fff;
+  }
+
+  @media (max-width: 720px) {
+    :global(.prose-block .game-frame) {
+      min-height: 74vh;
+    }
+  }
+</style>
