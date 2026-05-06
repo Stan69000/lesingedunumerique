@@ -1,0 +1,55 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+---
+
+<SiteLayout
+  title="Jeux de sensibilisation | Le Singe Du Numérique"
+  description="Retrouvez les jeux de sensibilisation numérique proposés par Le Singe Du Numérique."
+  eyebrow="Sensibilisation"
+  headline="Nos jeux"
+  accent="pédagogiques"
+  intro="Un espace dédié aux jeux de sensibilisation. D'autres jeux seront ajoutés progressivement."
+>
+  <section class="prose-block">
+    <h2>Bibliothèque de jeux</h2>
+    <div class="games-grid" role="list">
+      <article class="game-card" role="listitem">
+        <h3>PIXEL SAFE</h3>
+        <p>Un jeu interactif pour apprendre les bons réflexes numériques selon différents niveaux.</p>
+        <a class="cta-button cta-secondary" href="/sensibilisation/jeux/pixel-safe">Jouer à PIXEL SAFE</a>
+      </article>
+    </div>
+  </section>
+</SiteLayout>
+
+<style>
+  :global(.prose-block .games-grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  :global(.prose-block .game-card) {
+    border: 1px solid color-mix(in srgb, var(--theme-text-light) 26%, transparent);
+    border-radius: 16px;
+    padding: 20px;
+    background: color-mix(in srgb, var(--theme-bg) 78%, white);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  :global(.prose-block .game-card h3) {
+    margin: 0;
+  }
+
+  :global(.prose-block .game-card p) {
+    margin: 0;
+    flex: 1;
+  }
+
+  :global(.prose-block .game-card .cta-button) {
+    align-self: flex-start;
+    text-decoration: none;
+  }
+</style>
