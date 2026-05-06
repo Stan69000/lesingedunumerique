@@ -1,0 +1,3156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>SENTINEL — Agence Cyber</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0b0d11;
+  --bg2:      #0f1218;
+  --bg3:      #141820;
+  --panel:    #161c26;
+  --panel2:   #1c2333;
+  --border:   #1e2d45;
+  --border2:  #243450;
+  --blue:     #1a6eb5;
+  --blue2:    #2080d0;
+  --blue3:    #3d9be8;
+  --accent:   #00b4ff;
+  --accent2:  #0090cc;
+  --steel:    #4a7fa5;
+  --text:     #c8d8e8;
+  --text2:    #8aa0b8;
+  --text3:    #4a6070;
+  --green:    #22c55e;
+  --red:      #ef4444;
+  --amber:    #f59e0b;
+  --mono:     'Share Tech Mono', monospace;
+  --title:    'Barlow Condensed', sans-serif;
+  --body:     'Barlow', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow-x: hidden; }
+
+body {
+  font-family: var(--body);
+  background: var(--bg);
+  color: var(--text);
+  cursor: default;
+  position: relative;
+}
+
+/* Scanlines overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, #00000008 2px, #00000008 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Grid de fond */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: .15;
+  pointer-events: none;
+}
+
+/* ── ÉCRANS ── */
+.screen { display: none; min-height: 100vh; flex-direction: column; }
+.screen.active { display: flex; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+@keyframes slideRight { from { opacity:0; transform:translateX(-20px); } to { opacity:1; transform:none; } }
+@keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+@keyframes scanline { 0% { transform:translateY(-100%); } 100% { transform:translateY(100vh); } }
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+@keyframes glitch {
+  0%,100% { transform:none; }
+  92% { transform:none; }
+  93% { transform:skewX(-2deg) translateX(2px); }
+  94% { transform:none; }
+  96% { transform:skewX(1deg) translateX(-1px); }
+  97% { transform:none; }
+}
+@keyframes drawLine { from { width:0; } to { width:100%; } }
+@keyframes countUp { from { opacity:0; } to { opacity:1; } }
+@keyframes shake { 0%,100%{transform:none} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(4px)} }
+@keyframes success { 0%{transform:scale(.8);opacity:0} 60%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+
+/* ══════════════════════════════════════════════
+   ÉCRAN 0 — BOOT / INTRO
+══════════════════════════════════════════════ */
+#screen-boot {
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  text-align: center;
+  padding: 2rem;
+}
+
+.boot-logo {
+  font-family: var(--title);
+  font-size: clamp(4rem, 18vw, 9rem);
+  font-weight: 900;
+  letter-spacing: .15em;
+  color: var(--accent);
+  animation: glitch 6s infinite;
+  line-height: 1;
+  margin-bottom: .3rem;
+}
+
+.boot-sub {
+  font-family: var(--mono);
+  font-size: .7rem;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 3rem;
+  animation: fadeIn .8s .5s both;
+}
+
+.boot-progress {
+  width: 300px;
+  height: 2px;
+  background: var(--border2);
+  margin: 0 auto 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.boot-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  width: 0;
+  transition: width .1s linear;
+}
+
+.boot-log {
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: var(--text3);
+  letter-spacing: .05em;
+  min-height: 1.2rem;
+}
+
+/* ══════════════════════════════════════════════
+   ÉCRAN 1 — CRÉATION PROFIL
+══════════════════════════════════════════════ */
+#screen-profil {
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  background: var(--bg);
+}
+
+.profil-frame {
+  max-width: 480px;
+  width: 100%;
+  border: 1px solid var(--border2);
+  background: var(--panel);
+  position: relative;
+  animation: fadeIn .6s ease;
+}
+
+.profil-frame::before {
+  content: 'NOUVEAU DOSSIER AGENT';
+  position: absolute;
+  top: -1px; left: 20px;
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .15em;
+  color: var(--accent);
+  background: var(--panel);
+  padding: 0 .5rem;
+  transform: translateY(-50%);
+}
+
+.profil-header {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profil-shield {
+  font-size: 2.5rem;
+  animation: float 4s ease-in-out infinite;
+}
+
+.profil-header-text h2 {
+  font-family: var(--title);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  color: var(--text);
+}
+
+.profil-header-text p {
+  font-family: var(--mono);
+  font-size: .62rem;
+  color: var(--text3);
+  letter-spacing: .1em;
+  margin-top: .2rem;
+}
+
+.profil-body { padding: 1.5rem 1.2rem; }
+
+.field-group { margin-bottom: 1.2rem; }
+
+.field-label {
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--steel);
+  margin-bottom: .4rem;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+
+.field-label::before { content:'▸'; color: var(--accent); }
+
+.field-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-bottom: 2px solid var(--blue);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: .9rem;
+  padding: .6rem .8rem;
+  outline: none;
+  transition: border-color .2s;
+  letter-spacing: .05em;
+}
+.field-input:focus { border-color: var(--accent); border-bottom-color: var(--accent); }
+.field-input::placeholder { color: var(--text3); }
+
+.avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: .5rem;
+}
+
+.avatar-btn {
+  aspect-ratio: 1;
+  border: 1px solid var(--border2);
+  background: var(--bg);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+  border-radius: 4px;
+}
+.avatar-btn:hover { border-color: var(--blue3); background: var(--panel2); }
+.avatar-btn.sel { border-color: var(--accent); background: var(--blue)22; box-shadow: 0 0 12px var(--accent)30; }
+
+.specialite-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+}
+
+.spec-btn {
+  border: 1px solid var(--border2);
+  background: var(--bg);
+  color: var(--text2);
+  padding: .7rem .8rem;
+  cursor: pointer;
+  font-family: var(--body);
+  font-size: .82rem;
+  text-align: left;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.spec-btn:hover { border-color: var(--blue3); color: var(--text); }
+.spec-btn.sel { border-color: var(--accent); background: var(--blue)15; color: var(--accent); }
+.spec-icon { font-size: 1.1rem; flex-shrink: 0; }
+
+.btn-primary {
+  width: 100%;
+  background: var(--blue);
+  border: 1px solid var(--blue2);
+  color: var(--text);
+  font-family: var(--title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: .8rem;
+  cursor: pointer;
+  transition: all .18s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  margin-top: 1rem;
+}
+.btn-primary:hover { background: var(--blue2); box-shadow: 0 0 20px var(--accent)20; }
+.btn-primary:disabled { opacity: .35; cursor: not-allowed; }
+
+/* ══════════════════════════════════════════════
+   ÉCRAN 2 — HUB PRINCIPAL
+══════════════════════════════════════════════ */
+#screen-hub { background: var(--bg); }
+
+/* Header agence */
+.hub-header {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border2);
+  padding: .7rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+}
+
+.hub-brand {
+  font-family: var(--title);
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: .2em;
+  color: var(--accent);
+  animation: glitch 8s infinite;
+}
+
+.hub-status {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.status-dot {
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: var(--text3);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.dot-live {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s infinite;
+}
+
+.hub-agent-chip {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: .3rem .7rem;
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: var(--text2);
+  letter-spacing: .05em;
+}
+
+/* Contenu hub */
+.hub-body {
+  flex: 1;
+  padding: 1.2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Profil agent */
+.agent-dossier {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn .5s ease;
+}
+
+.agent-dossier::after {
+  content: 'CLASSIFIÉ';
+  position: absolute;
+  right: -20px; top: 50%;
+  transform: translateY(-50%) rotate(15deg);
+  font-family: var(--title);
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--red);
+  opacity: .06;
+  letter-spacing: .1em;
+  pointer-events: none;
+}
+
+.agent-avatar-big { font-size: 2.8rem; flex-shrink: 0; }
+
+.agent-info { flex: 1; }
+
+.agent-codename {
+  font-family: var(--title);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--text);
+}
+
+.agent-grade {
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: var(--accent);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-top: .1rem;
+}
+
+.agent-spec {
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: var(--text3);
+  letter-spacing: .08em;
+  margin-top: .2rem;
+}
+
+.agent-xp-zone { text-align: right; }
+
+.agent-xp-num {
+  font-family: var(--mono);
+  font-size: 1.6rem;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.agent-xp-label {
+  font-family: var(--mono);
+  font-size: .55rem;
+  color: var(--text3);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.xp-bar-hub {
+  width: 100px;
+  height: 3px;
+  background: var(--border2);
+  margin-top: .4rem;
+  margin-left: auto;
+}
+.xp-bar-hub-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width .8s ease;
+}
+
+/* Stats grid */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .6rem;
+  margin-bottom: 1.2rem;
+}
+
+.stat-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: .8rem;
+  text-align: center;
+  animation: fadeIn .5s ease both;
+}
+
+.stat-box-num {
+  font-family: var(--mono);
+  font-size: 1.4rem;
+  color: var(--blue3);
+  display: block;
+}
+
+.stat-box-label {
+  font-family: var(--mono);
+  font-size: .55rem;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  margin-top: .2rem;
+}
+
+/* Séparateur section */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  margin-bottom: .8rem;
+}
+
+.section-head-label {
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--text3);
+  white-space: nowrap;
+}
+
+.section-head-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Cartes de mode */
+.modes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .8rem;
+  margin-bottom: 1.2rem;
+}
+
+.mode-card {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  padding: 1.2rem 1rem;
+  cursor: pointer;
+  transition: all .2s;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn .5s ease both;
+}
+
+.mode-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--blue);
+  transition: background .2s;
+}
+
+.mode-card:hover { border-color: var(--blue3); transform: translateY(-2px); box-shadow: 0 8px 30px #00000040; }
+.mode-card:hover::before { background: var(--accent); }
+
+.mode-card.locked { opacity: .4; cursor: not-allowed; }
+.mode-card.locked:hover { transform: none; box-shadow: none; }
+
+.mode-icon { font-size: 1.8rem; margin-bottom: .6rem; display: block; }
+.mode-title {
+  font-family: var(--title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  color: var(--text);
+  margin-bottom: .3rem;
+}
+.mode-desc { font-size: .78rem; color: var(--text2); line-height: 1.5; margin-bottom: .6rem; }
+.mode-status {
+  font-family: var(--mono);
+  font-size: .58rem;
+  color: var(--text3);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+}
+.mode-status.active { color: var(--green); }
+.mode-status.locked { color: var(--red); }
+
+/* Missions récentes */
+.missions-list { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
+
+.mission-row {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: .6rem .9rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  font-size: .82rem;
+  animation: slideRight .4s ease both;
+}
+
+.mission-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mission-name { flex: 1; font-weight: 500; }
+.mission-xp { font-family: var(--mono); font-size: .65rem; color: var(--accent); }
+.mission-status { font-family: var(--mono); font-size: .6rem; color: var(--text3); letter-spacing: .05em; }
+
+/* Badges */
+.badges-row { display: flex; gap: .5rem; flex-wrap: wrap; }
+.badge-item {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: .4rem .7rem;
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  letter-spacing: .05em;
+  animation: fadeIn .5s ease both;
+}
+.badge-item.earned { border-color: var(--accent)50; color: var(--accent); }
+
+/* ══════════════════════════════════════════════
+   NAVIGATION COMMUNE
+══════════════════════════════════════════════ */
+.nav-bar {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border2);
+  padding: .6rem 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  flex-shrink: 0;
+}
+
+.nav-back {
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: var(--text3);
+  letter-spacing: .08em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  transition: color .15s;
+  border: none;
+  background: none;
+  padding: 0;
+}
+.nav-back:hover { color: var(--accent); }
+
+.nav-title {
+  font-family: var(--title);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  color: var(--text);
+  flex: 1;
+}
+
+.nav-xp {
+  font-family: var(--mono);
+  font-size: .65rem;
+  color: var(--accent);
+  letter-spacing: .05em;
+}
+
+/* ══════════════════════════════════════════════
+   MODE ARCADE
+══════════════════════════════════════════════ */
+#screen-arcade { background: var(--bg); }
+
+.arcade-body {
+  flex: 1;
+  padding: 1.2rem;
+  max-width: 740px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Sélection mini-jeu */
+.minigames-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .8rem;
+  margin-bottom: 1.2rem;
+}
+
+.mg-card {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  padding: 1.1rem;
+  cursor: pointer;
+  transition: all .18s;
+  position: relative;
+  overflow: hidden;
+  animation: fadeIn .4s ease both;
+}
+.mg-card:hover { border-color: var(--blue3); transform: translateY(-2px); }
+.mg-card.active-mg { border-color: var(--accent); background: var(--panel2); }
+
+.mg-icon { font-size: 1.8rem; margin-bottom: .5rem; display: block; }
+.mg-name {
+  font-family: var(--title);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  margin-bottom: .2rem;
+}
+.mg-desc { font-size: .75rem; color: var(--text2); line-height: 1.4; margin-bottom: .4rem; }
+.mg-diff {
+  font-family: var(--mono);
+  font-size: .58rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+/* Zone de jeu arcade */
+.game-zone {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  min-height: 300px;
+  display: none;
+  flex-direction: column;
+  animation: fadeIn .4s ease;
+}
+.game-zone.active { display: flex; }
+
+.game-zone-header {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.game-zone-title {
+  font-family: var(--mono);
+  font-size: .65rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.game-timer {
+  font-family: var(--mono);
+  font-size: .75rem;
+  color: var(--amber);
+  letter-spacing: .05em;
+}
+
+.game-score-live {
+  font-family: var(--mono);
+  font-size: .7rem;
+  color: var(--text2);
+  letter-spacing: .05em;
+}
+
+.game-content { flex: 1; padding: 1rem; }
+
+/* ── PHISHING DETECTOR ── */
+.email-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  margin-bottom: .8rem;
+  animation: slideRight .3s ease;
+}
+
+.email-header {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  padding: .6rem .9rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .3rem .6rem;
+  font-family: var(--mono);
+  font-size: .62rem;
+  color: var(--text3);
+}
+
+.email-field-label { color: var(--text3); }
+.email-field-val { color: var(--text2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.email-subject { color: var(--text); font-weight: 600; grid-column: 2; }
+
+.email-body {
+  padding: .8rem .9rem;
+  font-size: .84rem;
+  line-height: 1.65;
+  color: var(--text2);
+  white-space: pre-wrap;
+}
+
+.email-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem;
+  padding: .7rem .9rem;
+  border-top: 1px solid var(--border);
+}
+
+.email-btn {
+  padding: .6rem;
+  border: 1px solid;
+  cursor: pointer;
+  font-family: var(--title);
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  transition: all .15s;
+  background: transparent;
+}
+.email-btn.legit { border-color: var(--green)60; color: var(--green); }
+.email-btn.legit:hover { background: var(--green)15; }
+.email-btn.phish { border-color: var(--red)60; color: var(--red); }
+.email-btn.phish:hover { background: var(--red)15; }
+
+/* Feedback */
+.feedback-banner {
+  border: 1px solid;
+  padding: .8rem 1rem;
+  margin-bottom: .8rem;
+  display: none;
+  animation: fadeIn .3s ease;
+}
+.feedback-banner.ok { border-color: var(--green)50; background: var(--green)08; }
+.feedback-banner.ko { border-color: var(--red)50; background: var(--red)08; animation: shake .4s ease; }
+
+.fb-verdict { font-family: var(--title); font-size: 1rem; font-weight: 700; letter-spacing: .08em; margin-bottom: .3rem; }
+.fb-verdict.ok { color: var(--green); }
+.fb-verdict.ko { color: var(--red); }
+.fb-detail { font-size: .8rem; color: var(--text2); line-height: 1.5; }
+.fb-indices { margin-top: .5rem; }
+.fb-indice { font-family: var(--mono); font-size: .65rem; color: var(--text3); padding: .2rem 0; border-left: 2px solid var(--accent); padding-left: .5rem; margin-bottom: .3rem; }
+
+.btn-next-game {
+  font-family: var(--title);
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  padding: .6rem 1.4rem;
+  background: var(--blue);
+  border: 1px solid var(--blue2);
+  color: var(--text);
+  cursor: pointer;
+  transition: all .15s;
+  margin-top: .5rem;
+}
+.btn-next-game:hover { background: var(--blue2); }
+
+/* ── PASSWORD FORTRESS ── */
+.pw-display {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  padding: .8rem 1rem;
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  letter-spacing: .15em;
+  color: var(--accent);
+  margin-bottom: .8rem;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  word-break: break-all;
+  position: relative;
+}
+
+.pw-cursor {
+  width: 2px; height: 1.1rem;
+  background: var(--accent);
+  display: inline-block;
+  animation: blink 1s infinite;
+  margin-left: 2px;
+}
+
+.pw-strength-bar {
+  height: 4px;
+  background: var(--border2);
+  margin-bottom: .8rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.pw-strength-fill {
+  height: 100%;
+  transition: width .3s ease, background .3s ease;
+}
+
+.pw-criteria {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .3rem;
+  margin-bottom: .8rem;
+}
+
+.pw-criterion {
+  font-family: var(--mono);
+  font-size: .62rem;
+  color: var(--text3);
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  letter-spacing: .04em;
+  transition: color .2s;
+}
+.pw-criterion.met { color: var(--green); }
+.pw-criterion.met::before { content:'✓'; }
+.pw-criterion:not(.met)::before { content:'○'; }
+
+.pw-input-real {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  border-bottom: 2px solid var(--blue);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: .9rem;
+  padding: .6rem .8rem;
+  outline: none;
+  letter-spacing: .05em;
+  margin-bottom: .8rem;
+}
+.pw-input-real:focus { border-bottom-color: var(--accent); }
+
+.pw-score-display {
+  font-family: var(--title);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  text-align: center;
+  margin: .5rem 0;
+}
+
+/* ── NETWORK DEFENSE ── */
+.network-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .5rem;
+  margin-bottom: .8rem;
+}
+
+.network-node {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  padding: .7rem .5rem;
+  text-align: center;
+  position: relative;
+  transition: all .2s;
+}
+
+.network-node.safe { border-color: var(--green)50; }
+.network-node.attacked { border-color: var(--red); animation: pulse .5s infinite; }
+.network-node.protected { border-color: var(--blue3)80; }
+.network-node.compromised { border-color: var(--red); background: var(--red)10; }
+
+.node-icon { font-size: 1.4rem; display: block; margin-bottom: .2rem; }
+.node-name { font-family: var(--mono); font-size: .55rem; color: var(--text3); letter-spacing: .05em; }
+.node-hp {
+  position: absolute;
+  top: 4px; right: 4px;
+  font-family: var(--mono);
+  font-size: .5rem;
+  color: var(--text3);
+}
+
+.attack-event {
+  background: var(--bg);
+  border: 1px solid var(--red)40;
+  border-left: 3px solid var(--red);
+  padding: .8rem;
+  margin-bottom: .6rem;
+  animation: slideRight .3s ease;
+}
+
+.attack-title {
+  font-family: var(--title);
+  font-size: .9rem;
+  font-weight: 700;
+  color: var(--red);
+  letter-spacing: .05em;
+  margin-bottom: .3rem;
+}
+.attack-desc { font-size: .8rem; color: var(--text2); line-height: 1.5; margin-bottom: .6rem; }
+
+.defense-actions {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+
+.def-btn {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .05em;
+  padding: .4rem .8rem;
+  border: 1px solid var(--border2);
+  background: var(--panel2);
+  color: var(--text2);
+  cursor: pointer;
+  transition: all .15s;
+}
+.def-btn:hover { border-color: var(--blue3); color: var(--text); }
+.def-btn.correct-def { border-color: var(--green); color: var(--green); background: var(--green)10; }
+.def-btn.wrong-def { border-color: var(--red); color: var(--red); background: var(--red)10; }
+
+/* ── DEEPFAKE HUNT ── */
+.deepfake-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .8rem;
+  margin-bottom: .8rem;
+}
+
+.df-item {
+  background: var(--bg);
+  border: 2px solid var(--border2);
+  padding: 1rem;
+  cursor: pointer;
+  transition: all .18s;
+  text-align: center;
+}
+.df-item:hover { border-color: var(--blue3); }
+.df-item.selected-real { border-color: var(--green); background: var(--green)08; }
+.df-item.selected-fake { border-color: var(--red); background: var(--red)08; }
+.df-item.reveal-real { border-color: var(--green); background: var(--green)08; }
+.df-item.reveal-fake { border-color: var(--red); background: var(--red)08; }
+
+.df-visual {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: .6rem;
+}
+.df-label { font-family: var(--mono); font-size: .65rem; color: var(--text3); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .4rem; }
+.df-content { font-size: .82rem; color: var(--text2); line-height: 1.5; }
+.df-meta { font-family: var(--mono); font-size: .6rem; color: var(--text3); margin-top: .4rem; }
+
+.df-indices {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: .8rem;
+  margin-bottom: .8rem;
+}
+.df-indices-title { font-family: var(--mono); font-size: .6rem; color: var(--text3); letter-spacing: .12em; text-transform: uppercase; margin-bottom: .5rem; }
+.df-indice-item { font-size: .8rem; color: var(--text2); padding: .2rem 0; display: flex; gap: .5rem; }
+.df-indice-item::before { content:'▸'; color: var(--steel); flex-shrink: 0; }
+
+/* ── SCORE FIN MINI-JEU ── */
+.minigame-score {
+  text-align: center;
+  padding: 1.5rem;
+  animation: success .5s ease;
+}
+.mg-score-big { font-family: var(--mono); font-size: 4rem; color: var(--accent); }
+.mg-score-label { font-family: var(--mono); font-size: .6rem; color: var(--text3); letter-spacing: .15em; text-transform: uppercase; margin-bottom: .8rem; }
+.mg-score-detail { font-size: .85rem; color: var(--text2); margin-bottom: 1rem; }
+.mg-xp-gain { font-family: var(--title); font-size: 1.2rem; font-weight: 700; color: var(--green); letter-spacing: .08em; margin-bottom: 1rem; }
+
+/* ══════════════════════════════════════════════
+   MODE TERMINAL
+══════════════════════════════════════════════ */
+#screen-terminal { background: var(--bg); }
+
+.terminal-body {
+  flex: 1;
+  padding: 1.2rem;
+  max-width: 740px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+
+.terminal-missions { display: flex; flex-direction: column; gap: .5rem; }
+
+.tm-card {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--blue);
+  padding: .9rem 1rem;
+  cursor: pointer;
+  transition: all .18s;
+  animation: slideRight .4s ease both;
+}
+.tm-card:hover { border-left-color: var(--accent); background: var(--panel2); }
+.tm-card.locked { opacity: .4; cursor: not-allowed; }
+.tm-card.locked:hover { border-left-color: var(--blue); background: var(--panel); }
+.tm-card.completed { border-left-color: var(--green); }
+
+.tm-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: .3rem; }
+.tm-id { font-family: var(--mono); font-size: .6rem; color: var(--text3); letter-spacing: .1em; }
+.tm-status-tag { font-family: var(--mono); font-size: .55rem; color: var(--text3); letter-spacing: .08em; text-transform: uppercase; }
+.tm-status-tag.done { color: var(--green); }
+.tm-status-tag.locked { color: var(--red); }
+.tm-name { font-family: var(--title); font-size: 1rem; font-weight: 700; letter-spacing: .05em; margin-bottom: .2rem; }
+.tm-desc { font-size: .78rem; color: var(--text2); line-height: 1.4; }
+.tm-reward { font-family: var(--mono); font-size: .6rem; color: var(--accent); margin-top: .4rem; }
+
+/* Fenêtre terminal */
+.term-window {
+  background: var(--bg);
+  border: 1px solid var(--border2);
+  display: none;
+  flex-direction: column;
+  min-height: 400px;
+  animation: fadeIn .4s ease;
+}
+.term-window.active { display: flex; }
+
+.term-titlebar {
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  padding: .5rem .9rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: var(--mono);
+  font-size: .62rem;
+  color: var(--text3);
+  letter-spacing: .08em;
+}
+
+.term-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+.term-output {
+  flex: 1;
+  padding: .8rem;
+  font-family: var(--mono);
+  font-size: .72rem;
+  line-height: 1.8;
+  overflow-y: auto;
+  min-height: 200px;
+  max-height: 300px;
+}
+
+.term-line { color: var(--text2); }
+.term-line.cmd { color: var(--accent); }
+.term-line.ok { color: var(--green); }
+.term-line.err { color: var(--red); }
+.term-line.info { color: var(--steel); }
+.term-line.warn { color: var(--amber); }
+.term-line.sys { color: var(--text3); font-style: italic; }
+
+.term-input-row {
+  border-top: 1px solid var(--border);
+  padding: .5rem .8rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--bg3);
+}
+
+.term-prompt { font-family: var(--mono); font-size: .7rem; color: var(--accent); white-space: nowrap; }
+
+.term-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--mono);
+  font-size: .72rem;
+  color: var(--text);
+  letter-spacing: .05em;
+}
+
+.term-hint {
+  font-family: var(--mono);
+  font-size: .6rem;
+  color: var(--text3);
+  padding: .4rem .8rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.term-hint-cmd { color: var(--accent); cursor: pointer; }
+.term-hint-cmd:hover { color: var(--blue3); }
+
+/* ══════════════════════════════════════════════
+   MODE AVENTURE
+══════════════════════════════════════════════ */
+#screen-aventure { background: var(--bg); }
+
+.aventure-body {
+  flex: 1;
+  padding: 1.2rem;
+  max-width: 680px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Briefing mission */
+.mission-briefing {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  margin-bottom: .8rem;
+  animation: fadeIn .4s ease;
+}
+
+.briefing-header {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  padding: .6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.briefing-id { font-family: var(--mono); font-size: .6rem; color: var(--accent); letter-spacing: .12em; }
+.briefing-class { font-family: var(--mono); font-size: .55rem; color: var(--red); letter-spacing: .1em; text-transform: uppercase; }
+
+.briefing-body { padding: 1rem; }
+
+.briefing-context {
+  font-size: .85rem;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: .8rem;
+  font-style: italic;
+}
+
+.briefing-scene {
+  font-size: .92rem;
+  color: var(--text);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+/* Dialogues */
+.dialogue-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--steel);
+  padding: .8rem;
+  margin-bottom: .8rem;
+  display: flex;
+  gap: .7rem;
+  align-items: flex-start;
+  animation: slideRight .35s ease;
+}
+
+.dialogue-avatar { font-size: 1.5rem; flex-shrink: 0; }
+.dialogue-who { font-family: var(--mono); font-size: .58rem; color: var(--text3); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .2rem; }
+.dialogue-text { font-size: .85rem; color: var(--text); line-height: 1.6; }
+
+/* Choix */
+.choix-zone {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  margin-bottom: .8rem;
+}
+
+.choix-btn {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  padding: .8rem 1rem;
+  cursor: pointer;
+  font-family: var(--body);
+  font-size: .88rem;
+  color: var(--text2);
+  text-align: left;
+  transition: all .18s;
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  animation: slideRight .35s ease both;
+}
+.choix-btn:hover { border-color: var(--blue3); color: var(--text); background: var(--panel2); }
+.choix-btn.correct-c { border-color: var(--green); color: var(--green); background: var(--green)08; pointer-events: none; }
+.choix-btn.wrong-c { border-color: var(--red); color: var(--red); background: var(--red)08; pointer-events: none; }
+.choix-btn.disabled-c { opacity: .35; pointer-events: none; }
+
+.choix-letter {
+  width: 22px; height: 22px;
+  border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: .65rem;
+  flex-shrink: 0;
+  transition: all .18s;
+}
+
+.choix-btn:hover .choix-letter { border-color: var(--blue3); color: var(--blue3); }
+.choix-btn.correct-c .choix-letter { border-color: var(--green); color: var(--green); background: var(--green)20; }
+.choix-btn.wrong-c .choix-letter { border-color: var(--red); color: var(--red); background: var(--red)20; }
+
+/* Conséquence */
+.consequence-box {
+  border: 1px solid;
+  padding: .9rem;
+  margin-bottom: .8rem;
+  animation: fadeIn .35s ease;
+  display: none;
+}
+.consequence-box.ok { border-color: var(--green)50; background: var(--green)05; }
+.consequence-box.ko { border-color: var(--red)50; background: var(--red)05; }
+.consequence-title { font-family: var(--title); font-size: 1rem; font-weight: 700; letter-spacing: .08em; margin-bottom: .3rem; }
+.consequence-title.ok { color: var(--green); }
+.consequence-title.ko { color: var(--red); }
+.consequence-text { font-size: .82rem; color: var(--text2); line-height: 1.55; }
+
+/* Barre de vie mission */
+.mission-hp-bar {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-bottom: 1rem;
+}
+.hp-label { font-family: var(--mono); font-size: .58rem; color: var(--text3); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.hp-bar { flex: 1; height: 4px; background: var(--border2); }
+.hp-fill { height: 100%; background: var(--blue3); transition: width .5s ease, background .3s; }
+.hp-val { font-family: var(--mono); font-size: .6rem; color: var(--text3); white-space: nowrap; }
+
+/* Mission select */
+.mission-select-grid { display: flex; flex-direction: column; gap: .6rem; margin-bottom: 1rem; }
+
+.msn-card {
+  background: var(--panel);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--blue);
+  padding: .9rem 1rem;
+  cursor: pointer;
+  transition: all .18s;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  animation: slideRight .35s ease both;
+}
+.msn-card:hover { border-left-color: var(--accent); }
+.msn-card.locked { opacity: .4; cursor: not-allowed; }
+.msn-card.done { border-left-color: var(--green); }
+
+.msn-icon { font-size: 1.6rem; flex-shrink: 0; }
+.msn-info { flex: 1; }
+.msn-name { font-family: var(--title); font-size: 1rem; font-weight: 700; letter-spacing: .05em; margin-bottom: .2rem; }
+.msn-desc { font-size: .78rem; color: var(--text2); }
+.msn-reward { font-family: var(--mono); font-size: .6rem; color: var(--accent); margin-top: .3rem; }
+.msn-badge { font-family: var(--mono); font-size: .58rem; padding: .2rem .5rem; border: 1px solid; border-radius: 2px; }
+.msn-badge.done { color: var(--green); border-color: var(--green)50; }
+.msn-badge.locked { color: var(--red); border-color: var(--red)50; }
+.msn-badge.avail { color: var(--accent); border-color: var(--accent)50; }
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════════ */
+@media (max-width: 520px) {
+  .modes-grid { grid-template-columns: 1fr; }
+  .minigames-grid { grid-template-columns: 1fr; }
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+  .deepfake-pair { grid-template-columns: 1fr; }
+  .network-grid { grid-template-columns: repeat(3,1fr); }
+  .pw-criteria { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     ÉCRAN 0 — BOOT
+══════════════════════════════════════════════ -->
+<div id="screen-boot" class="screen active">
+  <div class="boot-logo">SENTINEL</div>
+  <div class="boot-sub">Agence Nationale de Cybersécurité — Plateforme de Formation</div>
+  <div class="boot-progress"><div class="boot-progress-fill" id="boot-fill"></div></div>
+  <div class="boot-log" id="boot-log">Initialisation du système...</div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     ÉCRAN 1 — CRÉATION PROFIL
+══════════════════════════════════════════════ -->
+<div id="screen-profil" class="screen">
+  <div class="profil-frame">
+    <div class="profil-header">
+      <div class="profil-shield">🛡️</div>
+      <div class="profil-header-text">
+        <h2>INSCRIPTION AGENT</h2>
+        <p>FORMULAIRE D'ACCRÉDITATION — NIVEAU RECRUE</p>
+      </div>
+    </div>
+    <div class="profil-body">
+
+      <div class="field-group">
+        <div class="field-label">Nom de code (pseudonyme)</div>
+        <input class="field-input" id="agent-name" type="text" maxlength="18" placeholder="Ex : ALPHA-7, ShadowFox..." oninput="checkProfil()">
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Avatar</div>
+        <div class="avatar-grid" id="avatar-grid">
+          <button class="avatar-btn" onclick="selectAvatar('🕵️',this)">🕵️</button>
+          <button class="avatar-btn" onclick="selectAvatar('👩‍💻',this)">👩‍💻</button>
+          <button class="avatar-btn" onclick="selectAvatar('👨‍💻',this)">👨‍💻</button>
+          <button class="avatar-btn" onclick="selectAvatar('🦊',this)">🦊</button>
+          <button class="avatar-btn" onclick="selectAvatar('🐺',this)">🐺</button>
+          <button class="avatar-btn" onclick="selectAvatar('🦅',this)">🦅</button>
+          <button class="avatar-btn" onclick="selectAvatar('🤖',this)">🤖</button>
+          <button class="avatar-btn" onclick="selectAvatar('👾',this)">👾</button>
+          <button class="avatar-btn" onclick="selectAvatar('🎭',this)">🎭</button>
+          <button class="avatar-btn" onclick="selectAvatar('⚡',this)">⚡</button>
+          <button class="avatar-btn" onclick="selectAvatar('🛸',this)">🛸</button>
+          <button class="avatar-btn" onclick="selectAvatar('🔮',this)">🔮</button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field-label">Spécialité</div>
+        <div class="specialite-grid">
+          <button class="spec-btn" onclick="selectSpec('Analyste des menaces','🔍',this)">
+            <span class="spec-icon">🔍</span>
+            <span>Analyste des menaces</span>
+          </button>
+          <button class="spec-btn" onclick="selectSpec('Défense réseau','🛡️',this)">
+            <span class="spec-icon">🛡️</span>
+            <span>Défense réseau</span>
+          </button>
+          <button class="spec-btn" onclick="selectSpec('Investigation','🕵️',this)">
+            <span class="spec-icon">🕵️</span>
+            <span>Investigation</span>
+          </button>
+          <button class="spec-btn" onclick="selectSpec('Contre-désinformation','📡',this)">
+            <span class="spec-icon">📡</span>
+            <span>Contre-désinformation</span>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btn-valider-profil" onclick="validerProfil()" disabled>
+        ▸ ACTIVER L'ACCRÉDITATION
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     ÉCRAN 2 — HUB
+══════════════════════════════════════════════ -->
+<div id="screen-hub" class="screen">
+  <div class="hub-header">
+    <div class="hub-brand">SENTINEL</div>
+    <div class="hub-status">
+      <div class="status-dot"><div class="dot-live"></div>SYSTÈME EN LIGNE</div>
+      <div class="hub-agent-chip" id="hub-agent-chip">— AGENT —</div>
+    </div>
+  </div>
+
+  <div class="hub-body">
+    <!-- Dossier agent -->
+    <div class="agent-dossier" id="agent-dossier">
+      <div class="agent-avatar-big" id="hub-avatar">🛡️</div>
+      <div class="agent-info">
+        <div class="agent-codename" id="hub-codename">—</div>
+        <div class="agent-grade" id="hub-grade">▸ RECRUE — NIVEAU 1</div>
+        <div class="agent-spec" id="hub-spec">Spécialité : —</div>
+      </div>
+      <div class="agent-xp-zone">
+        <div class="agent-xp-num" id="hub-xp">0</div>
+        <div class="agent-xp-label">XP</div>
+        <div class="xp-bar-hub"><div class="xp-bar-hub-fill" id="hub-xp-fill" style="width:0%"></div></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-box" style="animation-delay:.1s">
+        <span class="stat-box-num" id="stat-missions">0</span>
+        <span class="stat-box-label">Missions</span>
+      </div>
+      <div class="stat-box" style="animation-delay:.2s">
+        <span class="stat-box-num" id="stat-score">0</span>
+        <span class="stat-box-label">Score total</span>
+      </div>
+      <div class="stat-box" style="animation-delay:.3s">
+        <span class="stat-box-num" id="stat-badges">0</span>
+        <span class="stat-box-label">Badges</span>
+      </div>
+      <div class="stat-box" style="animation-delay:.4s">
+        <span class="stat-box-num" id="stat-grade-num">1</span>
+        <span class="stat-box-label">Niveau</span>
+      </div>
+    </div>
+
+    <!-- Modes -->
+    <div class="section-head">
+      <div class="section-head-label">Modules de formation</div>
+      <div class="section-head-line"></div>
+    </div>
+
+    <div class="modes-grid">
+      <div class="mode-card" onclick="goArcade()">
+        <span class="mode-icon">⚡</span>
+        <div class="mode-title">MODE ARCADE</div>
+        <div class="mode-desc">4 mini-jeux rapides. Détection de phishing, défense réseau, analyse de mots de passe, traque de deepfakes.</div>
+        <div class="mode-status active"><div class="dot-live" style="background:var(--green);animation:pulse 2s infinite;width:5px;height:5px;border-radius:50%;"></div>DISPONIBLE</div>
+      </div>
+      <div class="mode-card" onclick="goTerminal()">
+        <span class="mode-icon">💻</span>
+        <div class="mode-title">MODE TERMINAL</div>
+        <div class="mode-desc">Simulations en ligne de commande. Analysez des systèmes compromis. Résolvez des enquêtes numériques.</div>
+        <div class="mode-status active"><div class="dot-live" style="background:var(--green);animation:pulse 2s infinite;width:5px;height:5px;border-radius:50%;"></div>DISPONIBLE</div>
+      </div>
+      <div class="mode-card" onclick="goAventure()">
+        <span class="mode-icon">🗂️</span>
+        <div class="mode-title">MODE AVENTURE</div>
+        <div class="mode-desc">5 missions scénarisées. Infiltration, enquête, contre-attaque. Vos choix ont des conséquences.</div>
+        <div class="mode-status active"><div class="dot-live" style="background:var(--green);animation:pulse 2s infinite;width:5px;height:5px;border-radius:50%;"></div>DISPONIBLE</div>
+      </div>
+    </div>
+
+    <!-- Missions récentes -->
+    <div class="section-head">
+      <div class="section-head-label">Journal des opérations</div>
+      <div class="section-head-line"></div>
+    </div>
+    <div class="missions-list" id="missions-list">
+      <div class="mission-row" style="animation-delay:.1s">
+        <div class="mission-dot" style="background:var(--text3)"></div>
+        <div class="mission-name" style="color:var(--text3)">Aucune mission enregistrée</div>
+        <div class="mission-status">EN ATTENTE</div>
+      </div>
+    </div>
+
+    <!-- Badges -->
+    <div class="section-head">
+      <div class="section-head-label">Distinctions</div>
+      <div class="section-head-line"></div>
+    </div>
+    <div class="badges-row" id="hub-badges">
+      <div class="badge-item">🔒 AUCUN BADGE</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     ÉCRAN 3 — ARCADE
+══════════════════════════════════════════════ -->
+<div id="screen-arcade" class="screen">
+  <div class="nav-bar">
+    <button class="nav-back" onclick="goHub()">◂ HUB</button>
+    <div class="nav-title">MODE ARCADE</div>
+    <div class="nav-xp" id="arcade-xp">XP : 0</div>
+  </div>
+
+  <div class="arcade-body">
+    <div class="minigames-grid" id="mg-select-grid">
+      <div class="mg-card" onclick="lancerMiniJeu('phishing')">
+        <span class="mg-icon">📧</span>
+        <div class="mg-name">PHISHING DETECTOR</div>
+        <div class="mg-desc">10 emails arrivent. Classifiez-les : légitime ou phishing. Attention aux détails.</div>
+        <div class="mg-diff" style="color:var(--green)">▸ DIFFICULTÉ : RECRUE</div>
+      </div>
+      <div class="mg-card" onclick="lancerMiniJeu('password')">
+        <span class="mg-icon">🔐</span>
+        <div class="mg-name">PASSWORD FORTRESS</div>
+        <div class="mg-desc">Créez le mot de passe le plus solide possible. Chaque critère rempli renforce votre score.</div>
+        <div class="mg-diff" style="color:var(--amber)">▸ DIFFICULTÉ : AGENT</div>
+      </div>
+      <div class="mg-card" onclick="lancerMiniJeu('network')">
+        <span class="mg-icon">🌐</span>
+        <div class="mg-name">NETWORK DEFENSE</div>
+        <div class="mg-desc">Votre réseau est attaqué. Choisissez la bonne contre-mesure avant que vos nœuds soient compromis.</div>
+        <div class="mg-diff" style="color:var(--amber)">▸ DIFFICULTÉ : AGENT</div>
+      </div>
+      <div class="mg-card" onclick="lancerMiniJeu('deepfake')">
+        <span class="mg-icon">🎭</span>
+        <div class="mg-name">DEEPFAKE HUNT</div>
+        <div class="mg-desc">Deux contenus, un seul est authentique. Repérez les indices, identifiez le faux.</div>
+        <div class="mg-diff" style="color:var(--red)">▸ DIFFICULTÉ : EXPERT</div>
+      </div>
+    </div>
+
+    <div class="game-zone" id="game-zone">
+      <div class="game-zone-header">
+        <div class="game-zone-title" id="gz-title">—</div>
+        <div class="game-timer" id="gz-timer" style="display:none;">—</div>
+        <div class="game-score-live">Score : <span id="gz-score">0</span></div>
+      </div>
+      <div class="game-content" id="gz-content"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     ÉCRAN 4 — TERMINAL
+══════════════════════════════════════════════ -->
+<div id="screen-terminal" class="screen">
+  <div class="nav-bar">
+    <button class="nav-back" onclick="goHub()">◂ HUB</button>
+    <div class="nav-title">MODE TERMINAL</div>
+    <div class="nav-xp" id="terminal-xp">XP : 0</div>
+  </div>
+
+  <div class="terminal-body">
+    <div id="tm-mission-list">
+      <div class="section-head" style="margin-bottom:.8rem;">
+        <div class="section-head-label">Choisissez une mission</div>
+        <div class="section-head-line"></div>
+      </div>
+      <div class="terminal-missions" id="tm-missions-zone"></div>
+    </div>
+
+    <div class="term-window" id="term-window">
+      <div class="term-titlebar">
+        <div class="term-dot" style="background:#ef4444"></div>
+        <div class="term-dot" style="background:#f59e0b"></div>
+        <div class="term-dot" style="background:#22c55e"></div>
+        <span style="margin-left:.4rem;" id="term-window-title">SENTINEL Terminal v2.1</span>
+        <button onclick="fermerTerminal()" style="margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-family:var(--mono);font-size:.6rem;">✕ FERMER</button>
+      </div>
+      <div class="term-output" id="term-output"></div>
+      <div class="term-hint" id="term-hint"></div>
+      <div class="term-input-row">
+        <span class="term-prompt" id="term-prompt">agent@sentinel:~$</span>
+        <input class="term-input" id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="tapez une commande..." onkeydown="termKeyDown(event)">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     ÉCRAN 5 — AVENTURE
+══════════════════════════════════════════════ -->
+<div id="screen-aventure" class="screen">
+  <div class="nav-bar">
+    <button class="nav-back" id="aventure-back" onclick="aventureBack()">◂ HUB</button>
+    <div class="nav-title" id="aventure-nav-title">MODE AVENTURE</div>
+    <div class="nav-xp" id="aventure-xp">XP : 0</div>
+  </div>
+
+  <div class="aventure-body" id="aventure-body">
+    <!-- injecté dynamiquement -->
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════ -->
+<script>
+
+// ══════════════════════════════════════════════
+// PROFIL PERSISTANT
+// ══════════════════════════════════════════════
+const SAVE_KEY = 'sentinel_agent_v1';
+
+const GRADES = [
+  { xp:0,    label:'RECRUE',          niveau:1 },
+  { xp:200,  label:'AGENT STAGIAIRE', niveau:2 },
+  { xp:500,  label:'AGENT',           niveau:3 },
+  { xp:1000, label:'AGENT SENIOR',    niveau:4 },
+  { xp:2000, label:'ANALYSTE',        niveau:5 },
+  { xp:3500, label:'SPÉCIALISTE',     niveau:6 },
+  { xp:5000, label:'EXPERT',          niveau:7 },
+  { xp:7500, label:'SENTINEL',        niveau:8 },
+];
+
+function getGrade(xp) {
+  let g = GRADES[0];
+  for (const gr of GRADES) { if (xp >= gr.xp) g = gr; }
+  return g;
+}
+
+function chargerAgent() {
+  try { const r = localStorage.getItem(SAVE_KEY); return r ? JSON.parse(r) : null; } catch(e) { return null; }
+}
+
+function sauverAgent() {
+  try { localStorage.setItem(SAVE_KEY, JSON.stringify(A)); } catch(e) {}
+}
+
+// État agent global
+let A = {
+  nom: '', avatar: '🛡️', spec: '', specIcon: '🔍',
+  xp: 0, score: 0,
+  missions: 0,
+  badges: [],
+  journal: [],
+  tm_done: [],
+  av_done: [],
+};
+
+function ajouterXP(val, label) {
+  A.xp += val;
+  A.score += val;
+  A.missions++;
+  A.journal.unshift({ label, xp: val, ts: Date.now() });
+  if (A.journal.length > 20) A.journal.pop();
+  // Badges auto
+  if (A.xp >= 200 && !A.badges.includes('🎖️ Premier grade')) A.badges.push('🎖️ Premier grade');
+  if (A.missions >= 5 && !A.badges.includes('🏅 Opérationnel')) A.badges.push('🏅 Opérationnel');
+  if (A.xp >= 1000 && !A.badges.includes('🌟 Agent senior')) A.badges.push('🌟 Agent senior');
+  sauverAgent();
+  rafraichirHub();
+}
+
+function rafraichirHub() {
+  document.getElementById('hub-avatar').textContent = A.avatar;
+  document.getElementById('hub-codename').textContent = A.nom || '—';
+  document.getElementById('hub-agent-chip').textContent = A.avatar + ' ' + (A.nom || 'AGENT');
+  const g = getGrade(A.xp);
+  document.getElementById('hub-grade').textContent = '▸ ' + g.label + ' — NIVEAU ' + g.niveau;
+  document.getElementById('hub-spec').textContent = 'Spécialité : ' + A.specIcon + ' ' + A.spec;
+  document.getElementById('hub-xp').textContent = A.xp;
+  const nextGrade = GRADES.find(gr => gr.xp > A.xp) || GRADES[GRADES.length-1];
+  const pct = Math.min(100, ((A.xp - g.xp) / Math.max(1, nextGrade.xp - g.xp)) * 100);
+  document.getElementById('hub-xp-fill').style.width = pct + '%';
+  document.getElementById('stat-missions').textContent = A.missions;
+  document.getElementById('stat-score').textContent = A.score;
+  document.getElementById('stat-badges').textContent = A.badges.length;
+  document.getElementById('stat-grade-num').textContent = g.niveau;
+  // Journal
+  const ml = document.getElementById('missions-list');
+  if (A.journal.length > 0) {
+    ml.innerHTML = A.journal.slice(0,5).map((j,i) => `
+      <div class="mission-row" style="animation-delay:${i*.08}s">
+        <div class="mission-dot" style="background:var(--green)"></div>
+        <div class="mission-name">${j.label}</div>
+        <div class="mission-xp">+${j.xp} XP</div>
+        <div class="mission-status">${new Date(j.ts).toLocaleDateString('fr-FR')}</div>
+      </div>`).join('');
+  }
+  // Badges
+  const hb = document.getElementById('hub-badges');
+  hb.innerHTML = A.badges.length ? A.badges.map(b => `<div class="badge-item earned">${b}</div>`).join('') : '<div class="badge-item">🔒 AUCUN BADGE</div>';
+  // XP dans les sous-écrans
+  ['arcade-xp','terminal-xp','aventure-xp'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = 'XP : ' + A.xp;
+  });
+}
+
+// ══════════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════════
+const BOOT_LOGS = [
+  'Chargement des protocoles de sécurité...',
+  'Vérification de l\'intégrité du système...',
+  'Connexion aux serveurs de l\'agence...',
+  'Déchiffrement des modules de formation...',
+  'Initialisation de l\'interface agent...',
+  'Système opérationnel. Bienvenue, agent.',
+];
+
+window.addEventListener('DOMContentLoaded', () => {
+  let pct = 0;
+  let logIdx = 0;
+  const fill = document.getElementById('boot-fill');
+  const log = document.getElementById('boot-log');
+
+  const iv = setInterval(() => {
+    pct += 2;
+    fill.style.width = pct + '%';
+    if (pct % 17 === 0 && logIdx < BOOT_LOGS.length) {
+      log.textContent = BOOT_LOGS[logIdx++];
+    }
+    if (pct >= 100) {
+      clearInterval(iv);
+      log.textContent = '▸ ACCÈS AUTORISÉ';
+      setTimeout(() => {
+        const saved = chargerAgent();
+        if (saved && saved.nom) {
+          Object.assign(A, saved);
+          showScreen('screen-hub');
+          rafraichirHub();
+        } else {
+          showScreen('screen-profil');
+        }
+      }, 600);
+    }
+  }, 30);
+});
+
+// ══════════════════════════════════════════════
+// PROFIL
+// ══════════════════════════════════════════════
+let _avatar = '🛡️', _spec = '', _specIcon = '';
+
+function selectAvatar(emoji, el) {
+  document.querySelectorAll('.avatar-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  _avatar = emoji;
+  checkProfil();
+}
+
+function selectSpec(nom, icon, el) {
+  document.querySelectorAll('.spec-btn').forEach(b => b.classList.remove('sel'));
+  el.classList.add('sel');
+  _spec = nom; _specIcon = icon;
+  checkProfil();
+}
+
+function checkProfil() {
+  const nom = document.getElementById('agent-name').value.trim();
+  document.getElementById('btn-valider-profil').disabled = !(nom && _avatar !== '🛡️' && _spec);
+}
+
+function validerProfil() {
+  A.nom = document.getElementById('agent-name').value.trim();
+  A.avatar = _avatar;
+  A.spec = _spec;
+  A.specIcon = _specIcon;
+  A.badges.push('🛡️ Accrédité');
+  sauverAgent();
+  rafraichirHub();
+  showScreen('screen-hub');
+}
+
+// ══════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({ top:0, behavior:'auto' });
+}
+function goHub() { showScreen('screen-hub'); rafraichirHub(); }
+function goArcade() { showScreen('screen-arcade'); rafraichirMGSelect(); document.getElementById('game-zone').classList.remove('active'); }
+function goTerminal() { showScreen('screen-terminal'); rafraichirTerminalMissions(); fermerTerminal(); }
+function goAventure() { showScreen('screen-aventure'); afficherSelectMission(); }
+
+// ══════════════════════════════════════════════
+// MODE ARCADE — DONNÉES
+// ══════════════════════════════════════════════
+
+const EMAILS = [
+  {
+    expediteur: 'security@amaz0n-alert.com',
+    nom: 'Amazon Security',
+    sujet: '⚠️ Votre compte Amazon a été suspendu',
+    date: '14 jan. 2025 08:42',
+    corps: `Cher client,
+
+Nous avons détecté une activité inhabituelle sur votre compte Amazon.
+Pour des raisons de sécurité, votre compte a été temporairement suspendu.
+
+Cliquez ICI pour vérifier votre identité et réactiver votre compte :
+👉 https://amazon-security-verify.net/confirm
+
+Vous devrez fournir vos identifiants et informations bancaires pour confirmer.
+
+Action requise dans les 24 heures.
+
+L'équipe Amazon`,
+    isPhishing: true,
+    indices: [
+      "Domaine expéditeur : 'amaz0n-alert.com' (0 à la place du o)",
+      "URL suspecte : amazon-security-verify.net (pas amazon.com)",
+      "Amazon ne demande jamais vos données bancaires par email",
+      "Urgence artificielle : '24 heures'",
+    ],
+    explication: "Phishing classique. Le domaine utilise un '0' à la place du 'o' dans Amazon — technique courante pour tromper l'œil.",
+  },
+  {
+    expediteur: 'noreply@laposte.fr',
+    nom: 'La Poste',
+    sujet: 'Votre colis est en route — N° LP123456789FR',
+    date: '14 jan. 2025 09:15',
+    corps: `Bonjour,
+
+Votre colis (LP123456789FR) a été pris en charge par notre transporteur.
+Livraison prévue : mercredi 15 janvier entre 9h et 13h.
+
+Vous pouvez suivre votre colis sur notre site laposte.fr en saisissant votre numéro de suivi.
+
+Aucune action n'est requise de votre part.
+
+Cordialement,
+La Poste`,
+    isPhishing: false,
+    indices: [
+      "Domaine expéditeur officiel : @laposte.fr",
+      "Aucun lien suspect — vous dirige vers laposte.fr",
+      "Aucune demande d'information personnelle",
+      "Ton sobre, pas d'urgence artificielle",
+    ],
+    explication: "Email légitime. Le domaine est officiel, aucune action requise, pas de lien suspect. C'est un email de suivi standard.",
+  },
+  {
+    expediteur: 'security-alert@paypa1-support.com',
+    nom: 'PayPal',
+    sujet: 'Action requise : vérifiez votre compte PayPal',
+    date: '14 jan. 2025 10:03',
+    corps: `Bonjour,
+
+Votre compte PayPal a été limité suite à une tentative d'accès non autorisée.
+
+Pour lever cette limitation, veuillez confirmer vos informations :
+• Numéro de carte bancaire
+• Date d'expiration
+• Code CVV
+• Mot de passe PayPal
+
+Cliquez ici pour procéder à la vérification sécurisée.
+
+PayPal — Équipe Sécurité`,
+    isPhishing: true,
+    indices: [
+      "Domaine : 'paypa1-support.com' (1 à la place du l)",
+      "PayPal ne demande JAMAIS le CVV par email",
+      "Demande de mot de passe par email = arnaque systématique",
+      "Aucune entreprise légitime ne demande le code CVV",
+    ],
+    explication: "Phishing avancé. Deux signaux criants : domaine falsifié et demande de CVV. Aucune institution financière légitime ne demande ces informations par email.",
+  },
+  {
+    expediteur: 'no-reply@github.com',
+    nom: 'GitHub',
+    sujet: '[GitHub] A new public key was added to your account',
+    date: '14 jan. 2025 11:30',
+    corps: `Hi,
+
+A new SSH public key was added to your account on GitHub.com.
+
+If you didn't add this key, please remove it immediately at:
+https://github.com/settings/keys
+
+If you did add this key, no action is required.
+
+The GitHub Team`,
+    isPhishing: false,
+    indices: [
+      "Domaine officiel : @github.com",
+      "L'URL pointe vers github.com/settings — le vrai site",
+      "Email en anglais cohérent avec GitHub",
+      "Aucune demande d'identifiants, juste une information",
+    ],
+    explication: "Email légitime de notification GitHub. Le domaine est officiel et l'URL pointe directement vers les paramètres de sécurité du vrai site.",
+  },
+  {
+    expediteur: 'impots-remboursement@gouv-fiscalite.com',
+    nom: 'Direction Générale des Impôts',
+    sujet: 'Remboursement fiscal de 347,00 € en attente',
+    date: '14 jan. 2025 12:45',
+    corps: `Madame, Monsieur,
+
+Suite à notre analyse annuelle, vous bénéficiez d'un remboursement fiscal de 347,00 €.
+
+Pour recevoir ce remboursement, veuillez renseigner vos coordonnées bancaires via le formulaire sécurisé ci-dessous dans un délai de 48h :
+
+► Accéder au formulaire de remboursement
+
+Les impôts ne procèdent PAS aux remboursements par carte bancaire.
+Ce remboursement sera effectué sur votre RIB enregistré.
+
+Service des impôts`,
+    isPhishing: true,
+    indices: [
+      "Domaine : 'gouv-fiscalite.com' — les impôts utilisent impots.gouv.fr",
+      "Demande de coordonnées bancaires par email : jamais légitime",
+      "L'email se contredit lui-même ('ne procèdent pas par carte' mais demande un formulaire)",
+      "Urgence artificielle : 48h",
+    ],
+    explication: "Phishing fiscal très courant. Les impôts français communiquent uniquement via impots.gouv.fr et ne demandent jamais de RIB par email.",
+  },
+  {
+    expediteur: 'notifications@linkedin.com',
+    nom: 'LinkedIn',
+    sujet: 'Sophie Martin a vu votre profil',
+    date: '14 jan. 2025 14:20',
+    corps: `Sophie Martin a consulté votre profil LinkedIn.
+
+Sophie travaille chez Thales — Ingénieure en cybersécurité.
+
+Consultez son profil et votre réseau sur LinkedIn.
+
+L'équipe LinkedIn`,
+    isPhishing: false,
+    indices: [
+      "Domaine officiel : @linkedin.com",
+      "Aucun lien suspect ou demande d'information",
+      "Format et contenu cohérents avec les emails LinkedIn habituels",
+      "Pas d'urgence, pas de menace",
+    ],
+    explication: "Email de notification légitime de LinkedIn. Le domaine est officiel et le contenu ne présente aucun signal d'alerte.",
+  },
+  {
+    expediteur: 'support@microsoft-helpdesk-fr.net',
+    nom: 'Support Microsoft',
+    sujet: 'URGENT : Votre Windows expire dans 3 jours',
+    date: '14 jan. 2025 15:05',
+    corps: `Votre licence Windows va expirer dans 3 JOURS.
+
+Sans renouvellement, votre ordinateur sera BLOQUÉ et vous perdrez toutes vos données.
+
+Appelez IMMÉDIATEMENT notre équipe technique au :
+📞 0800 XXX XXX (gratuit)
+
+Ou cliquez pour renouveler votre licence en ligne.
+
+Microsoft Support`,
+    isPhishing: true,
+    indices: [
+      "Domaine : 'microsoft-helpdesk-fr.net' — Microsoft utilise @microsoft.com",
+      "Windows n'expire pas ainsi — ce n'est pas un modèle d'abonnement",
+      "Menace de perte de données : manipulation émotionnelle classique",
+      "Numéro de téléphone dans un email de support : arnaque au faux technicien",
+    ],
+    explication: "Arnaque au faux support technique Microsoft. Windows n'expire pas comme décrit. Le numéro de téléphone mène à des arnaqueurs qui prendront le contrôle de l'ordinateur.",
+  },
+  {
+    expediteur: 'noreply@ameli.fr',
+    nom: 'Assurance Maladie',
+    sujet: 'Votre relevé de remboursements — décembre 2024',
+    date: '14 jan. 2025 16:00',
+    corps: `Madame, Monsieur,
+
+Votre relevé de remboursements du mois de décembre 2024 est disponible dans votre espace personnel sur ameli.fr.
+
+Pour le consulter, connectez-vous à votre compte sur ameli.fr à l'aide de votre numéro de Sécurité sociale.
+
+Ameli — L'Assurance Maladie`,
+    isPhishing: false,
+    indices: [
+      "Domaine officiel : @ameli.fr",
+      "Redirige vers ameli.fr — le vrai site de l'Assurance Maladie",
+      "Aucune demande de données personnelles dans l'email",
+      "Message factuel, sans urgence ni menace",
+    ],
+    explication: "Email légitime de l'Assurance Maladie. Domaine officiel, aucune demande de données, redirection vers le vrai site.",
+  },
+  {
+    expediteur: 'winner@prize-international-fr.com',
+    nom: 'Prize International',
+    sujet: 'Vous avez gagné 5 000 € ! Réclamez maintenant',
+    date: '14 jan. 2025 16:42',
+    corps: `FÉLICITATIONS !
+
+Votre adresse email a été sélectionnée parmi des millions de participants.
+Vous avez remporté la somme de 5 000 €.
+
+Pour recevoir votre gain, vous devez payer des frais de traitement de 29,99 €.
+
+Envoyez vos coordonnées et le paiement à :
+winner-claims@prize-fr.net
+
+Offre valable 48 heures seulement !`,
+    isPhishing: true,
+    indices: [
+      "Vous n'avez participé à aucun concours — c'est impossible de gagner",
+      "Demande de paiement pour recevoir un gain : arnaque classique aux frais",
+      "Domaine suspect non officiel",
+      "Urgence artificielle : 48 heures",
+    ],
+    explication: "Arnaque aux faux gains (advance-fee fraud). Le principe : vous faites payer des 'frais' pour un prix fictif. Les 29,99 € disparaissent et vous ne recevez rien.",
+  },
+  {
+    expediteur: 'noreply@sncf-connect.com',
+    nom: 'SNCF Connect',
+    sujet: 'Votre billet Paris — Lyon du 20 janvier 2025',
+    date: '14 jan. 2025 17:10',
+    corps: `Bonjour,
+
+Votre billet électronique est prêt.
+
+Train : TGV 6601 — Paris Gare de Lyon → Lyon Part-Dieu
+Départ : 20/01/2025 à 08h45
+Arrivée : 20/01/2025 à 10h47
+Voiture 12 — Place 34 (fenêtre)
+
+Présentez ce mail ou votre billet téléchargé sur sncf-connect.com au contrôleur.
+
+Bon voyage !
+SNCF Connect`,
+    isPhishing: false,
+    indices: [
+      "Domaine officiel : @sncf-connect.com",
+      "Informations précises et cohérentes (horaires, numéros de train)",
+      "Aucune demande d'action ni de données personnelles",
+      "Format typique d'un email de confirmation SNCF",
+    ],
+    explication: "Email de confirmation légitime de SNCF Connect. Tous les signaux sont au vert : domaine officiel, informations précises, aucune demande suspecte.",
+  },
+];
+
+const NETWORK_ATTACKS = [
+  {
+    node: '🖥️ Serveur Web',
+    type: 'DDoS',
+    titre: 'ATTAQUE DDoS DÉTECTÉE',
+    desc: 'Un flux massif de requêtes inonde le serveur web. Il sera hors-ligne dans 60 secondes si vous n\'agissez pas.',
+    actions: [
+      { label: '🛡️ Activer le filtre anti-DDoS', correct: true, feedback: 'Correct. Le filtrage de trafic bloque les requêtes malveillantes tout en laissant passer le trafic légitime.' },
+      { label: '⚡ Redémarrer le serveur', correct: false, feedback: 'Inefficace. Le redémarrage ne résout pas l\'afflux de requêtes — le serveur sera immédiatement re-submergé.' },
+      { label: '📧 Prévenir les utilisateurs par email', correct: false, feedback: 'Trop lent et inutile. L\'action doit être technique et immédiate.' },
+      { label: '🔒 Bloquer toutes les connexions', correct: false, feedback: 'Trop radical. Vous coupez aussi les utilisateurs légitimes — le service est down de toute façon.' },
+    ],
+  },
+  {
+    node: '📱 Poste utilisateur',
+    type: 'Phishing',
+    titre: 'CLIC SUR LIEN PHISHING',
+    desc: 'Un employé a cliqué sur un lien malveillant dans un email. Un ransomware commence à chiffrer ses fichiers.',
+    actions: [
+      { label: '🔌 Isoler le poste du réseau immédiatement', correct: true, feedback: 'Correct. L\'isolation réseau stoppe la propagation du ransomware aux autres postes — priorité absolue.' },
+      { label: '🦠 Lancer l\'antivirus', correct: false, feedback: 'Trop lent. L\'antivirus ne peut pas arrêter un chiffrement en cours assez rapidement. Isoler d\'abord.' },
+      { label: '💾 Faire une sauvegarde rapide', correct: false, feedback: 'Dangereux. Vous copieriez des fichiers déjà chiffrés et potentiellement des fichiers malveillants.' },
+      { label: '📞 Appeler le support externe', correct: false, feedback: 'Perd du temps précieux. L\'action technique doit être immédiate et interne.' },
+    ],
+  },
+  {
+    node: '🔑 Serveur d\'authentification',
+    type: 'Brute Force',
+    titre: 'ATTAQUE PAR FORCE BRUTE',
+    desc: 'Des milliers de tentatives de connexion par seconde ciblent le serveur d\'authentification. Des comptes risquent d\'être compromis.',
+    actions: [
+      { label: '⏱️ Activer le verrouillage après 5 tentatives', correct: true, feedback: 'Correct. Le rate limiting et le verrouillage de compte sont la défense standard contre les attaques brute force.' },
+      { label: '🔒 Changer tous les mots de passe', correct: false, feedback: 'Trop long et perturbateur. La protection doit être immédiate au niveau du système, pas des utilisateurs.' },
+      { label: '📵 Couper le serveur d\'authentification', correct: false, feedback: 'Contre-productif. Personne ne peut se connecter, y compris les employés légitimes.' },
+      { label: '👁️ Surveiller sans agir', correct: false, feedback: 'Passif et dangereux. Chaque seconde, des comptes peuvent être compromis.' },
+    ],
+  },
+  {
+    node: '📁 Serveur de fichiers',
+    type: 'Accès non autorisé',
+    titre: 'EXFILTRATION DE DONNÉES',
+    desc: 'Un compte interne accède et télécharge massivement des fichiers confidentiels à 3h du matin. Activité anormale détectée.',
+    actions: [
+      { label: '🚫 Suspendre le compte et bloquer les transferts', correct: true, feedback: 'Correct. Suspendre le compte stoppe l\'exfiltration. L\'investigation viendra ensuite.' },
+      { label: '📧 Envoyer un email à l\'employé concerné', correct: false, feedback: 'Si c\'est une attaque interne ou un compte compromis, cela prévient l\'attaquant sans stopper l\'exfiltration.' },
+      { label: '📝 Documenter sans intervenir', correct: false, feedback: 'Les preuves peuvent être collectées, mais l\'exfiltration continue pendant ce temps — inacceptable.' },
+      { label: '🔄 Restaurer une sauvegarde', correct: false, feedback: 'La restauration ne stoppe pas l\'exfiltration en cours — les données partent quand même.' },
+    ],
+  },
+  {
+    node: '🌐 Routeur principal',
+    type: 'Man-in-the-Middle',
+    titre: 'ATTAQUE MAN-IN-THE-MIDDLE',
+    desc: 'Le routeur principal a été compromis. Le trafic entre les utilisateurs et Internet est intercepté et potentiellement modifié.',
+    actions: [
+      { label: '🔐 Basculer sur un routeur de secours chiffré', correct: true, feedback: 'Correct. Changer de routeur et forcer le chiffrement (TLS) rend l\'interception inutile.' },
+      { label: '📡 Augmenter la bande passante', correct: false, feedback: 'Complètement hors sujet. Le problème est une interception, pas une question de vitesse.' },
+      { label: '🔄 Redémarrer le routeur', correct: false, feedback: 'Le redémarrage ne nettoie pas un firmware compromis — l\'attaquant reprend le contrôle.' },
+      { label: '🌐 Couper Internet', correct: false, feedback: 'Solution radicale qui ne résout pas le problème fondamental et paralyse l\'entreprise.' },
+    ],
+  },
+];
+
+const DEEPFAKES = [
+  {
+    theme: 'E-mail suspect',
+    emoji_real: '📧', emoji_fake: '📨',
+    label_real: 'Email A', label_fake: 'Email B',
+    content_real: 'Objet : Réunion équipe vendredi\n\nBonjour à tous,\n\nJe vous rappelle notre réunion de vendredi à 14h00 en salle de conférence B.\n\nMerci de confirmer votre présence.\n\nCordialement,\nMartin Dupont, Directeur',
+    content_fake: 'Objet : URGENT - Virement nécessaire\n\nBonjour,\n\nJe suis actuellement en déplacement et j\'ai besoin que vous effectuiez un virement de 15 000€ immédiatement. C\'est urgent et confidentiel.\n\nMartin',
+    meta_real: 'martin.dupont@entreprise.fr · Heure : 9h42',
+    meta_fake: 'martin.d.2024@gmail.com · Heure : 23h17',
+    real_is_first: true,
+    indices: [
+      'Email A : adresse d\'entreprise officielle, heure de bureau, signature complète',
+      'Email B : adresse Gmail non officielle, heure suspecte (23h17), urgence artificielle',
+      'Aucun DG légitime ne demande un virement urgent par email depuis Gmail',
+      'C\'est une arnaque au Président (Business Email Compromise)',
+    ],
+    explication: 'L\'email B est un deepfake textuel (fraude au président). Les signaux : email personnel, heure nocturne, urgence, montant élevé, confidentialité demandée.',
+  },
+  {
+    theme: 'Profil réseau social',
+    emoji_real: '👤', emoji_fake: '🎭',
+    label_real: 'Profil Alpha', label_fake: 'Profil Beta',
+    content_real: 'Sophie Leroy\nIngénieure logiciel chez Thales\n312 relations · 47 publications\nMembre depuis 2018\nRecommandations : 12\nCompétences validées par 8 personnes',
+    content_fake: 'Alice Moreau\nChief Technology Officer\n2 relations · 0 publication\nMembre depuis 3 jours\nRecommandations : 0\nPhoto de profil : image stock générique',
+    meta_real: 'Activité : il y a 2 jours · Connexions communes : 3',
+    meta_fake: 'Activité : jamais · Connexions communes : 0',
+    real_is_first: true,
+    indices: [
+      'Profil Alpha : ancienneté, réseau, activité, recommandations — profil crédible',
+      'Profil Beta : créé depuis 3 jours, 2 relations, aucune publication — profil fantôme',
+      'Les faux profils sont souvent créés pour collecter des données ou infiltrer des réseaux',
+      'Une photo "stock" sur un profil professionnel est un signal d\'alerte fort',
+    ],
+    explication: 'Le Profil Beta est un faux compte. Les faux profils LinkedIn sont utilisés pour l\'espionnage industriel ou les arnaques au recrutement.',
+  },
+  {
+    theme: 'Statistique virale',
+    emoji_real: '📊', emoji_fake: '📈',
+    label_real: 'Stat A',  label_fake: 'Stat B',
+    content_real: 'Selon l\'ANSSI (rapport 2023) :\n"En 2022, 831 intrusions dans des systèmes d\'information ont été traitées par l\'ANSSI, dont 106 cyberattaques significatives."\n\nSource : ANSSI — Panorama de la menace informatique 2022',
+    content_fake: '"ALERTE : 97% des Français ont déjà été hackés sans le savoir ! Les experts sont CHOQUÉS !"\n\nSource : Cyberinfos-exclusif.fr (article partagé 2M fois)',
+    meta_real: 'Publié le 13/03/2023 · anssi.gouv.fr',
+    meta_fake: 'Publié il y a 3h · cyberinfos-exclusif.fr',
+    real_is_first: true,
+    indices: [
+      'Stat A : source gouvernementale officielle (ANSSI), données précises et vérifiables',
+      'Stat B : pourcentage extrême (97%), formulation choc, source inconnue',
+      '"Les experts sont choqués" est une formulation typique des fake news',
+      '2M de partages ≠ information vraie. La viralité amplifie l\'erreur.',
+    ],
+    explication: 'La Stat B est une infox. Les signaux : pourcentage extrême, formulation alarmiste, source inconnue, aucune méthodologie citée.',
+  },
+  {
+    theme: 'Demande de support',
+    emoji_real: '💬', emoji_fake: '🤖',
+    label_real: 'Message A', label_fake: 'Message B',
+    content_real: 'Bonjour,\n\nJe vous contacte suite à votre ticket n°45821 ouvert hier.\nVotre problème de connexion est résolu — veuillez réessayer dans 30 minutes.\nSi le problème persiste, répondez à ce message.\n\nCordialement,\nÉquipe Support technique',
+    content_fake: 'URGENT : Votre compte sera supprimé dans 2h !\n\nCliquez MAINTENANT sur ce lien pour confirmer votre compte et éviter la suppression : https://support-urgence-compte.xyz/confirm\n\nNe tardez pas !',
+    meta_real: 'support@entreprise.com · Référence : TKT-45821',
+    meta_fake: 'support-noreply@service-clients.net · Aucune référence',
+    real_is_first: true,
+    indices: [
+      'Message A : référence ticket précise, domaine officiel, ton professionnel, aucun lien suspect',
+      'Message B : majuscules, urgence, lien vers domaine inconnu, aucune référence de ticket',
+      'Le vrai support répond à des tickets existants — il ne crée pas d\'urgence de nulle part',
+      'support-urgence-compte.xyz n\'est pas un domaine officiel',
+    ],
+    explication: 'Le Message B est du phishing. Un vrai support ne menace jamais de supprimer un compte par email non sollicité avec un lien externe.',
+  },
+];
+
+// ══════════════════════════════════════════════
+// MODE ARCADE — LOGIQUE
+// ══════════════════════════════════════════════
+let MG = {
+  type: null,
+  idx: 0,
+  score: 0,
+  correct: 0,
+  total: 0,
+  timerInterval: null,
+  timerSec: 0,
+  networkHP: 5,
+  attackIdx: 0,
+  dfIdx: 0,
+};
+
+function rafraichirMGSelect() {
+  document.getElementById('mg-select-grid').style.display = 'grid';
+  document.getElementById('game-zone').classList.remove('active');
+}
+
+function lancerMiniJeu(type) {
+  MG.type = type;
+  MG.idx = 0;
+  MG.score = 0;
+  MG.correct = 0;
+  MG.total = 0;
+  MG.networkHP = 5;
+  MG.attackIdx = 0;
+  MG.dfIdx = 0;
+  clearInterval(MG.timerInterval);
+
+  document.getElementById('mg-select-grid').style.display = 'none';
+  const gz = document.getElementById('game-zone');
+  gz.classList.add('active');
+  document.getElementById('gz-score').textContent = 0;
+
+  const titles = { phishing:'PHISHING DETECTOR', password:'PASSWORD FORTRESS', network:'NETWORK DEFENSE', deepfake:'DEEPFAKE HUNT' };
+  document.getElementById('gz-title').textContent = titles[type];
+
+  if (type === 'phishing') renderPhishing();
+  else if (type === 'password') renderPassword();
+  else if (type === 'network') renderNetwork();
+  else if (type === 'deepfake') renderDeedfake();
+}
+
+// ── PHISHING ──
+function renderPhishing() {
+  const emails_shuffled = shuffle([...EMAILS]);
+  MG._emails = emails_shuffled;
+  MG.idx = 0;
+  MG.total = emails_shuffled.length;
+  document.getElementById('gz-timer').style.display = 'none';
+  afficherEmail();
+}
+
+function afficherEmail() {
+  if (MG.idx >= MG._emails.length) { finMiniJeu(); return; }
+  const e = MG._emails[MG.idx];
+  document.getElementById('gz-content').innerHTML = `
+    <div style="font-family:var(--mono);font-size:.58rem;color:var(--text3);letter-spacing:.1em;margin-bottom:.6rem;">
+      EMAIL ${MG.idx+1}/${MG.total} · SCORE : ${MG.score}
+    </div>
+    <div class="feedback-banner" id="fb-banner"></div>
+    <div class="email-card">
+      <div class="email-header">
+        <span class="email-field-label">DE :</span>
+        <span class="email-field-val">${e.nom} &lt;${e.expediteur}&gt;</span>
+        <span class="email-field-label">OBJET :</span>
+        <span class="email-subject">${e.sujet}</span>
+        <span class="email-field-label">DATE :</span>
+        <span class="email-field-val">${e.date}</span>
+      </div>
+      <div class="email-body">${e.corps}</div>
+      <div class="email-actions">
+        <button class="email-btn legit" onclick="jugerEmail(false)">✅ LÉGITIME</button>
+        <button class="email-btn phish" onclick="jugerEmail(true)">🎣 PHISHING</button>
+      </div>
+    </div>
+  `;
+}
+
+function jugerEmail(disaitPhishing) {
+  const e = MG._emails[MG.idx];
+  const correct = disaitPhishing === e.isPhishing;
+  const pts = correct ? 100 : 0;
+  MG.score += pts;
+  if (correct) MG.correct++;
+
+  document.querySelectorAll('.email-btn').forEach(b => b.disabled = true);
+  document.getElementById('gz-score').textContent = MG.score;
+
+  const fb = document.getElementById('fb-banner');
+  fb.className = 'feedback-banner ' + (correct ? 'ok' : 'ko');
+  fb.style.display = 'block';
+  fb.innerHTML = `
+    <div class="fb-verdict ${correct?'ok':'ko'}">${correct ? '✅ CORRECT +100 pts' : '❌ ERREUR — C\'était ' + (e.isPhishing ? 'du PHISHING' : 'un email LÉGITIME')}</div>
+    <div class="fb-detail">${e.explication}</div>
+    <div class="fb-indices">${e.indices.map(i => `<div class="fb-indice">${i}</div>`).join('')}</div>
+    <button class="btn-next-game" onclick="nextEmail()">${MG.idx+1 < MG._emails.length ? 'Email suivant →' : 'Voir les résultats →'}</button>
+  `;
+}
+
+function nextEmail() { MG.idx++; afficherEmail(); }
+
+// ── PASSWORD ──
+function renderPassword() {
+  document.getElementById('gz-timer').style.display = 'none';
+  document.getElementById('gz-content').innerHTML = `
+    <div style="font-family:var(--mono);font-size:.6rem;color:var(--text3);letter-spacing:.1em;margin-bottom:.8rem;">
+      CRÉEZ LE MOT DE PASSE LE PLUS SOLIDE POSSIBLE
+    </div>
+    <div class="pw-display" id="pw-display"><span id="pw-shown"></span><span class="pw-cursor"></span></div>
+    <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-str-fill" style="width:0%;background:var(--red)"></div></div>
+    <div style="font-family:var(--mono);font-size:.65rem;color:var(--text3);margin-bottom:.6rem;" id="pw-str-label">Force : Aucun</div>
+    <div class="pw-criteria" id="pw-criteria">
+      <div class="pw-criterion" id="c-len">12 caractères min</div>
+      <div class="pw-criterion" id="c-up">Majuscule</div>
+      <div class="pw-criterion" id="c-low">Minuscule</div>
+      <div class="pw-criterion" id="c-num">Chiffre</div>
+      <div class="pw-criterion" id="c-sym">Symbole (!@#...)</div>
+      <div class="pw-criterion" id="c-nodict">Pas un mot du dictionnaire</div>
+    </div>
+    <input class="pw-input-real" id="pw-input" type="text" placeholder="Tapez votre mot de passe ici..." oninput="evalPassword(this.value)" autocomplete="off" spellcheck="false">
+    <div style="text-align:center;">
+      <button class="btn-next-game" id="pw-submit" onclick="submitPassword()" disabled>VALIDER MON MOT DE PASSE →</button>
+    </div>
+  `;
+}
+
+const DICT_WORDS = ['password','motdepasse','bonjour','azerty','qwerty','123456','admin','letmein','dragon','welcome','soleil','france','paris','juillet','janvier','secret','amour','football','marseille'];
+
+function evalPassword(pw) {
+  document.getElementById('pw-shown').textContent = pw;
+  const hasLen = pw.length >= 12;
+  const hasUp = /[A-Z]/.test(pw);
+  const hasLow = /[a-z]/.test(pw);
+  const hasNum = /[0-9]/.test(pw);
+  const hasSym = /[^a-zA-Z0-9]/.test(pw);
+  const noDict = !DICT_WORDS.some(w => pw.toLowerCase().includes(w));
+
+  const crit = (id, met) => {
+    const el = document.getElementById(id);
+    if (el) { el.classList.toggle('met', met); }
+  };
+  crit('c-len', hasLen); crit('c-up', hasUp); crit('c-low', hasLow);
+  crit('c-num', hasNum); crit('c-sym', hasSym); crit('c-nodict', noDict);
+
+  const score = [hasLen,hasUp,hasLow,hasNum,hasSym,noDict].filter(Boolean).length;
+  const pct = (score/6)*100;
+  const colors = ['#ef4444','#ef4444','#f59e0b','#f59e0b','#22c55e','#22c55e','#22c55e'];
+  const labels = ['Aucun','Très faible','Faible','Moyen','Fort','Très fort','Excellent'];
+  document.getElementById('pw-str-fill').style.width = pct+'%';
+  document.getElementById('pw-str-fill').style.background = colors[score];
+  document.getElementById('pw-str-label').textContent = 'Force : '+labels[score];
+  document.getElementById('pw-submit').disabled = pw.length < 4;
+  MG._pwScore = score;
+}
+
+function submitPassword() {
+  const score = MG._pwScore || 0;
+  const pts = score * 50;
+  MG.score = pts;
+  document.getElementById('gz-score').textContent = pts;
+  const labels = ['Insuffisant','Très faible','Faible','Moyen','Fort','Très fort','Excellent'];
+  document.getElementById('gz-content').innerHTML = `
+    <div class="minigame-score">
+      <div class="mg-score-label">SCORE MOT DE PASSE</div>
+      <div class="mg-score-big">${pts}</div>
+      <div class="mg-score-detail">Critères validés : ${score}/6 — ${labels[score]}</div>
+      <div class="mg-xp-gain">+${pts} XP GAGNÉ</div>
+      <div style="font-size:.8rem;color:var(--text3);margin-bottom:1rem;">
+        ${score < 4 ? '💡 Conseil : combinez majuscules, chiffres, symboles et visez 16+ caractères.' : score < 6 ? '💡 Presque parfait ! Ajoutez des symboles et évitez les mots courants.' : '🎯 Excellent mot de passe ! Utilisez un gestionnaire pour en avoir un unique par site.'}
+      </div>
+      <button class="btn-next-game" onclick="quitterMiniJeu()">← CHOISIR UN AUTRE JEU</button>
+    </div>
+  `;
+  ajouterXP(pts, 'Password Fortress');
+  if (!A.badges.includes('🔑 Architecte')) A.badges.push('🔑 Architecte');
+}
+
+// ── NETWORK DEFENSE ──
+function renderNetwork() {
+  const attacks = shuffle([...NETWORK_ATTACKS]);
+  MG._attacks = attacks;
+  MG.attackIdx = 0;
+  MG.networkHP = 5;
+  document.getElementById('gz-timer').style.display = 'none';
+  afficherAttaque();
+}
+
+function afficherAttaque() {
+  if (MG.attackIdx >= MG._attacks.length || MG.networkHP <= 0) { finMiniJeu(); return; }
+  const a = MG._attacks[MG.attackIdx];
+  const shuffled = shuffle(a.actions);
+  const hpPct = (MG.networkHP / 5) * 100;
+  const hpColor = MG.networkHP >= 4 ? 'var(--blue3)' : MG.networkHP >= 2 ? 'var(--amber)' : 'var(--red)';
+
+  document.getElementById('gz-content').innerHTML = `
+    <div class="mission-hp-bar">
+      <div class="hp-label">INTÉGRITÉ RÉSEAU</div>
+      <div class="hp-bar"><div class="hp-fill" id="net-hp-fill" style="width:${hpPct}%;background:${hpColor}"></div></div>
+      <div class="hp-val">${MG.networkHP}/5</div>
+    </div>
+    <div class="feedback-banner" id="net-fb"></div>
+    <div class="attack-event">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem;">
+        <span style="font-size:1.2rem;">${a.node.split(' ')[0]}</span>
+        <span style="font-family:var(--mono);font-size:.6rem;color:var(--red);letter-spacing:.1em;">${a.type}</span>
+      </div>
+      <div class="attack-title">${a.titre}</div>
+      <div class="attack-desc">${a.desc}</div>
+      <div class="defense-actions">${shuffled.map((act,i) =>
+        `<button class="def-btn" onclick="defenseChoice(${i},'${esc(act.feedback)}',${act.correct})" id="def-${i}">${act.label}</button>`
+      ).join('')}</div>
+    </div>
+    <div style="font-family:var(--mono);font-size:.6rem;color:var(--text3);text-align:right;margin-top:.4rem;">
+      Attaque ${MG.attackIdx+1}/${MG._attacks.length} · Score : ${MG.score}
+    </div>
+  `;
+  MG._shuffledActions = shuffled;
+}
+
+function defenseChoice(i, feedback, correct) {
+  document.querySelectorAll('.def-btn').forEach(b => b.disabled = true);
+  const btn = document.getElementById('def-'+i);
+  btn.classList.add(correct ? 'correct-def' : 'wrong-def');
+
+  const pts = correct ? 150 : 0;
+  if (correct) { MG.score += pts; MG.correct++; }
+  else MG.networkHP--;
+  MG.total++;
+  document.getElementById('gz-score').textContent = MG.score;
+
+  const fb = document.getElementById('net-fb');
+  fb.className = 'feedback-banner ' + (correct ? 'ok' : 'ko');
+  fb.style.display = 'block';
+  fb.innerHTML = `
+    <div class="fb-verdict ${correct?'ok':'ko'}">${correct ? '✅ BONNE DÉFENSE +150 pts' : '❌ DÉFENSE INCORRECTE — -1 intégrité'}</div>
+    <div class="fb-detail">${feedback}</div>
+    <button class="btn-next-game" onclick="nextAttaque()">${MG.attackIdx+1 < MG._attacks.length && MG.networkHP > 0 ? 'Attaque suivante →' : 'Voir les résultats →'}</button>
+  `;
+}
+
+function nextAttaque() { MG.attackIdx++; afficherAttaque(); }
+
+// ── DEEPFAKE ──
+function renderDeedfake() {
+  const dfs = shuffle([...DEEPFAKES]);
+  MG._dfs = dfs;
+  MG.dfIdx = 0;
+  document.getElementById('gz-timer').style.display = 'none';
+  afficherDf();
+}
+
+function afficherDf() {
+  if (MG.dfIdx >= MG._dfs.length) { finMiniJeu(); return; }
+  const df = MG._dfs[MG.dfIdx];
+  const items = df.real_is_first
+    ? [{ emoji: df.emoji_real, label: df.label_real, content: df.content_real, meta: df.meta_real, isFake: false },
+       { emoji: df.emoji_fake, label: df.label_fake, content: df.content_fake, meta: df.meta_fake, isFake: true }]
+    : [{ emoji: df.emoji_fake, label: df.label_fake, content: df.content_fake, meta: df.meta_fake, isFake: true },
+       { emoji: df.emoji_real, label: df.label_real, content: df.content_real, meta: df.meta_real, isFake: false }];
+
+  document.getElementById('gz-content').innerHTML = `
+    <div style="font-family:var(--mono);font-size:.6rem;color:var(--accent);letter-spacing:.12em;margin-bottom:.4rem;">THÈME : ${df.theme.toUpperCase()}</div>
+    <div style="font-family:var(--mono);font-size:.58rem;color:var(--text3);margin-bottom:.6rem;">IDENTIFIEZ LE CONTENU FALSIFIÉ</div>
+    <div class="feedback-banner" id="df-fb"></div>
+    <div class="df-indices">
+      <div class="df-indices-title">▸ Indices disponibles</div>
+      ${df.indices.map(ind => `<div class="df-indice-item">${ind}</div>`).join('')}
+    </div>
+    <div class="deepfake-pair">
+      ${items.map((item,i) => `
+        <div class="df-item" id="df-item-${i}" onclick="choisirDf(${i},${item.isFake})">
+          <div class="df-label">${item.label}</div>
+          <div class="df-visual">${item.emoji}</div>
+          <div class="df-content">${item.content.replace(/\n/g,'<br>')}</div>
+          <div class="df-meta">${item.meta}</div>
+        </div>`).join('')}
+    </div>
+    <div style="font-family:var(--mono);font-size:.6rem;color:var(--text3);text-align:right;">
+      Analyse ${MG.dfIdx+1}/${MG._dfs.length} · Score : ${MG.score}
+    </div>
+  `;
+}
+
+function choisirDf(idx, isFake) {
+  const df = MG._dfs[MG.dfIdx];
+  const correct = isFake; // on veut identifier le FAKE
+  const pts = correct ? 200 : 0;
+  MG.score += pts;
+  if (correct) MG.correct++;
+  MG.total++;
+  document.getElementById('gz-score').textContent = MG.score;
+
+  document.querySelectorAll('.df-item').forEach((el,i) => {
+    el.onclick = null;
+    if (i === idx) el.classList.add(isFake ? 'selected-fake' : 'selected-real');
+  });
+
+  const fb = document.getElementById('df-fb');
+  fb.className = 'feedback-banner ' + (correct ? 'ok' : 'ko');
+  fb.style.display = 'block';
+  fb.innerHTML = `
+    <div class="fb-verdict ${correct?'ok':'ko'}">${correct ? '✅ DEEPFAKE IDENTIFIÉ +200 pts' : '❌ RATÉ — Vous avez désigné l\'authentique comme faux'}</div>
+    <div class="fb-detail">${df.explication}</div>
+    <button class="btn-next-game" onclick="nextDf()">${MG.dfIdx+1 < MG._dfs.length ? 'Analyse suivante →' : 'Voir les résultats →'}</button>
+  `;
+}
+
+function nextDf() { MG.dfIdx++; afficherDf(); }
+
+// ── FIN MINI-JEU ──
+function finMiniJeu() {
+  const pct = MG.total > 0 ? Math.round((MG.correct/MG.total)*100) : 0;
+  const xp = MG.score;
+  ajouterXP(xp, {phishing:'Phishing Detector',password:'Password Fortress',network:'Network Defense',deepfake:'Deepfake Hunt'}[MG.type]);
+
+  // Badges
+  if (MG.type === 'phishing' && pct === 100 && !A.badges.includes('🎣 Intouchable')) A.badges.push('🎣 Intouchable');
+  if (MG.type === 'deepfake' && pct >= 75 && !A.badges.includes('🎭 Œil de lynx')) A.badges.push('🎭 Œil de lynx');
+  if (MG.type === 'network' && MG.networkHP === 5 && !A.badges.includes('🌐 Forteresse')) A.badges.push('🌐 Forteresse');
+
+  document.getElementById('gz-content').innerHTML = `
+    <div class="minigame-score">
+      <div class="mg-score-label">MISSION ACCOMPLIE</div>
+      <div class="mg-score-big">${MG.score}</div>
+      <div class="mg-score-detail">
+        ${MG.total > 0 ? `${MG.correct}/${MG.total} correct — ${pct}% de réussite` : ''}
+      </div>
+      <div class="mg-xp-gain">+${xp} XP GAGNÉ</div>
+      <div style="display:flex;gap:.5rem;justify-content:center;">
+        <button class="btn-next-game" onclick="quitterMiniJeu()">← AUTRES JEUX</button>
+        <button class="btn-next-game" onclick="lancerMiniJeu('${MG.type}')" style="background:var(--blue2);">↺ REJOUER</button>
+      </div>
+    </div>
+  `;
+}
+
+function quitterMiniJeu() {
+  document.getElementById('game-zone').classList.remove('active');
+  document.getElementById('mg-select-grid').style.display = 'grid';
+}
+
+// ══════════════════════════════════════════════
+// MODE TERMINAL — DONNÉES & LOGIQUE
+// ══════════════════════════════════════════════
+const TM_MISSIONS = [
+  {
+    id: 'TM-001',
+    name: 'ANALYSE : Poste compromis',
+    desc: 'Un poste de travail a un comportement anormal. Analysez les processus actifs et identifiez la menace.',
+    xp: 300,
+    prompt: 'analyst@sentinel:/case/TM-001$',
+    intro: [
+      { type:'sys', text:'[SENTINEL] Connexion au poste distant établie...' },
+      { type:'sys', text:'[SENTINEL] Poste : DESKTOP-HR-042 | Utilisateur : rmartin | Heure locale : 23:47' },
+      { type:'warn', text:'⚠ Activité réseau anormale détectée en dehors des heures de bureau' },
+      { type:'info', text:'Tapez "help" pour voir les commandes disponibles' },
+    ],
+    commands: {
+      help: [
+        { type:'info', text:'Commandes disponibles :' },
+        { type:'info', text:'  ps        — Lister les processus actifs' },
+        { type:'info', text:'  netstat   — Connexions réseau actives' },
+        { type:'info', text:'  log       — Consulter les journaux système' },
+        { type:'info', text:'  scan      — Analyser les fichiers suspects' },
+        { type:'info', text:'  isolate   — Isoler le poste du réseau' },
+        { type:'info', text:'  rapport   — Soumettre votre rapport de mission' },
+      ],
+      ps: [
+        { type:'line', text:'PID   NOM                    CPU    RAM    STATUT' },
+        { type:'line', text:'1024  explorer.exe            0.1%   45MB   Normal' },
+        { type:'line', text:'1337  svchost.exe             0.2%   12MB   Normal' },
+        { type:'line', text:'2048  chrome.exe              2.1%   210MB  Normal' },
+        { type:'line', text:'3141  powershell.exe          45.2%  180MB  ⚠ SUSPECT' },
+        { type:'line', text:'3142  svch0st.exe             12.1%  95MB   ⚠ SUSPECT' },
+        { type:'warn', text:'⚠ PID 3142 : "svch0st.exe" — orthographe anormale (0 à la place du o)' },
+        { type:'warn', text:'⚠ PID 3141 : PowerShell avec utilisation CPU anormalement élevée' },
+      ],
+      netstat: [
+        { type:'line', text:'Proto   IP locale          IP distante         Statut' },
+        { type:'line', text:'TCP     192.168.1.42:445   192.168.1.1:445     ESTABLISHED' },
+        { type:'line', text:'TCP     192.168.1.42:8080  185.234.219.5:443   ESTABLISHED' },
+        { type:'warn', text:'⚠ Connexion sortante vers 185.234.219.5 (Russie) : non autorisée' },
+        { type:'warn', text:'⚠ Port 8080 utilisé pour exfiltration potentielle de données' },
+      ],
+      log: [
+        { type:'line', text:'[23:31:04] rmartin — Connexion RDP depuis 185.234.219.5 — SUCCÈS' },
+        { type:'err',  text:'[23:31:45] Tentative de désactivation de l\'antivirus — BLOQUÉE' },
+        { type:'err',  text:'[23:32:01] Installation de svch0st.exe — SOURCE INCONNUE' },
+        { type:'warn', text:'[23:33:15] Accès à C:\\Users\\rmartin\\Documents\\RH_2024.xlsx' },
+        { type:'warn', text:'[23:45:00] Transfert de données : 2.3GB vers 185.234.219.5' },
+      ],
+      scan: [
+        { type:'line', text:'Analyse en cours...' },
+        { type:'line', text:'C:\\Windows\\System32\\svch0st.exe — MALWARE DÉTECTÉ' },
+        { type:'err',  text:'Type : Remote Access Trojan (RAT) — Variante : AsyncRAT' },
+        { type:'err',  text:'Fonction : accès distant, exfiltration de données, keylogger' },
+        { type:'line', text:'Hash SHA256 : a1b2c3d4e5f6789...' },
+        { type:'ok',   text:'Fichier mis en quarantaine' },
+      ],
+      isolate: [
+        { type:'ok',  text:'[SENTINEL] Isolation réseau activée — poste déconnecté' },
+        { type:'ok',  text:'Connexion vers 185.234.219.5 coupée' },
+        { type:'ok',  text:'Transmission de données stoppée' },
+        { type:'info', text:'Le poste est maintenant en quarantaine. Prochaine étape : rapport.' },
+      ],
+      rapport: '_RAPPORT_TM001',
+    },
+    solution: ['ps','netstat','log','scan','isolate','rapport'],
+    completionXp: 300,
+  },
+  {
+    id: 'TM-002',
+    name: 'INVESTIGATION : Fuite de données',
+    desc: 'Des données confidentielles ont été publiées en ligne. Remontez la piste pour identifier la source.',
+    xp: 400,
+    prompt: 'analyst@sentinel:/case/TM-002$',
+    intro: [
+      { type:'sys',  text:'[SENTINEL] Cas ouvert suite à signalement Cybermalveillance.gouv.fr' },
+      { type:'warn', text:'⚠ Des données RH d\'une entreprise du CAC40 circulent sur le dark web' },
+      { type:'info', text:'Commandes : whois | traceroute | analyze | metadata | rapport' },
+    ],
+    commands: {
+      help: [
+        { type:'info', text:'whois [domaine]    — Identifier propriétaire d\'un domaine' },
+        { type:'info', text:'traceroute [ip]    — Tracer le chemin réseau' },
+        { type:'info', text:'analyze            — Analyser les documents fuités' },
+        { type:'info', text:'metadata           — Extraire les métadonnées' },
+        { type:'info', text:'rapport            — Soumettre votre conclusion' },
+      ],
+      whois: [
+        { type:'line', text:'Domaine : dark-leaks-2024.onion' },
+        { type:'line', text:'Registrar : anonyme (Tor Hidden Service)' },
+        { type:'warn', text:'Résolution impossible — service .onion (Dark Web)' },
+        { type:'info', text:'Conseil : analysez plutôt les métadonnées des fichiers fuités' },
+      ],
+      analyze: [
+        { type:'line', text:'Fichiers fuités analysés :' },
+        { type:'line', text:'  RH_salaires_2024.xlsx — 847KB — format Office 2021' },
+        { type:'line', text:'  contrats_direction.pdf — 2.1MB — créé le 08/01/2025 à 23:52' },
+        { type:'warn', text:'⚠ Heure de création anormale : 23:52 (après les heures de bureau)' },
+        { type:'warn', text:'⚠ Les deux fichiers ont été modifiés depuis le même poste' },
+      ],
+      metadata: [
+        { type:'line', text:'--- Métadonnées RH_salaires_2024.xlsx ---' },
+        { type:'line', text:'Auteur : a.bernard' },
+        { type:'line', text:'Dernière modification : a.bernard' },
+        { type:'line', text:'Poste : DESKTOP-FIN-017' },
+        { type:'line', text:'Date dernière modif : 2025-01-08 23:52:14' },
+        { type:'err',  text:'⚠ DESKTOP-FIN-017 n\'est pas un poste du département RH' },
+        { type:'err',  text:'⚠ a.bernard = Antoine Bernard, Responsable Finance — accès RH non autorisé' },
+      ],
+      traceroute: [
+        { type:'line', text:'traceroute 185.220.101.42' },
+        { type:'line', text:'1. 192.168.1.1 (routeur interne) 1ms' },
+        { type:'line', text:'2. 88.120.XXX.XXX (FAI) 8ms' },
+        { type:'line', text:'3. (nœud Tor) *** anonymisé ***' },
+        { type:'info', text:'Trafic masqué via réseau Tor — IP origine non traçable par cette méthode' },
+        { type:'info', text:'Méthode alternative : utilisez les logs internes et metadata' },
+      ],
+      rapport: '_RAPPORT_TM002',
+    },
+    solution: ['analyze','metadata','rapport'],
+    completionXp: 400,
+  },
+  {
+    id: 'TM-003',
+    name: 'RÉPONSE : Ransomware en cours',
+    desc: 'Un ransomware se propage activement sur le réseau d\'une PME. Intervenez en temps réel.',
+    xp: 500,
+    locked: (done) => !done.includes('TM-001'),
+    prompt: 'analyst@sentinel:/emergency/TM-003$',
+    intro: [
+      { type:'err',  text:'🚨 ALERTE CRITIQUE — RANSOMWARE EN PROPAGATION ACTIVE' },
+      { type:'err',  text:'Systèmes touchés : 3/12 | Progression : +1 poste/4min' },
+      { type:'warn', text:'⚠ Chaque commande compte. Agissez méthodiquement.' },
+      { type:'info', text:'Commandes : status | killswitch | backup | decrypt | rapport' },
+    ],
+    commands: {
+      help: [
+        { type:'info', text:'status      — État actuel du réseau et des postes' },
+        { type:'info', text:'killswitch  — Couper le réseau pour stopper la propagation' },
+        { type:'info', text:'backup      — Vérifier l\'état des sauvegardes' },
+        { type:'info', text:'decrypt     — Tenter une déchiffrement via clé de secours' },
+        { type:'info', text:'rapport     — Rédiger le rapport d\'incident' },
+      ],
+      status: [
+        { type:'err',  text:'POSTE-001 (Comptabilité)  : CHIFFRÉ 🔒' },
+        { type:'err',  text:'POSTE-002 (RH)            : CHIFFRÉ 🔒' },
+        { type:'err',  text:'POSTE-003 (Direction)     : EN COURS DE CHIFFREMENT ⚡' },
+        { type:'warn', text:'POSTE-004 à 012           : NON TOUCHÉS — propagation en cours' },
+        { type:'line', text:'Vecteur initial : email phishing ouvert sur POSTE-001 à 14h32' },
+        { type:'line', text:'Ransomware identifié : LockBit 3.0' },
+      ],
+      killswitch: [
+        { type:'ok',   text:'[ACTION] Isolation réseau complète activée' },
+        { type:'ok',   text:'Tous les commutateurs réseau coupés' },
+        { type:'ok',   text:'Propagation stoppée — 9 postes préservés' },
+        { type:'warn', text:'⚠ 3 postes restent chiffrés — sans connexion Internet, pas de communication avec les attaquants' },
+        { type:'ok',   text:'Serveurs de fichiers isolés — données inaccessibles aux attaquants' },
+      ],
+      backup: [
+        { type:'ok',   text:'Sauvegarde hors-ligne détectée : 2025-01-07 22:00 (hier soir)' },
+        { type:'ok',   text:'Sauvegarde cloud : synchronisée jusqu\'à 14h28 (avant l\'infection)' },
+        { type:'ok',   text:'Perte de données maximale estimée : 4 heures de travail' },
+        { type:'info', text:'Recommandation : restaurer depuis la sauvegarde hors-ligne' },
+      ],
+      decrypt: [
+        { type:'warn', text:'Recherche de clé de déchiffrement LockBit 3.0...' },
+        { type:'warn', text:'Consultation de NoMoreRansom.org...' },
+        { type:'err',  text:'Aucune clé publique disponible pour cette variante' },
+        { type:'info', text:'Recommandation : NE PAS payer la rançon — restaurer depuis la sauvegarde' },
+        { type:'info', text:'Signalement obligatoire à l\'ANSSI (cert-fr@ssi.gouv.fr)' },
+      ],
+      rapport: '_RAPPORT_TM003',
+    },
+    solution: ['status','killswitch','backup','rapport'],
+    completionXp: 500,
+  },
+];
+
+let TM = { mission: null, inputHistory: [], historyIdx: -1 };
+
+function rafraichirTerminalMissions() {
+  const z = document.getElementById('tm-missions-zone');
+  z.innerHTML = TM_MISSIONS.map((m,i) => {
+    const done = A.tm_done.includes(m.id);
+    const locked = m.locked ? m.locked(A.tm_done) : false;
+    return `
+      <div class="tm-card ${locked?'locked':''} ${done?'completed':''}" onclick="${locked||done?'':'ouvrirTerminal('+i+')'}" style="animation-delay:${i*.1}s">
+        <div class="tm-header">
+          <div class="tm-id">${m.id}</div>
+          <div class="tm-status-tag ${done?'done':locked?'locked':''}">${done?'✓ COMPLÉTÉ':locked?'🔒 VERROUILLÉ':'▸ DISPONIBLE'}</div>
+        </div>
+        <div class="tm-name">${m.name}</div>
+        <div class="tm-desc">${m.desc}</div>
+        <div class="tm-reward">Récompense : +${m.xp} XP${locked?' — Complétez TM-001 d\'abord':''}</div>
+      </div>`;
+  }).join('');
+}
+
+function ouvrirTerminal(idx) {
+  TM.mission = TM_MISSIONS[idx];
+  TM.inputHistory = [];
+  TM.historyIdx = -1;
+  document.getElementById('tm-mission-list').style.display = 'none';
+  const tw = document.getElementById('term-window');
+  tw.classList.add('active');
+  document.getElementById('term-window-title').textContent = TM.mission.id + ' — ' + TM.mission.name;
+  document.getElementById('term-prompt').textContent = TM.mission.prompt;
+  const output = document.getElementById('term-output');
+  output.innerHTML = '';
+  TM.mission.intro.forEach(l => appendTermLine(l.type, l.text));
+  const hint = document.getElementById('term-hint');
+  hint.innerHTML = Object.keys(TM.mission.commands).filter(c => c !== 'rapport').map(c =>
+    `<span class="term-hint-cmd" onclick="termExec('${c}')">${c}</span>`
+  ).join(' · ');
+  document.getElementById('term-input').focus();
+}
+
+function fermerTerminal() {
+  document.getElementById('term-window').classList.remove('active');
+  document.getElementById('tm-mission-list').style.display = 'block';
+  TM.mission = null;
+}
+
+function appendTermLine(type, text) {
+  const out = document.getElementById('term-output');
+  const div = document.createElement('div');
+  div.className = 'term-line ' + type;
+  div.textContent = text;
+  out.appendChild(div);
+  out.scrollTop = out.scrollHeight;
+}
+
+function termKeyDown(e) {
+  const input = document.getElementById('term-input');
+  if (e.key === 'Enter') {
+    const cmd = input.value.trim().toLowerCase().split(' ')[0];
+    input.value = '';
+    termExec(cmd);
+  } else if (e.key === 'ArrowUp') {
+    if (TM.historyIdx < TM.inputHistory.length - 1) {
+      TM.historyIdx++;
+      input.value = TM.inputHistory[TM.historyIdx] || '';
+    }
+    e.preventDefault();
+  } else if (e.key === 'ArrowDown') {
+    if (TM.historyIdx > 0) { TM.historyIdx--; input.value = TM.inputHistory[TM.historyIdx] || ''; }
+    else { TM.historyIdx = -1; input.value = ''; }
+    e.preventDefault();
+  }
+}
+
+function termExec(cmd) {
+  if (!TM.mission) return;
+  TM.inputHistory.unshift(cmd);
+  TM.historyIdx = -1;
+  appendTermLine('cmd', TM.mission.prompt.replace('$','') + ' $ ' + cmd);
+
+  const lines = TM.mission.commands[cmd];
+  if (!lines) {
+    appendTermLine('err', '-bash: ' + cmd + ': commande introuvable. Tapez "help" pour la liste.');
+    return;
+  }
+  if (lines === '_RAPPORT_TM001') { termRapport(0); return; }
+  if (lines === '_RAPPORT_TM002') { termRapport(1); return; }
+  if (lines === '_RAPPORT_TM003') { termRapport(2); return; }
+  lines.forEach(l => setTimeout(() => appendTermLine(l.type, l.text), 100));
+}
+
+function termRapport(missionIdx) {
+  const m = TM_MISSIONS[missionIdx];
+  appendTermLine('sys', '--- RAPPORT D\'INCIDENT ---');
+  appendTermLine('ok', 'Mission ' + m.id + ' complétée avec succès.');
+  appendTermLine('ok', '+' + m.completionXp + ' XP accordé.');
+
+  if (!A.tm_done.includes(m.id)) {
+    A.tm_done.push(m.id);
+    ajouterXP(m.completionXp, m.name);
+    if (A.tm_done.length >= 3 && !A.badges.includes('💻 Analyste certifié')) A.badges.push('💻 Analyste certifié');
+  } else {
+    appendTermLine('warn', '(Mission déjà comptabilisée — XP non re-crédité)');
+  }
+
+  setTimeout(() => {
+    appendTermLine('sys', 'Tapez "exit" ou cliquez FERMER pour revenir à la liste.');
+    const input = document.getElementById('term-input');
+    if (input) {
+      const origKeyDown = input.onkeydown;
+      input.addEventListener('keydown', function exitHandler(e) {
+        if (e.key === 'Enter' && input.value.trim().toLowerCase() === 'exit') {
+          input.removeEventListener('keydown', exitHandler);
+          fermerTerminal();
+          rafraichirTerminalMissions();
+        }
+      });
+    }
+  }, 500);
+}
+
+// ══════════════════════════════════════════════
+// MODE AVENTURE — DONNÉES
+// ══════════════════════════════════════════════
+const AV_MISSIONS = [
+  {
+    id: 'OP-BLACKMAIL',
+    icon: '📧',
+    name: 'Opération Chantage',
+    desc: 'Un employé d\'une PME reçoit des emails menaçants. L\'entreprise est en danger. Infiltrez-vous.',
+    xp: 400,
+    scenes: [
+      {
+        type: 'briefing',
+        context: 'Client : PME Dupont & Associés (35 employés, secteur comptable). Menace : emails de chantage demandant 50 000€ en bitcoin. L\'expéditeur affirme détenir des données internes sensibles.',
+        scene: 'Vous arrivez dans les locaux. La directrice, Martine Dupont, vous attend, visiblement inquiète.',
+        dialogue: [
+          { avatar:'👩‍💼', who:'Martine Dupont', text:'Merci d\'être venu rapidement. Voici le dernier email reçu ce matin : "Payez ou nous publions vos bilans internes et la liste de vos clients sur Internet."' },
+          { avatar:'🛡️', who:'Vous (SENTINEL)', text:'Depuis combien de temps recevez-vous ces emails ? Avez-vous cliqué sur des liens ces dernières semaines ?' },
+          { avatar:'👩‍💼', who:'Martine Dupont', text:'Depuis 3 jours. Un de mes employés m\'a dit avoir cliqué sur un email de "mise à jour logicielle" la semaine dernière...' },
+        ],
+        question: 'Quelle est votre priorité immédiate ?',
+        choices: [
+          { letter:'A', text:'Payer la rançon pour stopper le chantage rapidement', correct: false, consequence:{ type:'ko', title:'ERREUR CRITIQUE', text:'Payer ne garantit rien. Les attaquants savent maintenant que vous payez — vous devenez une cible permanente. Et vos données peuvent quand même être publiées.' } },
+          { letter:'B', text:'Isoler le poste de l\'employé qui a cliqué sur le lien suspect', correct: true, consequence:{ type:'ok', title:'BONNE DÉCISION', text:'Parfait. Le poste est potentiellement compromis et peut être la source de la fuite. L\'isolation stoppe l\'exfiltration en cours et préserve les preuves.' } },
+          { letter:'C', text:'Changer immédiatement tous les mots de passe de l\'entreprise', correct: false, consequence:{ type:'ko', title:'INSUFFISANT', text:'Utile mais pas prioritaire. Si le poste est toujours compromis, un keylogger enregistre les nouveaux mots de passe en temps réel.' } },
+          { letter:'D', text:'Contacter directement la police sans investigation préalable', correct: false, consequence:{ type:'ko', title:'PRÉMATURÉ', text:'La police a besoin de preuves numériques. Sans investigation préalable, le dossier sera incomplet et les attaquants effaceront leurs traces.' } },
+        ],
+        xp: 100,
+      },
+      {
+        type: 'investigation',
+        context: 'Le poste est isolé. Vous analysez son contenu.',
+        scene: 'Votre analyse révèle un malware de type "infostealer" installé il y a 9 jours, via un faux email de mise à jour. Il a exfiltré des fichiers Excel et la liste de contacts clients.',
+        dialogue: [
+          { avatar:'💻', who:'Votre outil d\'analyse', text:'Malware détecté : Agent Tesla (infostealer). Données exfiltrées : 847 fichiers, 2.3GB. Serveur C2 : 185.234.XXX.XXX (Moldavie). Connexions actives : 0 (isolation effective).' },
+          { avatar:'🛡️', who:'Vous', text:'Les données ont bien été volées. Maintenant, la question est : les attaquants peuvent-ils prouver qu\'ils les ont ?' },
+          { avatar:'👩‍💼', who:'Martine Dupont', text:'Ils ont envoyé un extrait de notre liste clients... Ils ont vraiment les données.' },
+        ],
+        question: 'L\'entreprise doit-elle payer les 50 000€ ?',
+        choices: [
+          { letter:'A', text:'Oui — ils ont prouvé qu\'ils ont les données, il faut payer', correct: false, consequence:{ type:'ko', title:'ERREUR', text:'Rien ne garantit qu\'ils ne publieront pas quand même. Et ce paiement finance d\'autres attaques. La jurisprudence montre que 80% des victimes qui paient subissent une 2ème attaque.' } },
+          { letter:'B', text:'Non — signaler à la CNIL et à Cybermalveillance.gouv.fr', correct: true, consequence:{ type:'ok', title:'BONNE DÉCISION', text:'Correct. La CNIL doit être notifiée sous 72h (RGPD). Cybermalveillance.gouv.fr fournit un soutien et une mise en relation avec des experts. Ne pas payer est recommandé par toutes les autorités.' } },
+          { letter:'C', text:'Négocier pour réduire le montant de la rançon', correct: false, consequence:{ type:'ko', title:'DÉCONSEILLÉ', text:'Négocier reconnaît implicitement votre volonté de payer. Cela peut entraîner une surenchère ou une accélération des menaces.' } },
+          { letter:'D', text:'Publier soi-même les données pour devancer les attaquants', correct: false, consequence:{ type:'ko', title:'ILLÉGAL', text:'Publier des données de clients sans leur consentement viole le RGPD. Vous vous exposeriez à des poursuites.' } },
+        ],
+        xp: 150,
+      },
+      {
+        type: 'resolution',
+        context: 'Mission sur le point d\'être bouclée.',
+        scene: 'Vous avez aidé l\'entreprise à sécuriser ses systèmes, signaler l\'incident, et prévenir ses clients. Une dernière décision s\'impose.',
+        dialogue: [
+          { avatar:'👩‍💼', who:'Martine Dupont', text:'Les attaquants viennent de publier un échantillon de données sur un forum. Ils relancent leur demande.' },
+          { avatar:'🛡️', who:'Vous', text:'C\'est une tactique d\'intimidation classique. Votre décision est prise — tenez bon.' },
+          { avatar:'🧑‍⚖️', who:'Conseiller juridique', text:'Nous avons transmis tous les éléments au parquet. Une commission rogatoire internationale est envisagée.' },
+        ],
+        question: 'Pour éviter que cela se reproduise, quelle mesure est LA PLUS efficace ?',
+        choices: [
+          { letter:'A', text:'Former tous les employés à reconnaître les emails de phishing', correct: true, consequence:{ type:'ok', title:'PRIORITÉ ABSOLUE', text:'Exact. 91% des cyberattaques commencent par un email de phishing. La formation humaine est la défense la plus efficace — et la moins chère. Les outils techniques ne suffisent pas si les humains cliquent.' } },
+          { letter:'B', text:'Acheter un antivirus plus cher', correct: false, consequence:{ type:'ko', title:'INSUFFISANT', text:'L\'antivirus n\'avait pas détecté ce malware. Un meilleur antivirus peut aider, mais la source du problème est humaine — l\'email cliqué.' } },
+          { letter:'C', text:'Interdire l\'utilisation des emails en entreprise', correct: false, consequence:{ type:'ko', title:'IMPRATICABLE', text:'Supprimer les emails est impossible dans une PME. Cela crée d\'autres risques (shadow IT, messageries non sécurisées) sans résoudre le problème.' } },
+          { letter:'D', text:'Sauvegarder les données plus fréquemment', correct: false, consequence:{ type:'ko', title:'UTILE MAIS SECONDAIRE', text:'Les sauvegardes protègent contre les ransomwares, pas contre le vol de données. Ici le problème est l\'exfiltration — les sauvegardes n\'empêchent pas les données de fuiter.' } },
+        ],
+        xp: 150,
+      },
+    ],
+  },
+  {
+    id: 'OP-GHOST',
+    icon: '👻',
+    name: 'Opération Fantôme',
+    desc: 'Une identité numérique a été volée. Retrouvez les traces avant que le damage soit irréparable.',
+    xp: 500,
+    locked: (done) => !done.includes('OP-BLACKMAIL'),
+    scenes: [
+      {
+        type: 'briefing',
+        context: 'Victime : Claire Moreau, 34 ans. Situation : des crédits ont été souscrits en son nom, un compte Instagram a été créé avec ses photos, son employeur a reçu de faux emails de sa part.',
+        scene: 'Claire vous contacte en urgence. Elle découvre l\'étendue de l\'usurpation.',
+        dialogue: [
+          { avatar:'😰', who:'Claire Moreau', text:'Je viens de recevoir un courrier de ma banque pour un crédit de 8 000€ que je n\'ai jamais souscrit. Et mon boss m\'a appelée pour des emails que je n\'ai pas envoyés !' },
+          { avatar:'🛡️', who:'Vous', text:'Calmez-vous. Nous allons agir méthodiquement. D\'abord : avez-vous utilisé le même mot de passe sur plusieurs sites ?' },
+          { avatar:'😰', who:'Claire', text:'Oui... le même partout depuis des années. Je sais, c\'était une erreur.' },
+        ],
+        question: 'Première action prioritaire pour Claire ?',
+        choices: [
+          { letter:'A', text:'Appeler sa banque pour bloquer le crédit frauduleux', correct: false, consequence:{ type:'ko', title:'IMPORTANT MAIS PAS EN PREMIER', text:'La banque viendra, mais si les comptes sont encore accessibles aux attaquants, ils peuvent contracter d\'autres crédits pendant que vous appelez.' } },
+          { letter:'B', text:'Changer tous ses mots de passe par des uniques et activer la 2FA', correct: true, consequence:{ type:'ok', title:'PRIORITÉ 1', text:'Correct. Couper l\'accès des attaquants est la priorité absolue. Commencer par l\'email (clé maîtresse de tous les autres comptes), puis banque, réseaux sociaux.' } },
+          { letter:'C', text:'Supprimer tous ses comptes en ligne', correct: false, consequence:{ type:'ko', title:'CONTRE-PRODUCTIF', text:'Supprimer les comptes détruit aussi les preuves numériques nécessaires pour la plainte. Et les attaquants gardent leurs propres copies.' } },
+          { letter:'D', text:'Poster sur Instagram pour prévenir ses abonnés', correct: false, consequence:{ type:'ko', title:'TROP TÔT', text:'Les attaquants contrôlent peut-être encore ce compte. Sécuriser d\'abord, communiquer ensuite.' } },
+        ],
+        xp: 150,
+      },
+      {
+        type: 'investigation',
+        context: 'Vous analysez comment l\'usurpation a été possible.',
+        scene: 'En consultant haveibeenpwned.com, vous découvrez que l\'email de Claire a fuité lors de 4 violations de données différentes en 3 ans.',
+        dialogue: [
+          { avatar:'🔍', who:'Analyse HIBP', text:'Violations détectées : LinkedIn (2021), Deezer (2022), Twitter/X (2022), Duolingo (2023). Données exposées : email, mot de passe hashé (faible), téléphone, date de naissance.' },
+          { avatar:'🛡️', who:'Vous', text:'Avec ces informations et le même mot de passe partout, un attaquant a pu accéder à tout. La date de naissance suffit souvent pour des demandes de crédit en ligne.' },
+          { avatar:'😰', who:'Claire', text:'Comment ont-ils eu ma pièce d\'identité pour le crédit ?' },
+        ],
+        question: 'Comment l\'attaquant a probablement obtenu la pièce d\'identité de Claire ?',
+        choices: [
+          { letter:'A', text:'Il a hacké directement la base de données du gouvernement', correct: false, consequence:{ type:'ko', title:'PEU PROBABLE', text:'Les bases gouvernementales sont très sécurisées. Les attaquants préfèrent des vecteurs plus simples.' } },
+          { letter:'B', text:'Via un faux email demandant de "vérifier son identité" sur un site frauduleux (phishing)', correct: true, consequence:{ type:'ok', title:'TRÈS PROBABLE', text:'Le phishing ciblé (spearphishing) est la méthode la plus courante. Un faux site bancaire, une fausse demande administrative — et la victime envoie elle-même sa pièce d\'identité.' } },
+          { letter:'C', text:'Il a fouillé ses poubelles pour trouver des documents', correct: false, consequence:{ type:'ko', title:'POSSIBLE MAIS RARE', text:'Le "dumpster diving" existe mais est rare et risqué pour l\'attaquant. Les méthodes numériques sont plus efficaces.' } },
+          { letter:'D', text:'Il a acheté les données sur le dark web', correct: false, consequence:{ type:'ko', title:'PARTIELLEMENT VRAI', text:'Possible pour les données basiques, mais les pièces d\'identité scannées sont plus souvent obtenues via phishing direct.' } },
+        ],
+        xp: 175,
+      },
+      {
+        type: 'resolution',
+        context: 'Sécurisation en cours. Actions légales à engager.',
+        scene: 'Les comptes sont sécurisés. Maintenant les démarches légales pour contrer l\'usurpation.',
+        dialogue: [
+          { avatar:'🛡️', who:'Vous', text:'Claire, vous devez maintenant signaler l\'usurpation auprès des autorités compétentes. Voici les étapes.' },
+          { avatar:'😰', who:'Claire', text:'La banque me dit que je dois prouver que ce n\'est pas moi qui ai souscrit le crédit.' },
+          { avatar:'🛡️', who:'Vous', text:'Exact. Le dépôt de plainte et le signalement sur la plateforme THESEE vont constituer vos preuves légales.' },
+        ],
+        question: 'Quelle plateforme officielle permet de signaler l\'usurpation d\'identité en France ?',
+        choices: [
+          { letter:'A', text:'signal.spam.fr', correct: false, consequence:{ type:'ko', title:'MAUVAISE PLATEFORME', text:'Signal Spam est dédié aux spams et phishings, pas à l\'usurpation d\'identité.' } },
+          { letter:'B', text:'THESEE sur service-public.fr + plainte au commissariat', correct: true, consequence:{ type:'ok', title:'CORRECT', text:'THESEE (Traitement Harmonisé des Enquêtes et Signalements pour les E-Escroqueries) est la plateforme officielle pour signaler les escroqueries en ligne. Compléter avec une plainte physique pour les crédits frauduleux.' } },
+          { letter:'C', text:'Interpol directement', correct: false, consequence:{ type:'ko', title:'INADAPTÉ', text:'Interpol traite les dossiers internationaux transmis par les autorités nationales, pas les signalements individuels.' } },
+          { letter:'D', text:'Twitter pour alerter le maximum de monde', correct: false, consequence:{ type:'ko', title:'NON', text:'Les réseaux sociaux n\'ont aucune valeur légale et peuvent exposer davantage la victime.' } },
+        ],
+        xp: 175,
+      },
+    ],
+  },
+];
+
+// ══════════════════════════════════════════════
+// MODE AVENTURE — LOGIQUE
+// ══════════════════════════════════════════════
+let AV = { mission: null, sceneIdx: 0, score: 0, hp: 3, maxHp: 3, answered: false };
+
+function afficherSelectMission() {
+  document.getElementById('aventure-back').onclick = () => goHub();
+  document.getElementById('aventure-nav-title').textContent = 'MODE AVENTURE';
+  document.getElementById('aventure-body').innerHTML = `
+    <div class="section-head" style="margin-bottom:.8rem;">
+      <div class="section-head-label">Choisissez une opération</div>
+      <div class="section-head-line"></div>
+    </div>
+    <div class="mission-select-grid">
+      ${AV_MISSIONS.map((m,i) => {
+        const done = A.av_done.includes(m.id);
+        const locked = m.locked ? m.locked(A.av_done) : false;
+        return `<div class="msn-card ${locked?'locked':''} ${done?'done':''}" onclick="${locked||done?'':'lancerAventure('+i+')'}" style="animation-delay:${i*.1}s">
+          <div class="msn-icon">${m.icon}</div>
+          <div class="msn-info">
+            <div class="msn-name">${m.id} — ${m.name}</div>
+            <div class="msn-desc">${m.desc}</div>
+            <div class="msn-reward">Récompense : +${m.xp} XP${locked?' · Complétez OP-BLACKMAIL d\'abord':''}</div>
+          </div>
+          <div class="msn-badge ${done?'done':locked?'locked':'avail'}">${done?'✓ COMPLÉTÉE':locked?'🔒':'▸ DISPONIBLE'}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function lancerAventure(idx) {
+  AV.mission = AV_MISSIONS[idx];
+  AV.sceneIdx = 0;
+  AV.score = 0;
+  AV.hp = 3;
+  AV.maxHp = 3;
+  document.getElementById('aventure-nav-title').textContent = AV.mission.id;
+  document.getElementById('aventure-back').onclick = () => { if (confirm('Quitter cette opération ? Votre progression sera perdue.')) afficherSelectMission(); };
+  renderScene();
+}
+
+function aventureBack() {
+  if (AV.mission) { if (confirm('Quitter cette opération ?')) { AV.mission = null; afficherSelectMission(); } }
+  else goHub();
+}
+
+function renderScene() {
+  const m = AV.mission;
+  const s = m.scenes[AV.sceneIdx];
+  AV.answered = false;
+  const hpPct = (AV.hp / AV.maxHp) * 100;
+  const hpColor = AV.hp >= 3 ? 'var(--blue3)' : AV.hp === 2 ? 'var(--amber)' : 'var(--red)';
+  const letters = ['A','B','C','D'];
+
+  document.getElementById('aventure-body').innerHTML = `
+    <div class="mission-hp-bar">
+      <div class="hp-label">CRÉDIBILITÉ AGENT</div>
+      <div class="hp-bar"><div class="hp-fill" id="av-hp-fill" style="width:${hpPct}%;background:${hpColor}"></div></div>
+      <div class="hp-val">${AV.hp}/${AV.maxHp}</div>
+    </div>
+
+    <div class="mission-briefing" style="animation:fadeIn .4s ease;">
+      <div class="briefing-header">
+        <div class="briefing-id">${m.id} — SCÈNE ${AV.sceneIdx+1}/${m.scenes.length}</div>
+        <div class="briefing-class">CLASSIFIÉ</div>
+      </div>
+      <div class="briefing-body">
+        <div class="briefing-context">${s.context}</div>
+        <div class="briefing-scene">${s.scene}</div>
+      </div>
+    </div>
+
+    ${s.dialogue.map((d,i) => `
+      <div class="dialogue-box" style="animation-delay:${i*.15}s;">
+        <div class="dialogue-avatar">${d.avatar}</div>
+        <div>
+          <div class="dialogue-who">${d.who}</div>
+          <div class="dialogue-text">${d.text}</div>
+        </div>
+      </div>`).join('')}
+
+    <div style="font-family:var(--mono);font-size:.6rem;color:var(--steel);letter-spacing:.1em;margin:.6rem 0 .4rem;">▸ VOTRE DÉCISION</div>
+    <div style="font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.7rem;">${s.question}</div>
+
+    <div class="choix-zone">
+      ${s.choices.map((c,i) => `
+        <button class="choix-btn" onclick="choisirAventure(${i})" id="choix-${i}" style="animation-delay:${i*.08}s;">
+          <div class="choix-letter">${letters[i]}</div>
+          <div>${c.text}</div>
+        </button>`).join('')}
+    </div>
+
+    <div class="consequence-box" id="consequence-box"></div>
+  `;
+}
+
+function choisirAventure(idx) {
+  if (AV.answered) return;
+  AV.answered = true;
+  const s = AV.mission.scenes[AV.sceneIdx];
+  const c = s.choices[idx];
+
+  document.querySelectorAll('.choix-btn').forEach((btn,i) => {
+    btn.classList.add(i === idx ? (c.correct ? 'correct-c' : 'wrong-c') : 'disabled-c');
+  });
+
+  if (c.correct) { AV.score += s.xp || 100; }
+  else { AV.hp = Math.max(0, AV.hp - 1); }
+
+  const box = document.getElementById('consequence-box');
+  box.className = 'consequence-box ' + c.consequence.type;
+  box.style.display = 'block';
+  box.innerHTML = `
+    <div class="consequence-title ${c.consequence.type}">${c.consequence.type === 'ok' ? '✅' : '❌'} ${c.consequence.title}</div>
+    <div class="consequence-text">${c.consequence.text}</div>
+    <button class="btn-next-game" style="margin-top:.7rem;" onclick="prochainScene()">
+      ${AV.sceneIdx + 1 < AV.mission.scenes.length ? 'Scène suivante →' : 'Terminer l\'opération →'}
+    </button>
+  `;
+  box.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function prochainScene() {
+  AV.sceneIdx++;
+  if (AV.sceneIdx >= AV.mission.scenes.length) { finAventure(); return; }
+  window.scrollTo({ top:0, behavior:'auto' });
+  renderScene();
+}
+
+function finAventure() {
+  const m = AV.mission;
+  const pct = Math.round((AV.score / m.xp) * 100);
+  ajouterXP(AV.score, m.id + ' — ' + m.name);
+
+  if (!A.av_done.includes(m.id)) {
+    A.av_done.push(m.id);
+    if (!A.badges.includes('🗂️ Terrain')) A.badges.push('🗂️ Terrain');
+    if (A.av_done.length >= 2 && !A.badges.includes('🏆 Opérateur')) A.badges.push('🏆 Opérateur');
+  }
+  if (AV.hp === AV.maxHp && !A.badges.includes('💎 Sans faute')) A.badges.push('💎 Sans faute');
+
+  document.getElementById('aventure-body').innerHTML = `
+    <div class="minigame-score">
+      <div class="mg-score-label">OPÉRATION TERMINÉE</div>
+      <div style="font-size:3.5rem;margin-bottom:.3rem;">${AV.hp === 3 ? '🏆' : AV.hp >= 2 ? '⭐' : AV.hp >= 1 ? '🎯' : '🌱'}</div>
+      <div class="mg-score-big">${AV.score}</div>
+      <div class="mg-score-detail">Crédibilité finale : ${AV.hp}/${AV.maxHp} · ${pct}% de décisions correctes</div>
+      <div class="mg-xp-gain">+${AV.score} XP CRÉDITÉ</div>
+      <div style="font-size:.82rem;color:var(--text3);margin-bottom:1rem;max-width:400px;">
+        ${pct >= 80 ? 'Excellent travail d\'agent. Vos décisions étaient méthodiques et fondées.' : pct >= 50 ? 'Mission accomplie. Quelques décisions à revoir — consultez les explications pour progresser.' : 'Mission difficile. Rejouez pour consolider vos réflexes. Chaque erreur est un apprentissage.'}
+      </div>
+      <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;">
+        <button class="btn-next-game" onclick="afficherSelectMission()">← OPÉRATIONS</button>
+        <button class="btn-next-game" onclick="goHub()" style="background:var(--bg3);">🏠 HUB</button>
+      </div>
+    </div>
+  `;
+}
+
+// ══════════════════════════════════════════════
+// UTILITAIRES
+// ══════════════════════════════════════════════
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i>0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function esc(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
+
+</script>
+</body>
+</html>
