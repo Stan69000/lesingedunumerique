@@ -8,7 +8,6 @@ export async function GET() {
     '/',
     '/asso',
     '/projets',
-    '/evenements',
     '/adhesion',
     '/contact',
     '/blog',
