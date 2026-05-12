@@ -109,6 +109,8 @@ Depuis la racine du projet :
 | `npm run dev` | lance le serveur local sur `http://localhost:4321` |
 | `npm run build` | génère le site statique dans `dist/` |
 | `npm run preview` | prévisualise le build localement |
+| `npm run csp:hash-jeux` | régénère les hashes CSP des jeux dans `public/.htaccess` |
+| `npm run hooks:install` | active les hooks Git versionnés du projet |
 
 ## Ajouter un article de blog
 
@@ -181,6 +183,30 @@ Note :
 - le workflow n'envoie pas `admin/` sur O2Switch
 - l'administration reste servie uniquement sur Vercel
 - au premier déploiement, s'il n'existe pas encore d'artefact sain, un rollback automatique n'est pas possible
+
+## CSP des jeux
+
+Les pages `public/jeux/*.html` ont une CSP dédiée (hashes `script-src` +
+`script-src-attr`) dans `public/.htaccess`.
+
+Après chaque modification JS/HTML inline d'un jeu, lancer :
+
+```bash
+npm run csp:hash-jeux
+```
+
+Cette commande recalcule automatiquement les hashes et met à jour la ligne CSP
+des pages jeux.
+
+Pour afficher un rappel automatique au commit quand un jeu change, active les
+hooks Git du projet une fois :
+
+```bash
+npm run hooks:install
+```
+
+Ensuite, si un `public/jeux/*.html` est modifié sans mise à jour/staging de
+`public/.htaccess`, le `pre-commit` bloque le commit avec les actions à faire.
 
 ## Accessibilité
 
