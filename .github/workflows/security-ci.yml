@@ -63,8 +63,8 @@ jobs:
         run: |
           set -euo pipefail
           GITLEAKS_VERSION="8.30.1"
-          BASE_URL="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
           ARCHIVE="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          BASE_URL="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
           curl -sSL "${BASE_URL}/${ARCHIVE}" -o "${ARCHIVE}"
           curl -sSL "${BASE_URL}/checksums.txt" -o checksums.txt
           grep "${ARCHIVE}" checksums.txt | sha256sum --check --status
