@@ -96,7 +96,7 @@ const articleSchema = {
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@300;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <script type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+    <script type="application/ld+json" set:html={JSON.stringify(articleSchema).replace(/</g, '\\u003c')}></script>
     <style>
       :root {
         --bg-body: #0b1120;

@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd  # v5.0.1
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444  # v5.0.0
         with:
           node-version: 22.12.0
           cache: npm
@@ -75,7 +75,7 @@ jobs:
         run: npm run build
 
       - name: Upload candidate artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
         with:
           name: dist-candidate
           path: dist/
@@ -83,13 +83,13 @@ jobs:
           retention-days: 7
 
       - name: Download candidate artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093  # v4.3.0
         with:
           name: dist-candidate
           path: ./dist-candidate
 
       - name: Download last known good artifact
-        uses: dawidd6/action-download-artifact@v9
+        uses: dawidd6/action-download-artifact@07ab29fd4a977ae4d2b275087cf67563dfdf0295  # v9
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: deploy-o2switch.yml
@@ -108,7 +108,7 @@ jobs:
           echo "exists=false" >> "$GITHUB_OUTPUT"
 
       - name: Deploy candidate to O2Switch
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65  # v4.3.5
         with:
           server: ${{ secrets.O2SWITCH_FTP_SERVER }}
           username: ${{ secrets.O2SWITCH_FTP_USERNAME }}
@@ -160,7 +160,7 @@ jobs:
 
       - name: Rollback to last known good (automatic)
         if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65  # v4.3.5
         with:
           server: ${{ secrets.O2SWITCH_FTP_SERVER }}
           username: ${{ secrets.O2SWITCH_FTP_USERNAME }}
@@ -187,7 +187,7 @@ jobs:
 
       - name: Publish new last known good artifact
         if: steps.healthcheck.outcome == 'success'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4.6.2
         with:
           name: last-known-good-dist
           path: ./dist-candidate/

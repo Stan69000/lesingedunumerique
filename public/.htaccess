@@ -22,3 +22,5 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 # RewriteCond %{REQUEST_URI} !^/favicon\.ico$
 # RewriteCond %{REQUEST_URI} !^/favicon\.svg$
 # RewriteRule ^.*$ /maintenance.html [R=302,L]
+# SetEnv CONTACT_HEALTH_TOKEN "genere avec : openssl rand -hex 32"
+# SetEnv CONTACT_HEALTH_TOKEN "genere avec : openssl rand -hex 32"
