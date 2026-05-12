@@ -67,10 +67,10 @@ jobs:
           BASE_URL="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
           curl -sSL "${BASE_URL}/${ARCHIVE}" -o "${ARCHIVE}"
           curl -sSL "${BASE_URL}/checksums.txt" -o checksums.txt
-          awk -v archive="${ARCHIVE}" '
-            $0 ~ archive { print $1 "  " archive; found=1 }
-            END { if (!found) exit 1 }
-          ' checksums.txt | sha256sum --check --status
+          expected_hash="$(grep "${ARCHIVE}" checksums.txt | grep -Eo '[A-Fa-f0-9]{64}' | head -n1)"
+          test -n "${expected_hash}"
+          actual_hash="$(sha256sum "${ARCHIVE}" | awk '{print $1}')"
+          test "${actual_hash}" = "${expected_hash}"
           tar -xzf "${ARCHIVE}" gitleaks
           chmod +x gitleaks
           ./gitleaks version
