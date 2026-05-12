@@ -64,10 +64,11 @@ jobs:
           set -euo pipefail
           GITLEAKS_VERSION="8.30.1"
           BASE_URL="https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}"
-          curl -sSL "${BASE_URL}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" -o gitleaks.tar.gz
+          ARCHIVE="gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          curl -sSL "${BASE_URL}/${ARCHIVE}" -o "${ARCHIVE}"
           curl -sSL "${BASE_URL}/checksums.txt" -o checksums.txt
-          grep "gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" checksums.txt | sha256sum --check --status
-          tar -xzf gitleaks.tar.gz gitleaks
+          grep "${ARCHIVE}" checksums.txt | sha256sum --check --status
+          tar -xzf "${ARCHIVE}" gitleaks
           chmod +x gitleaks
           ./gitleaks version
           ./gitleaks git --redact --no-banner --exit-code 1
