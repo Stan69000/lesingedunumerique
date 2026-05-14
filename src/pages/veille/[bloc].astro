@@ -17,18 +17,36 @@ const normalizedBloc = bloc === 'cyber' || bloc === 'associations' ? 'actu-gener
 const blocMeta = {
   arnaques: {
     title: 'Dernières arnaques',
+    description: 'Veille publique dédiée aux arnaques, escroqueries numériques et campagnes de phishing.',
+    intro: 'Version ciblée de la veille publique pour les arnaques et menaces associées.',
     rss: '/veille-arnaques.xml',
   },
   failles: {
     title: 'Dernières fuites de données',
+    description: 'Veille publique dédiée aux fuites de données, violations et incidents de sécurité.',
+    intro: 'Version ciblée de la veille publique pour les fuites et incidents déclarés.',
     rss: '/veille-failles.xml',
   },
   'actu-generaliste': {
     title: 'Actu généraliste',
+    description: 'Veille publique généraliste sur l’actualité numérique et cybersécurité.',
+    intro: 'Version ciblée de la veille publique pour les sujets généralistes.',
     rss: '/veille-actu-generaliste.xml',
   },
+  cyber: {
+    title: 'Actualités cybersécurité',
+    description: 'Veille publique dédiée aux actualités cybersécurité, menaces, vulnérabilités et défenses.',
+    intro: 'Version ciblée de la veille publique pour les actualités cybersécurité.',
+    rss: '/veille-cyber.xml',
+  },
+  associations: {
+    title: 'Actualités associations',
+    description: 'Veille publique dédiée aux associations, initiatives locales et ressources numériques utiles.',
+    intro: 'Version ciblée de la veille publique pour les associations et acteurs de terrain.',
+    rss: '/veille-associations.xml',
+  },
 };
-const meta = blocMeta[normalizedBloc];
+const meta = blocMeta[bloc] || blocMeta[normalizedBloc];
 
 const veille = await getVeilleData();
 const sections =
@@ -73,10 +91,10 @@ const visibleArticles = sortedArticles.filter((article) => bypassGeoFilter || is
 
 <SiteLayout
   title={`${meta.title} | Actu`}
-  description={`Veille publique - ${meta.title.toLowerCase()}.`}
+  description={meta.description}
   eyebrow="Actu"
   headline={meta.title}
-  intro="Version ciblée de la veille publique pour ce bloc uniquement."
+  intro={meta.intro}
   showShare={false}
 >
   <p class="bloc-actions">
