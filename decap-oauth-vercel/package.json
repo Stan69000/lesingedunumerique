@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^10.0.7",
-    "astro": "^6.3.3",
+    "astro": "^6.3.5",
     "astro-decap-cms-oauth": "^0.5.2"
   },
   "overrides": {
