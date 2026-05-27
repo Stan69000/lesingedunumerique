@@ -10,6 +10,7 @@ const blog = defineCollection({
     rubrique: z.enum(['Articles', 'Veille', 'Technos']),
     tags: z.array(z.string()),
     author: z.string().optional(),
+    draft: z.boolean().optional().default(false),
   }),
 });
 
