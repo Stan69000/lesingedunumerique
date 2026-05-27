@@ -6,13 +6,13 @@ import { siteSettings } from '../../../config/site';
 
 export async function getStaticPaths() {
   const allEntries = await getCollection('blog');
-  return allEntries.map((entry) => ({
+  return allEntries.filter((e) => !e.data.draft).map((entry) => ({
     params: { article: entry.id },
   }));
 }
 
 const { article } = Astro.params;
-const allEntries = await getCollection('blog');
+const allEntries = (await getCollection('blog')).filter((e) => !e.data.draft);
 const post = allEntries.find((entry) => entry.id === article);
 const currentPath = Astro.url.pathname;
 

@@ -4,7 +4,7 @@ import MaintenanceContent from '../../components/MaintenanceContent.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import { siteSettings } from '../../config/site';
 
-const posts = await getCollection('blog');
+const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
 const FRENCH_READING_WPM = 200;
