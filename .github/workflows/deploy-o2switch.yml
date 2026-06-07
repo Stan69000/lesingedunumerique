@@ -131,8 +131,8 @@ jobs:
 
           DEFAULT_URLS="https://lesingedunumerique.fr/\nhttps://lesingedunumerique.fr/sitemap.xml"
           RAW_URLS="${HEALTHCHECK_URLS:-$DEFAULT_URLS}"
-          MAX_ATTEMPTS=8
-          SLEEP_SECONDS=10
+          MAX_ATTEMPTS=10
+          SLEEP_SECONDS=15
 
           printf "%b\n" "$RAW_URLS" | tr ',' '\n' | sed '/^[[:space:]]*$/d' > health_urls.txt
 
