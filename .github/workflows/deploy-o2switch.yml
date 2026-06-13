@@ -129,7 +129,7 @@ jobs:
         run: |
           set -eu
 
-          DEFAULT_URLS="https://lesingedunumerique.fr/\nhttps://lesingedunumerique.fr/sitemap.xml"
+          DEFAULT_URLS="https://lesingedunumerique.fr/index.html\nhttps://lesingedunumerique.fr/sitemap.xml"
           RAW_URLS="${HEALTHCHECK_URLS:-$DEFAULT_URLS}"
           MAX_ATTEMPTS=20
           SLEEP_SECONDS=20
@@ -146,7 +146,7 @@ jobs:
             passed=0
             while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
               echo "Healthcheck attempt ${attempt}/${MAX_ATTEMPTS}: ${url}"
-              if curl --fail --silent --show-error --location --max-time 20 "$url" > /dev/null; then
+              if curl --fail --silent --show-error --location --max-time 20 --header 'Cache-Control: no-cache' "$url" > /dev/null; then
                 passed=1
                 break
               fi
