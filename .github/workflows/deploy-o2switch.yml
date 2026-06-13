@@ -131,12 +131,14 @@ jobs:
 
           DEFAULT_URLS="https://lesingedunumerique.fr/\nhttps://lesingedunumerique.fr/sitemap.xml"
           RAW_URLS="${HEALTHCHECK_URLS:-$DEFAULT_URLS}"
-          MAX_ATTEMPTS=10
-          SLEEP_SECONDS=15
+          MAX_ATTEMPTS=20
+          SLEEP_SECONDS=20
 
           printf "%b\n" "$RAW_URLS" | tr ',' '\n' | sed '/^[[:space:]]*$/d' > health_urls.txt
 
-          # Give the host a short warm-up window after FTPS sync before probing endpoints.
+          # O2Switch can keep returning 503 for several minutes after FTPS sync while
+          # the new files become visible. Start with a warm-up pause, then retry long
+          # enough to ride out the swap window before declaring the deploy unhealthy.
           sleep "$SLEEP_SECONDS"
 
           while IFS= read -r url; do
