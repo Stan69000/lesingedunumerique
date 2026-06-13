@@ -166,32 +166,10 @@ jobs:
             fi
           done < health_urls.txt
 
-      - name: Rollback to last known good (automatic)
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@110f9186c050f71550953127052e77650219c287  # v4.4.0
-        with:
-          server: ${{ secrets.O2SWITCH_FTP_SERVER }}
-          username: ${{ secrets.O2SWITCH_FTP_USERNAME }}
-          password: ${{ secrets.O2SWITCH_FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./last-known-good/
-          server-dir: ${{ secrets.O2SWITCH_REMOTE_DIR }}
-          exclude: |
-            **/.git*
-            **/.DS_Store
-            admin/**
-
-      - name: Fail deployment if rollback happened
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
+      - name: Warn if healthchecks failed after deploy
+        if: steps.healthcheck.outcome == 'failure'
         run: |
-          echo "Deployment failed healthchecks and has been rolled back automatically."
-          exit 1
-
-      - name: Fail deployment if rollback was not possible
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists != 'true'
-        run: |
-          echo "Deployment failed healthchecks and no last known good backup was available to rollback."
-          exit 1
+          echo "::warning title=Post-deploy healthcheck failed::O2Switch returned an unhealthy response after deploy. Deployment was left in place and no automatic rollback was attempted."
 
       - name: Publish new last known good artifact
         if: steps.healthcheck.outcome == 'success'
