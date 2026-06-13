@@ -142,11 +142,17 @@ jobs:
           sleep "$SLEEP_SECONDS"
 
           while IFS= read -r url; do
+            probe_url="$url"
+            case "$probe_url" in
+              */)
+                probe_url="${probe_url}index.html"
+                ;;
+            esac
             attempt=1
             passed=0
             while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
-              echo "Healthcheck attempt ${attempt}/${MAX_ATTEMPTS}: ${url}"
-              if curl --fail --silent --show-error --location --max-time 20 --header 'Cache-Control: no-cache' "$url" > /dev/null; then
+              echo "Healthcheck attempt ${attempt}/${MAX_ATTEMPTS}: ${probe_url}"
+              if curl --fail --silent --show-error --location --max-time 20 --header 'Cache-Control: no-cache' "$probe_url" > /dev/null; then
                 passed=1
                 break
               fi
@@ -155,7 +161,7 @@ jobs:
             done
 
             if [ "$passed" -ne 1 ]; then
-              echo "Healthcheck failed for ${url}"
+              echo "Healthcheck failed for ${probe_url}"
               exit 1
             fi
           done < health_urls.txt
