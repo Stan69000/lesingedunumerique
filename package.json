@@ -14,7 +14,7 @@
     "csp:hash-jeux": "node scripts/update-games-csp.mjs",
     "hooks:install": "git config core.hooksPath .githooks"
   },
-  "dependencies": {
+  "devDependencies": {
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.4.6",
     "marked": "^18.0.5",

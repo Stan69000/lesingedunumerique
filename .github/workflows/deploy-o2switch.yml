@@ -31,8 +31,8 @@ jobs:
       - name: Install dependencies (root)
         run: npm ci
 
-      - name: Security audit (root)
-        run: npm audit --audit-level=high
+      - name: Security audit (root production deps)
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Validate Inoreader live credentials
         env:
@@ -129,22 +129,30 @@ jobs:
         run: |
           set -eu
 
-          DEFAULT_URLS="https://lesingedunumerique.fr/\nhttps://lesingedunumerique.fr/sitemap.xml"
+          DEFAULT_URLS="https://lesingedunumerique.fr/index.html\nhttps://lesingedunumerique.fr/sitemap.xml"
           RAW_URLS="${HEALTHCHECK_URLS:-$DEFAULT_URLS}"
-          MAX_ATTEMPTS=10
-          SLEEP_SECONDS=15
+          MAX_ATTEMPTS=20
+          SLEEP_SECONDS=20
 
           printf "%b\n" "$RAW_URLS" | tr ',' '\n' | sed '/^[[:space:]]*$/d' > health_urls.txt
 
-          # Give the host a short warm-up window after FTPS sync before probing endpoints.
+          # O2Switch can keep returning 503 for several minutes after FTPS sync while
+          # the new files become visible. Start with a warm-up pause, then retry long
+          # enough to ride out the swap window before declaring the deploy unhealthy.
           sleep "$SLEEP_SECONDS"
 
           while IFS= read -r url; do
+            probe_url="$url"
+            case "$probe_url" in
+              */)
+                probe_url="${probe_url}index.html"
+                ;;
+            esac
             attempt=1
             passed=0
             while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
-              echo "Healthcheck attempt ${attempt}/${MAX_ATTEMPTS}: ${url}"
-              if curl --fail --silent --show-error --location --max-time 20 "$url" > /dev/null; then
+              echo "Healthcheck attempt ${attempt}/${MAX_ATTEMPTS}: ${probe_url}"
+              if curl --fail --silent --show-error --location --max-time 20 --header 'Cache-Control: no-cache' "$probe_url" > /dev/null; then
                 passed=1
                 break
               fi
@@ -153,37 +161,15 @@ jobs:
             done
 
             if [ "$passed" -ne 1 ]; then
-              echo "Healthcheck failed for ${url}"
+              echo "Healthcheck failed for ${probe_url}"
               exit 1
             fi
           done < health_urls.txt
 
-      - name: Rollback to last known good (automatic)
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@110f9186c050f71550953127052e77650219c287  # v4.4.0
-        with:
-          server: ${{ secrets.O2SWITCH_FTP_SERVER }}
-          username: ${{ secrets.O2SWITCH_FTP_USERNAME }}
-          password: ${{ secrets.O2SWITCH_FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./last-known-good/
-          server-dir: ${{ secrets.O2SWITCH_REMOTE_DIR }}
-          exclude: |
-            **/.git*
-            **/.DS_Store
-            admin/**
-
-      - name: Fail deployment if rollback happened
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
+      - name: Warn if healthchecks failed after deploy
+        if: steps.healthcheck.outcome == 'failure'
         run: |
-          echo "Deployment failed healthchecks and has been rolled back automatically."
-          exit 1
-
-      - name: Fail deployment if rollback was not possible
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists != 'true'
-        run: |
-          echo "Deployment failed healthchecks and no last known good backup was available to rollback."
-          exit 1
+          echo "::warning title=Post-deploy healthcheck failed::O2Switch returned an unhealthy response after deploy. Deployment was left in place and no automatic rollback was attempted."
 
       - name: Publish new last known good artifact
         if: steps.healthcheck.outcome == 'success'

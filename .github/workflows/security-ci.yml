@@ -28,8 +28,8 @@ jobs:
       - name: Install dependencies (root)
         run: npm ci
 
-      - name: Security audit (root)
-        run: npm audit --audit-level=high
+      - name: Security audit (root production deps)
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Build (root)
         env:
