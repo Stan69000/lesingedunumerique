@@ -102,6 +102,7 @@ const currentPath = Astro.url.pathname;
             <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
             <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
             <li><a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a></li>
+            <li><a href="/bd" class="nav-item" aria-current={currentPath.startsWith('/bd') ? 'page' : undefined}>BD</a></li>
             <li><a href="/veille" class="nav-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu</a></li>
           </ul>
           <a href="/flux" class="rss-nav-link" aria-current={currentPath === '/flux' ? 'page' : undefined} aria-label="Acceder aux flux RSS">
@@ -147,6 +148,7 @@ const currentPath = Astro.url.pathname;
         <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
         <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
         <a href="/blog" class="mobile-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+        <a href="/bd" class="mobile-item" aria-current={currentPath.startsWith('/bd') ? 'page' : undefined}>BD</a>
         <a href="/veille" class="mobile-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu</a>
         <a href="/flux" class="mobile-item" aria-current={currentPath === '/flux' ? 'page' : undefined}>Flux RSS</a>
         <div class="mobile-theme-toggle">
@@ -503,6 +505,7 @@ const currentPath = Astro.url.pathname;
               <li><a href="/adhesion">Rejoindre</a></li>
               <li><a href="/contact">Contact</a></li>
               <li><a href="/blog">Blog</a></li>
+              <li><a href="/bd">BD</a></li>
               <li><a href="/veille">Actu</a></li>
               <li><a href="/flux">Flux RSS</a></li>
               <li><a href="/plan-du-site">Plan du site</a></li>
