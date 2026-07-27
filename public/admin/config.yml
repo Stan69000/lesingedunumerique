@@ -76,3 +76,123 @@ collections:
       - label: Contenu
         name: body
         widget: markdown
+
+  - name: jeux
+    label: Jeux de sensibilisation
+    label_singular: Jeu
+    folder: src/content/jeux
+    create: true
+    delete: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{titre}} — {{statut}}"
+    editor:
+      preview: false
+    fields:
+      - label: Titre
+        name: titre
+        widget: string
+        hint: "Nom du jeu, affiché tel quel. Exemple : PIXEL SAFE"
+
+      - label: Accroche
+        name: accroche
+        widget: string
+        hint: "Complément du titre dans le bandeau. Exemple : simulation immersive"
+
+      - label: Résumé
+        name: resume
+        widget: text
+        hint: "2 lignes maximum, affichées sur la carte du catalogue."
+
+      - label: Description SEO
+        name: description
+        widget: text
+        hint: "Meta description de la page du jeu (150 à 160 caractères)."
+
+      - label: Badge public
+        name: badge
+        widget: string
+        hint: "Exemple : 6 à 18 ans"
+
+      - label: Publics
+        name: publics
+        widget: select
+        multiple: true
+        min: 1
+        options:
+          - Enfants
+          - Ados
+          - Adultes
+
+      - label: Thèmes
+        name: themes
+        widget: list
+        allow_add: true
+        collapsed: false
+        hint: "Sert aussi de filtre dans le catalogue. Exemples : Phishing, Deepfakes"
+
+      - label: Durée
+        name: duree
+        widget: string
+        required: false
+        hint: "Exemple : 15 à 30 min"
+
+      - label: Statut
+        name: statut
+        widget: select
+        default: disponible
+        options:
+          - { label: "Disponible", value: disponible }
+          - { label: "À venir", value: bientot }
+
+      - label: Sortie prévue
+        name: sortiePrevue
+        widget: string
+        required: false
+        hint: "Uniquement pour un jeu à venir. Exemple : automne 2026"
+
+      - label: Fichier du jeu
+        name: fichier
+        widget: string
+        required: false
+        hint: "Obligatoire si le jeu est disponible. Chemin du HTML dans public/jeux. Exemple : /jeux/sentinel.html"
+
+      - label: Ordre d'affichage
+        name: ordre
+        widget: number
+        default: 50
+        value_type: int
+        hint: "Plus le nombre est petit, plus le jeu apparaît haut dans le catalogue."
+
+      - label: Mettre en avant
+        name: aLaUne
+        widget: boolean
+        default: false
+        hint: "Affiche le jeu sur la page Sensibilisation (3 maximum)."
+
+      - label: Icône
+        name: icone
+        widget: select
+        default: manette
+        options:
+          - { label: "Manette", value: manette }
+          - { label: "Bouclier", value: bouclier }
+          - { label: "Loupe", value: loupe }
+          - { label: "Cadenas", value: cadenas }
+          - { label: "Message", value: message }
+
+      - label: Couleur
+        name: visuel
+        widget: select
+        default: emeraude
+        options:
+          - { label: "Émeraude", value: emeraude }
+          - { label: "Azur", value: azur }
+          - { label: "Violet", value: violet }
+          - { label: "Ambre", value: ambre }
+
+      - label: Description longue
+        name: body
+        widget: markdown
+        hint: "Affichée sous le jeu, sur sa page dédiée."

@@ -1,23 +1,23 @@
 ---
 import SiteLayout from '../../../layouts/SiteLayout.astro';
+import GameCard from '../../../components/GameCard.astro';
+import { getJeux, jeuxDisponibles, publicsCouverts, themesCouverts, urlJeu } from '../../../lib/jeux';
+import { siteSettings } from '../../../config/site';
+import '../../../styles/jeux.css';
+
+const jeux = await getJeux();
+const disponibles = jeuxDisponibles(jeux);
+const aVenir = jeux.filter((jeu) => jeu.data.statut === 'bientot');
+const publics = publicsCouverts(jeux);
+const themes = themesCouverts(jeux);
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://lesingedunumerique.fr/' },
-    {
-      '@type': 'ListItem',
-      position: 2,
-      name: 'Sensibilisation',
-      item: 'https://lesingedunumerique.fr/sensibilisation/',
-    },
-    {
-      '@type': 'ListItem',
-      position: 3,
-      name: 'Jeux de sensibilisation',
-      item: 'https://lesingedunumerique.fr/sensibilisation/jeux/',
-    },
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${siteSettings.siteUrl}/` },
+    { '@type': 'ListItem', position: 2, name: 'Sensibilisation', item: `${siteSettings.siteUrl}/sensibilisation/` },
+    { '@type': 'ListItem', position: 3, name: 'Jeux de sensibilisation', item: `${siteSettings.siteUrl}/sensibilisation/jeux/` },
   ],
 };
 
@@ -25,158 +25,190 @@ const itemListSchema = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
   name: 'Jeux de sensibilisation numérique',
-  itemListElement: [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      url: 'https://lesingedunumerique.fr/sensibilisation/jeux/pixel-safe/',
-      name: 'PIXEL SAFE',
-    },
-    {
-      '@type': 'ListItem',
-      position: 2,
-      url: 'https://lesingedunumerique.fr/sensibilisation/jeux/sentinel/',
-      name: 'SENTINEL',
-    },
-  ],
+  itemListElement: disponibles.map((jeu, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: `${siteSettings.siteUrl}${urlJeu(jeu)}`,
+    name: jeu.data.titre,
+  })),
 };
 ---
 
 <SiteLayout
   title="Jeux de sensibilisation numérique et cybersécurité | Le Singe Du Numerique"
-  description="Découvrez des jeux pédagogiques gratuits pour sensibiliser enfants, adolescents et adultes aux risques numériques: phishing, cyberharcèlement, réseaux sociaux et protection des données."
+  description="Catalogue des jeux pédagogiques gratuits du Singe du Numérique: filtrez par public et par thème pour trouver le jeu adapté à votre atelier ou à votre famille."
   eyebrow="Sensibilisation"
-  headline="Nos jeux"
-  accent="pédagogiques"
-  intro="Jeux gratuits de sensibilisation au numérique et à la cybersécurité, utilisés en famille, en atelier et en milieu associatif."
+  headline="Catalogue"
+  accent="des jeux"
+  intro="Tous nos jeux de sensibilisation au numérique et à la cybersécurité, filtrables par public et par thème."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
 
-  <section class="games-hub" aria-labelledby="games-hub-title">
-    <div class="hub-intro-card reveal reveal-0">
-      <p class="hub-kicker">Bibliothèque active</p>
-      <h2 id="games-hub-title">Jouer pour ancrer les bons réflexes</h2>
+  <div class="hub">
+    <section class="hub-card reveal reveal-0" aria-labelledby="catalogue-titre">
+      <p class="hub-kicker">Catalogue complet</p>
+      <h2 id="catalogue-titre">Trouver le jeu adapté à votre public</h2>
       <p>
-        Cette bibliothèque rassemble nos jeux de prévention numérique pour s'entraîner face aux arnaques,
-        au cyberharcèlement, à la désinformation et aux attaques en ligne.
+        Chaque jeu se joue directement dans le navigateur, sans inscription et sans collecte de données.
+        Utilisez les filtres pour cibler un âge ou un sujet précis.
       </p>
-      <div class="hub-stats" aria-label="Aperçu des jeux disponibles">
-        <p><strong>2</strong> jeux disponibles</p>
-        <p><strong>3</strong> publics couverts</p>
-        <p><strong>100%</strong> gratuit</p>
+      <ul class="hub-stats">
+        <li><strong>{disponibles.length}</strong> {disponibles.length > 1 ? 'jeux jouables' : 'jeu jouable'}</li>
+        <li><strong>{themes.length}</strong> thèmes couverts</li>
+        <li><strong>{aVenir.length}</strong> {aVenir.length > 1 ? 'jeux en préparation' : 'jeu en préparation'}</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="filtres-titre">
+      <h2 id="filtres-titre" class="sr-only">Filtrer les jeux</h2>
+
+      <div class="filters" id="filtres" hidden>
+        <fieldset class="filter-group" data-facette="publics">
+          <legend>Public</legend>
+          {
+            publics.map((cible) => (
+              <button type="button" class="filter-chip" aria-pressed="false" data-valeur={cible.toLowerCase()}>
+                {cible}
+              </button>
+            ))
+          }
+        </fieldset>
+
+        <fieldset class="filter-group" data-facette="themes">
+          <legend>Thème</legend>
+          {
+            themes.map((theme) => (
+              <button type="button" class="filter-chip" aria-pressed="false" data-valeur={theme.toLowerCase()}>
+                {theme}
+              </button>
+            ))
+          }
+        </fieldset>
+
+        <div class="filters-footer">
+          <p class="filters-status" id="filtres-statut" role="status">
+            {jeux.length} {jeux.length > 1 ? 'jeux affichés' : 'jeu affiché'}
+          </p>
+          <button type="button" class="filter-chip" data-reinitialiser hidden>Tout afficher</button>
+        </div>
       </div>
-      <p class="anchor-row">
-        <a href="#jouer-maintenant" class="cta-button cta-primary">Jouer maintenant</a>
-      </p>
+    </section>
+
+    <div class="games-grid" role="list" aria-label="Liste des jeux">
+      {jeux.map((jeu) => <GameCard jeu={jeu} niveauTitre="h2" />)}
     </div>
 
-    <div id="jouer-maintenant" class="games-grid" role="list" aria-label="Liste des jeux">
-      <article class="game-card reveal reveal-1" role="listitem">
-        <div class="game-preview preview-pixel" aria-hidden="true"><span>PIXEL SAFE</span></div>
-        <div class="game-head">
-          <span class="game-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 5h8v2H8zM6 9h12l1 8H5l1-8Zm4 3v3m4-3v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <p class="game-badge">6 à 18 ans</p>
-        </div>
-        <h3>PIXEL SAFE</h3>
-        <p>
-          Jeu éducatif pour parler arnaques, réseaux sociaux, cyberharcèlement, réputation et droit numérique
-          avec les jeunes, sans dramatiser.
-        </p>
-        <ul class="risk-tags" aria-label="Thèmes de PIXEL SAFE">
-          <li>Phishing</li>
-          <li>Cyberharcèlement</li>
-          <li>Réseaux sociaux</li>
-          <li>Données perso</li>
-        </ul>
-        <a class="cta-button cta-secondary" href="/sensibilisation/jeux/pixel-safe">Jouer à PIXEL SAFE</a>
-      </article>
+    <p class="filters-empty" id="filtres-vide" hidden>
+      Aucun jeu ne correspond à cette combinaison de filtres.
+      <button type="button" class="filter-chip" data-reinitialiser>Réinitialiser les filtres</button>
+    </p>
 
-      <article class="game-card reveal reveal-2" role="listitem">
-        <div class="game-preview preview-sentinel" aria-hidden="true"><span>SENTINEL</span></div>
-        <div class="game-head">
-          <span class="game-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 5 6v6c0 4.5 2.9 7.9 7 9 4.1-1.1 7-4.5 7-9V6l-7-3Zm0 5v4m0 3h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <p class="game-badge">Ado et adultes</p>
-        </div>
-        <h3>SENTINEL</h3>
-        <p>
-          Simulation immersive: enquêtes, mini-défis et décisions sous pression pour entraîner vos réflexes
-          cyber face aux menaces actuelles.
-        </p>
-        <ul class="risk-tags" aria-label="Thèmes de SENTINEL">
-          <li>Mails suspects</li>
-          <li>Mots de passe</li>
-          <li>Deepfakes</li>
-          <li>Sécurité réseau</li>
-        </ul>
-        <a class="cta-button cta-secondary" href="/sensibilisation/jeux/sentinel">Jouer à SENTINEL</a>
-      </article>
-    </div>
-
-    <div class="hub-bottom-grid">
-      <article class="hub-panel reveal reveal-1">
-        <h3>Pour qui sont ces jeux ?</h3>
+    <div class="hub-bottom">
+      <section class="game-panel reveal reveal-2" aria-labelledby="pour-qui-titre">
+        <h2 id="pour-qui-titre">Pour qui sont ces jeux ?</h2>
+        <p><strong>Tout le monde.</strong> Aucune base technique n'est nécessaire pour jouer.</p>
         <ul>
-          <li>Familles et adolescents.</li>
-          <li>Associations et médiateurs numériques.</li>
+          <li>Familles et adolescents, pour lancer la discussion à la maison.</li>
+          <li>Associations et médiateurs numériques, en intervention terrain.</li>
           <li>Animateurs d'ateliers et structures éducatives.</li>
+          <li>Et n'importe qui d'autre, curieux comme déjà à l'aise.</li>
         </ul>
-      </article>
+      </section>
 
-      <article class="hub-panel reveal reveal-2">
-        <h3>Besoin d'un atelier sur mesure ?</h3>
+      <section class="game-panel reveal reveal-3" aria-labelledby="atelier-titre">
+        <h2 id="atelier-titre">Besoin d'un atelier sur mesure ?</h2>
         <p>
           Contactez-nous pour organiser une session adaptée à votre public: niveau, contexte terrain et
           objectifs pédagogiques.
         </p>
         <p><a href="/contact">Nous contacter</a></p>
-      </article>
+      </section>
     </div>
-  </section>
+  </div>
 </SiteLayout>
 
 <style>
-  :global(.games-hub) { display: grid; gap: 22px; }
-  :global(.games-hub h2), :global(.games-hub h3) { margin: 0; }
-  :global(.hub-intro-card), :global(.hub-panel), :global(.game-card) {
-    position: relative; background: linear-gradient(160deg, rgba(18, 30, 60, 0.9), rgba(10, 18, 40, 0.94));
-    border: 1px solid rgba(144, 177, 222, 0.24); border-radius: 20px; padding: clamp(1rem, 2.2vw, 1.55rem); overflow: hidden;
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
   }
-  :global(.hub-intro-card::before), :global(.game-card::before) { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(95, 232, 255, 0.08), transparent 46%); pointer-events: none; }
-  :global(.hub-intro-card::after), :global(.game-card::after) { content: ''; position: absolute; inset: auto -80px -100px auto; width: 180px; aspect-ratio: 1; background: radial-gradient(circle, rgba(71, 255, 228, 0.2), transparent 70%); pointer-events: none; }
-  :global(.hub-kicker) { margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; font-size: 0.82rem; color: rgba(86, 226, 241, 0.96); }
-  :global(.hub-stats) { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-  :global(.hub-stats p) { margin: 0; padding: 8px 10px; border: 1px solid rgba(130, 167, 214, 0.3); border-radius: 12px; background: rgba(10, 24, 47, 0.5); font-size: 0.95rem; }
-  :global(.hub-stats strong) { color: rgba(135, 255, 236, 0.95); }
-  :global(.anchor-row) { margin: 14px 0 0; }
-  :global(.anchor-row .cta-button) { min-width: 220px; }
-  :global(.games-grid) { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; scroll-margin-top: 120px; }
-  :global(.game-card) { display: grid; gap: 12px; transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease; }
-  :global(.game-card:hover) { transform: translateY(-4px); border-color: rgba(86, 226, 241, 0.55); box-shadow: 0 14px 34px rgba(2, 7, 20, 0.35); }
-  :global(.game-preview) { min-height: 78px; border: 1px solid rgba(134, 171, 219, 0.34); border-radius: 13px; display: flex; align-items: end; padding: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(226, 245, 255, 0.95); }
-  :global(.preview-pixel) { background: linear-gradient(135deg, rgba(59, 198, 173, 0.28), rgba(30, 100, 169, 0.2)), repeating-linear-gradient(90deg, rgba(130, 240, 220, 0.14) 0 8px, rgba(18, 34, 63, 0.08) 8px 16px); }
-  :global(.preview-sentinel) { background: linear-gradient(135deg, rgba(110, 199, 255, 0.24), rgba(95, 122, 255, 0.16)), radial-gradient(circle at 80% 30%, rgba(150, 235, 255, 0.2), transparent 45%); }
-  :global(.game-head) { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-  :global(.game-icon) { width: 38px; height: 38px; border-radius: 11px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid rgba(86, 226, 241, 0.35); background: rgba(36, 91, 136, 0.24); color: rgba(187, 245, 253, 0.95); }
-  :global(.game-icon svg) { width: 21px; height: 21px; }
-  :global(.game-badge) { margin: 0; border: 1px solid rgba(86, 226, 241, 0.35); border-radius: 999px; padding: 4px 10px; font-size: 0.82rem; font-weight: 600; color: rgba(187, 245, 253, 0.95); background: rgba(36, 91, 136, 0.28); }
-  :global(.risk-tags) { list-style: none; margin: 0 0 6px; padding: 0; display: flex; flex-wrap: wrap; gap: 7px; }
-  :global(.risk-tags li) { border-radius: 999px; border: 1px solid rgba(119, 145, 184, 0.45); background: rgba(13, 29, 56, 0.66); color: rgba(212, 226, 245, 0.94); font-size: 0.76rem; letter-spacing: 0.02em; text-transform: uppercase; padding: 4px 9px; }
-  :global(.hub-bottom-grid) { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  :global(.hub-panel ul) { margin: 10px 0 0; padding-left: 18px; }
-  :global(.hub-panel li + li) { margin-top: 6px; }
-  :global(.reveal) { opacity: 0; transform: translateY(8px); animation: hubReveal 0.62s ease forwards; }
-  :global(.reveal-0) { animation-delay: 0.03s; }
-  :global(.reveal-1) { animation-delay: 0.08s; }
-  :global(.reveal-2) { animation-delay: 0.14s; }
-  @keyframes hubReveal { to { opacity: 1; transform: translateY(0); } }
-  @media (prefers-reduced-motion: reduce) { :global(.reveal) { opacity: 1; transform: none; animation: none; } }
-  @media (max-width: 640px) {
-    :global(.hub-intro-card), :global(.hub-panel), :global(.game-card) { border-radius: 16px; }
-    :global(.anchor-row .cta-button) { width: 100%; min-width: 0; }
+
+  .hub-bottom {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
   }
 </style>
+
+<script>
+  const barre = document.getElementById('filtres');
+  const statut = document.getElementById('filtres-statut');
+  const messageVide = document.getElementById('filtres-vide');
+  const cartes = Array.from(document.querySelectorAll<HTMLElement>('[data-jeu]'));
+
+  if (barre && statut && cartes.length > 0) {
+    barre.hidden = false;
+
+    const chips = Array.from(barre.querySelectorAll<HTMLButtonElement>('[data-facette] .filter-chip'));
+
+    const selection = (facette: string) =>
+      chips
+        .filter((chip) => chip.closest('[data-facette]')?.getAttribute('data-facette') === facette)
+        .filter((chip) => chip.getAttribute('aria-pressed') === 'true')
+        .map((chip) => chip.dataset.valeur ?? '');
+
+    const correspond = (carte: HTMLElement, facette: string, valeurs: string[]) => {
+      if (valeurs.length === 0) return true;
+      const contenu = (carte.dataset[facette] ?? '').split('|');
+      return valeurs.some((valeur) => contenu.includes(valeur));
+    };
+
+    const boutonsReset = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-reinitialiser]'));
+
+    const appliquer = () => {
+      const publics = selection('publics');
+      const themes = selection('themes');
+      let visibles = 0;
+
+      cartes.forEach((carte) => {
+        const garde = correspond(carte, 'publics', publics) && correspond(carte, 'themes', themes);
+        carte.hidden = !garde;
+        if (garde) visibles += 1;
+      });
+
+      const filtreActif = publics.length + themes.length > 0;
+      statut.textContent = filtreActif
+        ? `${visibles} ${visibles > 1 ? 'jeux affichés' : 'jeu affiché'} sur ${cartes.length}`
+        : `${cartes.length} ${cartes.length > 1 ? 'jeux affichés' : 'jeu affiché'}`;
+      if (messageVide) messageVide.hidden = visibles > 0;
+      boutonsReset.forEach((bouton) => {
+        if (!bouton.closest('#filtres-vide')) bouton.hidden = !filtreActif;
+      });
+    };
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chip.setAttribute('aria-pressed', chip.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+        appliquer();
+      });
+    });
+
+    boutonsReset.forEach((bouton) => {
+      bouton.addEventListener('click', () => {
+        chips.forEach((chip) => chip.setAttribute('aria-pressed', 'false'));
+        appliquer();
+        chips[0]?.focus();
+      });
+    });
+
+    appliquer();
+  }
+</script>

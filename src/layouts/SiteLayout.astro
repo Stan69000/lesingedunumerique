@@ -77,7 +77,7 @@ const isVeillePage = currentPath.startsWith('/veille');
                 <div class="nav-right">
                   <ul class="nav-links">
                     <li><a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a></li>
-                    <li><a href="/sensibilisation" class="nav-item" aria-current={currentPath === '/sensibilisation' ? 'page' : undefined}>Sensibilisation</a></li>
+                    <li><a href="/sensibilisation" class="nav-item" aria-current={currentPath.startsWith('/sensibilisation') ? 'page' : undefined}>Sensibilisation</a></li>
                     <li><a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a></li>
                     <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
                     <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
@@ -122,7 +122,7 @@ const isVeillePage = currentPath.startsWith('/veille');
                 hidden
               >
                 <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
-                <a href="/sensibilisation" class="mobile-item" aria-current={currentPath === '/sensibilisation' ? 'page' : undefined}>Sensibilisation</a>
+                <a href="/sensibilisation" class="mobile-item" aria-current={currentPath.startsWith('/sensibilisation') ? 'page' : undefined}>Sensibilisation</a>
                 <a href="/asso" class="mobile-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
                 <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
                 <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>

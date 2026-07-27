@@ -1,0 +1,66 @@
+---
+import GameIcon from './GameIcon.astro';
+import { facette, urlJeu, type Jeu } from '../lib/jeux';
+
+interface Props {
+  jeu: Jeu;
+  niveauTitre?: 'h2' | 'h3';
+}
+
+const { jeu, niveauTitre = 'h3' } = Astro.props;
+const { titre, resume, badge, publics, themes, duree, statut, sortiePrevue, icone, visuel } = jeu.data;
+const Titre = niveauTitre;
+const aVenir = statut === 'bientot';
+---
+
+<article
+  class:list={['game-card', `visuel-${visuel}`, { 'game-card-a-venir': aVenir }]}
+  role="listitem"
+  data-jeu
+  data-publics={facette(publics)}
+  data-themes={facette(themes)}
+>
+  <p class="game-preview" aria-hidden="true"><span>{titre}</span></p>
+
+  <div class="game-head">
+    <span class="game-icon" aria-hidden="true"><GameIcon nom={icone} /></span>
+    <p class="game-badge">{badge}</p>
+  </div>
+
+  <Titre class="game-title">{titre}</Titre>
+
+  <dl class="game-meta">
+    <div>
+      <dt>Public</dt>
+      <dd>{publics.join(', ')}</dd>
+    </div>
+    {
+      duree && (
+        <div>
+          <dt>Durée</dt>
+          <dd>{duree}</dd>
+        </div>
+      )
+    }
+    <div>
+      <dt>Accès</dt>
+      <dd>{aVenir ? sortiePrevue ? `À venir · ${sortiePrevue}` : 'À venir' : 'Gratuit, sans inscription'}</dd>
+    </div>
+  </dl>
+
+  <p class="game-resume">{resume}</p>
+
+  <ul class="risk-tags" aria-label={`Thèmes de ${titre}`}>
+    {themes.map((theme) => <li>{theme}</li>)}
+  </ul>
+
+  {
+    aVenir ? (
+      <p class="game-soon">En préparation{sortiePrevue ? ` — ${sortiePrevue}` : ''}</p>
+    ) : (
+      <a href={urlJeu(jeu)} class="cta-button cta-secondary game-cta">
+        Découvrir {titre}
+      </a>
+    )
+  }
+</article>

@@ -1,5 +1,8 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import { getJeux, jeuxDisponibles, urlJeu } from '../lib/jeux';
+
+const jeux = jeuxDisponibles(await getJeux());
 ---
 
 <SiteLayout
@@ -15,10 +18,20 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     <ul>
       <li><a href="/">Accueil</a></li>
       <li><a href="/projets">Projets</a></li>
+      <li><a href="/sensibilisation">Sensibilisation</a></li>
       <li><a href="/asso">L’association</a></li>
       <li><a href="/adhesion">Rejoindre</a></li>
       <li><a href="/contact">Contact</a></li>
       <li><a href="/blog">Blog</a></li>
+    </ul>
+  </section>
+
+  <section class="prose-block">
+    <h2>Sensibilisation</h2>
+    <ul>
+      <li><a href="/sensibilisation">Ressources de sensibilisation</a></li>
+      <li><a href="/sensibilisation/jeux">Catalogue des jeux</a></li>
+      {jeux.map((jeu) => <li><a href={urlJeu(jeu)}>{jeu.data.titre}</a></li>)}
     </ul>
   </section>
 

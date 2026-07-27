@@ -1,8 +1,10 @@
 import { getCollection } from 'astro:content';
 import { siteSettings } from '../config/site';
+import { getJeux, jeuxDisponibles, urlJeu } from '../lib/jeux';
 
 export async function GET() {
   const posts = await getCollection('blog');
+  const jeux = jeuxDisponibles(await getJeux());
 
   const staticPaths = [
     '/',
@@ -11,6 +13,8 @@ export async function GET() {
     '/adhesion/',
     '/contact/',
     '/blog/',
+    '/sensibilisation/',
+    '/sensibilisation/jeux/',
     '/veille/',
     '/veille/arnaques/',
     '/veille/failles/',
@@ -27,6 +31,7 @@ export async function GET() {
   const urls = [
     ...staticPaths.map((path) => new URL(path, siteSettings.siteUrl).toString()),
     ...posts.map((post) => new URL(`/blog/${post.id}/`, siteSettings.siteUrl).toString()),
+    ...jeux.map((jeu) => new URL(urlJeu(jeu), siteSettings.siteUrl).toString()),
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>

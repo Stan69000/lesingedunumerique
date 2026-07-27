@@ -1,16 +1,26 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import GameCard from '../components/GameCard.astro';
+import { getJeux, jeuxALaUne, jeuxDisponibles, themesCouverts } from '../lib/jeux';
+import { siteSettings } from '../config/site';
+import '../styles/jeux.css';
+
+const jeux = await getJeux();
+const disponibles = jeuxDisponibles(jeux);
+const misEnAvant = jeuxALaUne(jeux, 3);
+const themes = themesCouverts(jeux);
+const autresJeux = jeux.length - misEnAvant.length;
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://lesingedunumerique.fr/' },
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${siteSettings.siteUrl}/` },
     {
       '@type': 'ListItem',
       position: 2,
       name: 'Sensibilisation au numérique',
-      item: 'https://lesingedunumerique.fr/sensibilisation/',
+      item: `${siteSettings.siteUrl}/sensibilisation/`,
     },
   ],
 };
@@ -22,363 +32,147 @@ const breadcrumbSchema = {
   eyebrow="Sensibilisation"
   headline="Ressources"
   accent="de sensibilisation"
-  intro="Un espace dédié à la sensibilisation au numérique: contenus courts, jeux pédagogiques et bons réflexes de cybersécurité pour tous les âges."
+  intro="Des supports courts et concrets pour parler numérique et cybersécurité en famille, en atelier ou en classe."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
-  <section class="sensibilisation-hub" aria-labelledby="sensibilisation-hub-title">
-    <div class="hub-intro-card reveal reveal-0">
-      <p class="hub-kicker">Nouveaux contenus en ligne</p>
-      <h2 id="sensibilisation-hub-title">Bibliothèque de jeux pédagogiques</h2>
+  <div class="hub">
+    <section class="hub-card reveal reveal-0" aria-labelledby="demarche-titre">
+      <p class="hub-kicker">Notre démarche</p>
+      <h2 id="demarche-titre">Sensibiliser sans faire peur, ni minimiser</h2>
       <p>
-        Plusieurs jeux sont déjà disponibles pour sensibiliser aux arnaques, à la protection des données,
-        aux réseaux sociaux et aux réflexes cyber du quotidien.
+        Nous produisons des ressources gratuites qui partent de situations réelles: un SMS d'arnaque, un
+        inconnu trop sympathique, une vidéo truquée qui circule. L'objectif n'est pas de tout interdire, mais
+        de créer un moment de discussion et d'installer des réflexes qui tiennent dans la durée.
       </p>
-      <p>
-        Chaque ressource est conçue pour être utilisée en famille, en atelier, en association ou en classe,
-        avec des scénarios concrets et accessibles.
-      </p>
-      <div class="hub-stats" aria-label="Aperçu des contenus disponibles">
-        <p><strong>2</strong> jeux disponibles</p>
-        <p><strong>8+</strong> thèmes cyber abordés</p>
-        <p><strong>100%</strong> gratuit</p>
+      <ul class="hub-stats">
+        <li><strong>{disponibles.length}</strong> {disponibles.length > 1 ? 'jeux jouables' : 'jeu jouable'} en ligne</li>
+        <li><strong>{themes.length}</strong> thèmes cyber abordés</li>
+        <li><strong>100%</strong> gratuit et sans inscription</li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="jeux-titre">
+      <div class="section-head">
+        <div>
+          <p class="hub-kicker">Nos jeux pédagogiques</p>
+          <h2 id="jeux-titre">Apprendre en jouant</h2>
+        </div>
+        <a href="/sensibilisation/jeux" class="cta-button">
+          Voir le catalogue{autresJeux > 0 ? ` (${jeux.length} jeux)` : ''}
+        </a>
       </div>
-      <p class="anchor-row">
-        <a href="#jouer-maintenant" class="cta-button cta-primary">Jouer maintenant</a>
+
+      <p class="section-intro">
+        Chaque jeu se joue dans le navigateur, sans compte et sans collecte de données. Voici les plus
+        utilisés en ce moment.
       </p>
-    </div>
 
-    <div id="jouer-maintenant" class="games-grid" role="list" aria-label="Jeux de sensibilisation disponibles">
-      <article class="game-card reveal reveal-1" role="listitem">
-        <div class="game-preview preview-pixel" aria-hidden="true">
-          <span>PIXEL SAFE</span>
-        </div>
-        <div class="game-head">
-          <span class="game-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M8 5h8v2H8zM6 9h12l1 8H5l1-8Zm4 3v3m4-3v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <p class="game-badge">6 à 18 ans</p>
-        </div>
-        <h3>PIXEL SAFE</h3>
-        <p>
-          Parcours éducatif pour discuter phishing, cyberharcèlement, réputation numérique et bons réflexes
-          en ligne avec les plus jeunes.
-        </p>
-        <ul class="risk-tags" aria-label="Thèmes de PIXEL SAFE">
-          <li>Phishing</li>
-          <li>Cyberharcelement</li>
-          <li>Reseaux sociaux</li>
-          <li>Données perso</li>
-        </ul>
-        <a href="/sensibilisation/jeux/pixel-safe" class="cta-button cta-secondary">Jouer à PIXEL SAFE</a>
-      </article>
+      <div class="games-grid" role="list" aria-label="Jeux mis en avant">
+        {misEnAvant.map((jeu) => <GameCard jeu={jeu} niveauTitre="h3" />)}
+      </div>
 
-      <article class="game-card reveal reveal-2" role="listitem">
-        <div class="game-preview preview-sentinel" aria-hidden="true">
-          <span>SENTINEL</span>
-        </div>
-        <div class="game-head">
-          <span class="game-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3 5 6v6c0 4.5 2.9 7.9 7 9 4.1-1.1 7-4.5 7-9V6l-7-3Zm0 5v4m0 3h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </span>
-          <p class="game-badge">Ado et adultes</p>
-        </div>
-        <h3>SENTINEL</h3>
-        <p>
-          Simulation immersive avec mini-défis pour entraîner les réflexes cyber: phishing, mots de passe,
-          deepfakes et sécurité reseau.
-        </p>
-        <ul class="risk-tags" aria-label="Thèmes de SENTINEL">
-          <li>Mails suspects</li>
-          <li>Mots de passe</li>
-          <li>Deepfakes</li>
-          <li>Réflexes SOC</li>
-        </ul>
-        <a href="/sensibilisation/jeux/sentinel" class="cta-button cta-secondary">Jouer à SENTINEL</a>
-      </article>
-    </div>
+      {
+        autresJeux > 0 && (
+          <p class="section-more">
+            <a href="/sensibilisation/jeux">
+              {autresJeux > 1 ? `Voir les ${autresJeux} autres jeux` : "Voir l'autre jeu"} et filtrer par public
+              ou par thème
+            </a>
+          </p>
+        )
+      }
+    </section>
 
-    <div class="hub-bottom-grid">
-      <article class="hub-panel reveal reveal-1">
-        <h3>Pour qui ?</h3>
+    <div class="hub-bottom">
+      <section class="game-panel reveal reveal-2" aria-labelledby="pour-qui-titre">
+        <h2 id="pour-qui-titre">Pour qui ?</h2>
+        <p><strong>Tout le monde.</strong> Aucune base technique n'est nécessaire.</p>
         <ul>
           <li>Familles et parents qui veulent lancer la discussion.</li>
           <li>Associations et médiateurs numériques en intervention terrain.</li>
           <li>Structures éducatives cherchant des supports pratiques.</li>
+          <li>Et n'importe qui d'autre, curieux comme déjà à l'aise.</li>
         </ul>
-      </article>
+      </section>
 
-      <article class="hub-panel reveal reveal-2">
-        <h3>Comment utiliser ces ressources ?</h3>
-        <p>
-          Lancez un jeu, débriefez les situations rencontrées, puis adaptez les conseils à votre contexte.
-          C'est un format simple pour transformer la prévention en réflexes durables.
-        </p>
-      </article>
+      <section class="game-panel reveal reveal-3" aria-labelledby="comment-titre">
+        <h2 id="comment-titre">Comment utiliser ces ressources ?</h2>
+        <ol>
+          <li>Lancez un jeu adapté à l'âge du public.</li>
+          <li>Débriefez les situations rencontrées, sans corriger trop vite.</li>
+          <li>Adaptez les conseils au contexte réel des participants.</li>
+        </ol>
+      </section>
     </div>
 
-    <ul class="cta-row reveal reveal-3">
-      <li><a href="/sensibilisation/jeux" class="cta-button cta-primary">Voir tous les jeux</a></li>
-      <li><a href="/contact" class="cta-button cta-secondary">Nous partager un besoin</a></li>
-    </ul>
-  </section>
+    <section class="hub-card reveal reveal-3" aria-labelledby="suite-titre">
+      <h2 id="suite-titre">Et la suite ?</h2>
+      <p>
+        D'autres jeux et formats sont en préparation. Vous animez des ateliers et un sujet vous manque ?
+        Dites-le nous, nos prochaines ressources sont construites à partir des besoins remontés du terrain.
+      </p>
+      <ul class="cta-row">
+        <li><a href="/sensibilisation/jeux" class="cta-button">Voir tous les jeux</a></li>
+        <li><a href="/contact" class="cta-button cta-secondary">Nous partager un besoin</a></li>
+      </ul>
+    </section>
+  </div>
 </SiteLayout>
 
 <style>
-  :global(.sensibilisation-hub) {
-    display: grid;
-    gap: 22px;
-  }
-
-  :global(.sensibilisation-hub h2),
-  :global(.sensibilisation-hub h3) {
-    margin: 0;
-  }
-
-  :global(.hub-intro-card),
-  :global(.hub-panel),
-  :global(.game-card) {
-    position: relative;
-    background: linear-gradient(160deg, rgba(18, 30, 60, 0.9), rgba(10, 18, 40, 0.94));
-    border: 1px solid rgba(144, 177, 222, 0.24);
-    border-radius: 20px;
-    padding: clamp(1rem, 2.2vw, 1.55rem);
-    overflow: hidden;
-  }
-
-  :global(.hub-intro-card::before),
-  :global(.game-card::before) {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(120deg, rgba(95, 232, 255, 0.08), transparent 46%);
-    pointer-events: none;
-  }
-
-  :global(.hub-intro-card::after),
-  :global(.game-card::after) {
-    content: '';
-    position: absolute;
-    inset: auto -80px -100px auto;
-    width: 180px;
-    aspect-ratio: 1;
-    background: radial-gradient(circle, rgba(71, 255, 228, 0.2), transparent 70%);
-    pointer-events: none;
-  }
-
-  :global(.hub-kicker) {
-    margin: 0 0 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 700;
-    font-size: 0.82rem;
-    color: rgba(86, 226, 241, 0.96);
-  }
-
-  :global(.hub-stats) {
-    margin-top: 14px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 10px;
-  }
-
-  :global(.hub-stats p) {
-    margin: 0;
-    padding: 8px 10px;
-    border: 1px solid rgba(130, 167, 214, 0.3);
-    border-radius: 12px;
-    background: rgba(10, 24, 47, 0.5);
-    font-size: 0.95rem;
-  }
-
-  :global(.hub-stats strong) {
-    color: rgba(135, 255, 236, 0.95);
-  }
-
-  :global(.anchor-row) {
-    margin: 14px 0 0;
-  }
-
-  :global(.anchor-row .cta-button) {
-    min-width: 220px;
-  }
-
-  :global(.games-grid) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 14px;
-    scroll-margin-top: 120px;
-  }
-
-  :global(.game-card) {
-    display: grid;
-    gap: 12px;
-    transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
-  }
-
-  :global(.game-card:hover) {
-    transform: translateY(-4px);
-    border-color: rgba(86, 226, 241, 0.55);
-    box-shadow: 0 14px 34px rgba(2, 7, 20, 0.35);
-  }
-
-  :global(.game-preview) {
-    min-height: 78px;
-    border: 1px solid rgba(134, 171, 219, 0.34);
-    border-radius: 13px;
-    display: flex;
-    align-items: end;
-    padding: 10px;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: rgba(226, 245, 255, 0.95);
-  }
-
-  :global(.preview-pixel) {
-    background:
-      linear-gradient(135deg, rgba(59, 198, 173, 0.28), rgba(30, 100, 169, 0.2)),
-      repeating-linear-gradient(90deg, rgba(130, 240, 220, 0.14) 0 8px, rgba(18, 34, 63, 0.08) 8px 16px);
-  }
-
-  :global(.preview-sentinel) {
-    background:
-      linear-gradient(135deg, rgba(110, 199, 255, 0.24), rgba(95, 122, 255, 0.16)),
-      radial-gradient(circle at 80% 30%, rgba(150, 235, 255, 0.2), transparent 45%);
-  }
-
-  :global(.game-head) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  :global(.game-icon) {
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid rgba(86, 226, 241, 0.35);
-    background: rgba(36, 91, 136, 0.24);
-    color: rgba(187, 245, 253, 0.95);
-  }
-
-  :global(.game-icon svg) {
-    width: 21px;
-    height: 21px;
-  }
-
-  :global(.game-badge) {
-    margin: 0;
-    justify-self: start;
-    border: 1px solid rgba(86, 226, 241, 0.35);
-    border-radius: 999px;
-    padding: 4px 10px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: rgba(187, 245, 253, 0.95);
-    background: rgba(36, 91, 136, 0.28);
-  }
-
-  :global(.risk-tags) {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .section-head {
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
-  }
-
-  :global(.risk-tags li) {
-    border-radius: 999px;
-    border: 1px solid rgba(119, 145, 184, 0.45);
-    background: rgba(13, 29, 56, 0.66);
-    color: rgba(212, 226, 245, 0.94);
-    font-size: 0.76rem;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    padding: 4px 9px;
-  }
-
-  :global(.hub-bottom-grid) {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 14px;
-  }
-
-  :global(.hub-panel ul) {
-    margin: 10px 0 0;
-    padding-left: 18px;
-  }
-
-  :global(.hub-panel li + li) {
-    margin-top: 6px;
-  }
-
-  :global(.sensibilisation-hub .cta-row) {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  :global(.sensibilisation-hub .cta-row li) {
-    display: flex;
-  }
-
-  :global(.sensibilisation-hub .cta-row .cta-button) {
-    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-height: 58px;
-    width: 100%;
-    text-align: center;
-    text-decoration: none !important;
-    line-height: 1.2;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 8px;
   }
 
-  :global(.reveal) {
-    opacity: 0;
-    transform: translateY(8px);
-    animation: hubReveal 0.62s ease forwards;
+  .section-head h2 {
+    margin: 0;
   }
 
-  :global(.reveal-0) { animation-delay: 0.03s; }
-  :global(.reveal-1) { animation-delay: 0.08s; }
-  :global(.reveal-2) { animation-delay: 0.14s; }
-  :global(.reveal-3) { animation-delay: 0.2s; }
-
-  @keyframes hubReveal {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .section-intro {
+    margin: 0 0 18px;
+    color: var(--text-muted);
+    max-width: 68ch;
   }
 
-  @medià (prefers-reduced-motion: reduce) {
-    :global(.reveal) {
-      opacity: 1;
-      transform: none;
-      animation: none;
-    }
+  .section-more {
+    margin: 16px 0 0;
   }
 
-  @medià (max-width: 640px) {
-    :global(.hub-intro-card),
-    :global(.hub-panel),
-    :global(.game-card) {
-      border-radius: 16px;
-    }
+  .section-more a {
+    color: var(--brand-blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
 
-    :global(.anchor-row .cta-button) {
-      width: 100%;
-      min-width: 0;
-    }
+  .section-more a:hover {
+    color: var(--text-main);
+  }
+
+  .hub-bottom {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+
+  .hub-bottom ol,
+  .hub-bottom ul {
+    margin: 12px 0 0;
+    padding-left: 20px;
+    color: var(--text-muted);
+    line-height: 1.75;
+  }
+
+  .hub-bottom li + li {
+    margin-top: 8px;
+  }
+
+  :global(.hub .cta-row) {
+    margin-top: 18px;
   }
 </style>

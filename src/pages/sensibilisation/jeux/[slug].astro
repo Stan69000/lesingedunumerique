@@ -1,0 +1,115 @@
+---
+import { render } from 'astro:content';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import GameIcon from '../../../components/GameIcon.astro';
+import { getJeux, jeuxDisponibles, urlJeu, type Jeu } from '../../../lib/jeux';
+import { siteSettings } from '../../../config/site';
+import '../../../styles/jeux.css';
+
+export async function getStaticPaths() {
+  const jeux = await getJeux();
+  return jeuxDisponibles(jeux).map((jeu) => ({
+    params: { slug: jeu.id },
+    props: { jeu },
+  }));
+}
+
+interface Props {
+  jeu: Jeu;
+}
+
+const { jeu } = Astro.props;
+const { titre, accroche, description, badge, themes, duree, fichier, icone, visuel } = jeu.data;
+const { Content } = await render(jeu);
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${siteSettings.siteUrl}/` },
+    { '@type': 'ListItem', position: 2, name: 'Sensibilisation', item: `${siteSettings.siteUrl}/sensibilisation/` },
+    { '@type': 'ListItem', position: 3, name: 'Jeux de sensibilisation', item: `${siteSettings.siteUrl}/sensibilisation/jeux/` },
+    { '@type': 'ListItem', position: 4, name: titre, item: `${siteSettings.siteUrl}${urlJeu(jeu)}` },
+  ],
+};
+---
+
+<SiteLayout
+  title={`${titre}: ${accroche} | Le Singe Du Numerique`}
+  description={description}
+  eyebrow="Sensibilisation"
+  headline={titre}
+  accent={accroche}
+  intro={jeu.data.resume}
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+
+  <div class={`game-host visuel-${visuel}`}>
+    <section class="hub-card reveal reveal-0" aria-labelledby="jeu-titre">
+      <div class="game-top-row">
+        <span class="game-icon" aria-hidden="true"><GameIcon nom={icone} /></span>
+        <a href="/sensibilisation/jeux" class="mini-link">Voir tous les jeux</a>
+      </div>
+
+      <h2 id="jeu-titre">Avant de commencer</h2>
+
+      <dl class="game-meta">
+        <div>
+          <dt>Public</dt>
+          <dd>{badge}</dd>
+        </div>
+        {
+          duree && (
+            <div>
+              <dt>Durée</dt>
+              <dd>{duree}</dd>
+            </div>
+          )
+        }
+        <div>
+          <dt>Accès</dt>
+          <dd>Gratuit, sans inscription, sans données collectées</dd>
+        </div>
+      </dl>
+
+      <ul class="risk-tags" aria-label={`Thèmes de ${titre}`}>
+        {themes.map((theme) => <li>{theme}</li>)}
+      </ul>
+
+      <div class="game-actions">
+        <a href="#jouer-maintenant" class="cta-button">Jouer maintenant</a>
+        <a href={fichier} class="cta-button cta-secondary" target="_blank" rel="noopener noreferrer">
+          Ouvrir en plein écran (nouvel onglet)
+        </a>
+      </div>
+    </section>
+
+    <div id="jouer-maintenant" class="frame-shell reveal reveal-1">
+      <iframe src={fichier} title={`Jeu ${titre}`} loading="lazy" class="game-frame" allow="fullscreen"></iframe>
+    </div>
+
+    <section class="game-panel reveal reveal-2" aria-labelledby="jeu-description">
+      <h2 id="jeu-description" class="sr-only">À propos de {titre}</h2>
+      <Content />
+      <p>
+        Vous animez un atelier de prévention numérique ? Retrouvez
+        <a href="/sensibilisation/jeux">tout le catalogue de jeux</a> ou
+        <a href="/contact">contactez-nous</a> pour une session sur mesure.
+      </p>
+    </section>
+  </div>
+</SiteLayout>
+
+<style>
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
