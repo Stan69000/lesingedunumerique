@@ -94,18 +94,20 @@
     {
       "slug": "quizia",
       "name": "Quiz IA",
-      "description": "",
-      "intro": "",
+      "description": "Sept situations concrètes d'usage de l'intelligence artificielle, aucun jugement : découvrez votre profil et repartez avec trois habitudes à changer dès maintenant.",
+      "intro": "Sept questions, six profils, cinq minutes : et vous, vous utilisez comment l'IA ?",
       "ageRange": "",
       "tags": [
         "ia",
-        "quiz"
+        "quiz",
+        "usages numériques",
+        "esprit crtitique"
       ],
-      "bodyMd": "",
+      "bodyMd": "**Sept questions. Six profils. Cinq minutes.**\n\n## Et vous, vous utilisez comment l'IA ?\n\nSept situations concrètes, tirées d'usages ordinaires : rédiger, résumer, chercher,\nvérifier, décider. Pas de bonne ou de mauvaise réponse — le quiz cherche à révéler des\nhabitudes, pas à corriger.\n\n## Un profil, puis des pistes\n\nÀ la fin, un profil parmi six, quelques révélations qui piquent gentiment, et trois choses\nconcrètes à faire dès maintenant pour utiliser ces outils avec un peu plus de recul.\n\n**5 minutes · Sans inscription · Sans données collectées**",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/quizia",
       "cover": "/jeux/covers/quizia.webp",
-      "seoTitle": "",
-      "seoDescription": ""
+      "seoTitle": "Quiz IA : quel utilisateur d'intelligence artificielle êtes-vous ? | Le Singe Du Numerique",
+      "seoDescription": "Quiz gratuit sur l'intelligence artificielle : sept situations concrètes, six profils d'utilisateurs et trois conseils pratiques pour mieux utiliser l'IA au quotidien."
     }
   ]
 }
