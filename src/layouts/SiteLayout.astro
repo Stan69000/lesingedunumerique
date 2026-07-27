@@ -12,6 +12,8 @@ interface Props {
   intro?: string;
   showShare?: boolean;
   shareTitle?: string;
+  /** Visuel de partage (chemin absolu du site), sinon le logo. */
+  image?: string;
 }
 
 const {
@@ -23,9 +25,11 @@ const {
   intro,
   showShare = true,
   shareTitle = accent ? `${headline} ${accent}` : headline,
+  image,
 } = Astro.props;
 const currentPath = Astro.url.pathname;
 const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
+const shareImage = new URL(image ?? '/logo.svg', siteSettings.siteUrl).toString();
 const isVeillePage = currentPath.startsWith('/veille');
 ---
 
@@ -44,11 +48,11 @@ const isVeillePage = currentPath.startsWith('/veille');
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:image" content={`${siteSettings.siteUrl}/logo.svg`} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={shareImage} />
+    <meta name="twitter:card" content={image ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={`${siteSettings.siteUrl}/logo.svg`} />
+    <meta name="twitter:image" content={shareImage} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -82,6 +86,7 @@ const isVeillePage = currentPath.startsWith('/veille');
                     <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
                     <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
                     <li><a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a></li>
+                    <li><a href="/bd" class="nav-item" aria-current={currentPath.startsWith('/bd') ? 'page' : undefined}>BD</a></li>
                     <li><a href="/veille" class="nav-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu</a></li>
                   </ul>
                   <a href="/flux" class="rss-nav-link" aria-current={currentPath === '/flux' ? 'page' : undefined} aria-label="Acceder aux flux RSS">
@@ -127,6 +132,7 @@ const isVeillePage = currentPath.startsWith('/veille');
                 <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
                 <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
                 <a href="/blog" class="mobile-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
+                <a href="/bd" class="mobile-item" aria-current={currentPath.startsWith('/bd') ? 'page' : undefined}>BD</a>
                 <a href="/veille" class="mobile-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu</a>
                 <a href="/flux" class="mobile-item" aria-current={currentPath === '/flux' ? 'page' : undefined}>Flux RSS</a>
                 <div class="mobile-theme-toggle">
@@ -183,6 +189,7 @@ const isVeillePage = currentPath.startsWith('/veille');
                     <li><a href="/adhesion">Rejoindre</a></li>
                     <li><a href="/contact">Contact</a></li>
                     <li><a href="/blog">Blog</a></li>
+                    <li><a href="/bd">BD</a></li>
                     <li><a href="/veille">Actu</a></li>
                     <li><a href="/flux">Flux RSS</a></li>
                     <li><a href="/plan-du-site">Plan du site</a></li>
