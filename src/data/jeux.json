@@ -43,14 +43,16 @@
       "slug": "l-enquete-de-la-classe",
       "name": "L'Enquête de la Classe",
       "description": "Un camarade reçoit des messages méchants. Tu mènes l'enquête. Tu prends des décisions. Qu'est-ce qui s'est passé ? Que peut-on faire ?",
-      "intro": "",
-      "ageRange": "",
-      "tags": [],
-      "bodyMd": "",
+      "intro": "Une mini-aventure pour comprendre le cyberharcèlement du point de vue de ceux qui le voient sans oser réagir.",
+      "ageRange": "Enfants et ados",
+      "tags": [
+        "cyberharcèlement"
+      ],
+      "bodyMd": "**Une mini-aventure à hauteur d'enfant, sur un sujet difficile.**\n\n## Comprendre le cyberharcèlement en se mettant à la place des témoins\n\nUn camarade reçoit des messages méchants. Le joueur mène l'enquête, interroge, recoupe,\net surtout décide : intervenir, en parler à un adulte, soutenir en privé, ne rien faire.\nChaque choix a des conséquences sur la suite de l'histoire.\n\n## Quatre personnages, quatre façons d'agir\n\n- **Léa**, amie de Théo, observatrice\n- **Lucas**, nouveau dans la classe\n- **Sofia**, déléguée de classe\n- **Kylian**, diplomate naturel\n\nLe jeu ne cherche pas le coupable pour le punir : il montre que la plupart des personnes\nprésentes voient quelque chose sans savoir quoi en faire, et que c'est justement là que\ntout se joue.\n\n## Une fiction, mais des situations réelles\n\nL'histoire est fictive, inspirée de situations réelles, et traite le sujet avec douceur.\nLe jeu rappelle que des adultes de confiance et des numéros d'aide existent.\n\n**Fiction éducative · Sans inscription · Aucune donnée collectée**",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/l-enquete-de-la-classe",
       "cover": "/jeux/covers/l-enquete-de-la-classe.webp",
-      "seoTitle": "",
-      "seoDescription": ""
+      "seoTitle": "L'Enquête de la Classe : jeu sur le cyberharcèlement pour les jeunes | Le Singe Du Numerique",
+      "seoDescription": "L'Enquête de la Classe est un jeu gratuit sur le cyberharcèlement : une fiction éducative où l'on mène l'enquête, on prend des décisions et on découvre comment aider un camarade."
     },
     {
       "slug": "mon-telephone-me-connait",
