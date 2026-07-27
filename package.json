@@ -10,9 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "csp:hash-jeux": "node scripts/update-games-csp.mjs",
-    "hooks:install": "git config core.hooksPath .githooks"
+    "astro": "astro"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
