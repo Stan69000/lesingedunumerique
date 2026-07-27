@@ -8,15 +8,15 @@
       "intro": "Jeu pédagogique de sensibilisation numérique pour apprendre les bons réflexes cyber en famille, sans inscription.",
       "ageRange": "6 à 18 ans",
       "tags": [
-        "Phishing",
-        "Cyberharcèlement",
-        "Réseaux sociaux",
-        "Deepfakes",
-        "Données perso"
+        "phishing",
+        "cyberharcèlement",
+        "réseaux sociaux",
+        "deepfakes",
+        "données perso"
       ],
       "bodyMd": "**Pour les 6-18 ans. À jouer en famille.**\n\n## Un jeu de sensibilisation numérique concret\n\nPIXEL SAFE est un jeu éducatif gratuit créé par Le Singe du Numérique pour aborder les dangers du numérique sans faire peur, sans minimiser non plus.\n\nChaque question part d'une situation réelle : un SMS de La Poste demandant 1,99 €, un inconnu trop sympa sur Discord, une vidéo virale d'un ministre qui n'a jamais existé. Le joueur et le parent débattent ensemble avant de répondre. La bonne réponse arrive après, avec l'explication, la source, le bon réflexe à retenir.\n\n## 3 niveaux adaptés\n\n- Primaire (6-10 ans) : localisation, inconnus, arnaques aux cadeaux, secrets dangereux\n- Collège (11-14 ans) : phishing, cyberharcèlement, réseaux sociaux, deepfakes\n- Lycée (15-18 ans) : RGPD, sextorsion, réputation numérique, droit pénal\n\n**Ce qu'on a voulu créer :** un vrai moment de discussion entre générations, où le parent apprend autant que l'enfant.\n\n**Jouer · Sans inscription · Sans publicité · Sans données collectées**\n",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/pixel-safe",
-      "cover": null,
+      "cover": "/jeux/covers/pixel-safe.webp",
       "seoTitle": "PIXEL SAFE: jeu de sensibilisation numérique pour enfants et ados | Le Singe Du Numerique",
       "seoDescription": "PIXEL SAFE est un jeu pédagogique gratuit de sensibilisation numérique pour les 6-18 ans: phishing, cyberharcèlement, réseaux sociaux, deepfakes, réputation et protection des données."
     },
@@ -27,15 +27,15 @@
       "intro": "Un jeu de cybersécurité en trois modes pour enquêter, décider et progresser comme un agent.",
       "ageRange": "Ado et adultes",
       "tags": [
-        "Mails suspects",
-        "Mots de passe",
-        "Deepfakes",
-        "Sécurité réseau",
-        "Gestion de crise"
+        "mails suspects",
+        "mots de passe",
+        "deepfakes",
+        "sécurité réseau",
+        "gestion de crise"
       ],
       "bodyMd": "**Devenez agent. Montez en grade. Défendez le numérique.**\n\n## Simulation cybersécurité pour s'entraîner\n\nSENTINEL est un jeu de simulation cybersécurité créé par Le Singe du Numérique. Vous incarnez un agent en formation au sein d'une agence fictive et vous progressez à travers trois modes complémentaires.\n\n**Mode Arcade** : quatre mini-jeux pour tester vos réflexes. Classifiez de vrais emails (légitimes ou phishing ?), construisez le mot de passe le plus solide possible, bloquez des attaques réseau en temps réel, débusquez les deepfakes parmi de vrais contenus.\n\n**Mode Terminal** : un vrai faux terminal de commandes. Analysez un poste compromis, remontez une fuite de données, gérez un ransomware en cours de propagation.\n\n**Mode Aventure** : des opérations scénarisées avec dialogues, choix et conséquences réelles. Chaque mauvaise décision coûte de la crédibilité.\n\nVotre progression est sauvegardée : XP, grades (de Recrue à Sentinel), badges, journal des opérations.\n\n**Jouer · Sans inscription · Sans publicité · Sans données collectées**\n",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/sentinel",
-      "cover": null,
+      "cover": "/jeux/covers/sentinel.webp",
       "seoTitle": "SENTINEL: jeu cybersécurité et simulation immersive | Le Singe Du Numerique",
       "seoDescription": "SENTINEL est un jeu de cybersécurité gratuit: enquêtes, terminal, scénarios et décisions sous pression pour apprendre les réflexes de défense numérique."
     },
@@ -48,7 +48,7 @@
       "tags": [],
       "bodyMd": "",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/l-enquete-de-la-classe",
-      "cover": null,
+      "cover": "/jeux/covers/l-enquete-de-la-classe.webp",
       "seoTitle": "",
       "seoDescription": ""
     },
@@ -61,7 +61,7 @@
       "tags": [],
       "bodyMd": "",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/mon-telephone-me-connait",
-      "cover": null,
+      "cover": "/jeux/covers/mon-telephone-me-connait.webp",
       "seoTitle": "",
       "seoDescription": ""
     },
@@ -74,7 +74,7 @@
       "tags": [],
       "bodyMd": "",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/signal",
-      "cover": null,
+      "cover": "/jeux/covers/signal.webp",
       "seoTitle": "",
       "seoDescription": ""
     },
@@ -90,7 +90,7 @@
       ],
       "bodyMd": "",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/quizia",
-      "cover": null,
+      "cover": "/jeux/covers/quizia.webp",
       "seoTitle": "",
       "seoDescription": ""
     }
