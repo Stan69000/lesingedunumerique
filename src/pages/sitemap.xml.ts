@@ -3,6 +3,7 @@ import { siteSettings } from '../config/site';
 
 export async function GET() {
   const posts = await getCollection('blog');
+  const planches = (await getCollection('bd')).filter((planche) => !planche.data.draft);
 
   const staticPaths = [
     '/',
@@ -11,6 +12,7 @@ export async function GET() {
     '/adhesion/',
     '/contact/',
     '/blog/',
+    '/bd/',
     '/veille/',
     '/veille/arnaques/',
     '/veille/failles/',
@@ -27,6 +29,7 @@ export async function GET() {
   const urls = [
     ...staticPaths.map((path) => new URL(path, siteSettings.siteUrl).toString()),
     ...posts.map((post) => new URL(`/blog/${post.id}/`, siteSettings.siteUrl).toString()),
+    ...planches.map((planche) => new URL(`/bd/${planche.id}/`, siteSettings.siteUrl).toString()),
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
