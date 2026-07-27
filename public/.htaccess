@@ -15,10 +15,12 @@ RewriteRule ^jeux/sentinel\.html$ /sensibilisation/jeux/sentinel/ [L,R=301]
 </IfModule>
 
 # Configuration du formulaire de contact pour O2Switch/PHP.
-# Décommente puis adapte ces lignes avant mise en production.
+# Ce fichier est écrasé à chaque déploiement : renseigner plutôt les valeurs dans
+# public/contact-config.local.php sur le serveur (voir contact-config.example.php).
 # SetEnv TURNSTILE_SECRET_KEY "votre-secret-turnstile"
 # SetEnv CONTACT_RECIPIENT_EMAIL "contact@votre-domaine.fr"
 # SetEnv CONTACT_FROM_EMAIL "no-reply@votre-domaine.fr"
+# SetEnv CONTACT_HEALTH_TOKEN "genere avec : openssl rand -hex 32"
 
 # Pour un mode maintenance côté Apache sur O2Switch, décommente les lignes ci-dessous.
 # RewriteEngine On
@@ -27,5 +29,3 @@ RewriteRule ^jeux/sentinel\.html$ /sensibilisation/jeux/sentinel/ [L,R=301]
 # RewriteCond %{REQUEST_URI} !^/favicon\.ico$
 # RewriteCond %{REQUEST_URI} !^/favicon\.svg$
 # RewriteRule ^.*$ /maintenance.html [R=302,L]
-# SetEnv CONTACT_HEALTH_TOKEN "genere avec : openssl rand -hex 32"
-# SetEnv CONTACT_HEALTH_TOKEN "genere avec : openssl rand -hex 32"
