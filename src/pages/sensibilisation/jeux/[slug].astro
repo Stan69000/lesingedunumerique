@@ -1,64 +1,60 @@
 ---
+import { marked } from 'marked';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
+import { jeux, jeuTitle, jeuDescription, type Jeu } from '../../../lib/jeux';
+import { siteSettings } from '../../../config/site';
+
+export function getStaticPaths() {
+  return jeux.map((jeu) => ({ params: { slug: jeu.slug }, props: { jeu } }));
+}
+
+interface Props {
+  jeu: Jeu;
+}
+
+const { jeu } = Astro.props;
+const pageUrl = new URL(`/sensibilisation/jeux/${jeu.slug}/`, siteSettings.siteUrl).toString();
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Accueil', item: 'https://lesingedunumerique.fr/' },
-    {
-      '@type': 'ListItem',
-      position: 2,
-      name: 'Sensibilisation',
-      item: 'https://lesingedunumerique.fr/sensibilisation/',
-    },
-    {
-      '@type': 'ListItem',
-      position: 3,
-      name: 'Jeux de sensibilisation',
-      item: 'https://lesingedunumerique.fr/sensibilisation/jeux/',
-    },
-    {
-      '@type': 'ListItem',
-      position: 4,
-      name: 'PIXEL SAFE',
-      item: 'https://lesingedunumerique.fr/sensibilisation/jeux/pixel-safe/',
-    },
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${siteSettings.siteUrl}/` },
+    { '@type': 'ListItem', position: 2, name: 'Sensibilisation', item: `${siteSettings.siteUrl}/sensibilisation/` },
+    { '@type': 'ListItem', position: 3, name: 'Jeux de sensibilisation', item: `${siteSettings.siteUrl}/sensibilisation/jeux/` },
+    { '@type': 'ListItem', position: 4, name: jeu.name, item: pageUrl },
   ],
 };
+
+const bodyHtml = jeu.bodyMd ? marked.parse(jeu.bodyMd) : '';
 ---
 
 <SiteLayout
-  title="PIXEL SAFE: jeu de sensibilisation numérique pour enfants et ados | Le Singe Du Numerique"
-  description="PIXEL SAFE est un jeu pédagogique gratuit de sensibilisation numérique pour les 6-18 ans: phishing, cyberharcèlement, réseaux sociaux, deepfakes, réputation et protection des données."
+  title={jeuTitle(jeu)}
+  description={jeuDescription(jeu)}
   eyebrow="Sensibilisation"
-  headline="PIXEL SAFE"
+  headline={jeu.name}
   accent="jeu interactif"
-  intro="Jeu pédagogique de sensibilisation numérique pour apprendre les bons réflexes cyber en famille, sans inscription."
+  intro={jeu.intro || jeu.description}
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
 
-  <section class="game-host" aria-labelledby="pixel-safe-title">
+  <section class="game-host" aria-labelledby="game-title">
     <article class="game-intro-card reveal reveal-0">
       <div class="game-top-row">
-        <p class="game-badge">6 à 18 ans</p>
+        {jeu.ageRange && <p class="game-badge">{jeu.ageRange}</p>}
         <a href="/sensibilisation/jeux" class="mini-link">Voir tous les jeux</a>
       </div>
-      <h2 id="pixel-safe-title">Jouer pour déclencher la discussion</h2>
-      <p>
-        PIXEL SAFE transforme des situations réelles en décisions simples à discuter en famille: phishing,
-        inconnus en ligne, réputation, réseaux sociaux et données personnelles.
-      </p>
-      <ul class="risk-tags" aria-label="Thèmes PIXEL SAFE">
-        <li>Phishing</li>
-        <li>Cyberharcelement</li>
-        <li>Reseaux sociaux</li>
-        <li>Deepfakes</li>
-        <li>Données perso</li>
-      </ul>
+      <h2 id="game-title">Jouer pour déclencher la discussion</h2>
+      {jeu.description && <p>{jeu.description}</p>}
+      {jeu.tags.length > 0 && (
+        <ul class="risk-tags" aria-label={`Thèmes de ${jeu.name}`}>
+          {jeu.tags.map((tag) => <li>{tag}</li>)}
+        </ul>
+      )}
       <div class="cta-row">
         <a href="#jouer-maintenant" class="cta-button cta-primary">Jouer maintenant</a>
-        <a href="/jeux/pixel-safe-v3_1.html" class="cta-button cta-secondary" target="_blank" rel="noopener noreferrer">
+        <a href={jeu.embedUrl} class="cta-button cta-secondary" target="_blank" rel="noopener noreferrer">
           Ouvrir en plein écran
         </a>
       </div>
@@ -66,43 +62,23 @@ const breadcrumbSchema = {
 
     <div id="jouer-maintenant" class="frame-shell reveal reveal-1">
       <iframe
-        src="/jeux/pixel-safe-v3_1.html"
-        title="Jeu PIXEL SAFE"
+        src={jeu.embedUrl}
+        title={`Jeu ${jeu.name}`}
         loading="lazy"
         class="game-frame"
-        allow="fullscréén"
+        allow="fullscreen"
       ></iframe>
     </div>
 
-    <article class="game-description reveal reveal-2">
-      <p><strong>Pour les 6-18 ans. A jouer en famille.</strong></p>
-      <h2>Un jeu de sensibilisation numérique concret</h2>
-      <p>
-        PIXEL SAFE est un jeu éducatif gratuit créé par Le Singe du Numerique pour aborder les dangers du
-        numérique sans faire peur, sans minimiser non plus.
-      </p>
-      <p>
-        Chaque question part d'une situation réelle: un SMS de Là Poste demandant 1,99 EUR, un inconnu trop
-        sympà sur Discord, une vidéo virale d'un ministre qui n'à jamais existé. Le joueur et le parent
-        débattent ensemble avant de répondre. Là bonne réponse arrive après, avec l'explication, la source, le
-        bon réflexe à retenir.
-      </p>
-      <h2>3 niveaux adaptés</h2>
-      <ul>
-        <li>Primaire (6-10 ans): localisation, inconnus, arnaques aux cadeaux, secrets dangereux</li>
-        <li>Collège (11-14 ans): phishing, cyberharcèlement, réseaux sociaux, deepfakes</li>
-        <li>Lycée (15-18 ans): RGPD, sextorsion, réputation numérique, droit pénal</li>
-      </ul>
-      <p>
-        <strong>Ce qu'on à voulu créér:</strong> un vrai moment de discussion entre générations, où le parent
-        apprend autant que l'enfant.
-      </p>
-      <p><strong>Jouer · Sans inscription · Sans publicité · Sans données collectées</strong></p>
-      <p>
-        Vous animez un atelier de prévention numérique ? Retrouvez aussi la page
-        <a href="/sensibilisation/jeux"> jeux de sensibilisation</a> pour accéder à toute la bibliothèque.
-      </p>
-    </article>
+    {bodyHtml && (
+      <article class="game-description reveal reveal-2">
+        <div set:html={bodyHtml} />
+        <p>
+          Vous animez un atelier de prévention numérique ? Retrouvez toute la
+          <a href="/sensibilisation/jeux"> bibliothèque de jeux de sensibilisation</a>.
+        </p>
+      </article>
+    )}
   </section>
 </SiteLayout>
 
@@ -160,6 +136,7 @@ const breadcrumbSchema = {
 
   :global(.mini-link) {
     font-size: 0.9rem;
+    margin-left: auto;
   }
 
   :global(.risk-tags) {
