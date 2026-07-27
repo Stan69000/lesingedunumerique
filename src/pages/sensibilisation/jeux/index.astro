@@ -1,8 +1,12 @@
 ---
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import GameCard from '../../../components/GameCard.astro';
-import { jeux } from '../../../lib/jeux';
+import { jeux, themesCouverts, filtreThemesPertinent } from '../../../lib/jeux';
 import { siteSettings } from '../../../config/site';
+import '../../../styles/jeux.css';
+
+const themes = themesCouverts();
+const avecFiltres = filtreThemesPertinent();
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -25,92 +29,161 @@ const itemListSchema = {
     name: jeu.name,
   })),
 };
-
-const themeCount = new Set(jeux.flatMap((jeu) => jeu.tags.map((tag) => tag.toLowerCase()))).size;
 ---
 
 <SiteLayout
   title="Jeux de sensibilisation numérique et cybersécurité | Le Singe Du Numerique"
-  description="Découvrez des jeux pédagogiques gratuits pour sensibiliser enfants, adolescents et adultes aux risques numériques: phishing, cyberharcèlement, réseaux sociaux et protection des données."
+  description="Le catalogue complet des jeux pédagogiques gratuits du Singe du Numérique: phishing, cyberharcèlement, réseaux sociaux, intelligence artificielle et protection des données."
   eyebrow="Sensibilisation"
-  headline="Nos jeux"
-  accent="pédagogiques"
-  intro="Jeux gratuits de sensibilisation au numérique et à la cybersécurité, utilisés en famille, en atelier et en milieu associatif."
+  headline="Catalogue"
+  accent="des jeux"
+  intro="Tous nos jeux de sensibilisation au numérique et à la cybersécurité, à jouer en famille, en atelier ou en classe."
 >
   <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
   <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
 
-  <section class="games-hub" aria-labelledby="games-hub-title">
-    <div class="hub-intro-card reveal reveal-0">
-      <p class="hub-kicker">Bibliothèque active</p>
-      <h2 id="games-hub-title">Jouer pour ancrer les bons réflexes</h2>
+  <div class="hub">
+    <section class="hub-card reveal reveal-0" aria-labelledby="catalogue-titre">
+      <p class="hub-kicker">Catalogue complet</p>
+      <h2 id="catalogue-titre">Trouver le jeu adapté à votre public</h2>
       <p>
-        Cette bibliothèque rassemble nos jeux de prévention numérique pour s'entraîner face aux arnaques,
-        au cyberharcèlement, à la désinformation et aux attaques en ligne.
+        Chaque jeu se joue directement dans le navigateur, sans inscription et sans collecte de données.
+        Les jeux sont classés du plus récemment mis en avant au plus ancien.
       </p>
-      <div class="hub-stats" aria-label="Aperçu des jeux disponibles">
-        <p><strong>{jeux.length}</strong> {jeux.length > 1 ? 'jeux disponibles' : 'jeu disponible'}</p>
-        <p><strong>{themeCount}</strong> {themeCount > 1 ? 'thèmes abordés' : 'thème abordé'}</p>
-        <p><strong>100%</strong> gratuit</p>
-      </div>
-      <p class="anchor-row">
-        <a href="#jouer-maintenant" class="cta-button cta-primary">Jouer maintenant</a>
-      </p>
-    </div>
+      <ul class="hub-stats">
+        <li><strong>{jeux.length}</strong> {jeux.length > 1 ? 'jeux disponibles' : 'jeu disponible'}</li>
+        <li><strong>{themes.length}</strong> {themes.length > 1 ? 'thèmes abordés' : 'thème abordé'}</li>
+        <li><strong>100%</strong> gratuit</li>
+      </ul>
+    </section>
+
+    {
+      avecFiltres && (
+        <section aria-labelledby="filtres-titre">
+          <h2 id="filtres-titre" class="sr-only">Filtrer les jeux</h2>
+
+          <div class="filters" id="filtres" hidden>
+            <fieldset class="filter-group" data-facette="themes">
+              <legend>Thème</legend>
+              {themes.map((theme) => (
+                <button type="button" class="filter-chip" aria-pressed="false" data-valeur={theme.toLowerCase()}>
+                  {theme}
+                </button>
+              ))}
+            </fieldset>
+
+            <div class="filters-footer">
+              <p class="filters-status" id="filtres-statut" role="status">
+                {jeux.length} {jeux.length > 1 ? 'jeux affichés' : 'jeu affiché'}
+              </p>
+              <button type="button" class="filter-chip" data-reinitialiser hidden>Tout afficher</button>
+            </div>
+          </div>
+        </section>
+      )
+    }
 
     <div id="jouer-maintenant" class="games-grid" role="list" aria-label="Liste des jeux">
       {jeux.map((jeu, index) => <GameCard jeu={jeu} index={index} />)}
     </div>
 
-    <div class="hub-bottom-grid">
-      <article class="hub-panel reveal reveal-1">
-        <h3>Pour qui sont ces jeux ?</h3>
-        <ul>
-          <li>Familles et adolescents.</li>
-          <li>Associations et médiateurs numériques.</li>
-          <li>Animateurs d'ateliers et structures éducatives.</li>
-        </ul>
-      </article>
+    {
+      avecFiltres && (
+        <p class="filters-empty" id="filtres-vide" hidden>
+          Aucun jeu ne correspond à cette sélection.
+          <button type="button" class="filter-chip" data-reinitialiser>Tout afficher</button>
+        </p>
+      )
+    }
 
-      <article class="hub-panel reveal reveal-2">
-        <h3>Besoin d'un atelier sur mesure ?</h3>
+    <div class="hub-bottom-grid">
+      <section class="hub-panel reveal reveal-2" aria-labelledby="pour-qui-titre">
+        <h2 id="pour-qui-titre">Pour qui sont ces jeux ?</h2>
+        <p><strong>Tout le monde.</strong> Aucune base technique n'est nécessaire pour jouer.</p>
+        <ul>
+          <li>Familles et adolescents, pour lancer la discussion à la maison.</li>
+          <li>Associations et médiateurs numériques, en intervention terrain.</li>
+          <li>Animateurs d'ateliers et structures éducatives.</li>
+          <li>Et n'importe qui d'autre, curieux comme déjà à l'aise.</li>
+        </ul>
+      </section>
+
+      <section class="hub-panel reveal reveal-3" aria-labelledby="atelier-titre">
+        <h2 id="atelier-titre">Besoin d'un atelier sur mesure ?</h2>
         <p>
           Contactez-nous pour organiser une session adaptée à votre public: niveau, contexte terrain et
           objectifs pédagogiques.
         </p>
         <p><a href="/contact">Nous contacter</a></p>
-      </article>
+      </section>
     </div>
-  </section>
+  </div>
 </SiteLayout>
 
 <style>
-  :global(.games-hub) { display: grid; gap: 22px; }
-  :global(.games-hub h2), :global(.games-hub h3) { margin: 0; }
-  :global(.hub-intro-card), :global(.hub-panel), :global(.game-card) {
-    position: relative; background: linear-gradient(160deg, rgba(18, 30, 60, 0.9), rgba(10, 18, 40, 0.94));
-    border: 1px solid rgba(144, 177, 222, 0.24); border-radius: 20px; padding: clamp(1rem, 2.2vw, 1.55rem); overflow: hidden;
-  }
-  :global(.hub-intro-card::before), :global(.game-card::before) { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgba(95, 232, 255, 0.08), transparent 46%); pointer-events: none; }
-  :global(.hub-intro-card::after), :global(.game-card::after) { content: ''; position: absolute; inset: auto -80px -100px auto; width: 180px; aspect-ratio: 1; background: radial-gradient(circle, rgba(71, 255, 228, 0.2), transparent 70%); pointer-events: none; }
-  :global(.hub-kicker) { margin: 0 0 8px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; font-size: 0.82rem; color: rgba(86, 226, 241, 0.96); }
-  :global(.hub-stats) { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
-  :global(.hub-stats p) { margin: 0; padding: 8px 10px; border: 1px solid rgba(130, 167, 214, 0.3); border-radius: 12px; background: rgba(10, 24, 47, 0.5); font-size: 0.95rem; }
-  :global(.hub-stats strong) { color: rgba(135, 255, 236, 0.95); }
-  :global(.anchor-row) { margin: 14px 0 0; }
-  :global(.anchor-row .cta-button) { min-width: 220px; }
-  :global(.games-grid) { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; scroll-margin-top: 120px; }
-  :global(.hub-bottom-grid) { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
-  :global(.hub-panel ul) { margin: 10px 0 0; padding-left: 18px; }
-  :global(.hub-panel li + li) { margin-top: 6px; }
-  :global(.reveal) { opacity: 0; transform: translateY(8px); animation: hubReveal 0.62s ease forwards; }
-  :global(.reveal-0) { animation-delay: 0.03s; }
-  :global(.reveal-1) { animation-delay: 0.08s; }
-  :global(.reveal-2) { animation-delay: 0.14s; }
-  @keyframes hubReveal { to { opacity: 1; transform: translateY(0); } }
-  @media (prefers-reduced-motion: reduce) { :global(.reveal) { opacity: 1; transform: none; animation: none; } }
-  @media (max-width: 640px) {
-    :global(.hub-intro-card), :global(.hub-panel), :global(.game-card) { border-radius: 16px; }
-    :global(.anchor-row .cta-button) { width: 100%; min-width: 0; }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
   }
 </style>
+
+<script>
+  const barre = document.getElementById('filtres');
+  const statut = document.getElementById('filtres-statut');
+  const messageVide = document.getElementById('filtres-vide');
+  const cartes = Array.from(document.querySelectorAll<HTMLElement>('[data-jeu]'));
+
+  if (barre && statut && cartes.length > 0) {
+    barre.hidden = false;
+
+    const chips = Array.from(barre.querySelectorAll<HTMLButtonElement>('[data-facette] .filter-chip'));
+    const boutonsReset = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-reinitialiser]'));
+
+    const selection = () =>
+      chips.filter((chip) => chip.getAttribute('aria-pressed') === 'true').map((chip) => chip.dataset.valeur ?? '');
+
+    const appliquer = () => {
+      const themes = selection();
+      let visibles = 0;
+
+      cartes.forEach((carte) => {
+        const contenu = (carte.dataset.themes ?? '').split('|').filter(Boolean);
+        const garde = themes.length === 0 || themes.some((theme) => contenu.includes(theme));
+        carte.hidden = !garde;
+        if (garde) visibles += 1;
+      });
+
+      statut.textContent = themes.length
+        ? `${visibles} ${visibles > 1 ? 'jeux affichés' : 'jeu affiché'} sur ${cartes.length}`
+        : `${cartes.length} ${cartes.length > 1 ? 'jeux affichés' : 'jeu affiché'}`;
+      if (messageVide) messageVide.hidden = visibles > 0;
+      boutonsReset.forEach((bouton) => {
+        if (!bouton.closest('#filtres-vide')) bouton.hidden = themes.length === 0;
+      });
+    };
+
+    chips.forEach((chip) => {
+      chip.addEventListener('click', () => {
+        chip.setAttribute('aria-pressed', chip.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+        appliquer();
+      });
+    });
+
+    boutonsReset.forEach((bouton) => {
+      bouton.addEventListener('click', () => {
+        chips.forEach((chip) => chip.setAttribute('aria-pressed', 'false'));
+        appliquer();
+        chips[0]?.focus();
+      });
+    });
+
+    appliquer();
+  }
+</script>
