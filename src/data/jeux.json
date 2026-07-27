@@ -57,15 +57,21 @@
     {
       "slug": "mon-telephone-me-connait",
       "name": "Mon téléphone me connait",
-      "description": "",
-      "intro": "",
-      "ageRange": "",
-      "tags": [],
-      "bodyMd": "",
+      "description": "Une série de questions sur vos habitudes numériques. À la fin, découvrez ce que votre téléphone sait probablement de vous — sans jugement, avec humour et des conseils concrets.",
+      "intro": "Trois minutes de questions, puis le portrait que vos applications dressent de vous sans vous le dire.",
+      "ageRange": "Ados et adultes",
+      "tags": [
+        "données perso",
+        "traçage",
+        "publicité ciblée",
+        "vie privée",
+        "cookies"
+      ],
+      "bodyMd": "**Trois minutes. Aucun jugement. Rien n'est envoyé.**\n\n## Ce que votre téléphone sait de vous\n\nPosition mise à jour en continu, cookies acceptés chez quarante-sept partenaires d'un\nseul clic, profil publicitaire enrichi à chaque visite : le jeu part de vos réponses sur\nvos propres habitudes pour reconstituer le portrait que les applications dressent de vous.\n\n## Sans culpabiliser\n\nLe but n'est pas de faire peur ni de dire qu'il faudrait tout désinstaller. C'est de\nrendre visible un mécanisme qui fonctionne justement parce qu'il est invisible — puis de\ndonner des réglages concrets à changer, si on le souhaite.\n\n**3 minutes · Pas de jugement · Rien n'est envoyé · Humour garanti**",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/mon-telephone-me-connait",
       "cover": "/jeux/covers/mon-telephone-me-connait.webp",
-      "seoTitle": "",
-      "seoDescription": ""
+      "seoTitle": "Mon téléphone me connaît : ce que vos applications savent de vous | Le Singe Du Numerique",
+      "seoDescription": "Jeu de révélation gratuit sur les données personnelles : répondez à quelques questions sur vos habitudes numériques et découvrez ce que votre téléphone sait de vous. Rien n'est envoyé."
     },
     {
       "slug": "signal",
