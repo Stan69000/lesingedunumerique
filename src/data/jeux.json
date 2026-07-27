@@ -76,15 +76,20 @@
     {
       "slug": "signal",
       "name": "Signal",
-      "description": "",
-      "intro": "",
-      "ageRange": "",
-      "tags": [],
-      "bodyMd": "",
+      "description": "Cinq jours pour apprendre à survivre au numérique : arnaques, désinformation et données personnelles, à travers trois personnages qui n'ont ni le même âge ni les mêmes réflexes.",
+      "intro": "Cinq jours, trois personnages, et les mêmes pièges numériques vécus depuis trois points de vue.",
+      "ageRange": "Ados et adultes",
+      "tags": [
+        "arnaques",
+        "désinformation",
+        "données perso",
+        "réflexes numériques"
+      ],
+      "bodyMd": "**Cinq jours pour apprendre à survivre au numérique.**\n\n## Trois personnages, trois angles morts\n\n- **Madeleine**, 68 ans, retraitée à Lyon. Premier smartphone. Méfiante, curieuse, pleine\n  de bon sens : ses réflexes humains sont souvent les bons, mais le numérique a ses\n  propres règles.\n- **Lucas**, 16 ans, lycéen à Villeurbanne. Ultra-connecté, rapide, influent. Sa confiance\n  en lui est exactement la faille que les arnaqueurs exploitent.\n- **Sophie**, 41 ans, assistante RH à Bron. Gère le numérique de toute la famille.\n  Efficace et pressée — donc portée à faire confiance aux interfaces bien faites.\n\n## Pourquoi trois profils\n\nParce que personne n'est à l'abri pour les mêmes raisons. Le jeune trop confiant, la\nretraitée qui découvre, l'adulte qui va trop vite : chacun tombe sur des pièges différents,\net le jeu le montre en faisant vivre les mêmes journées à des personnes qui ne voient pas\nles mêmes choses.\n\n**Sans inscription · Sans publicité · Sans données collectées**",
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/signal",
       "cover": "/jeux/covers/signal.webp",
-      "seoTitle": "",
-      "seoDescription": ""
+      "seoTitle": "SIGNAL : jeu sur les arnaques, la désinformation et les données | Le Singe Du Numerique",
+      "seoDescription": "SIGNAL est un jeu éducatif gratuit en cinq jours : arnaques, désinformation et données personnelles, vécues à travers trois personnages de 16 à 68 ans aux réflexes très différents."
     },
     {
       "slug": "quizia",
