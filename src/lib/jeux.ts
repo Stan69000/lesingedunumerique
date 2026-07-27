@@ -61,6 +61,28 @@ export function themesCouverts(): string[] {
 }
 
 /**
+ * Thèmes proposés au filtre : ceux portés par au moins deux jeux.
+ *
+ * Un thème unique à un jeu ne filtre rien, il masque les cinq autres. Les
+ * écarter garde une barre courte et lisible ; ces thèmes restent affichés sur
+ * la carte du jeu concerné.
+ */
+export function themesFiltrables(): string[] {
+  const compte = new Map<string, { label: string; jeux: number }>();
+  for (const jeu of jeux) {
+    for (const tag of new Set(jeu.tags.map((valeur) => valeur.toLowerCase()))) {
+      const entree = compte.get(tag);
+      if (entree) entree.jeux += 1;
+      else compte.set(tag, { label: jeu.tags.find((v) => v.toLowerCase() === tag) ?? tag, jeux: 1 });
+    }
+  }
+  return [...compte.values()]
+    .filter((entree) => entree.jeux >= 2)
+    .map((entree) => entree.label)
+    .sort((a, b) => a.localeCompare(b, 'fr'));
+}
+
+/**
  * Le filtre par thème n'est proposé que s'il aide vraiment.
  *
  * Les fiches du catalogue arrivent de la super-admin avec des tags souvent
@@ -70,7 +92,7 @@ export function themesCouverts(): string[] {
  */
 export function filtreThemesPertinent(): boolean {
   const jeuxTagues = jeux.filter((jeu) => jeu.tags.length > 0).length;
-  return jeuxTagues >= 4 && jeuxTagues >= jeux.length / 2 && themesCouverts().length >= 3;
+  return jeuxTagues >= 4 && jeuxTagues >= jeux.length / 2 && themesFiltrables().length >= 3;
 }
 
 /** Origines à autoriser en `frame-src` — utilisé par le contrôle CSP. */

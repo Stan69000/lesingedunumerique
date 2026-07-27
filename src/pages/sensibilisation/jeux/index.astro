@@ -1,11 +1,12 @@
 ---
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import GameCard from '../../../components/GameCard.astro';
-import { jeux, themesCouverts, filtreThemesPertinent } from '../../../lib/jeux';
+import { jeux, themesCouverts, themesFiltrables, filtreThemesPertinent } from '../../../lib/jeux';
 import { siteSettings } from '../../../config/site';
 import '../../../styles/jeux.css';
 
 const themes = themesCouverts();
+const themesDuFiltre = themesFiltrables();
 const avecFiltres = filtreThemesPertinent();
 
 const breadcrumbSchema = {
@@ -65,7 +66,7 @@ const itemListSchema = {
           <div class="filters" id="filtres" hidden>
             <fieldset class="filter-group" data-facette="themes">
               <legend>Thème</legend>
-              {themes.map((theme) => (
+              {themesDuFiltre.map((theme) => (
                 <button type="button" class="filter-chip" aria-pressed="false" data-valeur={theme.toLowerCase()}>
                   {theme}
                 </button>
