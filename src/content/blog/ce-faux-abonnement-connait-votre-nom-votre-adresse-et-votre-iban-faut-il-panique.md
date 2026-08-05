@@ -122,4 +122,4 @@ Votre banque pourra vous conseiller un changement d'IBAN si elle l'estime néces
 
 ## Gardez une longueur d'avance
 
-La meilleure protection reste le réflexe de vérifier calmement, sans céder à l'urgence. Une information exacte dans un message ne rend pas tout le message vrai. Pour repérer plus facilement ce type de piège à l'avenir, poursuivez avec notre article [« Comment bien sécuriser sa vie numérique »](/comment-bien-securiser-sa-vie-numerique) : vous y trouverez les bons réflexes à adopter au quotidien.
+La meilleure protection reste le réflexe de vérifier calmement, sans céder à l'urgence. Une information exacte dans un message ne rend pas tout le message vrai. Pour repérer plus facilement ce type de piège à l'avenir, poursuivez avec notre article [« Comment bien sécuriser sa vie numérique »](/comment-bien-securiser-sa-vie-numerique/) : vous y trouverez les bons réflexes à adopter au quotidien.
