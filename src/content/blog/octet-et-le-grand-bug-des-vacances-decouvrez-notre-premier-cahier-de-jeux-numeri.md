@@ -80,3 +80,17 @@ Parents, enfants, grands-parents ou amis peuvent jouer ensemble, comparer leurs 
 Parce que les bons réflexes numériques ne reposent pas sur la peur, mais sur trois habitudes accessibles à tous :
 
 observer, réfléchir et vérifier.
+
+## Télécharger et consulter le cahier de jeux
+
+Vous pouvez consulter « Octet et le Grand Bug des vacances » directement ci-dessous, ou télécharger le livret pour l’imprimer et jouer en famille.
+
+- [Télécharger le cahier de jeux « Octet et le Grand Bug des vacances » (PDF)](/docs/livret-de-jeux-octet-grand-bug-vacances.pdf)
+
+<div class="pdf-embed">
+  <iframe
+    src="/docs/livret-de-jeux-octet-grand-bug-vacances.pdf"
+    title="Cahier de jeux Octet et le Grand Bug des vacances"
+    loading="lazy"
+  ></iframe>
+</div>
