@@ -16,17 +16,6 @@ level: grandpublic
 readingTime: 3 min de lecture
 ---
 
-
-
-[Télécharger Octet   Tome 1   Le Cadeau Impossible (PDF, 69 Mo)](/docs/octet-tome-1-le-cadeau-impossible-c8b8dbc9-1786262347485.pdf)
-
-<div class="pdf-embed">
-  <iframe
-    src="/docs/octet-tome-1-le-cadeau-impossible-c8b8dbc9-1786262347485.pdf"
-    title="Octet   Tome 1   Le Cadeau Impossible"
-    loading="lazy"
-  ></iframe>
-</div>
 Après les BD et les contenus pédagogiques du Singe du Numérique, Octet passe à une nouvelle étape.
 
 Nous lançons aujourd’hui Les aventures d’Octet, une nouvelle collection de contes illustrés interactifs consacrés au numérique.
@@ -53,7 +42,11 @@ STOP. OBSERVE. VÉRIFIE.
 
 Au fil de l’aventure, les personnages construisent une méthode très simple :
 
-STOP — Pourquoi ai-je envie d’agir maintenant ?OBSERVE — Qu’est-ce qu’on me demande vraiment ?VÉRIFIE — Est-ce que je peux confirmer l’information autrement ?
+STOP — Pourquoi ai-je envie d’agir maintenant ?
+
+OBSERVE — Qu’est-ce qu’on me demande vraiment ?
+
+VÉRIFIE — Est-ce que je peux confirmer l’information autrement ?
 
 Puis seulement : je décide.
 
@@ -67,7 +60,9 @@ Le cadeau impossible n’est pas seulement une histoire à lire. C’est un cont
 
 À plusieurs moments, la lecture s’arrête et laisse la place à une question.
 
-Que remarquez-vous ?Qu’est-ce qui vous semble crédible ?Que feriez-vous à la place des personnages ?
+Que remarquez-vous ? 
+Qu’est-ce qui vous semble crédible ?
+Que feriez-vous à la place des personnages ?
 
 Il n’est d'ailleurs pas toujours question de trouver immédiatement « la bonne réponse ». L’idée est surtout de discuter, observer et raisonner ensemble.
 
@@ -100,3 +95,13 @@ Les aventures d’Octet — Tome 1 : Le cadeau impossible est la première édit
 Et finalement, Octet résume peut-être assez bien tout le livre :
 
 STOP. OBSERVE. VÉRIFIE. Puis décide.
+
+[Télécharger Octet   Tome 1   Le Cadeau Impossible (PDF, 69 Mo)](/docs/octet-tome-1-le-cadeau-impossible-c8b8dbc9-1786262347485.pdf)
+
+<div class="pdf-embed">
+  <iframe
+    src="/docs/octet-tome-1-le-cadeau-impossible-c8b8dbc9-1786262347485.pdf"
+    title="Octet   Tome 1   Le Cadeau Impossible"
+    loading="lazy"
+  ></iframe>
+</div>
