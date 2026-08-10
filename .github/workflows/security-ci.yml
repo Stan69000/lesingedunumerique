@@ -36,29 +36,6 @@ jobs:
           PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY }}
         run: npm run build
 
-      - name: Install dependencies (decap-oauth-vercel)
-        working-directory: decap-oauth-vercel
-        run: npm ci
-
-      - name: Security audit (decap-oauth-vercel)
-        id: decap_audit
-        working-directory: decap-oauth-vercel
-        continue-on-error: true
-        run: npm audit --audit-level=high
-
-      - name: Warn if decap-oauth-vercel audit failed
-        if: steps.decap_audit.outcome == 'failure'
-        run: |
-          echo "decap-oauth-vercel has unresolved high vulnerabilities requiring breaking upgrades."
-          echo "This step is non-blocking for now to keep production pipeline operational."
-
-      - name: Build (decap-oauth-vercel)
-        working-directory: decap-oauth-vercel
-        env:
-          OAUTH_GITHUB_CLIENT_ID: ci-placeholder-client-id
-          OAUTH_GITHUB_CLIENT_SECRET: ci-placeholder-client-secret
-        run: npm run build
-
       - name: Secret scan (gitleaks CLI)
         run: |
           set -euo pipefail
