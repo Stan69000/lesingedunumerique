@@ -7,20 +7,24 @@ updates:
       day: monday
       time: "03:00"
       timezone: "Europe/Paris"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 3
+    groups:
+      github-actions:
+        patterns:
+          - "*"
     commit-message:
       prefix: "deps"
     labels:
       - "dependencies"
-      - "security"
 
   - package-ecosystem: npm
     directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
+      day: monday
       time: "03:00"
       timezone: "Europe/Paris"
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 5
     allow:
       - dependency-type: direct
       - dependency-type: indirect
@@ -28,4 +32,11 @@ updates:
       prefix: "deps"
     labels:
       - "dependencies"
-      - "security"
+    groups:
+      safe-updates:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
