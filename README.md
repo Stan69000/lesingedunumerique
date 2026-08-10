@@ -123,20 +123,12 @@ Depuis la racine du projet :
 
 ## Administration du contenu
 
-Une base d'administration `Decap CMS` est préparée pour le blog.
-
-En local :
-
-1. lancer le site avec `npm run dev`
-2. lancer le backend local avec `npx decap-server`
-3. ouvrir `/admin`
-
-En production :
+Le contenu du site est administré depuis la super-admin centralisée :
 
 - site public : `https://lesingedunumerique.fr`
-- administration : `https://lesingedunumerique-oauth.vercel.app/admin/`
+- administration : `https://admin.stan-bouchet.fr/dashboard`
 
-L'administration publique ne doit pas être servie depuis O2Switch.
+L'ancien accès Decap CMS et son service OAuth ne font plus partie de ce dépôt.
 
 ## Déploiement O2Switch
 
@@ -145,8 +137,8 @@ Le site public est déployé automatiquement depuis `main` via GitHub Actions.
 Les workflows :
 
 1. `Security CI` sur PR et `main` :
-   - `npm audit` (racine + `decap-oauth-vercel`)
-   - build Astro (racine + `decap-oauth-vercel`)
+   - `npm audit` des dépendances de production
+   - build Astro du site
    - scan de secrets (`gitleaks`)
 2. `Dependabot Auto Merge` :
    - auto-approve + auto-merge pour les mises à jour `patch`/`minor`
@@ -178,8 +170,6 @@ Valeur possible pour `O2SWITCH_HEALTHCHECK_URLS` :
 
 Note :
 
-- le workflow n'envoie pas `admin/` sur O2Switch
-- l'administration reste servie uniquement sur Vercel
 - au premier déploiement, s'il n'existe pas encore d'artefact sain, un rollback automatique n'est pas possible
 
 ## Bibliothèque de jeux
