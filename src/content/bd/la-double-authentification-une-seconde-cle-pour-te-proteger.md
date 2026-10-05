@@ -10,8 +10,7 @@ pubDate: '2026-08-10'
 saison: 1
 numero: 2
 horsSerie: false
-planche: >-
-  /bd/la-double-authentification-une-seconde-cle-pour-te-proteger-1785662721270.webp
+planche: /bd/la-double-authentification-une-seconde-cle-pour-te-proteger-1785662721270.webp
 plancheAlt: >-
   Planche pédagogique sur la double authentification. Octet explique qu’un mot
   de passe volé ne suffit plus lorsqu’une seconde vérification est activée. Il
