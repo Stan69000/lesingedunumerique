@@ -11,8 +11,7 @@ pubDate: '2026-09-21'
 saison: 1
 numero: 8
 horsSerie: false
-planche: >-
-  /bd/extensions-de-navigateur-pratiques-mais-pas-sans-risques-2-1785915680789.webp
+planche: /bd/extensions-de-navigateur-pratiques-mais-pas-sans-risques-2-1785915680789.webp
 plancheAlt: >-
   Planche pédagogique intitulée « S01E08 — Extensions de navigateur : pratiques,
   mais pas sans risques ». Octet présente d’abord les usages utiles des

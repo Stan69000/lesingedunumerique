@@ -11,8 +11,7 @@ pubDate: '2026-09-07'
 saison: 1
 numero: 6
 horsSerie: false
-planche: >-
-  /bd/extensions-de-navigateur-choisir-verifier-et-faire-le-menage-1785915489829.webp
+planche: /bd/extensions-de-navigateur-choisir-verifier-et-faire-le-menage-1785915489829.webp
 plancheAlt: >-
   Planche pédagogique intitulée « S01E06 — QR codes : avant de scanner, vérifie
   ». Octet, singe cartoon portant un sweat bleu marine marqué OCTET, explique

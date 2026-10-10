@@ -11,8 +11,7 @@ pubDate: '2026-08-24'
 saison: 1
 numero: 4
 horsSerie: false
-planche: >-
-  /bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage-1785863908371.webp
+planche: /bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage-1785863908371.webp
 plancheAlt: >-
   Planche pédagogique intitulée « S01E04 — Faux mail : regarde les détails avant
   d’agir ! ». Octet, un singe cartoon portant un sweat bleu marine, reçoit un
