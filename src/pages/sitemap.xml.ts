@@ -1,8 +1,10 @@
 import { getCollection } from 'astro:content';
 import { siteSettings } from '../config/site';
+import { getPublishedBriefs } from '../lib/briefs';
 
 export async function GET() {
   const posts = await getCollection('blog');
+  const briefs = (await getPublishedBriefs()).filter((brief) => !brief.data.demo);
   const planches = (await getCollection('bd')).filter((planche) => !planche.data.draft);
 
   const staticPaths = [
@@ -14,6 +16,7 @@ export async function GET() {
     '/blog/',
     '/bd/',
     '/veille/',
+    '/veille/briefs/',
     '/veille/arnaques/',
     '/veille/failles/',
     '/veille/actu-generaliste/',
@@ -30,6 +33,7 @@ export async function GET() {
     ...staticPaths.map((path) => new URL(path, siteSettings.siteUrl).toString()),
     ...posts.map((post) => new URL(`/blog/${post.id}/`, siteSettings.siteUrl).toString()),
     ...planches.map((planche) => new URL(`/bd/${planche.id}/`, siteSettings.siteUrl).toString()),
+    ...briefs.map((brief) => new URL(`/veille/briefs/${brief.id}/`, siteSettings.siteUrl).toString()),
   ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
