@@ -24,11 +24,11 @@ Et forcément, il fallait bien commencer quelque part.
 
 Voici donc le numéro 1 : Le cadeau impossible.
 
-Une histoire avant d’être une leçon
+## Une histoire avant d’être une leçon
 
 Maya, Nino, Sam et Octet jouent tranquillement lorsqu’une offre particulièrement tentante apparaît : un cadeau rare, gratuit… et disponible pendant encore quelques minutes seulement.
 
-Le site ressemble au vrai.D’autres joueurs semblent déjà avoir profité de l’offre.Le compteur descend.Et surtout, le cadeau est exactement celui qu’ils aimeraient obtenir.
+Le site ressemble au vrai. D’autres joueurs semblent déjà avoir profité de l’offre. Le compteur descend. Et surtout, le cadeau est exactement celui qu’ils aimeraient obtenir.
 
 Bref : tout est fait pour leur donner envie d’agir vite.
 
@@ -38,7 +38,7 @@ C’est là que quelque chose commence à clocher.
 
 L’objectif de l’histoire n’est pas simplement d’apprendre à reconnaître « un faux site ». Elle montre surtout comment nos émotions peuvent être utilisées pour nous faire agir avant d’avoir réfléchi : envie, urgence, peur de rater une occasion, impression que « tout le monde le fait »…
 
-STOP. OBSERVE. VÉRIFIE.
+## STOP. OBSERVE. VÉRIFIE.
 
 Au fil de l’aventure, les personnages construisent une méthode très simple :
 
@@ -52,7 +52,7 @@ Puis seulement : je décide.
 
 Trois mots faciles à retenir, mais surtout une habitude qui peut servir bien au-delà des arnaques : devant un message inquiétant, une offre exceptionnelle, une demande inhabituelle ou simplement quelque chose qui pousse à agir très vite.
 
-Et vous allez aussi participer à l’histoire
+## Et vous allez aussi participer à l’histoire
 
 C’est l’une des principales nouveautés de cette collection.
 
@@ -68,13 +68,13 @@ Il n’est d'ailleurs pas toujours question de trouver immédiatement « la bonn
 
 Le numérique devient alors un sujet de conversation plutôt qu'une succession de règles à apprendre par cœur.
 
-Pourquoi une nouvelle collection ?
+## Pourquoi une nouvelle collection ?
 
 Depuis le début, Le Singe du Numérique cherche à expliquer le numérique avec des mots simples, sans dramatiser et sans faire croire qu’il faudrait se méfier de tout.
 
 Avec Les aventures d’Octet, nous voulions pouvoir aller plus loin.
 
-Prendre le temps de raconter une véritable histoire.Faire vivre les situations aux personnages.Montrer leurs hésitations et leurs erreurs.Faire réfléchir le lecteur avant de lui apporter des explications.
+Prendre le temps de raconter une véritable histoire. Faire vivre les situations aux personnages. Montrer leurs hésitations et leurs erreurs. Faire réfléchir le lecteur avant de lui apporter des explications.
 
 Et surtout montrer une chose importante : faire une erreur n’empêche pas de reprendre le contrôle.
 
@@ -82,7 +82,7 @@ Dans Le cadeau impossible, les personnages commencent justement à tomber dans l
 
 C’est beaucoup plus proche de la vraie vie.
 
-Numéro 1… parce qu’il y en aura d’autres
+## Numéro 1… parce qu’il y en aura d’autres
 
 Ce premier tome marque donc le début d’une nouvelle aventure pour Octet.
 
@@ -95,13 +95,3 @@ Les aventures d’Octet — Tome 1 : Le cadeau impossible est la première édit
 Et finalement, Octet résume peut-être assez bien tout le livre :
 
 STOP. OBSERVE. VÉRIFIE. Puis décide.
-
-[Télécharger Octet   Tome 1   Le Cadeau Impossible (PDF, 69 Mo)](/docs/octet-tome-1-le-cadeau-impossible-c8b8dbc9-1786262347485.pdf)
-
-<div class="pdf-embed">
-  <iframe
-    src="/docs/octet-tome-1-le-cadeau-impossible-c8b8dbc9-1786262347485.pdf"
-    title="Octet   Tome 1   Le Cadeau Impossible"
-    loading="lazy"
-  ></iframe>
-</div>
