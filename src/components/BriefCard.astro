@@ -5,7 +5,7 @@ interface Props { brief: CollectionEntry<'briefs'>; }
 const { brief } = Astro.props;
 ---
 <article class="brief-card">
-  <p class="eyebrow">🐒 Le décryptage d’Octet · {brief.data.type === 'monthly' ? 'Mensuel' : 'Hebdomadaire'}</p>
+  <p class="eyebrow">🐒 Le décryptage d’Octet · {brief.data.type === 'monthly' ? 'Mensuel' : brief.data.type === 'weekly' ? 'Hebdomadaire' : 'Conseils pratiques'}</p>
   {brief.data.demo && <p class="demo">Démonstration · exemple pédagogique, pas un bilan d’actualité</p>}
   <h2><a href={`/veille/briefs/${brief.id}/`}>{brief.data.title}</a></h2>
   <p>{brief.data.description}</p>

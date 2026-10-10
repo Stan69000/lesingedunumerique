@@ -4,9 +4,9 @@ description: "Un appel inquiétant, un colis bloqué, un message qui vous presse
 pubDate: 2026-10-10
 periodStart: 2026-10-05
 periodEnd: 2026-10-11
-type: weekly
+type: evergreen
 draft: false
-demo: true
+demo: false
 scams:
   - id: faux-conseiller-bancaire
     name: "Le faux conseiller bancaire"

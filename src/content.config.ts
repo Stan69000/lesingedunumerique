@@ -46,7 +46,7 @@ const briefs = defineCollection({
     pubDate: z.coerce.date(),
     periodStart: z.coerce.date(),
     periodEnd: z.coerce.date(),
-    type: z.enum(['weekly', 'monthly']).default('weekly'),
+    type: z.enum(['weekly', 'monthly', 'evergreen']).default('weekly'),
     draft: z.boolean().default(true),
     demo: z.boolean().default(false),
     scams: z.array(z.object({ id: z.string().regex(/^[a-z0-9-]+$/), name: z.string().min(1) })).min(1),
