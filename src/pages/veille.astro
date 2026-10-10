@@ -1,7 +1,10 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import BriefCard from '../components/BriefCard.astro';
+import { getPublishedBriefs } from '../lib/briefs';
 import { getVeilleData } from '../lib/veille.js';
 
+const [latestBrief] = await getPublishedBriefs();
 const veille = await getVeilleData();
 const homeSectionKeys = new Set(['arnaques', 'failles']);
 const homeSections = veille.sections.filter((section) => homeSectionKeys.has(section.key));
@@ -186,6 +189,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
   showShare={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  {latestBrief && <BriefCard brief={latestBrief} />}
   <section class="veille-controls">
     <div class="controls-card">
       <div class="rss-links">
@@ -352,197 +356,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
   <script>
     const searchInput = document.getElementById('veille-search');
     const sourceSelect = document.getElementById('veille-source');
-    const tagSelect = document.getElementById('veille-tag');
-    const newOnlyInput = document.getElementById('veille-new');
-    const internationalInput = document.getElementById('veille-international');
-    const resetButton = document.getElementById('veille-reset');
-    const cards = Array.from(document.querySelectorAll('.veille-card'));
-    const sectionLimits = new Map();
-    const DEFAULT_VISIBLE_PER_SECTION = 6;
-
-    const SEVENTY_TWO_HOURS_MS = 72 * 60 * 60 * 1000;
-
-    Array.from(document.querySelectorAll('.veille-section')).forEach((section) => {
-      sectionLimits.set(section, DEFAULT_VISIBLE_PER_SECTION);
-    });
-
-    function applyFilters() {
-      const searchValue = (searchInput?.value || '').trim().toLowerCase();
-      const sourceValue = (sourceSelect?.value || '').trim().toLowerCase();
-      const tagValue = (tagSelect?.value || '').trim().toLowerCase();
-      const newOnly = Boolean(newOnlyInput?.checked);
-      const includeInternational = Boolean(internationalInput?.checked);
-      const now = Date.now();
-
-      const sections = Array.from(document.querySelectorAll('.veille-section'));
-
-      sections.forEach((section) => {
-        const cardsInSection = Array.from(section.querySelectorAll('.veille-card'));
-        const limit = sectionLimits.get(section) ?? DEFAULT_VISIBLE_PER_SECTION;
-        const sectionKey = section.getAttribute('data-section') || '';
-        const bypassGeoFilter = sectionKey === 'failles' || sectionKey === 'arnaques';
-        let matchingCount = 0;
-        let visibleCount = 0;
-
-        cardsInSection.forEach((card) => {
-        const searchable = card.getAttribute('data-search') || '';
-        const source = (card.getAttribute('data-source') || '').trim().toLowerCase();
-        const tags = (card.getAttribute('data-tags') || '')
-          .split(',')
-          .map((tag) => tag.trim().toLowerCase())
-          .filter(Boolean);
-        const publishedAt = new Date(card.getAttribute('data-published-at') || '').getTime();
-        const isRecent = Number.isFinite(publishedAt) ? now - publishedAt <= SEVENTY_TWO_HOURS_MS : false;
-        const isFrance = card.getAttribute('data-is-fr') === '1';
-
-        const matchesFilters =
-          (!searchValue || searchable.includes(searchValue)) &&
-          (!sourceValue || source === sourceValue) &&
-          (!tagValue || tags.includes(tagValue)) &&
-          (!newOnly || isRecent) &&
-          (bypassGeoFilter || includeInternational || isFrance);
-
-          if (matchesFilters) {
-            matchingCount += 1;
-          }
-
-          const visible = matchesFilters && matchingCount <= limit;
-          card.hidden = !visible;
-          if (visible) {
-            visibleCount += 1;
-          }
-        });
-
-        const countNode = section.querySelector('[data-visible-count]');
-        const totalNode = section.querySelector('[data-total-count]');
-        const moreButton = section.querySelector('[data-more-btn]');
-        const lessButton = section.querySelector('[data-less-btn]');
-
-        if (countNode) {
-          countNode.textContent = String(visibleCount);
-        }
-        if (totalNode) {
-          totalNode.textContent = String(matchingCount);
-        }
-        if (moreButton instanceof HTMLButtonElement) {
-          const canShowMore = matchingCount > visibleCount;
-          moreButton.hidden = !canShowMore;
-          moreButton.disabled = !canShowMore;
-        }
-        if (lessButton instanceof HTMLButtonElement) {
-          const canShowLess = limit > DEFAULT_VISIBLE_PER_SECTION && matchingCount > DEFAULT_VISIBLE_PER_SECTION;
-          lessButton.hidden = !canShowLess;
-          lessButton.disabled = !canShowLess;
-        }
-      });
-    }
-
-    searchInput?.addEventListener('input', applyFilters);
-    sourceSelect?.addEventListener('change', applyFilters);
-    tagSelect?.addEventListener('change', applyFilters);
-    newOnlyInput?.addEventListener('change', applyFilters);
-    internationalInput?.addEventListener('change', applyFilters);
-    resetButton?.addEventListener('click', () => {
-      if (searchInput) searchInput.value = '';
-      if (sourceSelect) sourceSelect.value = '';
-      if (tagSelect) tagSelect.value = '';
-      if (newOnlyInput) newOnlyInput.checked = false;
-      if (internationalInput) internationalInput.checked = false;
-      Array.from(document.querySelectorAll('.veille-section')).forEach((section) => {
-        sectionLimits.set(section, DEFAULT_VISIBLE_PER_SECTION);
-      });
-      applyFilters();
-    });
-
-    Array.from(document.querySelectorAll('[data-more-btn]')).forEach((button) => {
-      button.addEventListener('click', () => {
-        const section = button.closest('.veille-section');
-        if (!section) return;
-        const currentLimit = sectionLimits.get(section) ?? DEFAULT_VISIBLE_PER_SECTION;
-        const step = Number(button.getAttribute('data-step') || 6);
-        sectionLimits.set(section, currentLimit + step);
-        applyFilters();
-      });
-    });
-    Array.from(document.querySelectorAll('[data-less-btn]')).forEach((button) => {
-      button.addEventListener('click', () => {
-        const section = button.closest('.veille-section');
-        if (!section) return;
-        sectionLimits.set(section, DEFAULT_VISIBLE_PER_SECTION);
-        applyFilters();
-      });
-    });
-    applyFilters();
-
-    const backBtn = document.getElementById('back-to-top');
-    const syncBackToTopVisibility = () => {
-      if (!(backBtn instanceof HTMLButtonElement)) return;
-      const shouldShow = window.scrollY > 400;
-      backBtn.classList.toggle('visible', shouldShow);
-    };
-
-    syncBackToTopVisibility();
-    window.addEventListener('scroll', syncBackToTopVisibility);
-    backBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  </script>
-</SiteLayout>
-
-<style>
-  :global(.hero-section .hero-content) {
-    width: min(100%, 1320px);
-    text-align: left;
-  }
-
-  :global(.hero-section .hero-title) {
-    max-width: 100%;
-  }
-
-  :global(.hero-section .hero-desc) {
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    white-space: pre-line;
-    line-height: 1.65;
-  }
-
-  .veille-controls {
-    display: grid;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .controls-card {
-    border: 1px solid var(--border-color);
-    border-radius: 18px;
-    background: color-mix(in srgb, var(--bg-card) 85%, transparent);
-    padding: 0.85rem;
-    display: grid;
-    gap: 0.75rem;
-  }
-
-  .rss-links {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-
-  .rss-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 40px;
-    padding: 0.45rem 0.85rem;
-    border-radius: 999px;
-    background: var(--brand-orange);
-    color: #0b1120;
-    font-weight: 700;
-    font-size: 0.92rem;
-    text-decoration: none;
-  }
-
-  .rss-button-secondary {
-    background: transparent;
-    color: var(--text-main);
+    const tagSelect = document.getElementById('veille-ta…1760 tokens truncated…(--text-main);
     border: 1px solid var(--border-color);
   }
 

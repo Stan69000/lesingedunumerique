@@ -1,0 +1,34 @@
+---
+import { render } from 'astro:content';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import { getPublishedBriefs, formatBriefDate } from '../../../lib/briefs';
+export async function getStaticPaths() {
+  return (await getPublishedBriefs()).map((brief) => ({ params: { slug: brief.id }, props: { brief } }));
+}
+const { brief } = Astro.props;
+const { Content } = await render(brief);
+---
+<SiteLayout title={`${brief.data.title} | Le Singe du Numérique`} description={brief.data.description} eyebrow="Le décryptage d’Octet" headline={brief.data.title} intro={brief.data.description}>
+  <div class="brief-detail">
+    <nav aria-label="Navigation des décryptages"><a href="/veille">Veille</a> · <a href="/veille/briefs/">Tous les décryptages</a></nav>
+    {brief.data.demo ? <aside class="notice"><strong>Démonstration.</strong> Ce contenu illustre le format. Il ne décrit pas les arnaques observées pendant cette période.</aside> : <p>Du {formatBriefDate(brief.data.periodStart)} au {formatBriefDate(brief.data.periodEnd)}</p>}
+    <p class="meta">{brief.data.demo ? 'Exemple créé le' : 'Publié le'} <time datetime={brief.data.pubDate.toISOString()}>{formatBriefDate(brief.data.pubDate)}</time> · {brief.data.type === 'monthly' ? 'Mensuel' : 'Hebdomadaire'}</p>
+    <article class="brief-prose"><Content /></article>
+    <section class="sources" aria-labelledby="brief-sources">
+      <h2 id="brief-sources">Pour vérifier et aller plus loin</h2>
+      <ul>{brief.data.sources.map((source) => <li><a href={source.url}>{source.title}</a></li>)}</ul>
+    </section>
+    <p><a href="/veille/briefs/">← Tous les décryptages d’Octet</a></p>
+  </div>
+</SiteLayout>
+<style>
+  .brief-detail { max-width: 780px; margin-inline: auto; line-height: 1.8; overflow-wrap: anywhere; }
+  .notice, .sources { padding: 1rem 1.25rem; margin-block: 1.5rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-card); }
+  .notice { border-left: 4px solid var(--brand-orange); }
+  .meta { color: var(--text-muted); }
+  .brief-detail a { color: var(--brand-green); text-decoration: underline; text-underline-offset: 3px; }
+  .brief-prose :global(h2) { margin-top: 2.5rem; line-height: 1.35; }
+  .brief-prose :global(h3) { margin-top: 1.5rem; }
+  .brief-prose :global(blockquote) { margin: 1.5rem 0; padding: .5rem 1.25rem; border-left: 4px solid var(--brand-green); background: var(--bg-card); }
+  .brief-prose :global(li) { margin-bottom: .5rem; }
+</style>

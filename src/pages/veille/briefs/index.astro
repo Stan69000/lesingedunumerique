@@ -1,0 +1,10 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import BriefCard from '../../../components/BriefCard.astro';
+import { getPublishedBriefs } from '../../../lib/briefs';
+const briefs = await getPublishedBriefs();
+---
+<SiteLayout title="Les décryptages d’Octet | Le Singe du Numérique" description="Des arnaques expliquées simplement, avec les réflexes pour les reconnaître." eyebrow="Cyber veille" headline="Les décryptages" accent="d’Octet" intro="Comprendre le piège, reconnaître les signaux et prendre le temps de vérifier." showShare={false}>
+  <p><a href="/veille">← Retour à la veille</a></p>
+  {briefs.length ? briefs.map((brief) => <BriefCard brief={brief} />) : <p>Le premier décryptage arrive bientôt.</p>}
+</SiteLayout>

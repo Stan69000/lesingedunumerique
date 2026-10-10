@@ -38,4 +38,22 @@ const bd = defineCollection({
   }),
 });
 
-export const collections = { blog, bd };
+const briefs = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/briefs' }),
+  schema: z.object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    pubDate: z.coerce.date(),
+    periodStart: z.coerce.date(),
+    periodEnd: z.coerce.date(),
+    type: z.enum(['weekly', 'monthly']).default('weekly'),
+    draft: z.boolean().default(true),
+    demo: z.boolean().default(false),
+    scams: z.array(z.object({ id: z.string().regex(/^[a-z0-9-]+$/), name: z.string().min(1) })).min(1),
+    sources: z.array(z.object({ title: z.string().min(1), url: z.string().url().startsWith('https://') })).min(1),
+  }).refine((brief) => brief.periodStart <= brief.periodEnd, {
+    message: 'La fin de période doit suivre son début.', path: ['periodEnd'],
+  }),
+});
+
+export const collections = { blog, bd, briefs };
