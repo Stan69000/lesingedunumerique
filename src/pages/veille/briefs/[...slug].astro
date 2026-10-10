@@ -11,8 +11,8 @@ const { Content } = await render(brief);
 <SiteLayout title={`${brief.data.title} | Le Singe du Numérique`} description={brief.data.description} eyebrow="Le décryptage d’Octet" headline={brief.data.title} intro={brief.data.description}>
   <div class="brief-detail">
     <nav aria-label="Navigation des décryptages"><a href="/veille">Veille</a> · <a href="/veille/briefs/">Tous les décryptages</a></nav>
-    {brief.data.demo ? <aside class="notice"><strong>Démonstration.</strong> Ce contenu illustre le format. Il ne décrit pas les arnaques observées pendant cette période.</aside> : <p>Du {formatBriefDate(brief.data.periodStart)} au {formatBriefDate(brief.data.periodEnd)}</p>}
-    <p class="meta">{brief.data.demo ? 'Exemple créé le' : 'Publié le'} <time datetime={brief.data.pubDate.toISOString()}>{formatBriefDate(brief.data.pubDate)}</time> · {brief.data.type === 'monthly' ? 'Mensuel' : 'Hebdomadaire'}</p>
+    {brief.data.demo ? <aside class="notice"><strong>Démonstration.</strong> Ce contenu illustre le format. Il ne décrit pas les arnaques observées pendant cette période.</aside> : brief.data.type !== 'evergreen' && <p>Du {formatBriefDate(brief.data.periodStart)} au {formatBriefDate(brief.data.periodEnd)}</p>}
+    <p class="meta">{brief.data.demo ? 'Exemple créé le' : 'Publié le'} <time datetime={brief.data.pubDate.toISOString()}>{formatBriefDate(brief.data.pubDate)}</time> · {brief.data.type === 'monthly' ? 'Mensuel' : brief.data.type === 'weekly' ? 'Hebdomadaire' : 'Conseils pratiques'}</p>
     <article class="brief-prose"><Content /></article>
     <section class="sources" aria-labelledby="brief-sources">
       <h2 id="brief-sources">Pour vérifier et aller plus loin</h2>
