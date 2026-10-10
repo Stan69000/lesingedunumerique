@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
   actions: write
 
 jobs:
@@ -48,27 +48,15 @@ jobs:
           VEILLE_ENABLE_ENRICHMENT: "false"
         run: npm run build
 
-      - name: Commit cache if changed
-        id: cache_commit
-        run: |
-          if git diff --quiet -- cache/enriched.json; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add cache/enriched.json
-          git commit -m "chore(cache): update enriched veille data"
-          git push
-          echo "changed=true" >> "$GITHUB_OUTPUT"
-
-      - name: Trigger deploy workflow when cache unchanged
-        if: steps.cache_commit.outputs.changed == 'false'
+      # Le cache n'est plus committé depuis la CI : main est protégée (PR + check
+      # requis) et le push était refusé, ce qui bloquait aussi le déploiement.
+      # La seule modification faite ici est la purge des entrées expirées,
+      # recalculée à l'identique à chaque build.
+      - name: Trigger deploy workflow
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          curl -sS -X POST \
+          curl -sS --fail-with-body -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GITHUB_TOKEN}" \
             "https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy-o2switch.yml/dispatches" \
