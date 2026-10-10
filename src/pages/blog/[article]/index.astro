@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import MaintenanceContent from '../../../components/MaintenanceContent.astro';
 import ShareButtons from '../../../components/ShareButtons.astro';
+import OctetBook from '../../../components/OctetBook.astro';
 import { siteSettings } from '../../../config/site';
 
 export async function getStaticPaths() {
@@ -835,6 +836,8 @@ const articleSchema = {
                         Par {post.data.author} • {post.data.pubDate.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })} • {readingTimeMinutes} min de lecture
                       </div>
                     </header>
+
+                    {post.id === 'les-aventures-d-octet-commencent-ici-decouvrez-le-cadeau-impossible' && <OctetBook />}
 
                     <div class="article-content">
                       <Content />

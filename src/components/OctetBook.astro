@@ -1,0 +1,51 @@
+---
+const pdf = '/docs/octet-tome-1-le-cadeau-impossible-c8b8dbc9-1786262347485.pdf';
+---
+<section class="book-intro" aria-labelledby="book-title">
+  <a class="cover" href={pdf} target="_blank" rel="noopener" aria-label="Ouvrir Le cadeau impossible en PDF dans un nouvel onglet">
+    <img src="/images/octet-le-cadeau-impossible-cover.webp" alt="Couverture du livre Le cadeau impossible : Maya, Nino, Sam et Octet réunis dans une ruelle sous la pluie." width="800" height="1000" decoding="async" />
+  </a>
+  <div class="book-summary">
+    <p class="eyebrow">Les aventures d’Octet · Tome 1</p>
+    <h2 id="book-title">Le cadeau impossible</h2>
+    <p class="hook">Un cadeau gratuit. Un compte à rebours. Et quelque chose qui cloche.</p>
+    <p>Retrouvez Maya, Nino, Sam et Octet dans une aventure à lire et à discuter en famille.</p>
+    <div class="actions">
+      <a class="primary" href="#lire-histoire">Lire l’histoire ↓</a>
+      <a class="secondary" href={pdf} download>Télécharger le PDF · 69 Mo</a>
+    </div>
+    <p class="note">Un conte illustré interactif pour apprendre à faire une pause, observer et vérifier.</p>
+  </div>
+</section>
+<section class="book-reader" id="lire-histoire" aria-labelledby="reader-title">
+  <div class="reader-heading">
+    <h2 id="reader-title">Lisez l’histoire</h2>
+    <a href={pdf} target="_blank" rel="noopener">Ouvrir le PDF dans un nouvel onglet ↗</a>
+  </div>
+  <iframe src={`${pdf}#view=FitH`} title="Lire Les aventures d’Octet — Le cadeau impossible" loading="lazy"></iframe>
+  <p class="note">Si le lecteur ne s’affiche pas ou pour lire plus confortablement sur téléphone, <a href={pdf}>ouvrez directement le PDF</a>.</p>
+</section>
+<style>
+  .book-intro { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: clamp(24px, 4vw, 40px); align-items: center; margin: 24px 0 40px; }
+  .cover { display: block; }
+  .cover img { display: block; width: 100%; height: auto; object-fit: contain; border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,.2); }
+  .eyebrow { color: var(--accent); font-weight: 700; font-size: .9rem; }
+  h2 { margin: 0 0 16px; line-height: 1.2; font-size: clamp(1.6rem, 3vw, 2.2rem); }
+  .hook { font-size: 1.15rem; font-weight: 500; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+  .actions a { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 10px 16px; border-radius: 10px; font-weight: 700; text-decoration: none; }
+  .primary { background: var(--accent); color: var(--bg-body); }
+  .secondary { border: 1px solid var(--border); }
+  .note { color: var(--text-muted); font-size: .9rem; }
+  .book-reader { scroll-margin-top: 110px; margin-bottom: 48px; }
+  .reader-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+  .reader-heading h2 { margin: 0; }
+  .reader-heading a, .note a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  iframe { display: block; width: 100%; height: 80vh; min-height: 480px; max-height: 900px; border: 1px solid var(--border); border-radius: 12px; background: #fff; }
+  @media (max-width: 640px) {
+    .book-intro { grid-template-columns: 1fr; gap: 24px; }
+    .cover { width: min(65vw, 240px); margin-inline: auto; }
+    .actions { flex-direction: column; }
+    iframe { min-height: 400px; height: 65vh; }
+  }
+</style>
