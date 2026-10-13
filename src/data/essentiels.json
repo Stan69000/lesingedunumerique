@@ -23,5 +23,50 @@
     "48 % des Français utilisent une IA générative, selon le Baromètre du numérique 2026 ; 85 % chez les 18-24 ans.",
     "Près de deux utilisateurs de réseaux sociaux sur trois disent avoir été confrontés à des contenus problématiques : fausses informations, arnaques, contenus haineux…",
     "Quatre personnes sur dix rencontrent des freins dans leurs usages numériques, et plus d’un Français sur deux aide régulièrement un proche."
+  ],
+  "activer-la-2fa-sur-vos-comptes": [
+    "La double authentification ajoute une seconde étape à la connexion : même si votre mot de passe est volé, le compte reste bloqué.",
+    "À activer d’abord sur votre adresse e-mail principale, puis la banque, les réseaux sociaux et les comptes administratifs.",
+    "Préférez une application d’authentification au SMS, et enregistrez toujours les codes de secours."
+  ],
+  "proteger-les-enfants-et-les-ados-en-ligne": [
+    "Avec les plus jeunes, trois règles concrètes : ne pas partager d’informations personnelles, demander à un adulte avant de télécharger, demander de l’aide face à un message étrange.",
+    "Avec les ados, parlez aussi de vie privée, de réputation, de pression sociale et de harcèlement en ligne.",
+    "Le dialogue compte plus que les outils : un ado qui peut poser des questions sans être jugé est mieux protégé."
+  ],
+  "au-dela-des-ecrans-une-bd-pour-les-jeunes": [
+    "« Au-delà des écrans » est une BD à lire en ligne ou à télécharger (PDF) pour parler des écrans et des réseaux avec les jeunes.",
+    "Elle aborde le temps d’écran, l’attention, les réseaux sociaux, la pression du groupe et la vie privée, sans faire la morale.",
+    "À utiliser en famille ou en groupe comme point de départ, avec quelques questions simples après la lecture."
+  ],
+  "bienvenue-bd-octet": [
+    "Les BD d’Octet sont des bandes dessinées courtes qui expliquent le numérique à partir de situations du quotidien, sans jargon ni culpabilisation.",
+    "Octet, la mascotte, est un singe curieux et parfois maladroit : il explique, rassure et donne des actions concrètes.",
+    "Au programme : faux SMS, mots de passe, réseaux sociaux, QR codes piégés, mises à jour, intelligence artificielle…"
+  ],
+  "creer-un-site-web-pourquoi-o2switch": [
+    "Pour un site associatif ou personnel, un hébergeur se choisit d’abord sur la simplicité, la fiabilité et la qualité du support.",
+    "o2switch peut être un bon choix : une offre simple à comprendre, un hébergement en France, une solution complète.",
+    "Aucun hébergeur n’est parfait pour tout le monde : le bon choix dépend du budget, du type de site et de votre autonomie technique."
+  ],
+  "jeux-sensibilisation-numerique": [
+    "Après les BD, Le Singe du Numérique propose des jeux pédagogiques : vous ne lisez plus une situation, vous décidez vous-même.",
+    "Ils partent de situations réelles : faux SMS de livraison, arnaque bancaire, QR code douteux, site presque identique à l’original…",
+    "Le but n’est pas de piéger : c’est de s’entraîner sans pression pour acquérir les bons réflexes."
+  ],
+  "les-aventures-d-octet-commencent-ici-decouvrez-le-cadeau-impossible": [
+    "« Le cadeau impossible » est le premier conte illustré interactif des aventures d’Octet, à lire en famille.",
+    "L’histoire montre comment l’envie et l’urgence poussent à agir trop vite face à une offre trop belle.",
+    "Elle transmet une méthode en trois mots : Stop, Observe, Vérifie. Puis seulement, on décide."
+  ],
+  "octet-et-le-grand-bug-des-vacances-decouvrez-notre-premier-cahier-de-jeux-numeri": [
+    "« Octet et le Grand Bug des vacances » est un cahier de jeux à télécharger et à imprimer, pensé pour toute la famille.",
+    "Trois sujets : reconnaître un message suspect, créer des mots de passe plus solides, vérifier une information avant de la croire.",
+    "Chaque notion est présentée en bande dessinée, puis mise en pratique par des jeux d’observation et de logique."
+  ],
+  "ressources-pour-les-associations": [
+    "De nombreux outils de gestion, de communication et de bureautique sont gratuits ou à tarif réduit pour les associations.",
+    "Commencez par les offres gratuites : les solutions payantes ne se justifient que lorsque vos besoins les dépassent.",
+    "Vérifiez votre éligibilité au tarif associatif, la compatibilité entre vos outils et la protection des données de vos membres."
   ]
 }
