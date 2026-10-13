@@ -1,0 +1,22 @@
+{
+  "actif": true,
+  "surtitre": "Les aventures d’Octet · Tome 1",
+  "titre": "Le cadeau impossible",
+  "accroche": "Un cadeau gratuit. Un compte à rebours. Et quelque chose qui cloche.",
+  "texte": "Un conte illustré à lire et à discuter en famille, pour apprendre à repérer les arnaques en ligne avec une méthode simple.",
+  "points": ["Stop", "Observe", "Vérifie"],
+  "image": {
+    "src": "/images/octet-le-cadeau-impossible-cover.webp",
+    "alt": "Couverture du livre Le cadeau impossible : Maya, Nino, Sam et Octet réunis dans une ruelle sous la pluie.",
+    "width": 800,
+    "height": 1000
+  },
+  "lien": {
+    "href": "/blog/les-aventures-d-octet-commencent-ici-decouvrez-le-cadeau-impossible/",
+    "label": "Lire l’histoire"
+  },
+  "lienSecondaire": {
+    "href": "/docs/octet-tome-1-le-cadeau-impossible-c8b8dbc9-1786262347485.pdf",
+    "label": "Télécharger le PDF (69 Mo)"
+  }
+}

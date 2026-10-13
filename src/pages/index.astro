@@ -5,6 +5,7 @@ import ShareButtons from '../components/ShareButtons.astro';
 import { siteSettings } from '../config/site';
 import { estimateReadingTimeMinutes } from '../lib/reading-time';
 import { getPlanches } from '../lib/bd';
+import aLaUne from '../data/a-la-une.json';
 import { ariaCurrent, footerNav, mainNav, navCta } from '../config/nav';
 import '../styles/global.css';
 import '../styles/home.css';
@@ -290,6 +291,41 @@ const currentPath = Astro.url.pathname;
           )}
         </div>
       </section>
+
+      {aLaUne.actif && (
+        <section class="content-section spotlight-section" aria-labelledby="spotlight-title">
+          <div class="container">
+            <div class="spotlight">
+              <img
+                class="spotlight-image"
+                src={aLaUne.image.src}
+                alt={aLaUne.image.alt}
+                width={aLaUne.image.width}
+                height={aLaUne.image.height}
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="spotlight-body">
+                <p class="eyebrow">À la une · {aLaUne.surtitre}</p>
+                <h2 id="spotlight-title">{aLaUne.titre}</h2>
+                <p class="spotlight-hook">{aLaUne.accroche}</p>
+                <p class="spotlight-text">{aLaUne.texte}</p>
+                {aLaUne.points.length > 0 && (
+                  <ul class="spotlight-points">
+                    {aLaUne.points.map((point) => <li>{point}</li>)}
+                  </ul>
+                )}
+                <div class="spotlight-actions">
+                  <a href={aLaUne.lien.href} class="spotlight-primary">{aLaUne.lien.label} <span aria-hidden="true">→</span></a>
+                  {aLaUne.lienSecondaire && (
+                    <a href={aLaUne.lienSecondaire.href} class="spotlight-secondary">{aLaUne.lienSecondaire.label}</a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
 
       <section class="content-section" aria-labelledby="start-title">
         <div class="container">

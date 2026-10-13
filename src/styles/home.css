@@ -368,6 +368,22 @@
   .space-meta { margin: 0 0 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--text-muted); }
   .space-cta { font-weight: 700; color: var(--tone); }
 
+  .spotlight-section { padding-bottom: 0; }
+  .spotlight { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: center; padding: clamp(20px, 3vw, 36px); border-radius: 24px; background: var(--bg-card); border: 1px solid var(--border-color); }
+  .spotlight-image { display: block; width: 100%; height: auto; border-radius: 14px; box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.45); }
+  .spotlight-body .eyebrow { margin-bottom: 0.6rem; }
+  .spotlight h2 { margin: 0 0 0.8rem; font-size: clamp(1.8rem, 3.4vw, 2.6rem); line-height: 1.15; color: var(--text-main); }
+  .spotlight-hook { margin: 0 0 0.8rem; font-size: 1.2rem; font-weight: 500; line-height: 1.5; color: var(--text-main); }
+  .spotlight-text { margin: 0 0 1.2rem; color: var(--text-muted); line-height: 1.7; max-width: 560px; }
+  .spotlight-points { list-style: none; margin: 0 0 1.6rem; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .spotlight-points li { padding: 6px 14px; border-radius: 999px; background: var(--chip-bg); color: var(--chip-text); font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; }
+  .spotlight-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .spotlight-actions a { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: 999px; font-weight: 700; }
+  .spotlight-primary { background: var(--action-bg); color: var(--action-text); }
+  .spotlight-primary:hover { color: var(--action-text); filter: brightness(1.08); text-decoration: none; }
+  .spotlight-secondary { border: 1px solid var(--chip-border); color: var(--text-main); }
+  .spotlight-secondary:hover { border-color: var(--brand-green); color: var(--brand-green); text-decoration: none; }
+
   @media (max-width: 1024px) {
     .space-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .guide-grid { grid-template-columns: 1fr; }
@@ -376,6 +392,10 @@
   @media (max-width: 600px) {
     .space-grid { grid-template-columns: 1fr; }
     .content-section { padding: 3rem 0; }
+    .spotlight-section { padding-bottom: 0; }
+    .spotlight { grid-template-columns: 1fr; }
+    .spotlight-image { max-width: 220px; margin: 0 auto; }
+    .spotlight-actions a { width: 100%; }
   }
 
   @media (prefers-reduced-motion: reduce) {
