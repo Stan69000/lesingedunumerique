@@ -6,6 +6,9 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://lesingedunumerique.fr',
+  redirects: {
+    '/projets': '/asso',
+  },
   vite: {
     plugins: [tailwindcss()]
   }

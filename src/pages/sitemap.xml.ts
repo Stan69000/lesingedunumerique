@@ -7,7 +7,6 @@ export async function GET() {
   const staticPaths = [
     '/',
     '/asso/',
-    '/projets/',
     '/adhesion/',
     '/contact/',
     '/blog/',

@@ -73,6 +73,13 @@ collections:
         default: "Stan Bouchet"
         hint: "Nom affiché sur l’article. Exemple : Stan Bouchet"
 
+      - label: Mettre en avant sur l’accueil
+        name: featured
+        widget: boolean
+        required: false
+        default: false
+        hint: "Affiche l’article dans « Par où commencer » (3 maximum, les plus récents d’abord)."
+
       - label: Contenu
         name: body
         widget: markdown

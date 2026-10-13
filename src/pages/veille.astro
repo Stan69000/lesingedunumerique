@@ -231,7 +231,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
     {publicWarnings.length > 0 && <p class="warning-box">Mode dégradé partiel : {publicWarnings.join(' | ')}</p>}
   </section>
 
-  <section class="action-strip" aria-label="Actions rapides">
+  <section id="actions-rapides" class="action-strip" aria-label="Actions rapides">
     <h2>Actions rapides en cas d'arnaque</h2>
     <div class="action-strip-grid">
       <a href="https://www.cybermalveillance.gouv.fr/signalement" target="_blank" rel="noopener noreferrer nofollow">
@@ -621,6 +621,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
   }
 
   .action-strip {
+    scroll-margin-top: 100px;
     margin: 1.25rem 0 1.75rem;
     border: 1px solid var(--border-color);
     border-radius: 16px;
