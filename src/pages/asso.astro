@@ -17,6 +17,43 @@ import SiteLayout from '../layouts/SiteLayout.astro';
   </section>
 
   <section class="prose-block">
+    <h2>Qui sommes-nous&nbsp;?</h2>
+    <p>Aujourd’hui, l’association est pilotée par deux passionnés&nbsp;: Stan, le papa, et Mikaël, le fils. L’un est responsable informatique, l’autre est en bac pro CIEL en alternance.</p>
+    <p>Ensemble, nous développons le site, les contenus, les jeux… Nos générations différentes nous permettent de croiser nos regards sur le numérique.</p>
+  </section>
+
+  <div class="info-grid team-grid">
+    <article class="info-card team-card">
+      <div class="team-header">
+        <span class="team-avatar" aria-hidden="true">SB</span>
+        <div>
+          <h3>Stanislas Bouchet</h3>
+          <p class="team-role">Cofondateur et président</p>
+        </div>
+      </div>
+      <p>IT manager (responsable informatique)</p>
+      <ul class="team-links">
+        <li><a href="https://www.linkedin.com/in/stanislas-bouchet/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Stanislas (ouvre un nouvel onglet)">LinkedIn</a></li>
+        <li><a href="https://github.com/Stan69000" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Stanislas (ouvre un nouvel onglet)">GitHub</a></li>
+      </ul>
+    </article>
+    <article class="info-card team-card">
+      <div class="team-header">
+        <span class="team-avatar" aria-hidden="true">MB</span>
+        <div>
+          <h3>Mikaël Bouchet</h3>
+          <p class="team-role">Cofondateur et secrétaire</p>
+        </div>
+      </div>
+      <p>Bac pro CIEL (cybersécurité, informatique et réseaux, électronique) en alternance</p>
+      <ul class="team-links">
+        <li><a href="https://www.linkedin.com/in/mikael-bch/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn de Mikaël (ouvre un nouvel onglet)">LinkedIn</a></li>
+        <li><a href="https://github.com/NaraDev0" target="_blank" rel="noopener noreferrer" aria-label="GitHub de Mikaël (ouvre un nouvel onglet)">GitHub</a></li>
+      </ul>
+    </article>
+  </div>
+
+  <section class="prose-block">
     <h2>En ce moment</h2>
     <p>L’association ne propose pas d’ateliers pour le moment. Nous sommes ouverts à tous en ligne, à travers les articles, les alertes et les jeux du site, ou sur rendez-vous pour parler d’un projet.</p>
     <p><a href="/contact">Prendre contact</a></p>
@@ -53,3 +90,61 @@ import SiteLayout from '../layouts/SiteLayout.astro';
     </ul>
   </section>
 </SiteLayout>
+
+<style>
+  .team-grid {
+    margin-bottom: 2rem;
+  }
+
+  .team-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 0.8rem;
+  }
+
+  .team-header h3 {
+    margin: 0;
+  }
+
+  .team-card .team-role {
+    margin: 0.2rem 0 0;
+    color: var(--brand-green);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .team-avatar {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--brand-green);
+    color: var(--brand-green);
+    font-weight: 800;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+  }
+
+  .team-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .team-links a {
+    color: var(--brand-green);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .team-links a:hover,
+  .team-links a:focus-visible {
+    text-decoration: underline;
+  }
+</style>
