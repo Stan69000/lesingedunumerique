@@ -9,6 +9,7 @@ tags:
   - 2FA
   - Guide pratique
 author: Stan Bouchet
+featured: true
 ---
 # Comment activer la double authentification sur vos comptes
 

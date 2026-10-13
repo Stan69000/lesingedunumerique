@@ -9,6 +9,7 @@ tags:
   - Débutant
   - Guide pratique
 author: Stan Bouchet
+featured: true
 ---
 # Comment bien sécuriser sa vie numérique
  

@@ -3,25 +3,11 @@ import { getCollection } from 'astro:content';
 import MaintenanceContent from '../../components/MaintenanceContent.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import { siteSettings } from '../../config/site';
+import { estimateReadingTimeMinutes } from '../../lib/reading-time';
+import { ariaCurrent, footerNav, mainNav, navCta } from '../../config/nav';
 
 const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const FRENCH_READING_WPM = 200;
-const estimateReadingTimeMinutes = (markdown: string) => {
-  const cleanedText = markdown
-    .replace(/```[\s\S]*?```/g, ' ')
-    .replace(/`[^`]*`/g, ' ')
-    .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/[#>*_~\-]/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  const wordCount = cleanedText ? cleanedText.split(' ').length : 0;
-  return Math.max(1, Math.ceil(wordCount / FRENCH_READING_WPM));
-};
 
 const rubriques = ['Articles', 'Veille', 'Technos'];
 const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
@@ -89,18 +75,11 @@ const blogSchema = {
         </a>
         <div class="nav-right">
           <ul class="nav-links">
-            <li><a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a></li>
-            <li><a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a></li>
-            <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
-            <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
-            <li><a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a></li>
-            <li><a href="/bd" class="nav-item" aria-current={currentPath.startsWith('/bd') ? 'page' : undefined}>BD</a></li>
-            <li><a href="/veille" class="nav-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu</a></li>
+{mainNav.map((item) => (
+<li><a href={item.href} class="nav-item" aria-current={ariaCurrent(item, currentPath)}>{item.label}</a></li>
+))}
           </ul>
-          <a href="/flux" class="rss-nav-link" aria-current={currentPath === '/flux' ? 'page' : undefined} aria-label="Acceder aux flux RSS">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.18 17.82a2.18 2.18 0 1 1 0-4.36 2.18 2.18 0 0 1 0 4.36ZM4 4v3.27c7.03 0 12.73 5.7 12.73 12.73H20C20 11.16 12.84 4 4 4Zm0 6.54v3.27A6.2 6.2 0 0 1 10.2 20h3.27A9.47 9.47 0 0 0 4 10.54Z"/></svg>
-            <span>RSS</span>
-          </a>
+          <a href={navCta.href} class="nav-cta" aria-current={ariaCurrent(navCta, currentPath)}>{navCta.label}</a>
           <button
             id="theme-toggle"
             class="theme-btn"
@@ -134,14 +113,9 @@ const blogSchema = {
         inert
         hidden
       >
-        <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
-        <a href="/asso" class="mobile-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
-        <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
-        <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
-        <a href="/blog" class="mobile-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
-        <a href="/bd" class="mobile-item" aria-current={currentPath.startsWith('/bd') ? 'page' : undefined}>BD</a>
-        <a href="/veille" class="mobile-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu</a>
-        <a href="/flux" class="mobile-item" aria-current={currentPath === '/flux' ? 'page' : undefined}>Flux RSS</a>
+{[...mainNav, navCta].map((item) => (
+<a href={item.href} class="mobile-item" aria-current={ariaCurrent(item, currentPath)}>{item.label}</a>
+))}
         <div class="mobile-theme-toggle">
           <span>Changer le thème</span>
           <button
@@ -297,14 +271,9 @@ const blogSchema = {
           <div class="footer-line">
             <span class="footer-line-label">Menu</span>
             <ul class="footer-line-content footer-links">
-              <li><a href="/projets">Projets</a></li>
-              <li><a href="/asso">L’association</a></li>
-              <li><a href="/adhesion">Rejoindre</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/blog">Blog</a></li>
-              <li><a href="/bd">BD</a></li>
-              <li><a href="/plan-du-site">Plan du site</a></li>
-              <li><a href="/mentions-legales">Mentions légales</a></li>
+{footerNav.map((item) => (
+<li><a href={item.href}>{item.label}</a></li>
+))}
             </ul>
           </div>
           <div class="footer-line">
@@ -783,37 +752,10 @@ const blogSchema = {
     color: var(--text-main);
   }
 
-  .rss-nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border: 1px solid var(--border-color);
-    border-radius: 999px;
-    padding: 0.36rem 0.72rem;
-    color: var(--brand-orange);
-    font-size: 0.84rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    text-decoration: none;
-    line-height: 1;
-  }
-
-  .rss-nav-link svg {
-    width: 14px;
-    height: 14px;
-  }
-
-  .rss-nav-link[aria-current='page'] {
-    border-color: var(--brand-orange);
-  }
-
-  .rss-nav-link:hover {
-    border-color: var(--brand-orange);
-    filter: brightness(1.06);
-  }
-
-  .theme-btn {
+  .nav-cta { display: inline-flex; align-items: center; min-height: 38px; padding: 0 16px; border-radius: 999px; background: var(--brand-green); color: var(--bg-body); font-size: 0.92rem; font-weight: 700; white-space: nowrap; }
+  .nav-cta:hover { filter: brightness(1.1); text-decoration: none; color: var(--bg-body); }
+  .nav-cta[aria-current='page'] { box-shadow: 0 0 0 2px var(--bg-body), 0 0 0 4px var(--brand-green); }
+.theme-btn {
     background: transparent;
     border: 1px solid var(--border-color);
     border-radius: 50%;
