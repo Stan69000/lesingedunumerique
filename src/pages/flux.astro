@@ -3,8 +3,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 
 const rssFeeds = [
   {
-    title: 'Blog',
-    description: 'Tous les derniers articles du blog.',
+    title: 'Articles et guides',
+    description: 'Tous les nouveaux articles et guides.',
     href: '/blog.xml',
   },
   {
@@ -13,35 +13,35 @@ const rssFeeds = [
     href: '/bd.xml',
   },
   {
-    title: 'Veille complete',
-    description: 'Tous les blocs de veille dans un seul flux.',
+    title: 'Toutes les alertes',
+    description: 'Arnaques, fuites de données et actualité réunies dans un seul flux.',
     href: '/veille.xml',
   },
   {
-    title: 'Veille - Dernieres arnaques',
-    description: 'Flux dedie aux arnaques et campagnes frauduleuses.',
+    title: 'Alertes : dernières arnaques',
+    description: 'Les arnaques et campagnes frauduleuses repérées.',
     href: '/veille-arnaques.xml',
   },
   {
-    title: 'Veille - Dernieres failles de securite',
-    description: 'Flux dedie aux failles et vulnérabilites de securite.',
+    title: 'Alertes : dernières fuites de données',
+    description: 'Les fuites de données et failles de sécurité signalées.',
     href: '/veille-failles.xml',
   },
   {
-    title: 'Veille - Actu generaliste',
-    description: 'Flux dedie a l actualite generaliste (cyber + associations).',
+    title: 'Actualité générale',
+    description: 'L’actualité de la cybersécurité et des associations.',
     href: '/veille-actu-generaliste.xml',
   },
 ];
 ---
 
 <SiteLayout
-  title="Flux RSS | Le Singe Du Numerique"
-  description="Abonnement RSS au blog et aux blocs de veille publique."
+  title="Flux RSS | Le Singe Du Numérique"
+  description="S’abonner aux articles, aux BD et aux alertes arnaques du Singe Du Numérique par flux RSS."
   eyebrow="Flux RSS"
-  headline="Abonnements RSS"
-  accent="blog et veille"
-  intro="Choisis un ou plusieurs flux pour suivre les publications sans passer par les reseaux sociaux."
+  headline="Suivre le site"
+  accent="par flux RSS"
+  intro="Un flux RSS vous prévient à chaque nouvelle publication, sans compte et sans passer par les réseaux sociaux. Choisissez un ou plusieurs flux ci-dessous."
   showShare={false}
 >
   <section class="flux-grid">
@@ -52,7 +52,7 @@ const rssFeeds = [
           <p>{feed.description}</p>
           <div class="flux-actions">
             <a href={feed.href}>Ouvrir le flux</a>
-            <button type="button" data-copy={feed.href}>Copier l URL</button>
+            <button type="button" data-copy={feed.href}>Copier l’adresse</button>
           </div>
         </article>
       ))
@@ -60,7 +60,7 @@ const rssFeeds = [
   </section>
 
   <p class="flux-help">
-    Astuce: colle le lien RSS dans ton lecteur prefere (Inoreader, Feedly, NetNewsWire, Thunderbird...).
+    Astuce : collez l’adresse du flux dans votre lecteur RSS préféré (Inoreader, Feedly, NetNewsWire, Thunderbird…).
   </p>
 
   <script>
@@ -72,7 +72,7 @@ const rssFeeds = [
         const absoluteUrl = new URL(href, window.location.origin).toString();
         await navigator.clipboard.writeText(absoluteUrl);
         const previous = button.textContent;
-        button.textContent = 'Copie';
+        button.textContent = 'Copié';
         window.setTimeout(() => {
           button.textContent = previous;
         }, 1200);

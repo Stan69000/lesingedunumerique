@@ -15,9 +15,9 @@ const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b
 );
 const currentPath = Astro.url.pathname;
 const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
-const pageTitle = 'Blog | Le Singe Du Numérique';
+const pageTitle = 'Articles et guides | Le Singe Du Numérique';
 const pageDescription =
-  'Articles, veille et technos : des ressources utiles pour mieux comprendre le numérique, suivre des outils et découvrir des solutions concrètes.';
+  'Articles et guides pratiques pour mieux comprendre le numérique, se protéger et découvrir des outils utiles, sans jargon.';
 const blogSchema = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
@@ -138,12 +138,12 @@ const blogSchema = {
         <div class="glow-bg glow-orange"></div>
 
         <div class="container hero-content">
-          <p class="eyebrow">Blog</p>
+          <p class="eyebrow">Le blog de l’association</p>
           <h1 class="hero-title">
-            Ressources, <span class="gradient-text">veille</span> et technos
+            Articles <span class="gradient-text">et guides</span>
           </h1>
           <p class="hero-desc">
-            Articles pratiques, sélection de ressources utiles et contenus plus techniques pour mieux comprendre le numérique au quotidien.
+            Des guides pas à pas, des sélections de ressources et des articles pour mieux comprendre le numérique au quotidien.
           </p>
 
           <div class="hero-meta">
@@ -257,7 +257,7 @@ const blogSchema = {
 
     <section class="content-section">
       <div class="container">
-        <ShareButtons title="Ressources, veille et technos" label="Partager le blog" />
+        <ShareButtons title="Articles et guides" label="Partager cette page" />
       </div>
     </section>
 
