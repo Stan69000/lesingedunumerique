@@ -22,6 +22,7 @@ export async function GET() {
     '/veille/cyber/',
     '/veille/associations/',
     '/flux/',
+    '/lexique/',
     '/veille-sources/',
     '/plan-du-site/',
     '/accessibilite/',
