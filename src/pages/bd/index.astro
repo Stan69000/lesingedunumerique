@@ -46,7 +46,7 @@ const itemListSchema = {
     <>
       {derniere && (
         <section class="bd-latest" aria-labelledby="bd-latest-title">
-          <p class="bd-kicker">Dernière planche — {plancheCode(derniere)}</p>
+          <p class="bd-kicker">Dernière planche · {plancheCode(derniere, true)}</p>
           <h2 id="bd-latest-title">{derniere.data.title}</h2>
           <p>{derniere.data.description}</p>
           <a href={planchePath(derniere)} class="cta-button cta-primary">Lire la planche</a>

@@ -26,7 +26,7 @@ if (!planche) {
 }
 
 const { Content } = await render(planche);
-const code = plancheCode(planche);
+const code = plancheCode(planche, true);
 const canonicalUrl = new URL(planchePath(planche), siteSettings.siteUrl).toString();
 const pageTitle = `${planche.data.title} (${code}) | Les BD d’Octet`;
 
@@ -57,7 +57,7 @@ const schema = {
 <SiteLayout
   title={pageTitle}
   description={planche.data.description}
-  eyebrow={`BD — ${code}`}
+  eyebrow={`BD · ${code}`}
   headline={planche.data.title}
   intro={planche.data.description}
   image={planche.data.planche}
@@ -103,13 +103,13 @@ const schema = {
     {precedente ? (
       <a href={planchePath(precedente)} class="bd-nav-link bd-nav-prev">
         <span class="bd-nav-label">Planche précédente</span>
-        <span class="bd-nav-title">{plancheCode(precedente)} — {precedente.data.title}</span>
+        <span class="bd-nav-title">{plancheCode(precedente)} · {precedente.data.title}</span>
       </a>
     ) : <span></span>}
     {suivante && (
       <a href={planchePath(suivante)} class="bd-nav-link bd-nav-next">
         <span class="bd-nav-label">Planche suivante</span>
-        <span class="bd-nav-title">{plancheCode(suivante)} — {suivante.data.title}</span>
+        <span class="bd-nav-title">{plancheCode(suivante)} · {suivante.data.title}</span>
       </a>
     )}
   </nav>

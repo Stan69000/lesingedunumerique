@@ -17,8 +17,8 @@ export async function GET() {
   }));
 
   const body = buildRssXml({
-    title: 'Le Singe Du Numerique - Les BD d’Octet',
-    description: 'Une planche de BD par semaine pour comprendre le numerique.',
+    title: 'Le Singe Du Numérique - Les BD d’Octet',
+    description: 'Une planche de BD par semaine pour comprendre le numérique.',
     siteUrl: siteSettings.siteUrl,
     path: '/bd.xml',
     items,
