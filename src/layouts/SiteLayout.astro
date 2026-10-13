@@ -1006,14 +1006,14 @@ const isVeillePage = currentPath.startsWith('/veille');
     line-height: 1.75;
   }
 
-  :global(.prose-block a) {
+  :global(.prose-block a:not(.cta-button)) {
     color: var(--brand-blue);
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 1.5px;
   }
 
-  :global(.prose-block a:hover) {
+  :global(.prose-block a:not(.cta-button):hover) {
     color: var(--text-main);
   }
 
@@ -1051,6 +1051,7 @@ const isVeillePage = currentPath.startsWith('/veille');
     background: var(--action-bg);
     color: var(--action-text);
     font-weight: 700;
+    text-decoration: none;
   }
 
   :global(.cta-secondary) {
