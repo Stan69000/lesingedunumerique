@@ -709,7 +709,7 @@ const currentPath = Astro.url.pathname;
           event.preventDefault();
           homeSearchInput.setAttribute('aria-invalid', 'true');
           homeSearchError.hidden = false;
-          homeSearchError.textContent = 'Recherche trop courte. Essaie avec au moins 2 caractères.';
+          homeSearchError.textContent = 'Recherche trop courte. Essayez avec au moins 2 caractères.';
           homeSearchInput.focus();
           return;
         }
