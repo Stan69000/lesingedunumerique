@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "games": [
+    {
+      "slug": "pixel-safe",
+      "name": "PIXEL SAFE",
+      "description": "Parcours éducatif pour discuter phishing, cyberharcèlement, réputation numérique et bons réflexes en ligne avec les plus jeunes.",
+      "intro": "Jeu pédagogique de sensibilisation numérique pour apprendre les bons réflexes cyber en famille, sans inscription.",
+      "ageRange": "6 à 18 ans",
+      "tags": [
+        "phishing",
+        "cyberharcèlement",
+        "réseaux sociaux",
+        "deepfakes",
+        "données perso"
+      ],
+      "bodyMd": "**Pour les 6-18 ans. À jouer en famille.**\n\n## Un jeu de sensibilisation numérique concret\n\nPIXEL SAFE est un jeu éducatif gratuit créé par Le Singe du Numérique pour aborder les dangers du numérique sans faire peur, sans minimiser non plus.\n\nChaque question part d'une situation réelle : un SMS de La Poste demandant 1,99 €, un inconnu trop sympa sur Discord, une vidéo virale d'un ministre qui n'a jamais existé. Le joueur et le parent débattent ensemble avant de répondre. La bonne réponse arrive après, avec l'explication, la source, le bon réflexe à retenir.\n\n## 3 niveaux adaptés\n\n- Primaire (6-10 ans) : localisation, inconnus, arnaques aux cadeaux, secrets dangereux\n- Collège (11-14 ans) : phishing, cyberharcèlement, réseaux sociaux, deepfakes\n- Lycée (15-18 ans) : RGPD, sextorsion, réputation numérique, droit pénal\n\n**Ce qu'on a voulu créer :** un vrai moment de discussion entre générations, où le parent apprend autant que l'enfant.\n\n**Jouer · Sans inscription · Sans publicité · Sans données collectées**\n",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/pixel-safe",
+      "cover": "/jeux/covers/pixel-safe.webp",
+      "seoTitle": "PIXEL SAFE: jeu de sensibilisation numérique pour enfants et ados | Le Singe Du Numerique",
+      "seoDescription": "PIXEL SAFE est un jeu pédagogique gratuit de sensibilisation numérique pour les 6-18 ans: phishing, cyberharcèlement, réseaux sociaux, deepfakes, réputation et protection des données."
+    },
+    {
+      "slug": "sentinel",
+      "name": "SENTINEL",
+      "description": "Simulation immersive avec mini-défis pour entraîner les réflexes cyber : phishing, mots de passe, deepfakes et sécurité réseau.",
+      "intro": "Un jeu de cybersécurité en trois modes pour enquêter, décider et progresser comme un agent.",
+      "ageRange": "Ado et adultes",
+      "tags": [
+        "mails suspects",
+        "mots de passe",
+        "deepfakes",
+        "sécurité réseau",
+        "gestion de crise"
+      ],
+      "bodyMd": "**Devenez agent. Montez en grade. Défendez le numérique.**\n\n## Simulation cybersécurité pour s'entraîner\n\nSENTINEL est un jeu de simulation cybersécurité créé par Le Singe du Numérique. Vous incarnez un agent en formation au sein d'une agence fictive et vous progressez à travers trois modes complémentaires.\n\n**Mode Arcade** : quatre mini-jeux pour tester vos réflexes. Classifiez de vrais emails (légitimes ou phishing ?), construisez le mot de passe le plus solide possible, bloquez des attaques réseau en temps réel, débusquez les deepfakes parmi de vrais contenus.\n\n**Mode Terminal** : un vrai faux terminal de commandes. Analysez un poste compromis, remontez une fuite de données, gérez un ransomware en cours de propagation.\n\n**Mode Aventure** : des opérations scénarisées avec dialogues, choix et conséquences réelles. Chaque mauvaise décision coûte de la crédibilité.\n\nVotre progression est sauvegardée : XP, grades (de Recrue à Sentinel), badges, journal des opérations.\n\n**Jouer · Sans inscription · Sans publicité · Sans données collectées**\n",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/sentinel",
+      "cover": "/jeux/covers/sentinel.webp",
+      "seoTitle": "SENTINEL: jeu cybersécurité et simulation immersive | Le Singe Du Numerique",
+      "seoDescription": "SENTINEL est un jeu de cybersécurité gratuit: enquêtes, terminal, scénarios et décisions sous pression pour apprendre les réflexes de défense numérique."
+    },
+    {
+      "slug": "l-enquete-de-la-classe",
+      "name": "L'Enquête de la Classe",
+      "description": "Un camarade reçoit des messages méchants. Tu mènes l'enquête. Tu prends des décisions. Qu'est-ce qui s'est passé ? Que peut-on faire ?",
+      "intro": "Une mini-aventure pour comprendre le cyberharcèlement du point de vue de ceux qui le voient sans oser réagir.",
+      "ageRange": "Enfants et ados",
+      "tags": [
+        "cyberharcèlement"
+      ],
+      "bodyMd": "**Une mini-aventure à hauteur d'enfant, sur un sujet difficile.**\n\n## Comprendre le cyberharcèlement en se mettant à la place des témoins\n\nUn camarade reçoit des messages méchants. Le joueur mène l'enquête, interroge, recoupe,\net surtout décide : intervenir, en parler à un adulte, soutenir en privé, ne rien faire.\nChaque choix a des conséquences sur la suite de l'histoire.\n\n## Quatre personnages, quatre façons d'agir\n\n- **Léa**, amie de Théo, observatrice\n- **Lucas**, nouveau dans la classe\n- **Sofia**, déléguée de classe\n- **Kylian**, diplomate naturel\n\nLe jeu ne cherche pas le coupable pour le punir : il montre que la plupart des personnes\nprésentes voient quelque chose sans savoir quoi en faire, et que c'est justement là que\ntout se joue.\n\n## Une fiction, mais des situations réelles\n\nL'histoire est fictive, inspirée de situations réelles, et traite le sujet avec douceur.\nLe jeu rappelle que des adultes de confiance et des numéros d'aide existent.\n\n**Fiction éducative · Sans inscription · Aucune donnée collectée**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/l-enquete-de-la-classe",
+      "cover": "/jeux/covers/l-enquete-de-la-classe.webp",
+      "seoTitle": "L'Enquête de la Classe : jeu sur le cyberharcèlement pour les jeunes | Le Singe Du Numerique",
+      "seoDescription": "L'Enquête de la Classe est un jeu gratuit sur le cyberharcèlement : une fiction éducative où l'on mène l'enquête, on prend des décisions et on découvre comment aider un camarade."
+    },
+    {
+      "slug": "mon-telephone-me-connait",
+      "name": "Mon téléphone me connait",
+      "description": "Une série de questions sur vos habitudes numériques. À la fin, découvrez ce que votre téléphone sait probablement de vous — sans jugement, avec humour et des conseils concrets.",
+      "intro": "Trois minutes de questions, puis le portrait que vos applications dressent de vous sans vous le dire.",
+      "ageRange": "Ados et adultes",
+      "tags": [
+        "données perso",
+        "traçage",
+        "publicité ciblée",
+        "vie privée",
+        "cookies"
+      ],
+      "bodyMd": "**Trois minutes. Aucun jugement. Rien n'est envoyé.**\n\n## Ce que votre téléphone sait de vous\n\nPosition mise à jour en continu, cookies acceptés chez quarante-sept partenaires d'un\nseul clic, profil publicitaire enrichi à chaque visite : le jeu part de vos réponses sur\nvos propres habitudes pour reconstituer le portrait que les applications dressent de vous.\n\n## Sans culpabiliser\n\nLe but n'est pas de faire peur ni de dire qu'il faudrait tout désinstaller. C'est de\nrendre visible un mécanisme qui fonctionne justement parce qu'il est invisible — puis de\ndonner des réglages concrets à changer, si on le souhaite.\n\n**3 minutes · Pas de jugement · Rien n'est envoyé · Humour garanti**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/mon-telephone-me-connait",
+      "cover": "/jeux/covers/mon-telephone-me-connait.webp",
+      "seoTitle": "Mon téléphone me connaît : ce que vos applications savent de vous | Le Singe Du Numerique",
+      "seoDescription": "Jeu de révélation gratuit sur les données personnelles : répondez à quelques questions sur vos habitudes numériques et découvrez ce que votre téléphone sait de vous. Rien n'est envoyé."
+    },
+    {
+      "slug": "signal",
+      "name": "Signal",
+      "description": "Cinq jours pour apprendre à survivre au numérique : arnaques, désinformation et données personnelles, à travers trois personnages qui n'ont ni le même âge ni les mêmes réflexes.",
+      "intro": "Cinq jours, trois personnages, et les mêmes pièges numériques vécus depuis trois points de vue.",
+      "ageRange": "Ados et adultes",
+      "tags": [
+        "arnaques",
+        "désinformation",
+        "données perso",
+        "réflexes numériques"
+      ],
+      "bodyMd": "**Cinq jours pour apprendre à survivre au numérique.**\n\n## Trois personnages, trois angles morts\n\n- **Madeleine**, 68 ans, retraitée à Lyon. Premier smartphone. Méfiante, curieuse, pleine\n  de bon sens : ses réflexes humains sont souvent les bons, mais le numérique a ses\n  propres règles.\n- **Lucas**, 16 ans, lycéen à Villeurbanne. Ultra-connecté, rapide, influent. Sa confiance\n  en lui est exactement la faille que les arnaqueurs exploitent.\n- **Sophie**, 41 ans, assistante RH à Bron. Gère le numérique de toute la famille.\n  Efficace et pressée — donc portée à faire confiance aux interfaces bien faites.\n\n## Pourquoi trois profils\n\nParce que personne n'est à l'abri pour les mêmes raisons. Le jeune trop confiant, la\nretraitée qui découvre, l'adulte qui va trop vite : chacun tombe sur des pièges différents,\net le jeu le montre en faisant vivre les mêmes journées à des personnes qui ne voient pas\nles mêmes choses.\n\n**Sans inscription · Sans publicité · Sans données collectées**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/signal",
+      "cover": "/jeux/covers/signal.webp",
+      "seoTitle": "SIGNAL : jeu sur les arnaques, la désinformation et les données | Le Singe Du Numerique",
+      "seoDescription": "SIGNAL est un jeu éducatif gratuit en cinq jours : arnaques, désinformation et données personnelles, vécues à travers trois personnages de 16 à 68 ans aux réflexes très différents."
+    },
+    {
+      "slug": "quizia",
+      "name": "Quiz IA",
+      "description": "Sept situations concrètes d'usage de l'intelligence artificielle, aucun jugement : découvrez votre profil et repartez avec trois habitudes à changer dès maintenant.",
+      "intro": "Sept questions, six profils, cinq minutes : et vous, vous utilisez comment l'IA ?",
+      "ageRange": "",
+      "tags": [
+        "ia",
+        "quiz",
+        "usages numériques",
+        "esprit crtitique"
+      ],
+      "bodyMd": "**Sept questions. Six profils. Cinq minutes.**\n\n## Et vous, vous utilisez comment l'IA ?\n\nSept situations concrètes, tirées d'usages ordinaires : rédiger, résumer, chercher,\nvérifier, décider. Pas de bonne ou de mauvaise réponse — le quiz cherche à révéler des\nhabitudes, pas à corriger.\n\n## Un profil, puis des pistes\n\nÀ la fin, un profil parmi six, quelques révélations qui piquent gentiment, et trois choses\nconcrètes à faire dès maintenant pour utiliser ces outils avec un peu plus de recul.\n\n**5 minutes · Sans inscription · Sans données collectées**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/quizia",
+      "cover": "/jeux/covers/quizia.webp",
+      "seoTitle": "Quiz IA : quel utilisateur d'intelligence artificielle êtes-vous ? | Le Singe Du Numerique",
+      "seoDescription": "Quiz gratuit sur l'intelligence artificielle : sept situations concrètes, six profils d'utilisateurs et trois conseils pratiques pour mieux utiliser l'IA au quotidien."
+    }
+  ]
+}

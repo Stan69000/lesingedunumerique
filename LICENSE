@@ -36,7 +36,6 @@ autorisation écrite préalable.
 Cela couvre notamment :
 
 - `src/` hors contenus explicitement éditoriaux
-- `public/admin/`
 - `public/contact.php`
 - `astro.config.mjs`
 - `package.json`

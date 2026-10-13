@@ -6,6 +6,7 @@ export interface NavItem {
 
 export const mainNav: NavItem[] = [
   { href: '/blog', label: 'Articles et guides', matchPrefix: true },
+  { href: '/bd', label: 'BD', matchPrefix: true },
   { href: '/veille', label: 'Alertes arnaques', matchPrefix: true },
   { href: '/sensibilisation', label: 'Jeux', matchPrefix: true },
   { href: '/asso', label: 'L’association' },

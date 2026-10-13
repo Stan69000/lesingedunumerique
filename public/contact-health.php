@@ -3,13 +3,6 @@ declare(strict_types=1);
 
 header('Content-Type: text/plain; charset=UTF-8');
 header('Cache-Control: no-store');
-$healthToken = getenv('CONTACT_HEALTH_TOKEN') ?: ($_SERVER['CONTACT_HEALTH_TOKEN'] ?? '');
-$requestToken = $_GET['token'] ?? '';
-if ($healthToken === '' || !hash_equals($healthToken, $requestToken)) {
-    http_response_code(404);
-    exit;
-}
-
 
 function env_value(string $key): string
 {
@@ -93,6 +86,13 @@ function post_form(string $url, array $fields): ?string
     $response = @file_get_contents($url, false, $context);
 
     return is_string($response) ? $response : null;
+}
+
+$healthToken = env_value('CONTACT_HEALTH_TOKEN');
+$requestToken = $_GET['token'] ?? '';
+if ($healthToken === '' || !is_string($requestToken) || !hash_equals($healthToken, $requestToken)) {
+    http_response_code(404);
+    exit;
 }
 
 $recipient = env_value('CONTACT_RECIPIENT_EMAIL');

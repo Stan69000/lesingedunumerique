@@ -4,6 +4,7 @@ import MaintenanceContent from '../components/MaintenanceContent.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import { siteSettings } from '../config/site';
 import { estimateReadingTimeMinutes } from '../lib/reading-time';
+import { getPlanches } from '../lib/bd';
 import { ariaCurrent, footerNav, mainNav, navCta } from '../config/nav';
 import '../styles/global.css';
 import '../styles/home.css';
@@ -21,6 +22,8 @@ const levelTags = [
   { label: 'Avancé', emoji: '⚡', tag: advancedTag },
 ].filter((level) => level.tag);
 
+const planches = await getPlanches();
+
 const spaces = [
   {
     href: '/blog',
@@ -30,6 +33,15 @@ const spaces = [
     what: 'Des guides pas à pas pour savoir quoi faire (mots de passe, double authentification, protection des proches) et des articles pour découvrir : lectures, podcasts, vie de l’association.',
     meta: `${posts.length} articles, classés par niveau`,
     cta: 'Lire les articles',
+  },
+  {
+    href: '/bd',
+    icon: '💬',
+    tone: 'blue',
+    name: 'Les BD d’Octet',
+    what: 'Une planche de bande dessinée par semaine pour comprendre un sujet du numérique d’un coup d’œil. Chaque planche est aussi transcrite en texte.',
+    meta: `${planches.length} planches à lire`,
+    cta: 'Lire les BD',
   },
   {
     href: '/veille',
@@ -43,7 +55,7 @@ const spaces = [
   {
     href: '/sensibilisation',
     icon: '🎮',
-    tone: 'blue',
+    tone: 'green',
     name: 'Jeux',
     what: 'Des jeux gratuits pour apprendre à repérer les pièges du numérique en s’amusant, seul, en famille ou en groupe.',
     meta: 'Tout public, tout âge',

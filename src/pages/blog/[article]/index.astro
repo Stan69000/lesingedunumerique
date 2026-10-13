@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import MaintenanceContent from '../../../components/MaintenanceContent.astro';
 import ShareButtons from '../../../components/ShareButtons.astro';
+import OctetBook from '../../../components/OctetBook.astro';
 import { siteSettings } from '../../../config/site';
 import { estimateReadingTimeMinutes } from '../../../lib/reading-time';
 import { ariaCurrent, footerNav, mainNav, navCta } from '../../../config/nav';
@@ -784,6 +785,8 @@ const articleSchema = {
                       </div>
                     </header>
 
+                    {post.id === 'les-aventures-d-octet-commencent-ici-decouvrez-le-cadeau-impossible' && <OctetBook />}
+
                     <div class="article-content">
                       <Content />
                     </div>
@@ -856,6 +859,7 @@ const articleSchema = {
                             </a>
                           </li>
                         </ul>
+                      </div>
                     </div>
                   </div>
                 </footer>

@@ -1,0 +1,244 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { siteSettings } from '../../config/site';
+import { getPlanches, parSaison, plancheCode, planchePath } from '../../lib/bd';
+
+const planches = await getPlanches();
+const saisons = parSaison(planches);
+const derniere = [...planches].reverse()[0];
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${siteSettings.siteUrl}/` },
+    { '@type': 'ListItem', position: 2, name: 'BD', item: `${siteSettings.siteUrl}/bd/` },
+  ],
+};
+
+const itemListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Les BD d’Octet',
+  itemListElement: planches.map((planche, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    url: new URL(planchePath(planche), siteSettings.siteUrl).toString(),
+    name: planche.data.title,
+  })),
+};
+---
+
+<SiteLayout
+  title="Les BD d’Octet : le numérique en une planche | Le Singe Du Numerique"
+  description="Une planche de BD par semaine pour comprendre le numérique et la cybersécurité sans jargon. Chaque planche est transcrite en texte."
+  eyebrow="BD"
+  headline="Les BD"
+  accent="d’Octet"
+  intro="Une planche par semaine pour comprendre le numérique sans jargon. Chaque planche est intégralement transcrite."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(itemListSchema)} />
+
+  {planches.length === 0 ? (
+    <p class="bd-empty">Les premières planches arrivent très bientôt.</p>
+  ) : (
+    <>
+      {derniere && (
+        <section class="bd-latest" aria-labelledby="bd-latest-title">
+          <p class="bd-kicker">Dernière planche — {plancheCode(derniere)}</p>
+          <h2 id="bd-latest-title">{derniere.data.title}</h2>
+          <p>{derniere.data.description}</p>
+          <a href={planchePath(derniere)} class="cta-button cta-primary">Lire la planche</a>
+        </section>
+      )}
+
+      {saisons.map(({ saison, planches: liste }) => (
+        <section class="bd-season" aria-labelledby={`saison-${saison}`}>
+          <h2 id={`saison-${saison}`} class="bd-season-title">Saison {saison}</h2>
+          <ul class="bd-grid" role="list">
+            {liste.map((planche) => (
+              <li class="bd-card">
+                <a href={planchePath(planche)} class="bd-card-link">
+                  <img
+                    src={planche.data.planche}
+                    alt=""
+                    width={planche.data.plancheWidth}
+                    height={planche.data.plancheHeight}
+                    loading="lazy"
+                    decoding="async"
+                    class="bd-card-thumb"
+                  />
+                  <span class="bd-card-body">
+                    <span class="bd-chip">{plancheCode(planche)}</span>
+                    <span class="bd-card-title">{planche.data.title}</span>
+                    <span class="bd-card-desc">{planche.data.description}</span>
+                    <time class="bd-card-date" datetime={planche.data.pubDate.toISOString()}>
+                      {planche.data.pubDate.toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric',
+                      })}
+                    </time>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </>
+  )}
+
+  <p class="bd-rss">
+    <a href="/bd.xml">S’abonner au flux RSS des BD</a>
+  </p>
+</SiteLayout>
+
+<style>
+  .bd-empty {
+    padding: 32px;
+    border: 1px dashed var(--border);
+    border-radius: 16px;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  .bd-latest {
+    padding: 28px;
+    margin-bottom: 48px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--bg-card);
+  }
+
+  .bd-kicker {
+    margin: 0 0 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .bd-latest .cta-button {
+    text-decoration: none;
+  }
+
+  .bd-latest h2 {
+    margin: 0 0 12px;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .bd-latest p {
+    margin: 0 0 20px;
+    color: var(--text-muted);
+  }
+
+  .bd-season + .bd-season {
+    margin-top: 48px;
+  }
+
+  .bd-season-title {
+    margin: 0 0 20px;
+    font-size: 1.4rem;
+  }
+
+  .bd-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bd-card {
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    background: var(--bg-card);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .bd-card:hover,
+  .bd-card:focus-within {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+
+  /* Le reset des liens du layout est scopé : il ne descend pas dans le slot. */
+  .bd-card-link {
+    display: block;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .bd-card-thumb {
+    display: block;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: top center;
+    background: var(--code-bg);
+  }
+
+  .bd-card-body {
+    display: block;
+    padding: 18px;
+  }
+
+  .bd-chip {
+    display: inline-block;
+    margin-bottom: 10px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--accent) 18%, transparent);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+  }
+
+  .bd-card-title {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+
+  .bd-card-desc {
+    display: block;
+    margin-bottom: 12px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .bd-card-date {
+    display: block;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+  }
+
+  .bd-rss {
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  .bd-rss a {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bd-card {
+      transition: none;
+    }
+
+    .bd-card:hover,
+    .bd-card:focus-within {
+      transform: none;
+    }
+  }
+</style>

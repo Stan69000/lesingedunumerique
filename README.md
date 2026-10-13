@@ -109,8 +109,6 @@ Depuis la racine du projet :
 | `npm run dev` | lance le serveur local sur `http://localhost:4321` |
 | `npm run build` | génère le site statique dans `dist/` |
 | `npm run preview` | prévisualise le build localement |
-| `npm run csp:hash-jeux` | régénère les hashes CSP des jeux dans `public/.htaccess` |
-| `npm run hooks:install` | active les hooks Git versionnés du projet |
 
 ## Ajouter un article de blog
 
@@ -125,20 +123,12 @@ Depuis la racine du projet :
 
 ## Administration du contenu
 
-Une base d'administration `Decap CMS` est préparée pour le blog.
-
-En local :
-
-1. lancer le site avec `npm run dev`
-2. lancer le backend local avec `npx decap-server`
-3. ouvrir `/admin`
-
-En production :
+Le contenu du site est administré depuis la super-admin centralisée :
 
 - site public : `https://lesingedunumerique.fr`
-- administration : `https://lesingedunumerique-oauth.vercel.app/admin/`
+- administration : `https://admin.stan-bouchet.fr/dashboard`
 
-L'administration publique ne doit pas être servie depuis O2Switch.
+L'ancien accès Decap CMS et son service OAuth ne font plus partie de ce dépôt.
 
 ## Déploiement O2Switch
 
@@ -147,8 +137,8 @@ Le site public est déployé automatiquement depuis `main` via GitHub Actions.
 Les workflows :
 
 1. `Security CI` sur PR et `main` :
-   - `npm audit` (racine + `decap-oauth-vercel`)
-   - build Astro (racine + `decap-oauth-vercel`)
+   - `npm audit` des dépendances de production
+   - build Astro du site
    - scan de secrets (`gitleaks`)
 2. `Dependabot Auto Merge` :
    - auto-approve + auto-merge pour les mises à jour `patch`/`minor`
@@ -180,33 +170,25 @@ Valeur possible pour `O2SWITCH_HEALTHCHECK_URLS` :
 
 Note :
 
-- le workflow n'envoie pas `admin/` sur O2Switch
-- l'administration reste servie uniquement sur Vercel
 - au premier déploiement, s'il n'existe pas encore d'artefact sain, un rollback automatique n'est pas possible
 
-## CSP des jeux
+## Bibliothèque de jeux
 
-Les pages `public/jeux/*.html` ont une CSP dédiée (hashes `script-src` +
-`script-src-attr`) dans `public/.htaccess`.
+Les jeux sont hébergés par la super-admin (`https://admin.stan-bouchet.fr/jeux/<slug>`)
+et embarqués en iframe. Le site ne contient plus de HTML de jeu : il lit le
+catalogue `src/data/jeux.json`, **généré et committé par l'admin** à chaque
+publication. Ne pas l'éditer à la main, il serait écrasé au prochain sync.
 
-Après chaque modification JS/HTML inline d'un jeu, lancer :
+Ce catalogue alimente `/sensibilisation`, `/sensibilisation/jeux` et une page par
+jeu (`src/pages/sensibilisation/jeux/[slug].astro`). Les vignettes sont copiées
+dans `public/jeux/covers/`.
 
-```bash
-npm run csp:hash-jeux
-```
+Pour ajouter ou modifier un jeu : tout se passe dans l'admin (upload de la
+version, métadonnées de la page publique, publication), puis « Déployer » pousse
+sur `main` et déclenche le build O2Switch.
 
-Cette commande recalcule automatiquement les hashes et met à jour la ligne CSP
-des pages jeux.
-
-Pour afficher un rappel automatique au commit quand un jeu change, active les
-hooks Git du projet une fois :
-
-```bash
-npm run hooks:install
-```
-
-Ensuite, si un `public/jeux/*.html` est modifié sans mise à jour/staging de
-`public/.htaccess`, le `pre-commit` bloque le commit avec les actions à faire.
+L'origine qui sert les jeux doit rester listée dans `frame-src` de la CSP
+(`public/.htaccess`), sinon l'iframe est bloquée par le navigateur.
 
 ## Accessibilité
 

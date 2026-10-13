@@ -1,0 +1,44 @@
+---
+import type { Jeu } from '../lib/jeux';
+import '../styles/jeux.css';
+
+interface Props {
+  jeu: Jeu;
+  index?: number;
+}
+
+const { jeu, index = 0 } = Astro.props;
+
+// L'accent tourne avec la position pour éviter une grille monotone, et sert
+// aussi de dégradé de repli quand la fiche n'a pas de vignette.
+const ACCENTS = ['accent-a', 'accent-b', 'accent-c', 'accent-d'];
+const accent = ACCENTS[index % ACCENTS.length];
+const revealDelay = `reveal-${Math.min(index + 1, 3)}`;
+const themes = jeu.tags.join('|').toLowerCase();
+---
+
+<article class={`game-card ${accent} reveal ${revealDelay}`} role="listitem" data-jeu data-themes={themes}>
+  {jeu.cover ? (
+    <img class="game-cover" src={jeu.cover} alt="" width="800" height="450" loading="lazy" decoding="async" />
+  ) : (
+    <p class="game-preview" aria-hidden="true"><span>{jeu.name}</span></p>
+  )}
+
+  <div class="game-head">
+    <span class="game-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M8 5h8v2H8zM6 9h12l1 8H5l1-8Zm4 3v3m4-3v3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    {jeu.ageRange && <p class="game-badge">{jeu.ageRange}</p>}
+  </div>
+
+  <h3>{jeu.name}</h3>
+  {jeu.description && <p>{jeu.description}</p>}
+
+  {jeu.tags.length > 0 && (
+    <ul class="risk-tags" aria-label={`Thèmes de ${jeu.name}`}>
+      {jeu.tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+  )}
+
+  <a class="cta-button cta-secondary" href={`/sensibilisation/jeux/${jeu.slug}`}>Jouer à {jeu.name}</a>
+</article>

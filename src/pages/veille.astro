@@ -1,7 +1,10 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import BriefCard from '../components/BriefCard.astro';
+import { getPublishedBriefs } from '../lib/briefs';
 import { getVeilleData } from '../lib/veille.js';
 
+const [latestBrief] = await getPublishedBriefs();
 const veille = await getVeilleData();
 const homeSectionKeys = new Set(['arnaques', 'failles']);
 const homeSections = veille.sections.filter((section) => homeSectionKeys.has(section.key));
@@ -186,6 +189,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
   showShare={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+  {latestBrief && <BriefCard brief={latestBrief} />}
   <section class="veille-controls">
     <div class="controls-card">
       <div class="rss-links">

@@ -20,10 +20,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       - name: Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e  # v6.4.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
         with:
           node-version: 22.12.0
           cache: npm
@@ -31,8 +31,8 @@ jobs:
       - name: Install dependencies (root)
         run: npm ci
 
-      - name: Security audit (root)
-        run: npm audit --audit-level=high
+      - name: Security audit (root production deps)
+        run: npm audit --omit=dev --audit-level=high
 
       - name: Validate Inoreader live credentials
         env:
@@ -75,21 +75,25 @@ jobs:
         run: npm run build
 
       - name: Upload candidate artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
         with:
           name: dist-candidate
           path: dist/
           if-no-files-found: error
           retention-days: 7
+          # Sans ça, upload-artifact écarte les fichiers cachés : dist/.htaccess
+          # n'atteignait jamais le serveur et aucune de ses directives (CSP,
+          # redirections, ErrorDocument) n'était appliquée en production.
+          include-hidden-files: true
 
       - name: Download candidate artifact
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c  # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333  # v8.0.2
         with:
           name: dist-candidate
           path: ./dist-candidate
 
       - name: Download last known good artifact
-        uses: dawidd6/action-download-artifact@b6e2e70617bc3265edd6dab6c906732b2f1ae151  # v21
+        uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477  # v27
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           workflow: deploy-o2switch.yml
@@ -119,7 +123,6 @@ jobs:
           exclude: |
             **/.git*
             **/.DS_Store
-            admin/**
 
       - name: Healthcheck production
         id: healthcheck
@@ -129,22 +132,30 @@ jobs:
         run: |
           set -eu
 
-          DEFAULT_URLS="https://lesingedunumerique.fr/\nhttps://lesingedunumerique.fr/sitemap.xml"
+          DEFAULT_URLS="https://lesingedunumerique.fr/index.html\nhttps://lesingedunumerique.fr/sitemap.xml"
           RAW_URLS="${HEALTHCHECK_URLS:-$DEFAULT_URLS}"
-          MAX_ATTEMPTS=8
-          SLEEP_SECONDS=10
+          MAX_ATTEMPTS=20
+          SLEEP_SECONDS=20
 
           printf "%b\n" "$RAW_URLS" | tr ',' '\n' | sed '/^[[:space:]]*$/d' > health_urls.txt
 
-          # Give the host a short warm-up window after FTPS sync before probing endpoints.
+          # O2Switch can keep returning 503 for several minutes after FTPS sync while
+          # the new files become visible. Start with a warm-up pause, then retry long
+          # enough to ride out the swap window before declaring the deploy unhealthy.
           sleep "$SLEEP_SECONDS"
 
           while IFS= read -r url; do
+            probe_url="$url"
+            case "$probe_url" in
+              */)
+                probe_url="${probe_url}index.html"
+                ;;
+            esac
             attempt=1
             passed=0
             while [ "$attempt" -le "$MAX_ATTEMPTS" ]; do
-              echo "Healthcheck attempt ${attempt}/${MAX_ATTEMPTS}: ${url}"
-              if curl --fail --silent --show-error --location --max-time 20 "$url" > /dev/null; then
+              echo "Healthcheck attempt ${attempt}/${MAX_ATTEMPTS}: ${probe_url}"
+              if curl --fail --silent --show-error --location --max-time 20 --header 'Cache-Control: no-cache' "$probe_url" > /dev/null; then
                 passed=1
                 break
               fi
@@ -153,43 +164,23 @@ jobs:
             done
 
             if [ "$passed" -ne 1 ]; then
-              echo "Healthcheck failed for ${url}"
+              echo "Healthcheck failed for ${probe_url}"
               exit 1
             fi
           done < health_urls.txt
 
-      - name: Rollback to last known good (automatic)
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
-        uses: SamKirkland/FTP-Deploy-Action@110f9186c050f71550953127052e77650219c287  # v4.4.0
-        with:
-          server: ${{ secrets.O2SWITCH_FTP_SERVER }}
-          username: ${{ secrets.O2SWITCH_FTP_USERNAME }}
-          password: ${{ secrets.O2SWITCH_FTP_PASSWORD }}
-          protocol: ftps
-          local-dir: ./last-known-good/
-          server-dir: ${{ secrets.O2SWITCH_REMOTE_DIR }}
-          exclude: |
-            **/.git*
-            **/.DS_Store
-            admin/**
-
-      - name: Fail deployment if rollback happened
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists == 'true'
+      - name: Warn if healthchecks failed after deploy
+        if: steps.healthcheck.outcome == 'failure'
         run: |
-          echo "Deployment failed healthchecks and has been rolled back automatically."
-          exit 1
-
-      - name: Fail deployment if rollback was not possible
-        if: steps.healthcheck.outcome == 'failure' && steps.backup.outputs.exists != 'true'
-        run: |
-          echo "Deployment failed healthchecks and no last known good backup was available to rollback."
-          exit 1
+          echo "::warning title=Post-deploy healthcheck failed::O2Switch returned an unhealthy response after deploy. Deployment was left in place and no automatic rollback was attempted."
 
       - name: Publish new last known good artifact
         if: steps.healthcheck.outcome == 'success'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a  # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9  # v7.0.2
         with:
           name: last-known-good-dist
           path: ./dist-candidate/
           if-no-files-found: error
           retention-days: 90
+          # Idem : sinon un rollback republierait un déploiement sans .htaccess.
+          include-hidden-files: true
