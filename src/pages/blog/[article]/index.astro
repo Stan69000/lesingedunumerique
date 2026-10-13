@@ -4,6 +4,7 @@ import MaintenanceContent from '../../../components/MaintenanceContent.astro';
 import ShareButtons from '../../../components/ShareButtons.astro';
 import OctetBook from '../../../components/OctetBook.astro';
 import { siteSettings } from '../../../config/site';
+import essentiels from '../../../data/essentiels.json';
 import { estimateReadingTimeMinutes } from '../../../lib/reading-time';
 import { ariaCurrent, footerNav, mainNav, navCta } from '../../../config/nav';
 
@@ -24,6 +25,7 @@ if (!post) {
 }
 
 const { Content } = await render(post);
+const essentiel: string[] | undefined = (essentiels as Record<string, string[]>)[post.id];
 const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
 const articleTitle = `${post.data.title} | ${siteSettings.siteName}`;
 
@@ -499,6 +501,30 @@ const articleSchema = {
       h1 { font-size: 2.5rem; color: #fff; margin: 0 0 15px 0; line-height: 1.2; letter-spacing: -0.02em; }
       .meta { color: var(--text-muted); font-size: 1rem; font-weight: 500; }
 
+      .essentiel {
+        margin: 0 0 40px;
+        padding: 22px 26px;
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--accent);
+        border-radius: 16px;
+        background: var(--bg-card);
+      }
+      .essentiel h2 {
+        margin: 0 0 12px;
+        font-size: 1.15rem;
+        color: var(--accent);
+      }
+      .essentiel ul {
+        margin: 0;
+        padding-left: 1.2rem;
+        display: grid;
+        gap: 10px;
+      }
+      .essentiel li {
+        line-height: 1.65;
+        color: var(--text-main);
+      }
+
       .article-content {
         font-size: 1.12rem;
         color: #e2e8f0;
@@ -786,6 +812,15 @@ const articleSchema = {
                     </header>
 
                     {post.id === 'les-aventures-d-octet-commencent-ici-decouvrez-le-cadeau-impossible' && <OctetBook />}
+
+                    {essentiel && (
+                      <aside class="essentiel" aria-labelledby="essentiel-title">
+                        <h2 id="essentiel-title">L’essentiel</h2>
+                        <ul>
+                          {essentiel.map((point) => <li>{point}</li>)}
+                        </ul>
+                      </aside>
+                    )}
 
                     <div class="article-content">
                       <Content />

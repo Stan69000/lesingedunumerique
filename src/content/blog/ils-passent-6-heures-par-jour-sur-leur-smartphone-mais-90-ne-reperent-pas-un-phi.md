@@ -93,7 +93,7 @@ La bonne nouvelle ? Le collège semble aujourd'hui remplir une grande partie de 
 
 ## Et vous, par où commencer ?
 
-Vous n'avez pas besoin d'attendre l'école pour agir. Le premier réflexe utile est d'apprendre, en famille, à repérer un courriel d'hameçonnage et à protéger vos comptes. Pour aller plus loin, découvrez nos conseils pour [parler de cybersécurité aux enfants et aux ados](/proteger-les-enfants-et-les-ados-en-ligne) et, si ce n'est pas encore fait, [activez la double authentification (2FA) sur vos comptes](/activer-la-2fa-sur-vos-comptes).
+Vous n'avez pas besoin d'attendre l'école pour agir. Le premier réflexe utile est d'apprendre, en famille, à repérer un courriel d'hameçonnage et à protéger vos comptes. Pour aller plus loin, découvrez nos conseils pour [parler de cybersécurité aux enfants et aux ados](/blog/proteger-les-enfants-et-les-ados-en-ligne/) et, si ce n'est pas encore fait, [activez la double authentification (2FA) sur vos comptes](/blog/activer-la-2fa-sur-vos-comptes/).
 
 ---
 

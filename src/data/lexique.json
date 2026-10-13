@@ -1,0 +1,248 @@
+[
+  {
+    "terme": "Adresse IP",
+    "definition": "Le numéro qui identifie votre connexion sur Internet, un peu comme une adresse postale pour votre box ou votre téléphone."
+  },
+  {
+    "terme": "AI Act",
+    "aussi": [
+      "règlement européen sur l’IA"
+    ],
+    "definition": "Le règlement européen qui fixe des règles pour l’intelligence artificielle. Son principe : plus une IA peut peser sur la vie des gens, plus elle est encadrée.",
+    "lien": {
+      "href": "/blog/ai-act-l-europe-met-des-regles-autour-de-l-intelligence-artificielle-mais-qu-est/",
+      "label": "Lire l’article sur l’AI Act"
+    }
+  },
+  {
+    "terme": "Antivirus",
+    "definition": "Un logiciel qui surveille votre appareil pour repérer et bloquer les programmes malveillants."
+  },
+  {
+    "terme": "Application",
+    "aussi": [
+      "appli"
+    ],
+    "definition": "Un programme installé sur un téléphone, une tablette ou un ordinateur pour faire une tâche précise : messagerie, banque, météo, jeu…",
+    "lien": {
+      "href": "/bd/applications-regarde-ce-que-tu-autorises/",
+      "label": "Voir la BD sur les autorisations des applications"
+    }
+  },
+  {
+    "terme": "Chatbot",
+    "aussi": [
+      "agent conversationnel"
+    ],
+    "definition": "Un programme qui discute avec vous par écrit ou à l’oral, comme le ferait une personne. ChatGPT ou l’assistant d’un site marchand en sont des exemples."
+  },
+  {
+    "terme": "Contrôle parental",
+    "definition": "Des réglages qui permettent aux parents de limiter le temps d’écran, les applications et les contenus accessibles sur l’appareil d’un enfant.",
+    "lien": {
+      "href": "/blog/proteger-son-enfant-en-ligne-sans-se-ruiner-le-duo-gratuit-qui-tient-la-route/",
+      "label": "Lire le guide du contrôle parental gratuit"
+    }
+  },
+  {
+    "terme": "Cryptogramme",
+    "aussi": [
+      "code de sécurité de la carte"
+    ],
+    "definition": "Les trois chiffres au dos de votre carte bancaire. Ils servent à valider un paiement en ligne : ne les donnez jamais pour « recevoir un remboursement »."
+  },
+  {
+    "terme": "Cyberharcèlement",
+    "definition": "Du harcèlement qui passe par les écrans : messages blessants répétés, moqueries en groupe, diffusion de photos sans accord…",
+    "lien": {
+      "href": "/blog/proteger-les-enfants-et-les-ados-en-ligne/",
+      "label": "Lire le guide pour en parler avec les enfants et les ados"
+    }
+  },
+  {
+    "terme": "Deepfake",
+    "aussi": [
+      "hypertrucage"
+    ],
+    "definition": "Une image, une vidéo ou une voix fabriquée ou modifiée par une intelligence artificielle pour faire croire qu’une personne a dit ou fait quelque chose.",
+    "lien": {
+      "href": "/blog/contenus-generes-par-ia-une-nouvelle-etiquette-pour-nous-aider-mais-pas-pour-ref/",
+      "label": "Lire l’article sur les contenus générés par IA"
+    }
+  },
+  {
+    "terme": "DNS",
+    "definition": "L’annuaire d’Internet. Quand vous tapez le nom d’un site, le DNS retrouve l’adresse technique de ce site pour que votre appareil puisse l’ouvrir."
+  },
+  {
+    "terme": "Données personnelles",
+    "definition": "Toute information qui permet de vous identifier : nom, adresse, numéro de téléphone, photo, coordonnées bancaires…"
+  },
+  {
+    "terme": "Double authentification",
+    "aussi": [
+      "2FA",
+      "validation en deux étapes"
+    ],
+    "definition": "Une deuxième vérification demandée en plus du mot de passe pour ouvrir un compte, par exemple un code reçu sur votre téléphone. Même si quelqu’un vole votre mot de passe, il reste bloqué.",
+    "lien": {
+      "href": "/blog/activer-la-2fa-sur-vos-comptes/",
+      "label": "Lire le guide pour l’activer"
+    }
+  },
+  {
+    "terme": "Extension de navigateur",
+    "definition": "Un petit programme ajouté à votre navigateur pour lui donner une fonction en plus : bloquer les publicités, traduire une page… Certaines peuvent lire ce que vous faites en ligne.",
+    "lien": {
+      "href": "/bd/extensions-de-navigateur-pratiques-mais-pas-sans-risques-2/",
+      "label": "Voir la BD sur les extensions"
+    }
+  },
+  {
+    "terme": "Fuite de données",
+    "definition": "Un incident où des informations confidentielles détenues par une entreprise ou un service sont exposées ou volées. Vos données peuvent alors circuler sans que vous ayez fait d’erreur.",
+    "lien": {
+      "href": "/veille/failles",
+      "label": "Voir les dernières fuites de données"
+    }
+  },
+  {
+    "terme": "Gestionnaire de mots de passe",
+    "aussi": [
+      "coffre-fort de mots de passe"
+    ],
+    "definition": "Un outil qui retient tous vos mots de passe à votre place et les remplit pour vous. Vous n’avez plus qu’un seul mot de passe à mémoriser, celui du gestionnaire.",
+    "lien": {
+      "href": "/bd/mots-de-passe-les-bons-reflexes/",
+      "label": "Voir la BD sur les mots de passe"
+    }
+  },
+  {
+    "terme": "Hameçonnage",
+    "aussi": [
+      "phishing"
+    ],
+    "definition": "Une arnaque où un escroc se fait passer pour un organisme de confiance (banque, impôts, livreur…) pour vous faire donner vos mots de passe ou vos coordonnées bancaires.",
+    "lien": {
+      "href": "/bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage/",
+      "label": "Voir la BD pour repérer un faux mail"
+    }
+  },
+  {
+    "terme": "Harponnage",
+    "aussi": [
+      "hameçonnage ciblé"
+    ],
+    "definition": "Un hameçonnage personnalisé : le message contient de vraies informations sur vous (nom, adresse, IBAN) pour paraître crédible.",
+    "lien": {
+      "href": "/blog/ce-faux-abonnement-connait-votre-nom-votre-adresse-et-votre-iban-faut-il-panique/",
+      "label": "Lire l’exemple du faux abonnement"
+    }
+  },
+  {
+    "terme": "HTTPS",
+    "aussi": [
+      "cadenas"
+    ],
+    "definition": "Le « s » et le cadenas dans la barre d’adresse indiquent que les échanges avec le site sont protégés. Attention : ils ne prouvent pas que le site est honnête.",
+    "lien": {
+      "href": "/bd/faux-sites-verifier-l-adresse-avant-de-se-connecter/",
+      "label": "Voir la BD sur les faux sites"
+    }
+  },
+  {
+    "terme": "IA générative",
+    "aussi": [
+      "intelligence artificielle générative"
+    ],
+    "definition": "Une intelligence artificielle capable de produire du texte, des images, du son ou du code à partir d’une simple demande écrite.",
+    "lien": {
+      "href": "/bd/c-est-quoi-une-ia/",
+      "label": "Voir la BD « C’est quoi une IA ? »"
+    }
+  },
+  {
+    "terme": "IBAN",
+    "definition": "Le numéro qui identifie votre compte bancaire, celui qui figure sur un RIB. Il sert à recevoir un virement ou à mettre en place un prélèvement ; il est moins secret que le code de votre carte.",
+    "lien": {
+      "href": "/blog/ce-faux-abonnement-connait-votre-nom-votre-adresse-et-votre-iban-faut-il-panique/",
+      "label": "Lire l’article sur le faux abonnement"
+    }
+  },
+  {
+    "terme": "Mise à jour",
+    "definition": "Une nouvelle version d’une application ou du système de votre appareil. Elle corrige souvent des failles de sécurité : mieux vaut l’installer sans attendre.",
+    "lien": {
+      "href": "/bd/mises-a-jour-pourquoi-c-est-important/",
+      "label": "Voir la BD sur les mises à jour"
+    }
+  },
+  {
+    "terme": "Navigateur",
+    "definition": "Le logiciel qui sert à aller sur Internet : Chrome, Firefox, Safari, Edge…"
+  },
+  {
+    "terme": "Nom de domaine",
+    "definition": "Le nom d’un site dans son adresse, par exemple « lesingedunumerique.fr ». Les faux sites utilisent souvent un nom qui ressemble au vrai, à une lettre près.",
+    "lien": {
+      "href": "/bd/faux-sites-verifier-l-adresse-avant-de-se-connecter/",
+      "label": "Voir la BD sur les faux sites"
+    }
+  },
+  {
+    "terme": "Passkey",
+    "aussi": [
+      "clé d’accès"
+    ],
+    "definition": "Une façon de se connecter sans mot de passe : votre téléphone ou votre ordinateur prouve votre identité, avec votre empreinte, votre visage ou votre code de déverrouillage.",
+    "lien": {
+      "href": "/blog/activer-la-2fa-sur-vos-comptes/",
+      "label": "Lire le guide sur la double authentification"
+    }
+  },
+  {
+    "terme": "Phrase de passe",
+    "definition": "Un mot de passe fait de plusieurs mots à la suite. Plus long qu’un mot de passe classique, il est à la fois plus solide et plus facile à retenir.",
+    "lien": {
+      "href": "/bd/mots-de-passe-les-bons-reflexes/",
+      "label": "Voir la BD sur les mots de passe"
+    }
+  },
+  {
+    "terme": "Rançongiciel",
+    "aussi": [
+      "ransomware"
+    ],
+    "definition": "Un programme malveillant qui bloque vos fichiers et réclame de l’argent pour les rendre."
+  },
+  {
+    "terme": "RGPD",
+    "definition": "Le règlement européen qui protège vos données personnelles. Il vous donne notamment le droit de savoir ce qu’un organisme détient sur vous et de demander sa suppression."
+  },
+  {
+    "terme": "RSS",
+    "aussi": [
+      "flux RSS"
+    ],
+    "definition": "Un moyen de suivre un site sans compte ni réseau social : vous ajoutez l’adresse du flux dans une application de lecture, et les nouveautés y arrivent toutes seules.",
+    "lien": {
+      "href": "/flux",
+      "label": "Voir les flux RSS du site"
+    }
+  },
+  {
+    "terme": "Spam",
+    "aussi": [
+      "courrier indésirable"
+    ],
+    "definition": "Un message envoyé en masse sans que vous l’ayez demandé : publicité, mais aussi tentatives d’arnaque."
+  },
+  {
+    "terme": "VPN",
+    "definition": "Un service qui fait passer votre connexion par un intermédiaire protégé. Utile sur un Wi-Fi public, car il empêche les voisins de réseau de voir ce que vous faites.",
+    "lien": {
+      "href": "/bd/wi-fi-public-les-bons-reflexes/",
+      "label": "Voir la BD sur le Wi-Fi public"
+    }
+  }
+]

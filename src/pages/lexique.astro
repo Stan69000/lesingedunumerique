@@ -1,0 +1,216 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import lexique from '../data/lexique.json';
+
+const entrees = [...lexique].sort((a, b) => a.terme.localeCompare(b.terme, 'fr'));
+const ancre = (terme: string) =>
+  terme
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+const lettres = [...new Set(entrees.map((entree) => entree.terme[0].toUpperCase()))];
+const premiereDeLaLettre = new Set(
+  lettres.map((lettre) => entrees.find((entree) => entree.terme[0].toUpperCase() === lettre)?.terme),
+);
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'DefinedTermSet',
+  name: 'Les mots du numérique',
+  hasDefinedTerm: entrees.map((entree) => ({
+    '@type': 'DefinedTerm',
+    name: entree.terme,
+    description: entree.definition,
+  })),
+};
+---
+
+<SiteLayout
+  title="Les mots du numérique : le lexique | Le Singe Du Numérique"
+  description="Phishing, 2FA, IBAN, deepfake, VPN… Les mots du numérique expliqués simplement, en une ou deux phrases."
+  eyebrow="Lexique"
+  headline="Les mots"
+  accent="du numérique"
+  intro="Un mot que vous ne comprenez pas ? Voici les termes qui reviennent sur le site, expliqués en une ou deux phrases, sans jargon."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+
+  <div class="lexique-tools">
+    <label for="lexique-search">Chercher un mot</label>
+    <input id="lexique-search" type="search" placeholder="Ex. : phishing, IBAN, VPN…" autocomplete="off" />
+    <nav aria-label="Aller à une lettre">
+      <ul class="lexique-letters">
+        {lettres.map((lettre) => <li><a href={`#lettre-${lettre}`}>{lettre}</a></li>)}
+      </ul>
+    </nav>
+    <p id="lexique-status" class="lexique-status" role="status">{entrees.length} mots expliqués</p>
+  </div>
+
+  <dl class="lexique-list">
+    {entrees.map((entree) => (
+      <div
+        class="lexique-entry"
+        id={ancre(entree.terme)}
+        data-search={[entree.terme, ...(entree.aussi ?? []), entree.definition].join(' ')}
+      >
+        <dt>
+          <span id={premiereDeLaLettre.has(entree.terme) ? `lettre-${entree.terme[0].toUpperCase()}` : undefined}>
+            {entree.terme}
+          </span>
+          {entree.aussi && <small>aussi appelé {entree.aussi.join(', ')}</small>}
+        </dt>
+        <dd>
+          <p>{entree.definition}</p>
+          {entree.lien && <a href={entree.lien.href}>{entree.lien.label} <span aria-hidden="true">→</span></a>}
+        </dd>
+      </div>
+    ))}
+  </dl>
+
+  <p class="lexique-empty" id="lexique-empty" hidden>
+    Ce mot n’est pas encore dans le lexique. <a href="/contact">Dites-le-nous</a>, nous l’ajouterons.
+  </p>
+
+  <script>
+    const input = document.getElementById('lexique-search');
+    const entries = Array.from(document.querySelectorAll('.lexique-entry'));
+    const status = document.getElementById('lexique-status');
+    const empty = document.getElementById('lexique-empty');
+    const normalize = (value) =>
+      (value || '')
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .trim();
+
+    input?.addEventListener('input', () => {
+      const query = normalize(input.value);
+      let visible = 0;
+      entries.forEach((entry) => {
+        const match = !query || normalize(entry.getAttribute('data-search')).includes(query);
+        entry.hidden = !match;
+        if (match) visible += 1;
+      });
+      if (status) status.textContent = `${visible} mot${visible > 1 ? 's' : ''} ${query ? 'trouvé' : 'expliqué'}${visible > 1 ? 's' : ''}`;
+      if (empty) empty.hidden = visible !== 0;
+    });
+  </script>
+</SiteLayout>
+
+<style>
+  .lexique-tools {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .lexique-tools label {
+    font-weight: 700;
+  }
+
+  .lexique-tools input {
+    width: 100%;
+    max-width: 420px;
+    min-height: 48px;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    font: inherit;
+  }
+
+  .lexique-letters {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .lexique-letters a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-main);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .lexique-letters a:hover {
+    border-color: var(--brand-green);
+    color: var(--brand-green);
+  }
+
+  .lexique-status {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .lexique-list {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .lexique-entry {
+    scroll-margin-top: 110px;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-card);
+  }
+
+  .lexique-entry[hidden] {
+    display: none;
+  }
+
+  .lexique-entry dt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.8rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .lexique-entry dt span {
+    scroll-margin-top: 130px;
+  }
+
+  .lexique-entry dt small {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .lexique-entry dd {
+    margin: 0;
+  }
+
+  .lexique-entry dd p {
+    margin: 0 0 0.5rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  .lexique-entry dd a,
+  .lexique-empty a {
+    color: var(--brand-green);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .lexique-entry dd a:hover,
+  .lexique-empty a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -84,4 +84,4 @@ Les premiers jeux sont d'ores et déjà accessibles sur notre page de sensibilis
 
 Les BD et les jeux poursuivent le même objectif : rendre la sensibilisation numérique plus humaine. Les BD permettent de raconter et d'expliquer, les jeux de tester et de pratiquer. L'un vous aide à comprendre, l'autre à vous entraîner. Ensemble, ils permettent d'apprendre le numérique autrement : sans honte, sans peur et sans jargon compliqué.
 
-Pour commencer, découvrez dès maintenant les [jeux du Singe du Numérique sur notre page de sensibilisation](#). Et si vous ne les connaissez pas encore, faites aussi connaissance avec [les BD d'Octet](/bienvenue-bd-octet), le format qui a tout déclenché.
+Pour commencer, découvrez dès maintenant les [jeux du Singe du Numérique sur notre page de sensibilisation](#). Et si vous ne les connaissez pas encore, faites aussi connaissance avec [les BD d'Octet](/blog/bienvenue-bd-octet/), le format qui a tout déclenché.

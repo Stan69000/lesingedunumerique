@@ -18,6 +18,7 @@ export const navCta: NavItem = { href: '/adhesion', label: 'Rejoindre' };
 export const footerNav: NavItem[] = [
   ...mainNav,
   navCta,
+  { href: '/lexique', label: 'Lexique' },
   { href: '/flux', label: 'Flux RSS' },
   { href: '/plan-du-site', label: 'Plan du site' },
   { href: '/mentions-legales', label: 'Mentions légales' },
