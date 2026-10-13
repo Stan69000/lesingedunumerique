@@ -9,9 +9,27 @@ import { ariaCurrent, footerNav, mainNav, navCta } from '../../config/nav';
 const posts = (await getCollection('blog')).filter((p) => !p.data.draft);
 posts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const rubriques = ['Articles', 'Veille', 'Technos'];
-const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
-  a.localeCompare(b, 'fr'),
+// Les thèmes regroupent les tags par besoin du lecteur. Un tag absent de cette
+// liste reste filtrable via `?tag=` mais n'apparaît dans aucun thème.
+const themes = [
+  { slug: 'debuter', label: 'Pour débuter', tags: ['Débutant'] },
+  { slug: 'guides', label: 'Guides pratiques', tags: ['Guide pratique', '2FA'] },
+  { slug: 'famille', label: 'Famille et proches', tags: ['Familles', 'Jeunesse', 'Seniors', 'Transmission'] },
+  {
+    slug: 'comprendre',
+    label: 'Comprendre et découvrir',
+    tags: ['Veille', 'IA', 'Médias', 'Podcasts', 'Ressources', 'Culture numérique'],
+  },
+  {
+    slug: 'association',
+    label: 'Vie de l’association',
+    tags: ['Vie de l\'asso', 'Projet', 'Retour d\'expérience', 'Site web', 'Hébergement', 'Mémoire numérique'],
+  },
+];
+const themesOf = (tags: string[]) =>
+  themes.filter((theme) => theme.tags.some((tag) => tags.includes(tag))).map((theme) => theme.slug);
+const themeCounts = Object.fromEntries(
+  themes.map((theme) => [theme.slug, posts.filter((post) => themesOf(post.data.tags).includes(theme.slug)).length]),
 );
 const currentPath = Astro.url.pathname;
 const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
@@ -148,12 +166,10 @@ const blogSchema = {
 
           <div class="hero-meta">
             <span id="results-count" aria-live="polite">{posts.length} article{posts.length > 1 ? 's' : ''}</span>
-            <span>•</span>
-            <span>{allTags.length} tag{allTags.length > 1 ? 's' : ''}</span>
           </div>
 
           <form class="search-panel" id="blog-filters" action="/blog" method="get">
-            <label class="sr-only" for="blog-search">Recherche dans les articles du blog</label>
+            <label class="sr-only" for="blog-search">Rechercher dans les articles et guides</label>
             <div class="search-bar">
               <span class="search-icon" aria-hidden="true">
                 <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
@@ -162,36 +178,29 @@ const blogSchema = {
                 id="blog-search"
                 name="search"
                 type="search"
-                placeholder="Rechercher un article, un auteur ou un sujet..."
+                placeholder="Ex. : mot de passe, arnaque, enfants…"
                 class="search-input"
                 autocomplete="off"
               />
               <button type="submit" class="search-button">Rechercher</button>
             </div>
 
-            <div class="filters-row">
-              <fieldset class="filter-group">
-                <legend class="filter-label">Rubriques</legend>
-                <div class="tag-cloud">
-                  <button type="button" class="cloud-tag is-active" data-rubrique="">Toutes les rubriques</button>
-                  {rubriques.map((rubrique) => (
-                    <button type="button" class="cloud-tag" data-rubrique={rubrique}>{rubrique}</button>
-                  ))}
-                </div>
-              </fieldset>
+            <fieldset class="filter-group">
+              <legend class="filter-label">Que cherchez-vous&nbsp;?</legend>
+              <div class="tag-cloud">
+                <button type="button" class="cloud-tag is-active" data-theme="" aria-pressed="true">Tout voir</button>
+                {themes.filter((theme) => themeCounts[theme.slug] > 0).map((theme) => (
+                  <button type="button" class="cloud-tag" data-theme={theme.slug} aria-pressed="false">
+                    {theme.label} <span class="cloud-count">{themeCounts[theme.slug]}</span>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
 
-              <fieldset class="filter-group">
-                <legend class="filter-label">Tags</legend>
-                <div class="tag-cloud">
-                  <button type="button" class="cloud-tag is-active" data-tag="">Tous les tags</button>
-                  {allTags.map((tag) => (
-                    <button type="button" class="cloud-tag" data-tag={tag}>{tag}</button>
-                  ))}
-                </div>
-              </fieldset>
-
-              <a href="/blog" class="reset-link">Réinitialiser les filtres</a>
-            </div>
+            <p class="active-tag" id="active-tag" hidden>
+              Sujet affiché&nbsp;: <strong id="active-tag-name"></strong>
+              <a href="/blog" class="reset-link">Tout afficher</a>
+            </p>
           </form>
         </div>
       </section>
@@ -199,11 +208,11 @@ const blogSchema = {
       <section class="content-section">
         <div class="container">
           <div class="section-header">
-            <h2>Derniers <span class="text-accent">articles</span></h2>
+            <h2>Les <span class="text-accent">articles</span></h2>
             <div class="line-deco"></div>
           </div>
 
-          <p class="empty-state" id="empty-state" hidden aria-live="polite">Aucun article ne correspond à ce filtre pour le moment.</p>
+          <p class="empty-state" id="empty-state" hidden aria-live="polite">Aucun article ne correspond à cette recherche. <a href="/blog">Tout afficher</a></p>
 
           <div class="posts-grid" id="posts-grid">
             {posts.map((post, index) => {
@@ -219,6 +228,7 @@ const blogSchema = {
                   class={`post-card ${index === 0 ? 'featured' : ''}`}
                   data-tags={post.data.tags.join('|')}
                   data-rubrique={post.data.rubrique}
+                  data-themes={themesOf(post.data.tags).join('|')}
                   data-searchable={searchable}
                 >
                   <div class={`card-top ${index % 3 === 0 ? 'card-green' : index % 3 === 1 ? 'card-orange' : 'card-blue'}`}>
@@ -232,7 +242,6 @@ const blogSchema = {
                   </div>
 
                   <div class="post-content">
-                    <div class="rubrique-chip">{post.data.rubrique}</div>
                     <div class="tag-list">
                       {post.data.tags.map((tag) => (
                         <a href={`/blog?tag=${encodeURIComponent(tag)}`} class="tag-pill">{tag}</a>
@@ -340,33 +349,31 @@ const blogSchema = {
           .trim();
 
       const searchInput = document.getElementById('blog-search');
-      const rubriqueButtons = Array.from(document.querySelectorAll('[data-rubrique]'));
-      const tagButtons = Array.from(document.querySelectorAll('[data-tag]'));
+      const themeButtons = Array.from(document.querySelectorAll('button[data-theme]'));
+      const activeTag = document.getElementById('active-tag');
+      const activeTagName = document.getElementById('active-tag-name');
       const cards = Array.from(document.querySelectorAll('.post-card'));
       const countNode = document.getElementById('results-count');
       const emptyState = document.getElementById('empty-state');
 
       let selectedRubrique = params.get('rubrique') || '';
       let selectedTag = params.get('tag') || '';
+      let selectedTheme = params.get('theme') || '';
 
       if (searchInput) {
         searchInput.value = params.get('search') || '';
       }
 
-      function syncRubriqueButtons() {
-        const normalizedRubrique = normalize(selectedRubrique);
-        rubriqueButtons.forEach((button) => {
-          const isActive = normalize(button.dataset.rubrique || '') === normalizedRubrique;
+      function syncThemeButtons() {
+        themeButtons.forEach((button) => {
+          const isActive = (button.dataset.theme || '') === selectedTheme;
           button.classList.toggle('is-active', isActive);
+          button.setAttribute('aria-pressed', String(isActive));
         });
-      }
-
-      function syncTagButtons() {
-        const normalizedTag = normalize(selectedTag);
-        tagButtons.forEach((button) => {
-          const isActive = normalize(button.dataset.tag || '') === normalizedTag;
-          button.classList.toggle('is-active', isActive);
-        });
+        if (activeTag && activeTagName) {
+          activeTag.hidden = !selectedTag;
+          activeTagName.textContent = selectedTag;
+        }
       }
 
       function updateUrl(searchTerm) {
@@ -374,6 +381,7 @@ const blogSchema = {
         if (searchTerm) nextParams.set('search', searchTerm);
         if (selectedRubrique) nextParams.set('rubrique', selectedRubrique);
         if (selectedTag) nextParams.set('tag', selectedTag);
+        if (selectedTheme) nextParams.set('theme', selectedTheme);
         const nextQuery = nextParams.toString();
         const nextUrl = nextQuery ? `/blog?${nextQuery}` : '/blog';
         window.history.replaceState({}, '', nextUrl);
@@ -392,7 +400,8 @@ const blogSchema = {
           const matchesSearch = !searchTerm || searchable.includes(searchTerm);
           const matchesRubrique = !normalizedRubrique || rubrique === normalizedRubrique;
           const matchesTag = !normalizedTag || tags.includes(normalizedTag);
-          const visible = matchesSearch && matchesRubrique && matchesTag;
+          const matchesTheme = !selectedTheme || (card.dataset.themes || '').split('|').includes(selectedTheme);
+          const visible = matchesSearch && matchesRubrique && matchesTag && matchesTheme;
           card.hidden = !visible;
           if (visible) visibleCount += 1;
         });
@@ -405,21 +414,13 @@ const blogSchema = {
           emptyState.hidden = visibleCount !== 0;
         }
 
-        syncRubriqueButtons();
-        syncTagButtons();
+        syncThemeButtons();
         updateUrl(searchTerm);
       }
 
-      rubriqueButtons.forEach((button) => {
+      themeButtons.forEach((button) => {
         button.addEventListener('click', () => {
-          selectedRubrique = button.dataset.rubrique || '';
-          applyFilters();
-        });
-      });
-
-      tagButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          selectedTag = button.dataset.tag || '';
+          selectedTheme = button.dataset.theme || '';
           applyFilters();
         });
       });
@@ -1038,6 +1039,55 @@ const blogSchema = {
 
   .cloud-tag {
     cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 8px 16px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--text-main);
+  }
+
+  .cloud-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .filter-group {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    justify-items: center;
+  }
+
+  .filter-group .tag-cloud {
+    justify-content: center;
+  }
+
+  .filter-label {
+    padding: 0;
+    margin: 0 auto;
+    font-size: 1rem;
+  }
+
+  .active-tag {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 12px;
+    color: var(--text-muted);
+  }
+
+  .active-tag[hidden] {
+    display: none;
+  }
+
+  .active-tag strong {
+    color: var(--text-main);
   }
 
   .cloud-tag:hover,
