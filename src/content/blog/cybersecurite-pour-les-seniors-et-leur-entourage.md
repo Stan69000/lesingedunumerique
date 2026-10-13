@@ -9,6 +9,7 @@ tags:
   - Seniors
   - Guide pratique
 author: Stan Bouchet
+featured: true
 ---
 # Cybersécurité pour les seniors et leur entourage
  

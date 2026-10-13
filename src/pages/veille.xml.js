@@ -5,8 +5,8 @@ import { getVeilleData } from '../lib/veille';
 export async function GET() {
   const veille = await getVeilleData();
   const body = buildRssXml({
-    title: 'Le Singe Du Numerique - Veille complete',
-    description: 'Tous les articles de veille publique (arnaques, failles, cyber, associations).',
+    title: 'Le Singe Du Numérique - Toutes les alertes',
+    description: 'Toutes les alertes : arnaques, fuites de données, cybersécurité et associations.',
     siteUrl: siteSettings.siteUrl,
     path: '/veille.xml',
     items: veille.allArticles,

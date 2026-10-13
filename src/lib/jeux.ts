@@ -32,7 +32,7 @@ export function jeuPath(slug: string): string {
 /** Titre de page : le champ SEO s'il est renseigné, sinon un gabarit par défaut. */
 export function jeuTitle(jeu: Jeu): string {
   if (jeu.seoTitle) return jeu.seoTitle;
-  return `${jeu.name} : jeu de sensibilisation numérique | Le Singe Du Numerique`;
+  return `${jeu.name} : jeu de sensibilisation numérique | Le Singe Du Numérique`;
 }
 
 export function jeuDescription(jeu: Jeu): string {

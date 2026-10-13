@@ -133,4 +133,4 @@ Prenez une demi-heure, installez tranquillement, testez, et surtout : **explique
 
 ---
 
-*Un doute sur une étape ? Le Singe du Numérique organise des ateliers et répond à vos questions. La technique doit rester au service des familles, jamais l'inverse.*
+*Un doute sur une étape ? Le Singe du Numérique répond à vos questions, [en ligne ou sur rendez-vous](/contact/). La technique doit rester au service des familles, jamais l'inverse.*

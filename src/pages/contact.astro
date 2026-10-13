@@ -12,11 +12,11 @@ const hasTurnstileSiteKey = turnstileSiteKey !== '';
 
 <SiteLayout
   title="Contact | Le Singe Du Numérique"
-  description="Contacter Le Singe Du Numérique pour un atelier, un accompagnement, une question sur le numérique ou un besoin associatif local."
+  description="Contacter Le Singe Du Numérique pour une question sur le numérique, un rendez-vous autour d’un projet ou un besoin associatif local."
   eyebrow="Contact"
   headline="Parler d’un besoin,"
   accent="poser une question"
-  intro="Que ce soit pour un atelier, un accompagnement, une idée de projet ou un besoin technique pour une association, tu peux nous écrire ici."
+  intro="Que ce soit pour une question, un rendez-vous autour d’un projet ou un besoin technique pour une association, vous pouvez nous écrire ici."
   shareTitle="Contacter Le Singe Du Numérique"
 >
   <div class="contact-grid">
@@ -104,7 +104,7 @@ const hasTurnstileSiteKey = turnstileSiteKey !== '';
       <article class="info-card">
         <h2>Téléphone de l’association</h2>
         <p>
-          Un numéro provisoire est déjà disponible pour les premiers échanges.
+          Vous pouvez aussi nous appeler ou nous laisser un message.
         </p>
         <p class="contact-phone">
           <a href="tel:+33771680601">07 71 68 06 01</a>
@@ -112,45 +112,11 @@ const hasTurnstileSiteKey = turnstileSiteKey !== '';
       </article>
 
       <article class="info-card">
-        <h2>Nous trouver</h2>
+        <h2>Où sommes-nous&nbsp;?</h2>
         <p>
-          Le point de repère retenu pour le moment est la mairie de Fleurieux-sur-l’Arbresle.
+          L’association est basée à Fleurieux-sur-l’Arbresle. Nous n’avons pas de local ouvert au
+          public&nbsp;: les échanges se font en ligne ou sur rendez-vous.
         </p>
-        <address class="contact-address">
-          21 place Benoît-Dubost<br />
-          69210 Fleurieux-sur-l’Arbresle
-        </address>
-        <div class="map-frame">
-          <iframe
-            title="Carte de Fleurieux-sur-l’Arbresle"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=4.6468%2C45.8344%2C4.6568%2C45.8386&layer=mapnik&marker=45.8364%2C4.6518"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            sandbox="allow-scripts allow-same-origin allow-popups"
-          ></iframe>
-        </div>
-        <ul class="cta-row">
-          <li>
-            <a
-              href="https://www.google.com/maps/dir/?api=1&destination=21+place+Benoit+Dubost,+69210+Fleurieux-sur-l%27Arbresle"
-              class="cta-button cta-secondary"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Préparer l’itinéraire
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://www.openstreetmap.org/?mlat=45.8364&mlon=4.6518#map=18/45.8364/4.6518"
-              class="cta-button cta-secondary"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Ouvrir la carte
-            </a>
-          </li>
-        </ul>
       </article>
     </aside>
   </div>
@@ -450,28 +416,8 @@ const hasTurnstileSiteKey = turnstileSiteKey !== '';
     color: var(--text-main);
   }
 
-  .contact-address {
-    color: var(--text-muted);
-    font-style: normal;
-    line-height: 1.7;
-    margin-bottom: 18px;
-  }
 
-  .map-frame {
-    overflow: hidden;
-    border-radius: 20px;
-    border: 1px solid var(--border-color);
-    margin-bottom: 16px;
-    background: rgba(255, 255, 255, 0.03);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  }
 
-  .map-frame iframe {
-    display: block;
-    width: 100%;
-    min-height: 320px;
-    border: 0;
-  }
 
   @media (max-width: 1180px) {
     .contact-grid {

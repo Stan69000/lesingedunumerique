@@ -10,7 +10,6 @@ export async function GET() {
   const staticPaths = [
     '/',
     '/asso/',
-    '/projets/',
     '/adhesion/',
     '/contact/',
     '/blog/',
@@ -23,6 +22,7 @@ export async function GET() {
     '/veille/cyber/',
     '/veille/associations/',
     '/flux/',
+    '/lexique/',
     '/veille-sources/',
     '/plan-du-site/',
     '/accessibilite/',

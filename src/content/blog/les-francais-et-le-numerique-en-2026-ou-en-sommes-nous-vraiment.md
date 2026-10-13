@@ -106,7 +106,7 @@ Comme le rappelle souvent Octet :
 
 ## Et maintenant ?
 
-Ce panorama montre que l'enjeu n'est plus tant de se connecter que de bien comprendre ce que l'on fait en ligne. Si vous souhaitez passer à l'action, commencez par les gestes simples : pour cela, vous pouvez consulter notre guide [comment bien sécuriser sa vie numérique](/comment-bien-securiser-sa-vie-numerique). C'est un bon premier pas vers un usage plus serein et plus autonome.
+Ce panorama montre que l'enjeu n'est plus tant de se connecter que de bien comprendre ce que l'on fait en ligne. Si vous souhaitez passer à l'action, commencez par les gestes simples : pour cela, vous pouvez consulter notre guide [comment bien sécuriser sa vie numérique](/blog/comment-bien-securiser-sa-vie-numerique/). C'est un bon premier pas vers un usage plus serein et plus autonome.
 
 ## Sources
 

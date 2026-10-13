@@ -156,6 +156,24 @@ if (hasMissingInoreaderAuthWarning) {
   publicWarnings.unshift('Alimentation en direct temporairement indisponible. Affichage depuis le cache.');
 }
 
+const urgentActions = [
+  {
+    href: 'https://www.17cyber.gouv.fr/',
+    title: 'Obtenir de l’aide tout de suite',
+    text: '17Cyber : un policier ou un gendarme vous répond en ligne, 24 h/24.',
+  },
+  {
+    href: 'https://www.cybermalveillance.gouv.fr/signalement',
+    title: 'Signaler une arnaque',
+    text: 'Cybermalveillance.gouv.fr : un diagnostic et des conseils selon votre situation.',
+  },
+  {
+    href: 'https://www.internet-signalement.gouv.fr/PharosS1/',
+    title: 'Signaler un contenu illégal',
+    text: 'PHAROS : le portail officiel pour signaler un contenu illicite en ligne.',
+  },
+];
+
 const franceSourceRegex =
   /(france|gouv|anssi|cybermalveillance|franceinfo|francebleu|bfm|ouest-france|le parisien|la depeche|actu\.fr|numerama|clubic|zataz|le monde)/i;
 
@@ -176,11 +194,11 @@ function isFranceArticle(article) {
 ---
 
 <SiteLayout
-  title="Veille"
+  title="Alertes arnaques | Le Singe Du Numérique"
   description="Ne laissez pas les arnaques vous surprendre. Savoir, c’est déjà une protection."
-  eyebrow="Veille"
-  headline="Veille"
-  accent="cyber"
+  eyebrow="Arnaques et fuites de données"
+  headline="Alertes"
+  accent="arnaques"
   intro={`⚠️ Ne laissez pas les arnaques vous surprendre
 
 Savoir, c’est déjà une protection.
@@ -189,66 +207,61 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
   showShare={false}
 >
   <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
-  {latestBrief && <BriefCard brief={latestBrief} />}
-  <section class="veille-controls">
-    <div class="controls-card">
-      <div class="rss-links">
-        <a href="/flux" class="rss-button">Voir tous les flux RSS</a>
-        <a href="/veille.xml" class="rss-button rss-button-secondary">S'abonner à la veille complète</a>
-        <a href="/veille-sources" class="rss-button rss-button-secondary">Voir nos sources</a>
-        <button id="veille-reset" type="button" class="rss-button rss-button-ghost">Réinitialiser les filtres</button>
-      </div>
+  <section id="actions-rapides" class="action-strip" aria-labelledby="actions-title">
+    <h2 id="actions-title">Un doute ou déjà victime ? Les bons contacts</h2>
+    <ul class="action-strip-grid">
+      {urgentActions.map((action) => (
+        <li>
+          <a href={action.href} target="_blank" rel="noopener noreferrer nofollow">
+            <strong>{action.title}</strong>
+            <span>{action.text}</span>
+            <span class="new-tab-note">(nouvel onglet)</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <ul class="action-phones">
+      <li><span>Info Escroqueries (appel gratuit)</span> <a href="tel:0805805817">0 805 805 817</a></li>
+      <li><span>Opposition carte bancaire</span> <a href="tel:0892705705">0 892 705 705</a></li>
+      <li><span>SMS ou appel frauduleux</span> <strong>à transférer au 33700</strong></li>
+    </ul>
+  </section>
 
+  {latestBrief && <BriefCard brief={latestBrief} />}
+
+  <details class="veille-controls" data-warnings={publicWarnings.join(' | ') || undefined}>
+    <summary>Filtrer les alertes</summary>
+    <div class="controls-card">
       <div class="filters-grid">
         <label class="field-group" for="veille-search">
-          <span class="filter-label">Recherche</span>
-          <input id="veille-search" type="search" class="filter-input" placeholder="Titre, source, tag…" />
+          <span class="filter-label">Rechercher un mot</span>
+          <input id="veille-search" type="search" class="filter-input" placeholder="Ex. : colis, banque, impôts…" />
         </label>
 
         <label class="field-group" for="veille-source">
-          <span class="filter-label">Source</span>
+          <span class="filter-label">Site d’origine</span>
           <select id="veille-source" class="filter-input">
-            <option value="">Toutes les sources</option>
+            <option value="">Tous les sites</option>
             {allSources.map((source) => <option value={source}>{source}</option>)}
           </select>
         </label>
 
         <label class="field-group" for="veille-tag">
-          <span class="filter-label">Tag</span>
+          <span class="filter-label">Sujet</span>
           <select id="veille-tag" class="filter-input">
-            <option value="">Tous les tags</option>
+            <option value="">Tous les sujets</option>
             {allTags.map((tag) => <option value={tag}>{tag}</option>)}
           </select>
         </label>
 
         <label for="veille-new" class="filter-checkbox">
           <input id="veille-new" type="checkbox" />
-          Nouveau uniquement (&lt; 72h)
+          Seulement les 3 derniers jours
         </label>
-        <label for="veille-international" class="filter-checkbox">
-          <input id="veille-international" type="checkbox" />
-          Afficher l'international
-        </label>
+        <button id="veille-reset" type="button" class="rss-button rss-button-ghost">Effacer les filtres</button>
       </div>
     </div>
-
-    {publicWarnings.length > 0 && <p class="warning-box">Mode dégradé partiel : {publicWarnings.join(' | ')}</p>}
-  </section>
-
-  <section class="action-strip" aria-label="Actions rapides">
-    <h2>Actions rapides en cas d'arnaque</h2>
-    <div class="action-strip-grid">
-      <a href="https://www.cybermalveillance.gouv.fr/signalement" target="_blank" rel="noopener noreferrer nofollow">
-        Signaler une arnaque
-      </a>
-      <a href="https://www.17cyber.gouv.fr/" target="_blank" rel="noopener noreferrer nofollow">
-        Obtenir une aide immédiate (17Cyber)
-      </a>
-      <a href="https://www.internet-signalement.gouv.fr/PharosS1/" target="_blank" rel="noopener noreferrer nofollow">
-        Signaler sur PHAROS
-      </a>
-    </div>
-  </section>
+  </details>
 
   {
     homeSections.map((section) => {
@@ -266,10 +279,8 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
         </div>
         <p class="section-subtitle">
           <span class="visible-count" data-visible-count>{visibleArticles.length}</span>
-          <span> / </span>
+          <span> affichées sur </span>
           <span class="total-count" data-total-count>{visibleArticles.length}</span>
-          <span> article(s) correspondant aux filtres</span>
-          {!section.live && <span> • alimentation temporairement en cache</span>}
         </p>
         {section.key === 'failles' && (
           <p class="section-alert">
@@ -280,7 +291,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
         )}
 
         {visibleArticles.length === 0 ? (
-          <p class="empty-state">Aucun article disponible pour le moment.</p>
+          <p class="empty-state">Aucune alerte récente pour le moment. Les contacts utiles restent disponibles en haut de page.</p>
         ) : (
           <>
           <div class="veille-grid" data-section-grid>
@@ -343,6 +354,15 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
       );
     })
   }
+
+  <section class="veille-more" aria-labelledby="more-title">
+    <h2 id="more-title">Aller plus loin</h2>
+    <ul class="rss-links">
+      <li><a href="/veille/briefs/" class="rss-button rss-button-secondary">Tous les décryptages d’Octet</a></li>
+      <li><a href="/veille-sources" class="rss-button rss-button-secondary">D’où viennent ces alertes</a></li>
+      <li><a href="/flux" class="rss-button rss-button-secondary">Recevoir les alertes par flux RSS</a></li>
+    </ul>
+  </section>
 
   <button
     id="back-to-top"
@@ -510,9 +530,43 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
   }
 
   .veille-controls {
-    display: grid;
-    gap: 1rem;
     margin-bottom: 2rem;
+  }
+
+  .veille-controls summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .veille-controls summary:hover {
+    border-color: var(--brand-green);
+  }
+
+  .veille-controls[open] summary {
+    margin-bottom: 0.75rem;
+  }
+
+  .veille-more {
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .veille-more h2 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+
+  .veille-more .rss-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
   }
 
   .controls-card {
@@ -616,15 +670,8 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
     height: 16px;
   }
 
-  .warning-box {
-    margin: 0;
-    padding: 0.8rem 1rem;
-    border-radius: 12px;
-    background: rgba(249, 115, 22, 0.14);
-    border: 1px solid rgba(249, 115, 22, 0.4);
-  }
-
   .action-strip {
+    scroll-margin-top: 100px;
     margin: 1.25rem 0 1.75rem;
     border: 1px solid var(--border-color);
     border-radius: 16px;
@@ -636,31 +683,85 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
 
   .action-strip h2 {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.25rem;
   }
 
   .action-strip-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
     display: grid;
     gap: 0.65rem;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+
+  .action-strip-grid li {
+    display: grid;
   }
 
   .action-strip-grid a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 44px;
+    display: grid;
+    align-content: start;
+    gap: 0.25rem;
     border-radius: 12px;
     border: 1px solid var(--border-color);
+    background: var(--bg-card);
     color: var(--text-main);
     text-decoration: none;
-    padding: 0.45rem 0.75rem;
-    text-align: center;
-    font-weight: 600;
+    padding: 0.85rem 1rem;
+  }
+
+  .action-strip-grid strong {
+    font-size: 1.05rem;
+  }
+
+  .action-strip-grid span {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .action-strip-grid .new-tab-note {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .action-strip-grid a {
+    position: relative;
+  }
+
+  .action-phones {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.6rem;
+    color: var(--text-muted);
+  }
+
+  .action-phones li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem 0.5rem;
+  }
+
+  .action-phones a,
+  .action-phones strong {
+    color: var(--text-main);
+    font-weight: 700;
+    white-space: nowrap;
   }
 
   .action-strip-grid a:hover {
     border-color: var(--brand-green);
+  }
+
+  .action-strip-grid a:hover strong {
     color: var(--brand-green);
   }
 

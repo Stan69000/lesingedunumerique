@@ -101,4 +101,4 @@ Les BD d'Octet ne sont pas un simple coup d'essai. Notre objectif est de constru
 
 Nous croyons qu'il est possible de sensibiliser autrement : sans dramatiser, sans jargon et sans prendre les gens de haut. Juste avec de la pédagogie, de la clarté, un peu d'humour et beaucoup d'humanité.
 
-Bienvenue dans l'univers d'Octet. Pour aller plus loin sur l'idée d'utiliser la bande dessinée comme outil de dialogue, découvrez notre article [Au-delà des écrans : une BD pour ouvrir la discussion avec les jeunes](/au-dela-des-ecrans-une-bd-pour-les-jeunes).
+Bienvenue dans l'univers d'Octet. Pour aller plus loin sur l'idée d'utiliser la bande dessinée comme outil de dialogue, découvrez notre article [Au-delà des écrans : une BD pour ouvrir la discussion avec les jeunes](/blog/au-dela-des-ecrans-une-bd-pour-les-jeunes/).

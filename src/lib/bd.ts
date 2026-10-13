@@ -3,13 +3,13 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 export type Planche = CollectionEntry<'bd'>;
 
 /**
- * Code de la planche façon série : S01E03, ou S01HS02 pour un hors-série.
+ * Libellé lisible de la planche : « Épisode 3 », ou « Hors-série 2 ».
  * Les hors-séries ont leur propre numérotation, indépendante des épisodes.
+ * `avecSaison` préfixe la saison, là où le contexte ne la donne pas déjà.
  */
-export function plancheCode(entry: Planche): string {
-  const saison = `S${String(entry.data.saison).padStart(2, '0')}`;
-  const numero = String(entry.data.numero).padStart(2, '0');
-  return entry.data.horsSerie ? `${saison}HS${numero}` : `${saison}E${numero}`;
+export function plancheCode(entry: Planche, avecSaison = false): string {
+  const libelle = entry.data.horsSerie ? `Hors-série ${entry.data.numero}` : `Épisode ${entry.data.numero}`;
+  return avecSaison ? `Saison ${entry.data.saison} · ${libelle}` : libelle;
 }
 
 export function planchePath(entry: Planche): string {

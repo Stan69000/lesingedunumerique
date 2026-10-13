@@ -7,8 +7,8 @@ export async function GET() {
   const section = veille.sections.find((item) => item.key === 'failles');
 
   const body = buildRssXml({
-    title: 'Le Singe Du Numerique - Dernieres fuites de donnees',
-    description: 'Flux de veille des dernieres fuites de donnees.',
+    title: 'Le Singe Du Numérique - Dernières fuites de données',
+    description: 'Les dernières fuites de données signalées.',
     siteUrl: siteSettings.siteUrl,
     path: '/veille-failles.xml',
     items: section?.articles || [],

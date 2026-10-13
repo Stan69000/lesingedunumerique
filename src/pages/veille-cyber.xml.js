@@ -7,8 +7,8 @@ export async function GET() {
   const section = veille.sections.find((item) => item.key === 'cyber');
 
   const body = buildRssXml({
-    title: 'Le Singe Du Numerique - Actu',
-    description: 'Flux de veille des actualites cyber.',
+    title: 'Le Singe Du Numérique - Actualité cybersécurité',
+    description: 'L’actualité de la cybersécurité.',
     siteUrl: siteSettings.siteUrl,
     path: '/veille-cyber.xml',
     items: section?.articles || [],

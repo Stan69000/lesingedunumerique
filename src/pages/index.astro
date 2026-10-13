@@ -3,25 +3,96 @@ import { getCollection } from 'astro:content';
 import MaintenanceContent from '../components/MaintenanceContent.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import { siteSettings } from '../config/site';
+import { estimateReadingTimeMinutes } from '../lib/reading-time';
+import { getPlanches } from '../lib/bd';
+import aLaUne from '../data/a-la-une.json';
+import { ariaCurrent, footerNav, mainNav, navCta } from '../config/nav';
 import '../styles/global.css';
 import '../styles/home.css';
 
-const posts = await getCollection('blog');
+const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
 const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
   a.localeCompare(b, 'fr'),
 );
-const beginnerTag = allTags.find((tag) => tag.toLowerCase().includes('debut'));
+const beginnerTag = allTags.find((tag) => tag.toLowerCase().includes('debut') || tag.toLowerCase().includes('début'));
 const intermediateTag = allTags.find((tag) => tag.toLowerCase().includes('inter'));
 const advancedTag = allTags.find((tag) => tag.toLowerCase().includes('avanc'));
 const levelTags = [
   { label: 'Débutant', emoji: '🌱', tag: beginnerTag },
   { label: 'Intermédiaire', emoji: '🧭', tag: intermediateTag },
   { label: 'Avancé', emoji: '⚡', tag: advancedTag },
+].filter((level) => level.tag);
+
+const planches = await getPlanches();
+
+const spaces = [
+  {
+    href: '/blog',
+    icon: '📖',
+    tone: 'green',
+    name: 'Articles et guides',
+    what: 'Des guides pas à pas pour savoir quoi faire (mots de passe, double authentification, protection des proches) et des articles pour découvrir : lectures, podcasts, vie de l’association.',
+    meta: `${posts.length} articles, classés par niveau`,
+    cta: 'Lire les articles',
+  },
+  {
+    href: '/bd',
+    icon: '💬',
+    tone: 'blue',
+    name: 'Les BD d’Octet',
+    what: 'Une planche de bande dessinée par semaine pour comprendre un sujet du numérique d’un coup d’œil. Chaque planche est aussi transcrite en texte.',
+    meta: `${planches.length} planches à lire`,
+    cta: 'Lire les BD',
+  },
+  {
+    href: '/veille',
+    icon: '🚨',
+    tone: 'orange',
+    name: 'Alertes arnaques',
+    what: 'Les arnaques et fuites de données qui circulent en ce moment, expliquées simplement, avec les bons réflexes et les numéros officiels.',
+    meta: 'Mis à jour en continu',
+    cta: 'Voir les alertes',
+  },
+  {
+    href: '/sensibilisation',
+    icon: '🎮',
+    tone: 'green',
+    name: 'Jeux',
+    what: 'Des jeux gratuits pour apprendre à repérer les pièges du numérique en s’amusant, seul, en famille ou en groupe.',
+    meta: 'Tout public, tout âge',
+    cta: 'Jouer',
+  },
+  {
+    href: '/asso',
+    icon: '🐒',
+    tone: 'orange',
+    name: 'L’association',
+    what: 'Qui nous sommes et comment nous fonctionnons. Pas d’ateliers pour le moment : nous sommes ouverts à tous en ligne, ou sur rendez-vous pour parler d’un projet.',
+    meta: 'En ligne ou sur rendez-vous',
+    cta: 'Faire connaissance',
+  },
+  {
+    href: '/adhesion',
+    icon: '🤝',
+    tone: 'blue',
+    name: 'Rejoindre',
+    what: 'Les adhésions ne sont pas encore ouvertes, mais vous pouvez déjà aider : faire passer le mot, nous signaler un sujet ou donner un coup de main.',
+    meta: 'Coups de main bienvenus',
+    cta: 'Voir comment aider',
+  },
 ];
+
+const startGuides = [...posts]
+  .sort(
+    (a, b) =>
+      Number(b.data.featured) - Number(a.data.featured)
+      || b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+  )
+  .slice(0, 3);
 const canonicalUrl = new URL('/', siteSettings.siteUrl).toString();
-const pageTitle = 'Inclusion numérique pour tous | Le Singe Du Numérique';
+const pageTitle = 'Comprendre le numérique, sans jargon | Le Singe Du Numérique';
 const pageDescription =
-  'Association d’inclusion numérique : cybersécurité, logiciels libres et accompagnement des associations locales. Découvrez nos ressources et ateliers pratiques.';
+  'Articles et guides simples, alertes arnaques et jeux pour comprendre le numérique et se protéger. Une association d’inclusion numérique, pour les particuliers et les associations locales.';
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -96,19 +167,11 @@ const currentPath = Astro.url.pathname;
 
         <div class="nav-right">
           <ul class="nav-links">
-            <li><a href="/projets" class="nav-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a></li>
-            <li><a href="/sensibilisation" class="nav-item" aria-current={currentPath === '/sensibilisation' ? 'page' : undefined}>Sensibilisation</a></li>
-            <li><a href="/asso" class="nav-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a></li>
-            <li><a href="/adhesion" class="nav-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a></li>
-            <li><a href="/contact" class="nav-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a></li>
-            <li><a href="/blog" class="nav-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a></li>
-            <li><a href="/bd" class="nav-item" aria-current={currentPath.startsWith('/bd') ? 'page' : undefined}>BD</a></li>
-            <li><a href="/veille" class="nav-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu</a></li>
+{mainNav.map((item) => (
+<li><a href={item.href} class="nav-item" aria-current={ariaCurrent(item, currentPath)}>{item.label}</a></li>
+))}
           </ul>
-          <a href="/flux" class="rss-nav-link" aria-current={currentPath === '/flux' ? 'page' : undefined} aria-label="Acceder aux flux RSS">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M6.18 17.82a2.18 2.18 0 1 1 0-4.36 2.18 2.18 0 0 1 0 4.36ZM4 4v3.27c7.03 0 12.73 5.7 12.73 12.73H20C20 11.16 12.84 4 4 4Zm0 6.54v3.27A6.2 6.2 0 0 1 10.2 20h3.27A9.47 9.47 0 0 0 4 10.54Z"/></svg>
-            <span>RSS</span>
-          </a>
+          <a href={navCta.href} class="nav-cta" aria-current={ariaCurrent(navCta, currentPath)}>{navCta.label}</a>
           <button
             id="theme-toggle"
             class="theme-btn"
@@ -142,15 +205,9 @@ const currentPath = Astro.url.pathname;
         inert
         hidden
       >
-        <a href="/projets" class="mobile-item" aria-current={currentPath === '/projets' ? 'page' : undefined}>Projets</a>
-        <a href="/sensibilisation" class="mobile-item" aria-current={currentPath === '/sensibilisation' ? 'page' : undefined}>Sensibilisation</a>
-        <a href="/asso" class="mobile-item" aria-current={currentPath === '/asso' ? 'page' : undefined}>L’association</a>
-        <a href="/adhesion" class="mobile-item" aria-current={currentPath === '/adhesion' ? 'page' : undefined}>Rejoindre</a>
-        <a href="/contact" class="mobile-item" aria-current={currentPath === '/contact' ? 'page' : undefined}>Contact</a>
-        <a href="/blog" class="mobile-item" aria-current={currentPath.startsWith('/blog') ? 'page' : undefined}>Blog</a>
-        <a href="/bd" class="mobile-item" aria-current={currentPath.startsWith('/bd') ? 'page' : undefined}>BD</a>
-        <a href="/veille" class="mobile-item" aria-current={currentPath.startsWith('/veille') ? 'page' : undefined}>Actu</a>
-        <a href="/flux" class="mobile-item" aria-current={currentPath === '/flux' ? 'page' : undefined}>Flux RSS</a>
+{[...mainNav, navCta].map((item) => (
+<a href={item.href} class="mobile-item" aria-current={ariaCurrent(item, currentPath)}>{item.label}</a>
+))}
         <div class="mobile-theme-toggle">
           <span>Changer le thème</span>
           <button
@@ -176,23 +233,34 @@ const currentPath = Astro.url.pathname;
           <div class="hero-logo-wrapper" aria-hidden="true">
             <span class="hero-logo-aura hero-logo-aura-primary"></span>
             <span class="hero-logo-aura hero-logo-aura-secondary"></span>
-            <img src="/logo.svg" alt="Le Singe Du Numérique" class="hero-logo" />
+            <img src="/logo.svg" alt="" class="hero-logo" />
           </div>
 
-          <p class="eyebrow">Inclusion numérique et transformation associative</p>
+          <p class="eyebrow">Association d’inclusion numérique</p>
           <h1 class="hero-title">
-            Le numérique plus <span class="gradient-text">accessible</span> pour tous, plus utile
-            pour les associations
+            Comprendre le numérique, <span class="gradient-text">sans jargon</span>
           </h1>
 
           <p class="hero-desc">
-            Le Singe Du Numérique agit pour la démocratisation et l&apos;inclusion numérique, et
-            accompagne aussi les associations locales dans leurs usages, leurs outils et leur
-            transformation numérique.
+            Le Singe Du Numérique est une association d’inclusion numérique. Tout est gratuit et
+            pensé pour tous les niveaux. Voici ce que vous trouverez ici.
           </p>
 
-          <form class="search-wrapper" action="/blog" method="get" role="search" aria-label="Recherche dans les articles du blog">
-            <label class="sr-only" for="home-search">Recherche dans les articles du blog</label>
+          <h2 class="sr-only" id="spaces-title">Les espaces du site</h2>
+          <ul class="space-grid" aria-labelledby="spaces-title">
+            {spaces.map((space) => (
+              <li class={`space-tile space-${space.tone}`}>
+                <span class="space-icon" aria-hidden="true">{space.icon}</span>
+                <h3><a href={space.href}>{space.name}</a></h3>
+                <p class="space-what">{space.what}</p>
+                <p class="space-meta">{space.meta}</p>
+                <span class="space-cta" aria-hidden="true">{space.cta} →</span>
+              </li>
+            ))}
+          </ul>
+
+          <form class="search-wrapper" action="/blog" method="get" role="search" aria-label="Recherche dans les articles et guides">
+            <label class="search-label" for="home-search">Ou cherchez un sujet précis</label>
             <div class="search-bar">
               <span class="search-icon" aria-hidden="true">
                 <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
@@ -201,284 +269,85 @@ const currentPath = Astro.url.pathname;
                 id="home-search"
                 type="search"
                 name="search"
-                placeholder="Rechercher une ressource, un article ou un sujet..."
+                placeholder="Ex. : mot de passe, arnaque, enfants…"
                 class="search-input"
                 autocomplete="off"
-                aria-describedby="home-search-help home-search-error"
+                aria-describedby="home-search-error"
               />
-              <button type="submit" class="search-submit" aria-label="Rechercher dans le blog">Rechercher</button>
+              <button type="submit" class="search-submit">Rechercher</button>
             </div>
-            <p id="home-search-help" class="search-assist">
-              Astuce : saisis au moins 2 caractères (ex. « cybersécurité », « bénévolat », « atelier »).
-            </p>
             <p id="home-search-error" class="search-error" hidden aria-live="polite"></p>
-
-            <div class="search-meta">
-              <button type="submit" class="filter-tag">
-                <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
-                <span>Filtrer les articles du blog</span>
-              </button>
-              <span class="tag-count">{allTags.length} tags disponibles</span>
-            </div>
-
-            <div class="explore-link">
-              <a href="#niveaux-blog">Voir les niveaux de lecture ↓</a>
-            </div>
           </form>
 
-          <div class="quick-actions" id="niveaux-blog">
-            {levelTags
-              .filter((level) => level.tag)
-              .map((level) => (
+          {levelTags.length > 0 && (
+            <div class="quick-actions">
+              <span class="quick-label">Par niveau&nbsp;:</span>
+              {levelTags.map((level) => (
                 <a href={`/blog?tag=${encodeURIComponent(level.tag)}`} class="quick-tag">
-                  {level.emoji} {level.label}
+                  <span aria-hidden="true">{level.emoji}</span> {level.label}
                 </a>
               ))}
-          </div>
+            </div>
+          )}
         </div>
       </section>
 
-      <section id="missions" class="content-section">
+      {aLaUne.actif && (
+        <section class="content-section spotlight-section" aria-labelledby="spotlight-title">
+          <div class="container">
+            <div class="spotlight">
+              <img
+                class="spotlight-image"
+                src={aLaUne.image.src}
+                alt={aLaUne.image.alt}
+                width={aLaUne.image.width}
+                height={aLaUne.image.height}
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="spotlight-body">
+                <p class="eyebrow">À la une · {aLaUne.surtitre}</p>
+                <h2 id="spotlight-title">{aLaUne.titre}</h2>
+                <p class="spotlight-hook">{aLaUne.accroche}</p>
+                <p class="spotlight-text">{aLaUne.texte}</p>
+                {aLaUne.points.length > 0 && (
+                  <ul class="spotlight-points">
+                    {aLaUne.points.map((point) => <li>{point}</li>)}
+                  </ul>
+                )}
+                <div class="spotlight-actions">
+                  <a href={aLaUne.lien.href} class="spotlight-primary">{aLaUne.lien.label} <span aria-hidden="true">→</span></a>
+                  {aLaUne.lienSecondaire && (
+                    <a href={aLaUne.lienSecondaire.href} class="spotlight-secondary">{aLaUne.lienSecondaire.label}</a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      <section class="content-section" aria-labelledby="start-title">
         <div class="container">
           <div class="section-header">
-            <h2>Deux axes, une même <span class="text-accent">ambition</span></h2>
+            <h2 id="start-title">Par où <span class="text-accent">commencer</span></h2>
             <div class="line-deco"></div>
+            <a href="/blog" class="section-more">Tous les articles <span aria-hidden="true">→</span></a>
           </div>
 
-          <div class="grid">
-            <article class="card">
-              <div class="card-header card-green">
-                <span class="card-icon">👥</span>
-              </div>
-              <div class="card-content">
-                <h3>Pour tous les publics</h3>
-                <p>
-                  Ateliers pratiques, accompagnement aux usages, cybersécurité du quotidien et aide
-                  à la prise en main des outils numériques.
+          <ul class="guide-grid">
+            {startGuides.map((post) => (
+              <li class="guide-card">
+                <p class="guide-meta">
+                  <span>{post.data.tags[0] ?? post.data.rubrique}</span>
+                  <span>{estimateReadingTimeMinutes(post.body)} min de lecture</span>
                 </p>
-                <div class="card-tags"><span>Inclusion</span><span>Pédagogie</span></div>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-orange">
-                <span class="card-icon">🏛️</span>
-              </div>
-              <div class="card-content">
-                <h3>Pour les associations locales</h3>
-                <p>
-                  Conseil, assistance technique, choix d&apos;outils, logiciels libres et
-                  automatisation pour soutenir la transformation numérique du tissu associatif local.
-                </p>
-                <div class="card-tags"><span>Conseil</span><span>Terrain</span></div>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-blue">
-                <span class="card-icon">🌍</span>
-              </div>
-              <div class="card-content">
-                <h3>Une approche accessible et locale</h3>
-                <p>
-                  L&apos;association adapte ses actions chaque année selon ses moyens et les besoins
-                  locaux, dans une démarche pédagogique, éthique et concrète.
-                </p>
-                <div class="card-tags"><span>Éthique</span><span>Libre</span></div>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="content-section content-section-alt">
-        <div class="container">
-          <div class="section-header">
-            <h2>Ce que nous <span class="text-accent">faisons</span></h2>
-            <div class="line-deco"></div>
-          </div>
-
-          <div class="grid">
-            <article class="card">
-              <div class="card-header card-green">
-                <span class="card-icon">🛡️</span>
-              </div>
-              <div class="card-content">
-                <h3>Cybersécurité du quotidien</h3>
-                <p>Protection des données, bons réflexes et usages plus sûrs du web, de l’ordinateur et du smartphone.</p>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-orange">
-                <span class="card-icon">💻</span>
-              </div>
-              <div class="card-content">
-                <h3>Matériel et autonomie numérique</h3>
-                <p>Aide au choix, à l’utilisation et à la prise en main de matériel informatique selon les besoins et les moyens.</p>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-blue">
-                <span class="card-icon">♻️</span>
-              </div>
-              <div class="card-content">
-                <h3>Logiciels libres et solutions éthiques</h3>
-                <p>Promotion d’outils plus respectueux, durables et adaptés aux personnes comme aux structures associatives.</p>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-green">
-                <span class="card-icon">🧰</span>
-              </div>
-              <div class="card-content">
-                <h3>Conseil aux associations</h3>
-                <p>Appui technique, mise en place d’outils numériques et accompagnement des usages pour la vie associative.</p>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-orange">
-                <span class="card-icon">⚙️</span>
-              </div>
-              <div class="card-content">
-                <h3>Scripts et automatisation</h3>
-                <p>Développement de solutions simples pour faire gagner du temps aux associations et alléger certaines tâches répétitives.</p>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-blue">
-                <span class="card-icon">🤝</span>
-              </div>
-              <div class="card-content">
-                <h3>Événements et entraide</h3>
-                <p>Tout événement favorisant le partage de connaissances, l’entraide et l’apprentissage dans une approche accessible.</p>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <section class="content-section">
-        <div class="container">
-          <div class="section-header">
-            <h2>Notre action <span class="text-accent">associative</span></h2>
-            <div class="line-deco"></div>
-          </div>
-
-          <div class="association-copy">
-            <article class="association-block">
-              <h3>Pour qui ?</h3>
-              <p>
-                L’association agit pour les habitants, les bénévoles et les structures locales qui
-                ont besoin d’un appui numérique. Notre objectif est l’inclusion numérique: rendre
-                les usages plus simples, plus sûrs et plus autonomes.
-              </p>
-            </article>
-
-            <article class="association-block">
-              <h3>Comment intervenons-nous ?</h3>
-              <p>
-                Nos actions se construisent selon les besoins du territoire: ateliers, entraide,
-                sensibilisation, appui technique et orientation vers des ressources adaptées. Nous
-                privilégions des outils accessibles, durables et compréhensibles par tous.
-              </p>
-            </article>
-
-            <article class="association-block">
-              <h3>Ancrage local</h3>
-              <p>
-                Nous intervenons principalement à Fleurieux-sur-l’Arbresle et dans les communes
-                voisines, en présentiel ou à distance selon les possibilités de l’association.
-              </p>
-            </article>
-
-            <article class="association-block">
-              <h3>Exemples d’actions</h3>
-              <p>
-                Sensibilisation à la cybersécurité du quotidien, prise en main d’outils numériques,
-                découverte des logiciels libres, amélioration de l’organisation numérique
-                associative, et partage de bonnes pratiques.
-              </p>
-            </article>
-          </div>
-
-          <div class="association-faq">
-            <h3>Questions fréquentes</h3>
-            <ul class="association-faq-list">
-              <li>
-                <strong>Faut-il être expert&nbsp;?</strong> Non, nos actions sont ouvertes à tous
-                les niveaux.
+                <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
+                <p class="guide-desc">{post.data.description}</p>
+                <span class="guide-cta" aria-hidden="true">Lire l’article →</span>
               </li>
-              <li>
-                <strong>Est-ce réservé aux associations&nbsp;?</strong> Non, l’association agit
-                aussi pour les particuliers.
-              </li>
-              <li>
-                <strong>Comment participer&nbsp;?</strong> Via la page Contact ou en rejoignant nos
-                actions locales.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section class="content-section">
-        <div class="container">
-          <div class="section-header">
-            <h2>Ressources, veille et <span class="text-accent">outils</span></h2>
-            <div class="line-deco"></div>
-          </div>
-
-          <div class="grid">
-            <article class="card">
-              <div class="card-header card-green">
-                <span class="card-icon">📝</span>
-              </div>
-              <div class="card-content">
-                <h3>Articles</h3>
-                <p>Guides, conseils pratiques, cybersécurité, protection des données et usages du numérique au quotidien.</p>
-                <div class="card-tags"><span>Conseils</span><span>Usages</span></div>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-orange">
-                <span class="card-icon">🔎</span>
-              </div>
-              <div class="card-content">
-                <h3>Veille</h3>
-                <p>Sélection de ressources, médias, podcasts, lectures et contenus utiles à suivre pour rester informé sans se perdre.</p>
-                <div class="card-tags"><span>Curation</span><span>Ressources</span></div>
-              </div>
-            </article>
-
-            <article class="card">
-              <div class="card-header card-blue">
-                <span class="card-icon">🧪</span>
-              </div>
-              <div class="card-content">
-                <h3>Technos</h3>
-                <p>Logiciels libres, outils éthiques, automatisation et solutions techniques utiles pour les particuliers comme pour les associations.</p>
-                <div class="card-tags"><span>Libre</span><span>Outils</span></div>
-              </div>
-            </article>
-          </div>
-
-          <div class="cta-strip">
-            <p>
-              Les éventuels bénéfices tirés de prestations de service sont intégralement réinvestis
-              dans la réalisation de l’objet social.
-            </p>
-            <ul class="cta-row">
-              <li><a href="/asso" class="cta-link">Découvrir l’association</a></li>
-              <li><a href="/projets" class="cta-link">Voir nos actions</a></li>
-              <li><a href="/blog" class="cta-link">Lire les ressources</a></li>
-            </ul>
-          </div>
+            ))}
+          </ul>
         </div>
       </section>
     </main>
@@ -499,17 +368,9 @@ const currentPath = Astro.url.pathname;
           <div class="footer-line">
             <h2 class="footer-line-label">Menu</h2>
             <ul class="footer-line-content footer-links">
-              <li><a href="/projets">Projets</a></li>
-              <li><a href="/sensibilisation">Sensibilisation</a></li>
-              <li><a href="/asso">L’association</a></li>
-              <li><a href="/adhesion">Rejoindre</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/blog">Blog</a></li>
-              <li><a href="/bd">BD</a></li>
-              <li><a href="/veille">Actu</a></li>
-              <li><a href="/flux">Flux RSS</a></li>
-              <li><a href="/plan-du-site">Plan du site</a></li>
-              <li><a href="/mentions-legales">Mentions légales</a></li>
+{footerNav.map((item) => (
+<li><a href={item.href}>{item.label}</a></li>
+))}
             </ul>
           </div>
           <div class="footer-line">
@@ -653,7 +514,9 @@ const currentPath = Astro.url.pathname;
         }
       }
 
-      if (localStorage.getItem('theme') === 'light') {
+      const storedTheme = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      if (storedTheme === 'light' || (!storedTheme && prefersLight)) {
         body.classList.add('light-mode');
       }
 
@@ -848,7 +711,7 @@ const currentPath = Astro.url.pathname;
           event.preventDefault();
           homeSearchInput.setAttribute('aria-invalid', 'true');
           homeSearchError.hidden = false;
-          homeSearchError.textContent = 'Recherche trop courte. Essaie avec au moins 2 caractères.';
+          homeSearchError.textContent = 'Recherche trop courte. Essayez avec au moins 2 caractères.';
           homeSearchInput.focus();
           return;
         }
