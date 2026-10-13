@@ -7,8 +7,8 @@ export async function GET() {
   const section = veille.sections.find((item) => item.key === 'associations');
 
   const body = buildRssXml({
-    title: 'Le Singe Du Numerique - Actu associations',
-    description: 'Flux de veille des actualites associations.',
+    title: 'Le Singe Du Numérique - Actualité des associations',
+    description: 'L’actualité utile aux associations.',
     siteUrl: siteSettings.siteUrl,
     path: '/veille-associations.xml',
     items: section?.articles || [],

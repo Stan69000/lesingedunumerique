@@ -10,8 +10,8 @@ export async function GET() {
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 
   const body = buildRssXml({
-    title: 'Le Singe Du Numerique - Actu generaliste',
-    description: 'Flux de veille de l actu generaliste (cyber + associations).',
+    title: 'Le Singe Du Numérique - Actualité générale',
+    description: 'L’actualité de la cybersécurité et des associations.',
     siteUrl: siteSettings.siteUrl,
     path: '/veille-actu-generaliste.xml',
     items,

@@ -514,7 +514,9 @@ const currentPath = Astro.url.pathname;
         }
       }
 
-      if (localStorage.getItem('theme') === 'light') {
+      const storedTheme = localStorage.getItem('theme');
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      if (storedTheme === 'light' || (!storedTheme && prefersLight)) {
         body.classList.add('light-mode');
       }
 

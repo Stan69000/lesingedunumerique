@@ -7,8 +7,8 @@ export async function GET() {
   const section = veille.sections.find((item) => item.key === 'arnaques');
 
   const body = buildRssXml({
-    title: 'Le Singe Du Numerique - Dernieres arnaques',
-    description: 'Flux de veille des dernieres arnaques.',
+    title: 'Le Singe Du Numérique - Dernières arnaques',
+    description: 'Les dernières arnaques et campagnes frauduleuses repérées.',
     siteUrl: siteSettings.siteUrl,
     path: '/veille-arnaques.xml',
     items: section?.articles || [],

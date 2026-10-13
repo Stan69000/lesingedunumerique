@@ -19,8 +19,8 @@ export async function GET() {
   }));
 
   const body = buildRssXml({
-    title: 'Le Singe Du Numerique - Blog',
-    description: 'Derniers articles du blog.',
+    title: 'Le Singe Du Numérique - Articles et guides',
+    description: 'Les derniers articles et guides.',
     siteUrl: siteSettings.siteUrl,
     path: '/blog.xml',
     items,
