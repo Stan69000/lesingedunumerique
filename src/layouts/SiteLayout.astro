@@ -611,7 +611,7 @@ const isVeillePage = currentPath.startsWith('/veille');
 
   .footer-line {
     display: grid;
-    grid-template-columns: 90px 1fr;
+    grid-template-columns: 90px minmax(0, 1fr);
     gap: 12px;
     align-items: start;
   }
@@ -681,7 +681,12 @@ const isVeillePage = currentPath.startsWith('/veille');
   .nav-cta { display: inline-flex; align-items: center; min-height: 38px; padding: 0 16px; border-radius: 999px; background: var(--brand-green); color: var(--bg-body); font-size: 0.92rem; font-weight: 700; white-space: nowrap; }
   .nav-cta:hover { filter: brightness(1.1); text-decoration: none; color: var(--bg-body); }
   .nav-cta[aria-current='page'] { box-shadow: 0 0 0 2px var(--bg-body), 0 0 0 4px var(--brand-green); }
-.footer-credit {
+  .footer-links {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+
+  .footer-credit {
     color: var(--text-muted);
     font-size: 0.95rem;
     text-align: left;
