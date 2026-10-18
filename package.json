@@ -10,7 +10,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "brief:add": "node scripts/add-brief.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
