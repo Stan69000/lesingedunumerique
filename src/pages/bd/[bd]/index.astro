@@ -1,4 +1,5 @@
 ---
+import LexiqueRelated from '../../../components/LexiqueRelated.astro';
 import { render } from 'astro:content';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import { siteSettings } from '../../../config/site';
@@ -97,6 +98,7 @@ const schema = {
   <section class="bd-transcription" aria-labelledby="bd-transcription-title">
     <h2 id="bd-transcription-title">Transcription</h2>
     <Content />
+    <LexiqueRelated path={Astro.url.pathname} />
   </section>
 
   <nav class="bd-nav" aria-label="Navigation entre les planches">
