@@ -988,7 +988,27 @@ const articleSchema = {
           const mainContent = document.getElementById('main-content');
           const footer = document.querySelector('footer');
 
-    …162 tokens truncated…n        setMenuState(false);
+          [navRight, mainContent, footer].forEach((element) => {
+            if (!element) return;
+            if (isOpen) {
+              element.setAttribute('inert', '');
+            } else {
+              element.removeAttribute('inert');
+            }
+          });
+
+          if (isOpen) {
+            lastFocusedElement = document.activeElement;
+            window.setTimeout(() => {
+              getMenuFocusableElements()[0]?.focus();
+            }, 0);
+          } else if (lastFocusedElement instanceof HTMLElement) {
+            lastFocusedElement.focus();
+            lastFocusedElement = null;
+          }
+        };
+
+        setMenuState(false);
 
         burgerBtn.addEventListener('click', () => {
           const isOpen = burgerBtn.getAttribute('aria-expanded') !== 'true';
