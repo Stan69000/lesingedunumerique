@@ -1,7 +1,10 @@
 [
   {
     "terme": "Adresse IP",
-    "definition": "Le numéro qui identifie votre connexion sur Internet, un peu comme une adresse postale pour votre box ou votre téléphone."
+    "definition": "Une adresse numérique utilisée pour acheminer les échanges vers un appareil ou une connexion sur un réseau, un peu comme une adresse de livraison.",
+    "theme": "Internet et appareils",
+    "situation": "La box change, votre adresse IP peut changer aussi : ce n’est pas votre carte d’identité.",
+    "reflexe": "Une adresse IP désigne une connexion ou un appareil sur un réseau. Elle peut être partagée et ne suffit pas à identifier une personne."
   },
   {
     "terme": "AI Act",
@@ -12,11 +15,17 @@
     "lien": {
       "href": "/blog/ai-act-l-europe-met-des-regles-autour-de-l-intelligence-artificielle-mais-qu-est/",
       "label": "Lire l’article sur l’AI Act"
-    }
+    },
+    "theme": "IA et information",
+    "situation": "Vous vous demandez qui fixe les limites des outils d’IA.",
+    "reflexe": "Un cadre légal ne rend pas chaque réponse fiable : gardez votre esprit critique."
   },
   {
     "terme": "Antivirus",
-    "definition": "Un logiciel qui surveille votre appareil pour repérer et bloquer les programmes malveillants."
+    "definition": "Un logiciel qui surveille votre appareil pour repérer et bloquer les programmes malveillants.",
+    "theme": "Comptes et sécurité",
+    "situation": "Une alerte apparaît après l’ouverture d’un fichier téléchargé.",
+    "reflexe": "Gardez sa protection active et à jour. Aucun antivirus ne repère tous les pièges."
   },
   {
     "terme": "Application",
@@ -27,14 +36,20 @@
     "lien": {
       "href": "/bd/applications-regarde-ce-que-tu-autorises/",
       "label": "Voir la BD sur les autorisations des applications"
-    }
+    },
+    "theme": "Internet et appareils",
+    "situation": "La tablette familiale vous demande d’installer une appli pour consulter une recette.",
+    "reflexe": "Vérifiez si le site suffit : installer une application reste un choix."
   },
   {
     "terme": "Chatbot",
     "aussi": [
       "agent conversationnel"
     ],
-    "definition": "Un programme qui discute avec vous par écrit ou à l’oral, comme le ferait une personne. ChatGPT ou l’assistant d’un site marchand en sont des exemples."
+    "definition": "Un programme qui discute avec vous par écrit ou à l’oral, comme le ferait une personne. ChatGPT ou l’assistant d’un site marchand en sont des exemples.",
+    "theme": "IA et information",
+    "situation": "La petite fenêtre du service client vous répond aussitôt, même le dimanche.",
+    "reflexe": "Avant de raconter votre problème, évitez de transmettre un mot de passe ou des documents confidentiels."
   },
   {
     "terme": "Contrôle parental",
@@ -42,14 +57,20 @@
     "lien": {
       "href": "/blog/proteger-son-enfant-en-ligne-sans-se-ruiner-le-duo-gratuit-qui-tient-la-route/",
       "label": "Lire le guide du contrôle parental gratuit"
-    }
+    },
+    "theme": "Vie privée et famille",
+    "situation": "Sur la tablette partagée, vous voulez choisir les contenus accessibles aux enfants.",
+    "reflexe": "Réglez-le ensemble selon l’âge. Il complète le dialogue et ne bloque pas tous les risques."
   },
   {
     "terme": "Cryptogramme",
     "aussi": [
       "code de sécurité de la carte"
     ],
-    "definition": "Les trois chiffres au dos de votre carte bancaire. Ils servent à valider un paiement en ligne : ne les donnez jamais pour « recevoir un remboursement »."
+    "definition": "Le code de sécurité d’une carte bancaire, généralement trois chiffres au dos, parfois quatre sur le devant. Il peut être demandé lors d’un paiement à distance.",
+    "theme": "Arnaques et achats",
+    "situation": "Un message vous réclame le code de votre carte pour rembourser un colis.",
+    "reflexe": "Un remboursement ne nécessite pas de donner ce code à un interlocuteur."
   },
   {
     "terme": "Cyberharcèlement",
@@ -57,7 +78,10 @@
     "lien": {
       "href": "/blog/proteger-les-enfants-et-les-ados-en-ligne/",
       "label": "Lire le guide pour en parler avec les enfants et les ados"
-    }
+    },
+    "theme": "Vie privée et famille",
+    "situation": "Dans un groupe de classe, les moqueries et les montages visant un enfant se multiplient.",
+    "reflexe": "Conservez les preuves et cherchez du soutien auprès d’un adulte de confiance ou du dispositif officiel d’aide."
   },
   {
     "terme": "Deepfake",
@@ -68,15 +92,24 @@
     "lien": {
       "href": "/blog/contenus-generes-par-ia-une-nouvelle-etiquette-pour-nous-aider-mais-pas-pour-ref/",
       "label": "Lire l’article sur les contenus générés par IA"
-    }
+    },
+    "theme": "IA et information",
+    "situation": "Une vidéo montre une personnalité vantant un placement étonnamment rentable.",
+    "reflexe": "Une voix ou un visage familier ne prouve pas l’identité : vérifiez par un autre canal."
   },
   {
     "terme": "DNS",
-    "definition": "L’annuaire d’Internet. Quand vous tapez le nom d’un site, le DNS retrouve l’adresse technique de ce site pour que votre appareil puisse l’ouvrir."
+    "definition": "L’annuaire d’Internet. Quand vous tapez le nom d’un site, le DNS retrouve l’adresse technique de ce site pour que votre appareil puisse l’ouvrir.",
+    "theme": "Internet et appareils",
+    "situation": "Vous tapez le nom du site de votre association au lieu d’une suite de chiffres.",
+    "reflexe": "Le DNS aide à trouver le site, il ne garantit pas son honnêteté."
   },
   {
     "terme": "Données personnelles",
-    "definition": "Toute information qui permet de vous identifier : nom, adresse, numéro de téléphone, photo, coordonnées bancaires…"
+    "definition": "Des informations qui permettent d’identifier une personne directement ou en les croisant : nom, photo, coordonnées, identifiant en ligne…",
+    "theme": "Vie privée et famille",
+    "situation": "Un jeu gratuit demande votre date de naissance et votre localisation.",
+    "reflexe": "Demandez-vous si chaque information est nécessaire avant de la transmettre."
   },
   {
     "terme": "Double authentification",
@@ -84,11 +117,14 @@
       "2FA",
       "validation en deux étapes"
     ],
-    "definition": "Une deuxième vérification demandée en plus du mot de passe pour ouvrir un compte, par exemple un code reçu sur votre téléphone. Même si quelqu’un vole votre mot de passe, il reste bloqué.",
+    "definition": "Une seconde preuve d’identité, en plus du mot de passe : une clé de sécurité ou une confirmation sur un appareil, par exemple. Elle réduit fortement les risques de piratage sans les supprimer.",
     "lien": {
       "href": "/blog/activer-la-2fa-sur-vos-comptes/",
       "label": "Lire le guide pour l’activer"
-    }
+    },
+    "theme": "Comptes et sécurité",
+    "situation": "Après votre mot de passe, votre messagerie demande une confirmation sur un autre appareil.",
+    "reflexe": "Activez-la et gardez les codes de secours en lieu sûr. Ne validez jamais une connexion que vous n’avez pas demandée."
   },
   {
     "terme": "Extension de navigateur",
@@ -96,7 +132,10 @@
     "lien": {
       "href": "/bd/extensions-de-navigateur-pratiques-mais-pas-sans-risques-2/",
       "label": "Voir la BD sur les extensions"
-    }
+    },
+    "theme": "Internet et appareils",
+    "situation": "Un outil promet de trouver des réductions sur tous vos achats.",
+    "reflexe": "Regardez ses autorisations et supprimez les extensions dont vous ne vous servez plus."
   },
   {
     "terme": "Fuite de données",
@@ -104,7 +143,10 @@
     "lien": {
       "href": "/veille/failles",
       "label": "Voir les dernières fuites de données"
-    }
+    },
+    "theme": "Comptes et sécurité",
+    "situation": "Votre ancien magasin vous annonce que son fichier clients a été dérobé.",
+    "reflexe": "Surveillez les messages qui utilisent ces détails pour gagner votre confiance. Vous n’êtes pas responsable du vol."
   },
   {
     "terme": "Gestionnaire de mots de passe",
@@ -115,7 +157,10 @@
     "lien": {
       "href": "/bd/mots-de-passe-les-bons-reflexes/",
       "label": "Voir la BD sur les mots de passe"
-    }
+    },
+    "theme": "Comptes et sécurité",
+    "situation": "Vous hésitez entre réutiliser le même mot de passe et remplir un carnet entier.",
+    "reflexe": "Protégez le coffre avec un mot de passe unique et solide ; prévoyez sa récupération."
   },
   {
     "terme": "Hameçonnage",
@@ -126,7 +171,10 @@
     "lien": {
       "href": "/bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage/",
       "label": "Voir la BD pour repérer un faux mail"
-    }
+    },
+    "theme": "Arnaques et achats",
+    "situation": "Un SMS annonce : « Votre colis est bloqué, payez 1,99 € ».",
+    "reflexe": "Ouvrez vous-même le site ou l’application du transporteur, sans passer par le lien reçu."
   },
   {
     "terme": "Harponnage",
@@ -137,7 +185,10 @@
     "lien": {
       "href": "/blog/ce-faux-abonnement-connait-votre-nom-votre-adresse-et-votre-iban-faut-il-panique/",
       "label": "Lire l’exemple du faux abonnement"
-    }
+    },
+    "theme": "Arnaques et achats",
+    "situation": "Le message cite votre nom et votre association pour demander un virement urgent.",
+    "reflexe": "Des informations exactes ne prouvent pas que l’expéditeur est honnête : vérifiez auprès du contact habituel."
   },
   {
     "terme": "HTTPS",
@@ -148,18 +199,24 @@
     "lien": {
       "href": "/bd/faux-sites-verifier-l-adresse-avant-de-se-connecter/",
       "label": "Voir la BD sur les faux sites"
-    }
+    },
+    "theme": "Internet et appareils",
+    "situation": "La page de paiement d’une boutique inconnue affiche une connexion sécurisée.",
+    "reflexe": "Le tunnel est protégé, mais la personne à l’autre bout peut être un escroc. Vérifiez aussi le site."
   },
   {
     "terme": "IA générative",
     "aussi": [
       "intelligence artificielle générative"
     ],
-    "definition": "Une intelligence artificielle capable de produire du texte, des images, du son ou du code à partir d’une simple demande écrite.",
+    "definition": "Une intelligence artificielle qui produit du texte, des images, du son ou du code à partir d’une consigne, éventuellement accompagnée de documents ou d’autres contenus.",
     "lien": {
       "href": "/bd/c-est-quoi-une-ia/",
       "label": "Voir la BD « C’est quoi une IA ? »"
-    }
+    },
+    "theme": "IA et information",
+    "situation": "Vous demandez une idée d’affiche pour la fête de l’association.",
+    "reflexe": "Relisez, vérifiez les faits et ne transmettez pas de données confidentielles sans comprendre leur utilisation."
   },
   {
     "terme": "IBAN",
@@ -167,7 +224,10 @@
     "lien": {
       "href": "/blog/ce-faux-abonnement-connait-votre-nom-votre-adresse-et-votre-iban-faut-il-panique/",
       "label": "Lire l’article sur le faux abonnement"
-    }
+    },
+    "theme": "Arnaques et achats",
+    "situation": "Vous envoyez un RIB pour recevoir un remboursement.",
+    "reflexe": "Un IBAN ne donne pas accès à votre espace bancaire, mais surveillez vos prélèvements et vérifiez à qui vous le transmettez."
   },
   {
     "terme": "Mise à jour",
@@ -175,11 +235,17 @@
     "lien": {
       "href": "/bd/mises-a-jour-pourquoi-c-est-important/",
       "label": "Voir la BD sur les mises à jour"
-    }
+    },
+    "theme": "Internet et appareils",
+    "situation": "Votre ordinateur propose un redémarrage au moment où vous rangez vos affaires.",
+    "reflexe": "Installez rapidement les mises à jour de sécurité depuis les réglages officiels de l’appareil."
   },
   {
     "terme": "Navigateur",
-    "definition": "Le logiciel qui sert à aller sur Internet : Chrome, Firefox, Safari, Edge…"
+    "definition": "Le logiciel qui sert à aller sur Internet : Chrome, Firefox, Safari, Edge…",
+    "theme": "Internet et appareils",
+    "situation": "Vous ouvrez Safari pour consulter votre banque puis Firefox pour lire un article.",
+    "reflexe": "Un navigateur ouvre les sites ; un moteur de recherche aide à les trouver. Ce sont deux outils différents."
   },
   {
     "terme": "Nom de domaine",
@@ -187,7 +253,10 @@
     "lien": {
       "href": "/bd/faux-sites-verifier-l-adresse-avant-de-se-connecter/",
       "label": "Voir la BD sur les faux sites"
-    }
+    },
+    "theme": "Internet et appareils",
+    "situation": "Un message vous envoie sur une adresse qui ressemble à celle de votre banque.",
+    "reflexe": "Lisez le nom de domaine complet. Un logo connu et un nom ressemblant ne suffisent pas."
   },
   {
     "terme": "Passkey",
@@ -198,26 +267,38 @@
     "lien": {
       "href": "/blog/activer-la-2fa-sur-vos-comptes/",
       "label": "Lire le guide sur la double authentification"
-    }
+    },
+    "theme": "Comptes et sécurité",
+    "situation": "Votre ordinateur propose de créer une clé d’accès plutôt qu’un nouveau mot de passe.",
+    "reflexe": "Vérifiez comment retrouver vos clés si vous perdez l’appareil ; certaines sont synchronisées, d’autres restent sur un support."
   },
   {
     "terme": "Phrase de passe",
-    "definition": "Un mot de passe fait de plusieurs mots à la suite. Plus long qu’un mot de passe classique, il est à la fois plus solide et plus facile à retenir.",
+    "definition": "Un mot de passe composé de plusieurs mots. Sa solidité dépend notamment de sa longueur et du caractère imprévisible des mots choisis.",
     "lien": {
       "href": "/bd/mots-de-passe-les-bons-reflexes/",
       "label": "Voir la BD sur les mots de passe"
-    }
+    },
+    "theme": "Comptes et sécurité",
+    "situation": "Vous cherchez un secret mémorisable pour ouvrir votre coffre de mots de passe.",
+    "reflexe": "Choisissez plusieurs mots sans lien évident, évitez les citations connues et ne reprenez pas un exemple public."
   },
   {
     "terme": "Rançongiciel",
     "aussi": [
       "ransomware"
     ],
-    "definition": "Un programme malveillant qui bloque vos fichiers et réclame de l’argent pour les rendre."
+    "definition": "Un logiciel malveillant qui bloque l’accès à un appareil ou chiffre des fichiers pour exiger une rançon. Une attaque peut aussi s’accompagner d’un vol de données.",
+    "theme": "Comptes et sécurité",
+    "situation": "Les documents du club deviennent illisibles et un écran exige une rançon.",
+    "reflexe": "Déconnectez l’appareil du réseau et demandez de l’aide. Payer ne garantit pas de récupérer les fichiers."
   },
   {
     "terme": "RGPD",
-    "definition": "Le règlement européen qui protège vos données personnelles. Il vous donne notamment le droit de savoir ce qu’un organisme détient sur vous et de demander sa suppression."
+    "definition": "Le règlement européen qui encadre l’utilisation des données personnelles et donne des droits aux personnes, notamment l’accès, la rectification et, sous certaines conditions, l’effacement.",
+    "theme": "Vie privée et famille",
+    "situation": "Vous voulez savoir ce qu’un ancien service conserve sur vous.",
+    "reflexe": "Contactez l’organisme pour exercer vos droits. Certains ont des limites : une suppression n’est pas toujours immédiate ni totale."
   },
   {
     "terme": "RSS",
@@ -228,21 +309,487 @@
     "lien": {
       "href": "/flux",
       "label": "Voir les flux RSS du site"
-    }
+    },
+    "theme": "IA et information",
+    "situation": "Vous voulez suivre les articles du Singe sans créer de compte sur un réseau social.",
+    "reflexe": "Ajoutez le flux à un lecteur RSS et choisissez vous-même les sources que vous suivez."
   },
   {
     "terme": "Spam",
     "aussi": [
       "courrier indésirable"
     ],
-    "definition": "Un message envoyé en masse sans que vous l’ayez demandé : publicité, mais aussi tentatives d’arnaque."
+    "definition": "Un message envoyé en masse sans que vous l’ayez demandé : publicité, mais aussi tentatives d’arnaque.",
+    "theme": "Arnaques et achats",
+    "situation": "Votre boîte mail déborde de publicités que vous n’avez pas demandées.",
+    "reflexe": "Signalez le message comme indésirable. Pour un expéditeur suspect, évitez même le lien de désabonnement."
   },
   {
     "terme": "VPN",
-    "definition": "Un service qui fait passer votre connexion par un intermédiaire protégé. Utile sur un Wi-Fi public, car il empêche les voisins de réseau de voir ce que vous faites.",
+    "definition": "Un outil qui crée un tunnel chiffré entre votre appareil et un serveur VPN, lequel relaie votre connexion vers Internet ou un réseau privé.",
     "lien": {
       "href": "/bd/wi-fi-public-les-bons-reflexes/",
       "label": "Voir la BD sur le Wi-Fi public"
+    },
+    "theme": "Comptes et sécurité",
+    "situation": "Une publicité promet de vous rendre invisible sur Internet en un clic.",
+    "reflexe": "Le VPN déplace une partie de votre confiance vers son fournisseur. Il ne vous rend pas anonyme et ne bloque pas les arnaques."
+  },
+  {
+    "terme": "Algorithme",
+    "theme": "IA et information",
+    "definition": "Une suite d’instructions pour obtenir un résultat, comme une recette que l’ordinateur exécute.",
+    "situation": "Une plateforme choisit les vidéos qu’elle vous propose.",
+    "reflexe": "Ce qui apparaît en premier n’est pas forcément le plus fiable, ni ce que tout le monde voit.",
+    "lien": {
+      "href": "/bd/c-est-quoi-une-ia/",
+      "label": "Voir la BD « C’est quoi une IA ? »"
+    }
+  },
+  {
+    "terme": "Bluetooth",
+    "theme": "Internet et appareils",
+    "definition": "Une liaison sans fil à courte portée entre des appareils.",
+    "situation": "Vous reliez un casque à la tablette familiale sans câble.",
+    "reflexe": "Refusez les demandes d’association inconnues."
+  },
+  {
+    "terme": "Cache",
+    "theme": "Internet et appareils",
+    "definition": "Des éléments gardés temporairement par une application pour les réutiliser plus vite.",
+    "situation": "Un site affiche encore son ancien logo après une modification.",
+    "reflexe": "Vider le cache peut aider à corriger un affichage ; cela ne règle pas tous les problèmes."
+  },
+  {
+    "terme": "Chiffrement",
+    "theme": "Comptes et sécurité",
+    "definition": "Une transformation qui rend des données illisibles sans la clé appropriée.",
+    "situation": "Si votre ordinateur est volé, son disque chiffré protège mieux vos documents.",
+    "reflexe": "Activez la protection de l’appareil et conservez les moyens de récupération en lieu sûr.",
+    "lien": {
+      "href": "/bd/faux-sites-verifier-l-adresse-avant-de-se-connecter/",
+      "label": "Voir la BD sur les faux sites"
+    }
+  },
+  {
+    "terme": "Cloud",
+    "theme": "Internet et appareils",
+    "definition": "Des services et du stockage fournis à distance par des ordinateurs accessibles par Internet.",
+    "situation": "Les photos de famille sont conservées chez un fournisseur plutôt que seulement sur la tablette.",
+    "reflexe": "Le nuage est chez quelqu’un : regardez qui peut accéder aux fichiers et comment les récupérer.",
+    "lien": {
+      "href": "/veille/failles",
+      "label": "Voir les dernières fuites de données"
+    },
+    "aussi": [
+      "nuage",
+      "stockage en ligne"
+    ]
+  },
+  {
+    "terme": "Code de secours",
+    "theme": "Comptes et sécurité",
+    "definition": "Un code de récupération permettant de retrouver l’accès à un compte lorsque la seconde vérification habituelle est indisponible.",
+    "situation": "Votre téléphone est cassé et vous ne pouvez plus confirmer votre connexion.",
+    "reflexe": "Gardez ces codes à l’abri, ailleurs que sur le seul appareil dont vous pourriez perdre l’accès.",
+    "lien": {
+      "href": "/blog/activer-la-2fa-sur-vos-comptes/",
+      "label": "Lire le guide pour l’activer"
+    }
+  },
+  {
+    "terme": "Compte utilisateur",
+    "theme": "Comptes et sécurité",
+    "definition": "Un espace personnel associé à un identifiant et à des moyens de connexion.",
+    "situation": "Sur l’ordinateur familial, chacun retrouve ses documents dans sa session.",
+    "reflexe": "Créez des accès séparés quand c’est utile plutôt que de partager le même mot de passe.",
+    "lien": {
+      "href": "/blog/activer-la-2fa-sur-vos-comptes/",
+      "label": "Lire le guide pour l’activer"
+    }
+  },
+  {
+    "terme": "Cookie",
+    "theme": "Vie privée et famille",
+    "definition": "Une petite information qu’un site fait conserver par votre navigateur pour vous reconnaître ou mémoriser un réglage.",
+    "situation": "Votre panier reste rempli ; ailleurs, une publicité vous suit de site en site.",
+    "reflexe": "Tous les cookies n’ont pas le même rôle. Vous pouvez refuser ceux qui nécessitent votre consentement."
+  },
+  {
+    "terme": "Désinformation",
+    "theme": "IA et information",
+    "definition": "Des informations fausses ou trompeuses diffusées volontairement pour influencer.",
+    "situation": "Une publication invente une décision de la mairie et vous invite à la partager.",
+    "reflexe": "Retrouvez la source d’origine et vérifiez avant de relayer, même si le message confirme votre opinion."
+  },
+  {
+    "terme": "Empreinte numérique",
+    "theme": "Vie privée et famille",
+    "definition": "Les traces de votre activité numérique, laissées volontairement ou collectées lors de vos usages.",
+    "situation": "Une vieille photo publique ressort lorsque vous cherchez votre nom.",
+    "reflexe": "Vérifiez régulièrement ce qui est public et les réglages de vos comptes."
+  },
+  {
+    "terme": "Faux conseiller bancaire",
+    "theme": "Arnaques et achats",
+    "definition": "Un escroc se fait passer pour votre banque et prétend souvent vous protéger d’une fraude.",
+    "situation": "Au téléphone, il connaît votre nom et vous demande de valider une opération pour « l’annuler ».",
+    "reflexe": "Raccrochez et contactez votre banque avec son numéro habituel. Ne validez pas une opération dictée par cet appel.",
+    "lien": {
+      "href": "/veille",
+      "label": "Consulter les alertes arnaques"
+    }
+  },
+  {
+    "terme": "Fichier",
+    "theme": "Internet et appareils",
+    "definition": "Un élément enregistré sur un appareil ou un espace de stockage : photo, texte, vidéo…",
+    "situation": "Le compte rendu de votre association est enregistré dans un dossier.",
+    "reflexe": "Donnez-lui un nom reconnaissable et gardez une copie si vous ne voulez pas le perdre."
+  },
+  {
+    "terme": "FranceConnect",
+    "theme": "Démarches et documents",
+    "definition": "Un service permettant d’accéder à certaines démarches avec le compte d’un organisme partenaire.",
+    "situation": "Un site administratif vous propose de vous connecter avec un compte que vous possédez déjà.",
+    "reflexe": "Partez du site officiel de la démarche. Ne communiquez jamais vos codes à un interlocuteur."
+  },
+  {
+    "terme": "Géolocalisation",
+    "theme": "Vie privée et famille",
+    "definition": "La détermination de la position d’un appareil, notamment grâce au GPS ou aux réseaux.",
+    "situation": "Une application météo demande votre position précise en permanence.",
+    "reflexe": "Une ville saisie à la main peut suffire : accordez seulement la précision et la durée nécessaires.",
+    "lien": {
+      "href": "/bd/applications-regarde-ce-que-tu-autorises/",
+      "label": "Voir la BD sur les autorisations des applications"
+    }
+  },
+  {
+    "terme": "Hallucination de l’IA",
+    "theme": "IA et information",
+    "definition": "Une réponse fausse ou inventée produite par une IA, parfois présentée avec beaucoup d’assurance.",
+    "situation": "L’assistant cite un article qui semble sérieux mais n’existe pas.",
+    "reflexe": "Ouvrez les sources annoncées et vérifiez les faits. Un ton convaincant n’est pas une preuve.",
+    "lien": {
+      "href": "/bd/c-est-quoi-une-ia/",
+      "label": "Voir la BD « C’est quoi une IA ? »"
+    }
+  },
+  {
+    "terme": "Historique de navigation",
+    "theme": "Vie privée et famille",
+    "definition": "La liste des pages que votre navigateur a enregistrées lors de vos visites.",
+    "situation": "Sur un ordinateur partagé, vous retrouvez le site consulté hier.",
+    "reflexe": "Effacer l’historique local n’efface pas les traces conservées par les sites ou d’autres services."
+  },
+  {
+    "terme": "Identifiant",
+    "theme": "Comptes et sécurité",
+    "definition": "L’information qui indique quel compte vous voulez ouvrir, souvent une adresse mail ou un nom choisi.",
+    "situation": "Le formulaire demande votre adresse mail puis votre mot de passe.",
+    "reflexe": "L’identifiant indique qui vous êtes ; le mot de passe sert à le prouver. Protégez surtout le second."
+  },
+  {
+    "terme": "Ingénierie sociale",
+    "theme": "Arnaques et achats",
+    "definition": "Une manipulation qui joue sur la confiance, la peur ou l’urgence pour faire agir une personne.",
+    "situation": "Un prétendu président d’association exige un virement discret avant ce soir.",
+    "reflexe": "Accordez-vous une pause et vérifiez par un autre canal. L’urgence mérite une vérification, pas une obéissance automatique.",
+    "lien": {
+      "href": "/bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage/",
+      "label": "Voir la BD pour repérer un faux mail"
+    }
+  },
+  {
+    "terme": "Lien hypertexte",
+    "theme": "Internet et appareils",
+    "definition": "Un texte, une image ou un bouton qui ouvre une autre ressource quand on l’active.",
+    "situation": "Le bouton « Suivre mon colis » ouvre une page demandant un paiement.",
+    "reflexe": "Le texte du bouton ne prouve pas sa destination. Pour une demande sensible, ouvrez le service vous-même.",
+    "lien": {
+      "href": "/bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage/",
+      "label": "Voir la BD pour repérer un faux mail"
+    }
+  },
+  {
+    "terme": "Logiciel libre",
+    "theme": "Internet et appareils",
+    "definition": "Un logiciel dont la licence permet notamment l’utilisation, l’étude, la modification et le partage.",
+    "situation": "Votre association utilise LibreOffice pour préparer ses documents.",
+    "reflexe": "Libre ne signifie pas forcément gratuit, ni automatiquement plus sûr : vérifiez la source et les mises à jour."
+  },
+  {
+    "terme": "Logiciel malveillant",
+    "theme": "Comptes et sécurité",
+    "definition": "Un programme conçu pour nuire, voler des informations ou prendre le contrôle d’un appareil. Les virus en sont une famille.",
+    "situation": "Un faux outil gratuit installe aussi un programme qui espionne vos saisies.",
+    "reflexe": "Téléchargez depuis une source officielle et gardez l’appareil à jour.",
+    "lien": {
+      "href": "/bd/mises-a-jour-pourquoi-c-est-important/",
+      "label": "Voir la BD sur les mises à jour"
+    },
+    "aussi": [
+      "malware"
+    ]
+  },
+  {
+    "terme": "Moteur de recherche",
+    "theme": "Internet et appareils",
+    "definition": "Un service qui aide à trouver des pages et d’autres contenus sur Internet.",
+    "situation": "Vous tapez le nom de votre banque dans Google, Bing ou un autre moteur.",
+    "reflexe": "Le premier résultat, surtout sponsorisé, n’est pas forcément le bon site."
+  },
+  {
+    "terme": "Mot de passe",
+    "theme": "Comptes et sécurité",
+    "definition": "Un secret utilisé pour prouver que vous pouvez accéder à un compte.",
+    "situation": "Le même secret ouvre votre messagerie, une boutique et le site du club.",
+    "reflexe": "Utilisez un mot de passe différent pour chaque compte, en priorité pour votre messagerie.",
+    "lien": {
+      "href": "/bd/mots-de-passe-les-bons-reflexes/",
+      "label": "Voir la BD sur les mots de passe"
+    }
+  },
+  {
+    "terme": "Navigation privée",
+    "theme": "Vie privée et famille",
+    "definition": "Un mode qui limite les traces de la session conservées dans le navigateur après sa fermeture.",
+    "situation": "Vous consultez un site sur l’ordinateur d’un proche sans conserver la session habituelle.",
+    "reflexe": "Ce mode ne vous rend pas invisible auprès des sites, du fournisseur d’accès ou d’un réseau d’entreprise."
+  },
+  {
+    "terme": "Notification",
+    "theme": "Internet et appareils",
+    "definition": "Une alerte envoyée par une application ou un site.",
+    "situation": "Un site d’actualité demande la permission d’afficher des messages sur votre écran.",
+    "reflexe": "Vous pouvez refuser ou désactiver les alertes : tout ne mérite pas de vous interrompre."
+  },
+  {
+    "terme": "PDF",
+    "theme": "Démarches et documents",
+    "definition": "Un format de document conçu pour conserver sa présentation sur différents appareils.",
+    "situation": "La mairie vous transmet un formulaire à lire ou à imprimer.",
+    "reflexe": "Un PDF peut contenir des liens piégés : son format ne garantit pas sa fiabilité."
+  },
+  {
+    "terme": "Pièce jointe",
+    "theme": "Arnaques et achats",
+    "definition": "Un fichier ajouté à un message.",
+    "situation": "Une facture inattendue arrive dans votre boîte mail avec un document à ouvrir.",
+    "reflexe": "Vérifiez auprès de l’expéditeur par un contact connu avant d’ouvrir un document inhabituel.",
+    "lien": {
+      "href": "/bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage/",
+      "label": "Voir la BD pour repérer un faux mail"
+    }
+  },
+  {
+    "terme": "Prompt",
+    "theme": "IA et information",
+    "definition": "La consigne donnée à une IA pour orienter sa réponse.",
+    "situation": "Vous demandez : « Explique ce courrier simplement, sans ajouter d’informations ».",
+    "reflexe": "Précisez votre besoin et relisez le résultat ; une bonne consigne ne garantit pas une réponse juste.",
+    "lien": {
+      "href": "/bd/c-est-quoi-une-ia/",
+      "label": "Voir la BD « C’est quoi une IA ? »"
+    },
+    "aussi": [
+      "consigne",
+      "invite"
+    ]
+  },
+  {
+    "terme": "QR code",
+    "theme": "Arnaques et achats",
+    "definition": "Une image codée qu’un appareil peut lire, souvent pour ouvrir une adresse Internet.",
+    "situation": "Un autocollant sur un parcmètre vous invite à payer en le scannant.",
+    "reflexe": "Vérifiez l’adresse proposée avant de l’ouvrir : le carré peut cacher un lien frauduleux.",
+    "lien": {
+      "href": "/bd/faux-sites-verifier-l-adresse-avant-de-se-connecter/",
+      "label": "Voir la BD sur les faux sites"
+    }
+  },
+  {
+    "terme": "Réseau social",
+    "theme": "Vie privée et famille",
+    "definition": "Un service où des personnes publient, échangent et suivent des contenus ou des comptes.",
+    "situation": "Vous partagez une photo de la fête de l’association.",
+    "reflexe": "Avant de publier, vérifiez l’accord des personnes et le public qui pourra voir le contenu."
+  },
+  {
+    "terme": "Sauvegarde",
+    "theme": "Comptes et sécurité",
+    "definition": "Une copie de données conservée pour pouvoir les retrouver après une perte, une panne ou une attaque.",
+    "situation": "Votre ordinateur tombe en panne, mais les photos existent aussi sur un disque débranché.",
+    "reflexe": "Gardez une copie séparée et vérifiez que vous savez restaurer un fichier."
+  },
+  {
+    "terme": "Signature électronique",
+    "theme": "Démarches et documents",
+    "definition": "Un procédé qui permet de signer un document électroniquement, avec des garanties variables selon le procédé.",
+    "situation": "Vous signez un contrat à distance après avoir reçu un code.",
+    "reflexe": "Lisez le document complet et vérifiez l’organisme avant de confirmer. Une image de signature n’offre pas les mêmes garanties."
+  },
+  {
+    "terme": "Smishing",
+    "theme": "Arnaques et achats",
+    "definition": "De l’hameçonnage par SMS.",
+    "situation": "Un message annonce une amende urgente et donne un lien pour régler.",
+    "reflexe": "Retrouvez le service officiel vous-même, sans utiliser le lien du SMS.",
+    "lien": {
+      "href": "/bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage/",
+      "label": "Voir la BD pour repérer un faux mail"
+    }
+  },
+  {
+    "terme": "Streaming",
+    "theme": "Internet et appareils",
+    "definition": "La lecture d’un son ou d’une vidéo au fur et à mesure de sa réception par Internet.",
+    "situation": "Vous regardez la WebTV locale sans télécharger toute l’émission à l’avance.",
+    "reflexe": "La lecture utilise des données ; vérifiez votre forfait si vous n’êtes pas en Wi-Fi."
+  },
+  {
+    "terme": "Synchronisation",
+    "theme": "Internet et appareils",
+    "definition": "La mise en cohérence de données entre plusieurs appareils ou espaces de stockage.",
+    "situation": "Vous effacez une photo du téléphone et elle disparaît aussi de l’espace en ligne.",
+    "reflexe": "Synchroniser n’est pas toujours sauvegarder : une suppression peut se propager partout."
+  },
+  {
+    "terme": "Système d’exploitation",
+    "theme": "Internet et appareils",
+    "definition": "Le logiciel de base qui fait fonctionner un appareil et ses applications.",
+    "situation": "L’ordinateur utilise Windows, macOS ou Linux ; la tablette utilise un autre système.",
+    "reflexe": "Vérifiez qu’il reçoit encore des correctifs de sécurité et installez-les.",
+    "lien": {
+      "href": "/bd/mises-a-jour-pourquoi-c-est-important/",
+      "label": "Voir la BD sur les mises à jour"
+    }
+  },
+  {
+    "terme": "Téléchargement",
+    "theme": "Internet et appareils",
+    "definition": "La réception d’un fichier depuis Internet sur votre appareil.",
+    "situation": "Vous enregistrez le cahier de jeux du Singe pour l’imprimer.",
+    "reflexe": "Choisissez la source officielle et méfiez-vous des faux boutons « Télécharger » dans les publicités.",
+    "lien": {
+      "href": "/bd/applications-regarde-ce-que-tu-autorises/",
+      "label": "Voir la BD sur les autorisations des applications"
+    }
+  },
+  {
+    "terme": "URL",
+    "theme": "Internet et appareils",
+    "definition": "L’adresse complète d’une ressource sur le Web, avec le nom du site et éventuellement le chemin vers une page.",
+    "situation": "Vous copiez l’adresse d’un article pour l’envoyer à un proche.",
+    "reflexe": "Un lien très long peut contenir des informations personnelles : regardez ce que vous partagez.",
+    "lien": {
+      "href": "/bd/faux-sites-verifier-l-adresse-avant-de-se-connecter/",
+      "label": "Voir la BD sur les faux sites"
+    }
+  },
+  {
+    "terme": "Usurpation d’identité",
+    "theme": "Arnaques et achats",
+    "definition": "L’utilisation de l’identité d’une personne sans son accord pour agir à sa place ou tromper.",
+    "situation": "Un faux profil reprend la photo d’un membre du club pour demander de l’argent.",
+    "reflexe": "Contactez la personne par un moyen déjà connu avant de répondre à une demande inhabituelle.",
+    "lien": {
+      "href": "/blog/ce-faux-abonnement-connait-votre-nom-votre-adresse-et-votre-iban-faut-il-panique/",
+      "label": "Lire l’exemple du faux abonnement"
+    }
+  },
+  {
+    "terme": "Wi-Fi",
+    "theme": "Internet et appareils",
+    "definition": "Une liaison sans fil entre vos appareils et un réseau, souvent celui de votre box.",
+    "situation": "La tablette capte le Wi-Fi de la maison, mais aucun site ne s’ouvre.",
+    "reflexe": "Être connecté au Wi-Fi ne garantit pas l’accès à Internet : la box peut avoir perdu sa connexion.",
+    "lien": {
+      "href": "/bd/wi-fi-public-les-bons-reflexes/",
+      "label": "Voir la BD sur le Wi-Fi public"
+    }
+  },
+  {
+    "terme": "Accessibilité numérique",
+    "theme": "Vie privée et famille",
+    "definition": "La possibilité d’utiliser un service numérique avec des besoins et des capacités variés, notamment en situation de handicap.",
+    "situation": "Une personne consulte une page au clavier ou écoute sa lecture par un logiciel.",
+    "reflexe": "Ajoutez des descriptions aux images et des sous-titres aux vidéos que vous partagez."
+  },
+  {
+    "terme": "Autorisation d’application",
+    "theme": "Vie privée et famille",
+    "definition": "Un droit accordé à une application pour utiliser une fonction ou des données de l’appareil.",
+    "situation": "Une lampe torche demande l’accès aux contacts.",
+    "reflexe": "Demandez-vous si cet accès est utile et retirez les autorisations superflues dans les réglages.",
+    "lien": {
+      "href": "/bd/applications-regarde-ce-que-tu-autorises/",
+      "label": "Voir la BD sur les autorisations des applications"
+    }
+  },
+  {
+    "terme": "Box Internet",
+    "theme": "Internet et appareils",
+    "definition": "L’équipement qui relie généralement le logement à Internet et distribue la connexion aux appareils.",
+    "situation": "L’ordinateur branché par câble et la tablette en Wi-Fi passent par la même box.",
+    "reflexe": "Modifiez les accès administrateur par défaut quand c’est possible et gardez son logiciel à jour."
+  },
+  {
+    "terme": "Dossier",
+    "theme": "Internet et appareils",
+    "definition": "Un contenant qui permet de ranger des fichiers et d’autres dossiers.",
+    "situation": "Vous regroupez les factures de l’association par année.",
+    "reflexe": "Choisissez un rangement compréhensible pour les personnes qui doivent retrouver les documents."
+  },
+  {
+    "terme": "Identité numérique",
+    "theme": "Démarches et documents",
+    "definition": "Les éléments qui vous représentent ou permettent de vous identifier en ligne ; certains services proposent aussi une identité vérifiée.",
+    "situation": "Une démarche vous demande de prouver qui vous êtes à distance.",
+    "reflexe": "Vérifiez le service et les justificatifs nécessaires avant d’envoyer une pièce d’identité."
+  },
+  {
+    "terme": "Messagerie électronique",
+    "theme": "Internet et appareils",
+    "definition": "Un service qui permet d’envoyer et de recevoir des courriers électroniques.",
+    "situation": "La confirmation de votre rendez-vous arrive dans votre boîte mail.",
+    "reflexe": "Protégez cette boîte en priorité : elle sert souvent à réinitialiser les autres comptes."
+  },
+  {
+    "terme": "Partage de connexion",
+    "theme": "Internet et appareils",
+    "definition": "L’utilisation de la connexion Internet d’un appareil, souvent un téléphone, par un autre appareil.",
+    "situation": "Vous connectez ponctuellement un ordinateur au forfait mobile du téléphone.",
+    "reflexe": "Protégez le partage par un mot de passe et surveillez la consommation de données."
+  },
+  {
+    "terme": "Stockage",
+    "theme": "Internet et appareils",
+    "definition": "L’espace disponible pour conserver des fichiers et des applications.",
+    "situation": "La tablette refuse une vidéo parce que sa mémoire est pleine.",
+    "reflexe": "Avant de supprimer des souvenirs, vérifiez qu’une copie fonctionne ailleurs."
+  },
+  {
+    "terme": "Support technique frauduleux",
+    "theme": "Arnaques et achats",
+    "definition": "Une escroquerie qui fait croire à un problème informatique pour vendre une fausse réparation ou obtenir l’accès à l’appareil.",
+    "situation": "Une page clignote et vous ordonne d’appeler un numéro pour « débloquer Windows ».",
+    "reflexe": "N’appelez pas le numéro affiché. Fermez la page et cherchez de l’aide par un contact fiable.",
+    "lien": {
+      "href": "/veille",
+      "label": "Consulter les alertes arnaques"
+    }
+  },
+  {
+    "terme": "Vishing",
+    "theme": "Arnaques et achats",
+    "definition": "De l’hameçonnage par appel vocal : l’escroc cherche à obtenir des informations ou à vous faire agir.",
+    "situation": "Un appel prétend venir du service antifraude et demande un code reçu par SMS.",
+    "reflexe": "Le numéro affiché peut être falsifié : raccrochez et rappelez l’organisme avec son numéro habituel.",
+    "lien": {
+      "href": "/veille",
+      "label": "Consulter les alertes arnaques"
     }
   }
 ]

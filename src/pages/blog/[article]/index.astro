@@ -1,4 +1,5 @@
 ---
+import LexiqueRelated from '../../../components/LexiqueRelated.astro';
 import { getCollection, render } from 'astro:content';
 import MaintenanceContent from '../../../components/MaintenanceContent.astro';
 import ShareButtons from '../../../components/ShareButtons.astro';
@@ -826,6 +827,7 @@ const articleSchema = {
                       <Content />
                     </div>
 
+                    <LexiqueRelated path={currentPath} />
                     <ShareButtons title={post.data.title} label="Partager cet article" />
                   </article>
                 </main>
@@ -986,27 +988,7 @@ const articleSchema = {
           const mainContent = document.getElementById('main-content');
           const footer = document.querySelector('footer');
 
-          [navRight, mainContent, footer].forEach((element) => {
-            if (!element) return;
-            if (isOpen) {
-              element.setAttribute('inert', '');
-            } else {
-              element.removeAttribute('inert');
-            }
-          });
-
-          if (isOpen) {
-            lastFocusedElement = document.activeElement;
-            window.setTimeout(() => {
-              getMenuFocusableElements()[0]?.focus();
-            }, 0);
-          } else if (lastFocusedElement instanceof HTMLElement) {
-            lastFocusedElement.focus();
-            lastFocusedElement = null;
-          }
-        };
-
-        setMenuState(false);
+    …162 tokens truncated…n        setMenuState(false);
 
         burgerBtn.addEventListener('click', () => {
           const isOpen = burgerBtn.getAttribute('aria-expanded') !== 'true';

@@ -10,6 +10,7 @@ const ancre = (terme: string) =>
     .replace(/[̀-ͯ]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
+const themes = [...new Set(entrees.map((entree) => entree.theme))].sort((a, b) => a.localeCompare(b, 'fr'));
 const lettres = [...new Set(entrees.map((entree) => entree.terme[0].toUpperCase()))];
 const premiereDeLaLettre = new Set(
   lettres.map((lettre) => entrees.find((entree) => entree.terme[0].toUpperCase() === lettre)?.terme),
@@ -17,7 +18,7 @@ const premiereDeLaLettre = new Set(
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'DefinedTermSet',
-  name: 'Les mots du numérique',
+  name: 'Le lexique d’Octet',
   hasDefinedTerm: entrees.map((entree) => ({
     '@type': 'DefinedTerm',
     name: entree.terme,
@@ -27,21 +28,26 @@ const schema = {
 ---
 
 <SiteLayout
-  title="Les mots du numérique : le lexique | Le Singe Du Numérique"
-  description="Phishing, 2FA, IBAN, deepfake, VPN… Les mots du numérique expliqués simplement, en une ou deux phrases."
-  eyebrow="Lexique"
-  headline="Les mots"
-  accent="du numérique"
-  intro="Un mot que vous ne comprenez pas ? Voici les termes qui reviennent sur le site, expliqués en une ou deux phrases, sans jargon."
+  title="Le lexique d’Octet : les mots du numérique en clair | Le Singe Du Numérique"
+  description="Le lexique d’Octet : des mots du numérique expliqués avec des situations du quotidien, des réflexes utiles et des liens vers nos articles et BD."
+  eyebrow="Comprendre, à votre rythme"
+  headline="Le lexique"
+  accent="d’Octet"
+  intro="Un SMS de livraison douteux, des photos qui disparaissent, une appli trop curieuse… Octet part de votre quotidien pour mettre des mots sur ce qui se passe. Pas besoin de tout connaître : piochez ce qui vous est utile."
 >
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
+  <aside class="octet-intro"><strong>🐒 « Les mots compliqués, on les débrouille ensemble. »</strong><p>Pour chaque mot : une explication, une situation qui vous parle et un réflexe à emporter. Vous pouvez aussi chercher « colis », « photos » ou « association ».</p></aside>
+
   <div class="lexique-tools">
     <label for="lexique-search">Chercher un mot</label>
-    <input id="lexique-search" type="search" placeholder="Ex. : phishing, IBAN, VPN…" autocomplete="off" />
+    <input id="lexique-search" type="search" placeholder="Un mot ou une situation : colis, photos, Wi-Fi…" autocomplete="off" />
+    <label for="lexique-theme">Explorer un thème</label>
+    <select id="lexique-theme"><option value="">Tous les thèmes</option>{themes.map((theme) => <option value={theme}>{theme}</option>)}</select>
+    <button id="lexique-reset" type="button" hidden>Tout afficher</button>
     <nav aria-label="Aller à une lettre">
       <ul class="lexique-letters">
-        {lettres.map((lettre) => <li><a href={`#lettre-${lettre}`}>{lettre}</a></li>)}
+        {lettres.map((lettre) => <li><a data-letter={lettre} href={`#lettre-${lettre}`}>{lettre}</a></li>)}
       </ul>
     </nav>
     <p id="lexique-status" class="lexique-status" role="status">{entrees.length} mots expliqués</p>
@@ -52,7 +58,8 @@ const schema = {
       <div
         class="lexique-entry"
         id={ancre(entree.terme)}
-        data-search={[entree.terme, ...(entree.aussi ?? []), entree.definition].join(' ')}
+        data-theme={entree.theme}
+        data-search={[entree.terme, ...(entree.aussi ?? []), entree.definition, entree.situation, entree.reflexe, entree.theme].join(' ')}
       >
         <dt>
           <span id={premiereDeLaLettre.has(entree.terme) ? `lettre-${entree.terme[0].toUpperCase()}` : undefined}>
@@ -61,7 +68,11 @@ const schema = {
           {entree.aussi && <small>aussi appelé {entree.aussi.join(', ')}</small>}
         </dt>
         <dd>
-          <p>{entree.definition}</p>
+          <p class="lexique-theme">{entree.theme}</p>
+          <p><strong>En clair.</strong> {entree.definition}</p>
+          <p><strong>Ça vous parle ?</strong> {entree.situation}</p>
+          <p class="octet-reflexe"><strong>🐒 Le réflexe d’Octet</strong><br />{entree.reflexe}</p>
+          <a class="lexique-permalink" href={`#${ancre(entree.terme)}`} aria-label={`Lien direct vers ${entree.terme}`}>Lien vers ce mot</a>
           {entree.lien && <a href={entree.lien.href}>{entree.lien.label} <span aria-hidden="true">→</span></a>}
         </dd>
       </div>
@@ -69,11 +80,15 @@ const schema = {
   </dl>
 
   <p class="lexique-empty" id="lexique-empty" hidden>
-    Ce mot n’est pas encore dans le lexique. <a href="/contact">Dites-le-nous</a>, nous l’ajouterons.
+    Aucun mot ne correspond à cette recherche et à ce thème. Essayez un autre terme ou affichez tous les thèmes. Un mot manque ? <a href="/contact">Proposez-le à Octet</a>.
   </p>
 
+  <aside class="lexique-sources"><h2>Pour aller à la source</h2><p>Octet explique avec ses mots. Pour approfondir : <a href="https://www.cnil.fr/fr/definition">le vocabulaire de la CNIL</a> (vie privée et IA), <a href="https://www.cnil.fr/fr/definition/cookie">sa définition des cookies</a> et <a href="https://www.cybermalveillance.gouv.fr/tous-nos-contenus/bonnes-pratiques/10-mesures-essentielles-assurer-securite-numerique">les conseils de Cybermalveillance.gouv.fr</a> (comptes, sauvegardes et sécurité). Les démarches et les services évoluent : les pages officielles restent le point de référence.</p></aside>
+
   <script>
-    const input = document.getElementById('lexique-search');
+    const input = document.getElementById('lexique-search') as HTMLInputElement;
+    const theme = document.getElementById('lexique-theme') as HTMLSelectElement;
+    const reset = document.getElementById('lexique-reset') as HTMLButtonElement;
     const entries = Array.from(document.querySelectorAll('.lexique-entry'));
     const status = document.getElementById('lexique-status');
     const empty = document.getElementById('lexique-empty');
@@ -84,17 +99,27 @@ const schema = {
         .toLowerCase()
         .trim();
 
-    input?.addEventListener('input', () => {
+    const filter = () => {
       const query = normalize(input.value);
       let visible = 0;
       entries.forEach((entry) => {
-        const match = !query || normalize(entry.getAttribute('data-search')).includes(query);
+        const match = (!theme.value || entry.getAttribute('data-theme') === theme.value) && (!query || query.split(/\s+/).every((word) => normalize(entry.getAttribute('data-search')).includes(word)));
         entry.hidden = !match;
         if (match) visible += 1;
       });
       if (status) status.textContent = `${visible} mot${visible > 1 ? 's' : ''} ${query ? 'trouvé' : 'expliqué'}${visible > 1 ? 's' : ''}`;
       if (empty) empty.hidden = visible !== 0;
-    });
+      reset.hidden = !query && !theme.value;
+      document.querySelectorAll('.lexique-letters a').forEach((link) => {
+        const letter = link.getAttribute('data-letter');
+        const first = entries.find((entry) => !entry.hidden && entry.querySelector('dt span')?.textContent?.trim().charAt(0).toUpperCase() === letter);
+        (link.parentElement as HTMLElement).hidden = !first;
+        if (first) link.setAttribute('href', `#${first.id}`);
+      });
+    };
+    input?.addEventListener('input', filter);
+    theme?.addEventListener('change', filter);
+    reset?.addEventListener('click', () => { input.value = ''; theme.value = ''; filter(); input.focus(); });
   </script>
 </SiteLayout>
 
@@ -109,7 +134,7 @@ const schema = {
     font-weight: 700;
   }
 
-  .lexique-tools input {
+  .lexique-tools input, .lexique-tools select, .lexique-tools button {
     width: 100%;
     max-width: 420px;
     min-height: 48px;
@@ -213,4 +238,19 @@ const schema = {
   .lexique-empty a:hover {
     text-decoration: underline;
   }
+</style>
+
+<style>
+.octet-intro, .lexique-sources { padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 1.5rem; background: var(--bg-card); line-height: 1.7; }
+.octet-intro strong { color: var(--text-main); font-size: 1.15rem; }
+.octet-intro p { margin-bottom: 0; }
+.lexique-sources { margin-top: 2rem; }
+.lexique-entry dd .lexique-theme { font-size: .8rem; font-weight: 700; margin-bottom: .75rem; }
+.lexique-entry dd strong { color: var(--text-main); }
+.lexique-entry dd .octet-reflexe { border-left: 3px solid var(--brand-green); padding: .75rem 1rem; margin: 1rem 0; background: var(--bg-main); border-radius: 0 10px 10px 0; }
+.lexique-entry:target { border-color: var(--brand-green); }
+.lexique-entry dd .lexique-permalink { display: inline-block; margin-right: 1rem; font-weight: 500; font-size: .85rem; }
+.lexique-tools button { cursor: pointer; }
+.lexique-tools button[hidden], .lexique-letters li[hidden] { display: none; }
+.lexique-sources a { color: var(--brand-green); text-decoration: underline; }
 </style>
