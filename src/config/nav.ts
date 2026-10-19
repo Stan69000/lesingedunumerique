@@ -9,6 +9,7 @@ export const mainNav: NavItem[] = [
   { href: '/bd', label: 'BD', matchPrefix: true },
   { href: '/veille', label: 'Alertes arnaques', matchPrefix: true },
   { href: '/sensibilisation', label: 'Jeux', matchPrefix: true },
+  { href: '/lexique', label: 'Lexique' },
   { href: '/asso', label: 'L’association' },
   { href: '/contact', label: 'Contact' },
 ];
@@ -18,7 +19,6 @@ export const navCta: NavItem = { href: '/adhesion', label: 'Rejoindre' };
 export const footerNav: NavItem[] = [
   ...mainNav,
   navCta,
-  { href: '/lexique', label: 'Lexique' },
   { href: '/flux', label: 'Flux RSS' },
   { href: '/plan-du-site', label: 'Plan du site' },
   { href: '/mentions-legales', label: 'Mentions légales' },
