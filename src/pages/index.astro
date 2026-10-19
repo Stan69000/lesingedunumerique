@@ -6,6 +6,7 @@ import { siteSettings } from '../config/site';
 import { estimateReadingTimeMinutes } from '../lib/reading-time';
 import { getPlanches } from '../lib/bd';
 import aLaUne from '../data/a-la-une.json';
+import lexique from '../data/lexique.json';
 import { ariaCurrent, footerNav, mainNav, navCta } from '../config/nav';
 import '../styles/global.css';
 import '../styles/home.css';
@@ -26,6 +27,11 @@ const levelTags = [
 const planches = await getPlanches();
 
 const spaces = [
+  {
+    href: '/lexique', icon: '🐒', tone: 'green', name: 'Le lexique d’Octet',
+    what: 'Un SMS douteux, des photos dans le cloud, une appli trop curieuse… Des mots expliqués à partir de votre quotidien, avec le réflexe d’Octet pour savoir quoi faire.',
+    meta: `${lexique.length} mots, des exemples et des réflexes utiles`, cta: 'Comprendre un mot',
+  },
   {
     href: '/blog',
     icon: '📖',
