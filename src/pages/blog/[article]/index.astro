@@ -1,4 +1,6 @@
 ---
+import ProjectRelated from '../../../components/ProjectRelated.astro';
+import FooterProjects from '../../../components/FooterProjects.astro';
 import LexiqueRelated from '../../../components/LexiqueRelated.astro';
 import { getCollection, render } from 'astro:content';
 import MaintenanceContent from '../../../components/MaintenanceContent.astro';
@@ -827,6 +829,7 @@ const articleSchema = {
                       <Content />
                     </div>
 
+                    <ProjectRelated topic={`${post.data.title} ${post.data.tags.join(" ")}`} />
                     <LexiqueRelated path={currentPath} />
                     <ShareButtons title={post.data.title} label="Partager cet article" />
                   </article>
@@ -839,7 +842,8 @@ const articleSchema = {
                         <img src="/logo.svg" alt="" aria-hidden="true" class="footer-logo" />
                         <span>Le Singe Du Numérique</span>
                       </div>
-                      <div class="footer-line">
+                      <FooterProjects />
+                <div class="footer-line">
                         <span class="footer-line-label">Menu</span>
                         <ul class="footer-line-content footer-links">
 {footerNav.map((item) => (

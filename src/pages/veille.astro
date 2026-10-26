@@ -1,4 +1,5 @@
 ---
+import ProjectRelated from '../components/ProjectRelated.astro';
 import SiteLayout from '../layouts/SiteLayout.astro';
 import BriefCard from '../components/BriefCard.astro';
 import { getPublishedBriefs } from '../lib/briefs';
@@ -354,6 +355,8 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
       );
     })
   }
+
+  <ProjectRelated project="signal-clair" />
 
   <section class="veille-more" aria-labelledby="more-title">
     <h2 id="more-title">Aller plus loin</h2>
