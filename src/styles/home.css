@@ -216,22 +216,8 @@
   .gradient-text { color: var(--brand-green); }
   .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.2rem; line-height: 1.75; }
 
-  .search-wrapper { width: 100%; max-width: 620px; margin: 2.6rem auto 0; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-  .search-bar { position: relative; width: 100%; min-width: 0; background: var(--bg-card); border: 1px solid var(--field-border); border-radius: 14px; padding: 10px 14px; display: flex; align-items: center; gap: 14px; transition: border-color 0.3s, box-shadow 0.3s; }
-  .search-bar:focus-within { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.1); }
-  .search-icon { color: var(--text-muted); display: flex; align-items: center; }
-  .search-input { flex: 1; min-width: 0; background: var(--field-input-bg); border: 1px solid var(--field-input-border); border-radius: 10px; padding: 10px 12px; color: var(--text-main); font-size: 1.05rem; font-family: 'Space Grotesk', sans-serif; outline: none; }
-  .search-input:focus-visible { border-color: var(--brand-green); box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.2); }
-  .search-input::placeholder { color: var(--field-placeholder); opacity: 1; }
-  .search-input[aria-invalid='true'] { border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2); }
-  .search-submit { border: 1px solid transparent; border-radius: 999px; padding: 10px 14px; background: var(--action-bg); color: var(--action-text); font-weight: 700; cursor: pointer; }
-  .search-submit:hover { filter: brightness(0.95); }
-  .search-error { margin: -2px 4px 0; font-size: 0.85rem; color: #ef4444; text-align: left; font-weight: 600; }
-
-
   .quick-actions { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 1.4rem; }
   .quick-label { font-size: 0.92rem; color: var(--text-muted); }
-  .search-label { font-size: 0.95rem; color: var(--text-muted); font-weight: 500; }
   .quick-tag { font-size: 0.92rem; font-weight: 500; padding: 8px 15px; background: var(--chip-bg); border-radius: 20px; color: var(--chip-text); transition: all 0.2s; }
   .quick-tag:hover { background: rgba(45, 212, 191, 0.15); color: var(--brand-green); }
 
@@ -302,9 +288,6 @@
     .hero-title { font-size: 2.2rem; }
     .hero-logo { max-width: 100px; }
     .hero-desc { font-size: 1rem; }
-    .search-wrapper { max-width: 100%; }
-    .search-bar { flex-wrap: wrap; padding: 14px 16px; }
-    .search-submit { width: 100%; }
     .quick-actions { gap: 8px; }
     .quick-tag { padding: 6px 12px; font-size: 0.85rem; }
     .section-header h2 { font-size: 1.8rem; }
@@ -325,15 +308,7 @@
     overflow-wrap: anywhere;
   }
 
-  @media (max-width: 1100px) {
-    .search-bar {
-      flex-wrap: wrap;
-    }
 
-    .search-submit {
-      width: 100%;
-    }
-  }
 
 
   .section-more { font-weight: 700; color: var(--brand-green); white-space: nowrap; }

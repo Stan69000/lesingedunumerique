@@ -1,4 +1,5 @@
 ---
+import SearchTrigger from '../components/SearchTrigger.astro';
 import CommandPalette from '../components/CommandPalette.astro';
 import FooterProjects from '../components/FooterProjects.astro';
 import MaintenanceContent from '../components/MaintenanceContent.astro';
@@ -101,7 +102,8 @@ const isVeillePage = currentPath.startsWith('/veille');
                   </button>
                 </div>
 
-                <button
+                <SearchTrigger />
+<button
                   class="burger-btn"
                   id="burger-btn"
                   aria-label="Ouvrir le menu principal"

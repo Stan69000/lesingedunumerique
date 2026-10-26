@@ -1,4 +1,6 @@
 ---
+import SearchDiscovery from '../components/SearchDiscovery.astro';
+import SearchTrigger from '../components/SearchTrigger.astro';
 import CommandPalette from '../components/CommandPalette.astro';
 import BackToTop from '../components/BackToTop.astro';
 import AssociationProjects from '../components/AssociationProjects.astro';
@@ -203,7 +205,8 @@ const currentPath = Astro.url.pathname;
           </button>
         </div>
 
-        <button
+        <SearchTrigger />
+<button
           class="burger-btn"
           id="burger-btn"
           aria-label="Ouvrir le menu principal"
@@ -265,6 +268,8 @@ const currentPath = Astro.url.pathname;
             pensé pour tous les niveaux. Voici ce que vous trouverez ici.
           </p>
 
+          <SearchDiscovery />
+
           {(latestBd || latestPost || latestBrief) && (
             <section class="home-news" aria-labelledby="home-news-title">
               <div class="home-news-heading">
@@ -325,25 +330,7 @@ const currentPath = Astro.url.pathname;
             ))}
           </ul>
 
-          <form class="search-wrapper" action="/blog" method="get" role="search" aria-label="Recherche dans les articles et guides">
-            <label class="search-label" for="home-search">Ou cherchez un sujet précis</label>
-            <div class="search-bar">
-              <span class="search-icon" aria-hidden="true">
-                <svg aria-hidden="true" focusable="false" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-              </span>
-              <input
-                id="home-search"
-                type="search"
-                name="search"
-                placeholder="Ex. : mot de passe, arnaque, enfants…"
-                class="search-input"
-                autocomplete="off"
-                aria-describedby="home-search-error"
-              />
-              <button type="submit" class="search-submit">Rechercher</button>
-            </div>
-            <p id="home-search-error" class="search-error" hidden aria-live="polite"></p>
-          </form>
+
 
           {levelTags.length > 0 && (
             <div class="quick-actions">
@@ -749,39 +736,7 @@ const currentPath = Astro.url.pathname;
         refreshServiceStatus();
       }
 
-      const homeSearchForm = document.querySelector('form.search-wrapper[role="search"]');
-      const homeSearchInput = document.getElementById('home-search');
-      const homeSearchError = document.getElementById('home-search-error');
 
-      function clearHomeSearchError() {
-        if (!homeSearchInput || !homeSearchError) return;
-        homeSearchInput.removeAttribute('aria-invalid');
-        homeSearchError.hidden = true;
-        homeSearchError.textContent = '';
-      }
-
-      homeSearchInput?.addEventListener('input', clearHomeSearchError);
-
-      homeSearchForm?.addEventListener('submit', (event) => {
-        if (!homeSearchInput || !homeSearchError) return;
-        const query = homeSearchInput.value.trim();
-
-        if (query.length === 0) {
-          clearHomeSearchError();
-          return;
-        }
-
-        if (query.length < 2) {
-          event.preventDefault();
-          homeSearchInput.setAttribute('aria-invalid', 'true');
-          homeSearchError.hidden = false;
-          homeSearchError.textContent = 'Recherche trop courte. Essayez avec au moins 2 caractères.';
-          homeSearchInput.focus();
-          return;
-        }
-
-        clearHomeSearchError();
-      });
 
 
     </script>
