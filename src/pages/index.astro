@@ -19,17 +19,6 @@ import '../styles/global.css';
 import '../styles/home.css';
 
 const posts = (await getCollection('blog')).filter((post) => !post.data.draft);
-const allTags = [...new Set(posts.flatMap((post) => post.data.tags))].sort((a, b) =>
-  a.localeCompare(b, 'fr'),
-);
-const beginnerTag = allTags.find((tag) => tag.toLowerCase().includes('debut') || tag.toLowerCase().includes('début'));
-const intermediateTag = allTags.find((tag) => tag.toLowerCase().includes('inter'));
-const advancedTag = allTags.find((tag) => tag.toLowerCase().includes('avanc'));
-const levelTags = [
-  { label: 'Débutant', emoji: '🌱', tag: beginnerTag },
-  { label: 'Intermédiaire', emoji: '🧭', tag: intermediateTag },
-  { label: 'Avancé', emoji: '⚡', tag: advancedTag },
-].filter((level) => level.tag);
 
 const latestBrief = (await getPublishedBriefs()).find((brief) => !brief.data.demo);
 const planches = await getPlanches();
@@ -329,23 +318,10 @@ const currentPath = Astro.url.pathname;
               </li>
             ))}
           </ul>
-
-
-
-          {levelTags.length > 0 && (
-            <div class="quick-actions">
-              <span class="quick-label">Par niveau&nbsp;:</span>
-              {levelTags.map((level) => (
-                <a href={`/blog?tag=${encodeURIComponent(level.tag)}`} class="quick-tag">
-                  <span aria-hidden="true">{level.emoji}</span> {level.label}
-                </a>
-              ))}
-            </div>
-          )}
         </div>
       </section>
 
-      <section class="content-section">
+      <section class="content-section home-projects">
         <div class="container"><AssociationProjects /></div>
       </section>
 
