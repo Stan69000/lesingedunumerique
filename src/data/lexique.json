@@ -259,6 +259,21 @@
     "reflexe": "Lisez le nom de domaine complet. Un logo connu et un nom ressemblant ne suffisent pas."
   },
   {
+    "terme": "Octet",
+    "aussi": [
+      "byte",
+      "mascotte"
+    ],
+    "definition": "Une unité d’information composée de 8 bits, chacun pouvant valoir 0 ou 1. Les octets servent à mesurer la taille des fichiers et la capacité de stockage. C’est aussi le nom de notre mascotte : 8 bits pour l’un, une bonne dose de malice pour l’autre.",
+    "theme": "Internet et appareils",
+    "situation": "Votre téléphone affiche la taille d’une photo en Mo (mégaoctets). Sur ce site, Octet vous explique comment la sauvegarder : même nom, autre métier.",
+    "reflexe": "Repérez les unités : un « o » désigne des octets, un « b » minuscule des bits. En anglais, « byte » signifie « octet ». Quant à notre Octet, il se reconnaît à sa tête de singe, pas à sa capacité de stockage.",
+    "lien": {
+      "href": "/bd/qui-est-octet/",
+      "label": "Faire connaissance avec Octet, la mascotte"
+    }
+  },
+  {
     "terme": "Passkey",
     "aussi": [
       "clé d’accès"

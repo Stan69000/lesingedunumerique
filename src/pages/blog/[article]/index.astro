@@ -1,4 +1,5 @@
 ---
+import CommandPalette from '../../../components/CommandPalette.astro';
 import BackToTop from '../../../components/BackToTop.astro';
 import ProjectRelated from '../../../components/ProjectRelated.astro';
 import FooterProjects from '../../../components/FooterProjects.astro';
@@ -698,7 +699,8 @@ const articleSchema = {
       ) : (
         <>
           <div class="page-shell">
-            <a class="skip-link" href="#main-content">Aller au contenu principal</a>
+            <CommandPalette />
+<a class="skip-link" href="#main-content">Aller au contenu principal</a>
             <div class="glow-bg glow-left"></div>
             <div class="glow-bg glow-right"></div>
             <header>
