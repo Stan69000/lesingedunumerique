@@ -298,9 +298,8 @@ const currentPath = Astro.url.pathname;
                     <div class="home-news-body">
                       <p class="home-news-label">Le décryptage d’Octet</p>
                       <h3><a href={`/veille/briefs/${latestBrief.id}/`}>{latestBrief.data.title}</a></h3>
-                      <p class="home-news-description">{latestBrief.data.description}</p>
                       <p class="home-news-meta"><time datetime={latestBrief.data.pubDate.toISOString()}>{formatNewsDate(latestBrief.data.pubDate)}</time>{latestBrief.data.type === 'weekly' && ' · Le rendez-vous du dimanche'}</p>
-                      <span class="home-news-cta" aria-hidden="true">Comprendre les pièges et les bons réflexes →</span>
+                      <span class="home-news-cta" aria-hidden="true">Lire le décryptage →</span>
                     </div>
                   </article>
                 )}
