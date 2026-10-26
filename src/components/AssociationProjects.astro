@@ -1,0 +1,39 @@
+---
+import { associationProjects } from '../config/projects';
+---
+<section class="association-projects" aria-labelledby="association-projects-title">
+  <p class="projects-kicker">Apprendre, s’informer, agir</p>
+  <h2 id="association-projects-title">Les projets de l’association</h2>
+  <p class="projects-intro">Le Singe Du Numérique vous aide à comprendre et à adopter les bons réflexes. Nos autres projets permettent de suivre l’actualité et de rendre le numérique plus accessible.</p>
+  <div class="projects-grid">
+    {associationProjects.map((project) => (
+      <article class="project-card">
+        <span class="project-icon" aria-hidden="true">{project.icon}</span>
+        <p class="project-promise">{project.promise}</p>
+        <h3><a href={project.href}>{project.name} <span aria-hidden="true">↗</span></a></h3>
+        <p class="project-description">{project.description}</p>
+        <p class="project-note">{project.note}</p>
+        <span class="project-cta" aria-hidden="true">{project.cta} →</span>
+      </article>
+    ))}
+  </div>
+</section>
+<style>
+  .association-projects { margin: 2rem 0; text-align: left; color: var(--text-main); }
+  .projects-kicker { margin: 0 0 .6rem; font-size: .8rem; font-weight: 700; color: var(--brand-green, var(--accent)); }
+  .association-projects h2 { color: var(--text-main); margin: 0 0 1rem; font-size: clamp(1.5rem, 3vw, 2rem); line-height: 1.25; }
+  .projects-intro { max-width: 760px; margin: 0 0 1.5rem; color: var(--text-muted); line-height: 1.7; }
+  .projects-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .project-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; padding: 28px; border: 1px solid var(--border-color, var(--border)); border-radius: 20px; background: var(--bg-card); }
+  .project-card:hover, .project-card:focus-within { border-color: var(--brand-green, var(--accent)); }
+  .project-icon { font-size: 2rem; margin-bottom: 16px; }
+  .project-promise { margin: 0 0 8px; font-size: .85rem; font-weight: 700; color: var(--brand-green, var(--accent)); }
+  .project-card h3 { color: var(--text-main); margin: 0 0 12px; font-size: 1.5rem; }
+  .project-card h3 a { color: var(--text-main); text-decoration: none; }
+  .project-card h3 a::after { content: ''; position: absolute; inset: 0; border-radius: 20px; }
+  .project-card h3 a:focus-visible { outline: 3px solid var(--brand-green, var(--accent)); outline-offset: 5px; }
+  .project-description { margin: 0 0 12px; color: var(--text-muted); line-height: 1.7; }
+  .project-note { margin: 0 0 24px; color: var(--text-muted); font-size: .85rem; line-height: 1.6; }
+  .project-cta { margin-top: auto; color: var(--brand-green, var(--accent)); font-weight: 700; }
+  @media (max-width: 640px) { .projects-grid { grid-template-columns: 1fr; gap: 16px; } .project-card { padding: 24px; } }
+</style>
