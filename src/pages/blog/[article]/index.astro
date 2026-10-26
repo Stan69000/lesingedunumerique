@@ -1,4 +1,5 @@
 ---
+import BackToTop from '../../../components/BackToTop.astro';
 import ProjectRelated from '../../../components/ProjectRelated.astro';
 import FooterProjects from '../../../components/FooterProjects.astro';
 import LexiqueRelated from '../../../components/LexiqueRelated.astro';
@@ -630,38 +631,6 @@ const articleSchema = {
         }
       }
 
-      .back-to-top {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        background: var(--accent);
-        color: var(--bg-body);
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 4px 15px color-mix(in srgb, var(--accent) 45%, transparent);
-        z-index: 90;
-        opacity: 0;
-        transform: translateY(20px);
-        pointer-events: none;
-        transition: all 0.35s ease;
-      }
-
-      .back-to-top.visible {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-      }
-
-      .back-to-top:hover {
-        transform: translateY(-4px);
-      }
-
       @media (max-width: 640px) {
         .navbar {
           position: fixed;
@@ -904,10 +873,7 @@ const articleSchema = {
                     </div>
                   </div>
                 </footer>
-                <button id="back-to-top" class="back-to-top" aria-label="Revenir en haut de la page">
-                  <span class="sr-only">Revenir en haut de la page</span>
-                  <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg>
-                </button>
+                <BackToTop />
               </div>
             </div>
           </div>
@@ -918,7 +884,6 @@ const articleSchema = {
       const themeBtn = document.getElementById('theme-toggle');
       const mobileThemeBtn = document.getElementById('mobile-theme-btn');
       const body = document.body;
-      const backToTop = document.getElementById('back-to-top');
       let lastFocusedElement = null;
 
       function syncThemeControl() {
@@ -1052,17 +1017,6 @@ const articleSchema = {
         });
       }
 
-      function syncBackToTop() {
-        if (!backToTop) return;
-        backToTop.classList.toggle('visible', window.scrollY > 320);
-      }
-
-      backToTop?.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      window.addEventListener('scroll', syncBackToTop, { passive: true });
-      syncBackToTop();
     </script>
   </body>
 </html>

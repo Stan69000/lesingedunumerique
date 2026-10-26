@@ -293,10 +293,6 @@
   .status-dot.status-ko { background: #ef4444; }
   .status-dot.status-local { background: var(--brand-blue); }
 
-  .back-to-top { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--brand-green); color: var(--bg-body); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(45, 212, 191, 0.4); z-index: 90; opacity: 0; transform: translateY(20px); pointer-events: none; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-  .back-to-top.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
-  .back-to-top:hover { transform: translateY(-5px); }
-
   @media (max-width: 768px) {
     .navbar { position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 120; }
     #main-content { padding-top: var(--nav-height); }
@@ -312,7 +308,6 @@
     .quick-actions { gap: 8px; }
     .quick-tag { padding: 6px 12px; font-size: 0.85rem; }
     .section-header h2 { font-size: 1.8rem; }
-    .back-to-top { right: 16px; bottom: 16px; width: 46px; height: 46px; }
     .footer-container { text-align: left; gap: 20px; }
     .footer-line { grid-template-columns: 1fr; gap: 6px; }
     .footer-socials { gap: 10px; }
