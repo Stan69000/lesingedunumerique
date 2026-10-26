@@ -1,4 +1,5 @@
 ---
+import SearchTrigger from '../../../components/SearchTrigger.astro';
 import CommandPalette from '../../../components/CommandPalette.astro';
 import BackToTop from '../../../components/BackToTop.astro';
 import ProjectRelated from '../../../components/ProjectRelated.astro';
@@ -729,7 +730,8 @@ const articleSchema = {
                   </button>
                 </div>
 
-                <button
+                <SearchTrigger />
+<button
                   class="burger-btn"
                   id="burger-btn"
                   aria-label="Ouvrir le menu principal"

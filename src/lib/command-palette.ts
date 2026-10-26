@@ -104,19 +104,21 @@ export function initCommandPalette() {
     })();
     await pending;
   }
-  function open() {
+  function open(query = '') {
     if (dialog!.open) return;
     // Refermer le menu mobile avant d'ouvrir une seconde interface modale.
     const burger = document.querySelector<HTMLButtonElement>('#burger-btn[aria-expanded="true"]');
     burger?.click();
     opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     oldOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
-    dialog!.showModal(); input.value = ''; kind = 'Tout';
+    dialog!.showModal(); input.value = query; kind = 'Tout';
     dialog!.querySelectorAll<HTMLButtonElement>('[data-kind]').forEach(b => b.setAttribute('aria-pressed',String(b.dataset.kind === kind)));
     render(); input.focus(); void load();
   }
-  document.querySelector('.search-launch')?.addEventListener('click',open);
-  document.querySelectorAll<HTMLElement>('.search-launch kbd').forEach(k => k.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K');
+  document.querySelectorAll('[data-command-open]').forEach(button => button.addEventListener('click', () => open()));
+  document.querySelectorAll<HTMLButtonElement>('[data-command-query]').forEach(button => button.addEventListener('click', () => open(button.dataset.commandQuery ?? '')));
+  document.querySelectorAll<HTMLFormElement>('[data-command-form]').forEach(form => form.addEventListener('submit', event => { event.preventDefault(); open(String(new FormData(form).get('search') ?? '').trim()); }));
+  document.querySelectorAll<HTMLElement>('[data-command-shortcut]').forEach(k => k.textContent = /Mac|iPhone|iPad/.test(navigator.platform) ? '⌘ K' : 'Ctrl K');
   dialog.querySelector('.command-close')!.addEventListener('click', () => dialog.close());
   dialog.addEventListener('close', () => { document.body.style.overflow = oldOverflow; opener?.focus(); });
   dialog.addEventListener('click', e => { if (e.target === dialog) { const r = dialog.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close(); } });
