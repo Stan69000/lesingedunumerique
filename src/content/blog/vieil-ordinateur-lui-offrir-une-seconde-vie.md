@@ -11,6 +11,7 @@ tags:
   - Ressources
 author: Stan Bouchet
 level: grandpublic
+readingTime: 7 min de lecture
 ---
 
 Un ordinateur qui rame, un vieux Mac qui ne reçoit plus de mises à jour, un portable oublié dans un placard… Avant de lui dire adieu, une question mérite d’être posée : peut-il encore servir ?
