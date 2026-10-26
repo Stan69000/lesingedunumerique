@@ -4,7 +4,7 @@ import MaintenanceContent from '../components/MaintenanceContent.astro';
 import ShareButtons from '../components/ShareButtons.astro';
 import { siteSettings } from '../config/site';
 import { estimateReadingTimeMinutes } from '../lib/reading-time';
-import { getPlanches } from '../lib/bd';
+import { getPlanches, planchePath } from '../lib/bd';
 import aLaUne from '../data/a-la-une.json';
 import lexique from '../data/lexique.json';
 import { ariaCurrent, footerNav, mainNav, navCta } from '../config/nav';
@@ -25,6 +25,11 @@ const levelTags = [
 ].filter((level) => level.tag);
 
 const planches = await getPlanches();
+const latestBd = [...planches].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
+const latestPost = [...posts].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
+const formatNewsDate = (date: Date) => date.toLocaleDateString('fr-FR', {
+  day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Paris',
+});
 
 const spaces = [
   {
@@ -46,7 +51,8 @@ const spaces = [
     icon: '💬',
     tone: 'blue',
     name: 'Les BD d’Octet',
-    what: 'Une planche de bande dessinée par semaine pour comprendre un sujet du numérique d’un coup d’œil. Chaque planche est aussi transcrite en texte.',
+    badge: 'Une nouvelle BD chaque lundi',
+    what: 'Chaque lundi, retrouvez Octet dans une nouvelle planche pour comprendre le numérique d’un coup d’œil. Chaque BD est aussi transcrite en texte.',
     meta: `${planches.length} planches à lire`,
     cta: 'Lire les BD',
   },
@@ -252,11 +258,47 @@ const currentPath = Astro.url.pathname;
             pensé pour tous les niveaux. Voici ce que vous trouverez ici.
           </p>
 
+          {(latestBd || latestPost) && (
+            <section class="home-news" aria-labelledby="home-news-title">
+              <div class="home-news-heading">
+                <h2 id="home-news-title">À découvrir en ce moment</h2>
+                <span>Les dernières publications</span>
+              </div>
+              <div class="home-news-grid">
+                {latestBd && (
+                  <article class="home-news-item home-news-bd">
+                    <img class="home-news-image" src={latestBd.data.planche} alt="" width={latestBd.data.plancheWidth} height={latestBd.data.plancheHeight} decoding="async" />
+                    <div class="home-news-body">
+                      <p class="home-news-label">La BD du lundi</p>
+                      <h3><a href={planchePath(latestBd)}>{latestBd.data.title}</a></h3>
+                      <p class="home-news-meta"><time datetime={latestBd.data.pubDate.toISOString()}>{formatNewsDate(latestBd.data.pubDate)}</time></p>
+                      <span class="home-news-cta" aria-hidden="true">Lire la dernière BD →</span>
+                    </div>
+                  </article>
+                )}
+                {latestPost && (
+                  <article class="home-news-item home-news-post">
+                    <span class="home-news-icon" aria-hidden="true">📖</span>
+                    <div class="home-news-body">
+                      <p class="home-news-label">Le dernier article</p>
+                      <h3><a href={`/blog/${latestPost.id}/`}>{latestPost.data.title}</a></h3>
+                      <p class="home-news-meta"><time datetime={latestPost.data.pubDate.toISOString()}>{formatNewsDate(latestPost.data.pubDate)}</time> · {estimateReadingTimeMinutes(latestPost.body)} min de lecture</p>
+                      <span class="home-news-cta" aria-hidden="true">Lire l’article →</span>
+                    </div>
+                  </article>
+                )}
+              </div>
+            </section>
+          )}
+
           <h2 class="sr-only" id="spaces-title">Les espaces du site</h2>
           <ul class="space-grid" aria-labelledby="spaces-title">
             {spaces.map((space) => (
               <li class={`space-tile space-${space.tone}`}>
-                <span class="space-icon" aria-hidden="true">{space.icon}</span>
+                <div class="space-tile-heading">
+                  <span class="space-icon" aria-hidden="true">{space.icon}</span>
+                  {space.badge && <span class="space-badge">{space.badge}</span>}
+                </div>
                 <h3><a href={space.href}>{space.name}</a></h3>
                 <p class="space-what">{space.what}</p>
                 <p class="space-meta">{space.meta}</p>
