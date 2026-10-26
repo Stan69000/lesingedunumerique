@@ -1,4 +1,5 @@
 ---
+import FooterProjects from '../../components/FooterProjects.astro';
 import { getCollection } from 'astro:content';
 import MaintenanceContent from '../../components/MaintenanceContent.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
@@ -279,7 +280,8 @@ const blogSchema = {
             <img src="/logo.svg" alt="" aria-hidden="true" class="footer-logo" />
             <span>Le Singe Du Numérique</span>
           </div>
-          <div class="footer-line">
+          <FooterProjects />
+                <div class="footer-line">
             <span class="footer-line-label">Menu</span>
             <ul class="footer-line-content footer-links">
 {footerNav.map((item) => (

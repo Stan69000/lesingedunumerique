@@ -1,0 +1,17 @@
+---
+import { associationProjects } from '../config/projects';
+---
+<nav class="footer-projects" aria-label="Les projets de l’association">
+  <h2>Les projets de l’association</h2>
+  <ul>
+    {associationProjects.map((project) => <li><a href={project.href}>{project.name} <span aria-hidden="true">↗</span></a></li>)}
+  </ul>
+</nav>
+<style>
+  .footer-projects { margin: 1rem 0; color: var(--text-muted); }
+  .footer-projects h2 { color: var(--text-main); margin: 0 0 .6rem; font-size: .85rem; font-weight: 700; }
+  .footer-projects ul { display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; padding: 0; margin: 0; list-style: none; }
+  .footer-projects a { color: var(--text-main); text-decoration: underline; text-underline-offset: 4px; font-size: .9rem; }
+  .footer-projects a:hover { color: var(--brand-green, var(--accent)); }
+  .footer-projects a:focus-visible { outline: 2px solid var(--brand-green, var(--accent)); outline-offset: 4px; }
+</style>

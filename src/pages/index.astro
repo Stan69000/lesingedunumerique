@@ -1,4 +1,6 @@
 ---
+import AssociationProjects from '../components/AssociationProjects.astro';
+import FooterProjects from '../components/FooterProjects.astro';
 import { getCollection } from 'astro:content';
 import MaintenanceContent from '../components/MaintenanceContent.astro';
 import ShareButtons from '../components/ShareButtons.astro';
@@ -340,6 +342,10 @@ const currentPath = Astro.url.pathname;
         </div>
       </section>
 
+      <section class="content-section">
+        <div class="container"><AssociationProjects /></div>
+      </section>
+
       {aLaUne.actif && (
         <section class="content-section spotlight-section" aria-labelledby="spotlight-title">
           <div class="container">
@@ -413,7 +419,8 @@ const currentPath = Astro.url.pathname;
             <img src="/logo.svg" alt="" aria-hidden="true" class="footer-logo" />
             <span>Le Singe Du Numérique</span>
           </div>
-          <div class="footer-line">
+          <FooterProjects />
+                <div class="footer-line">
             <h2 class="footer-line-label">Menu</h2>
             <ul class="footer-line-content footer-links">
 {footerNav.map((item) => (
