@@ -1,4 +1,5 @@
 ---
+import BackToTop from '../components/BackToTop.astro';
 import AssociationProjects from '../components/AssociationProjects.astro';
 import FooterProjects from '../components/FooterProjects.astro';
 import { getCollection } from 'astro:content';
@@ -488,14 +489,7 @@ const currentPath = Astro.url.pathname;
       </div>
     </footer>
 
-    <button
-      id="back-to-top"
-      class="back-to-top"
-      aria-label="Revenir en haut de la page"
-    >
-      <span class="sr-only">Revenir en haut de la page</span>
-      <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15l-6-6-6 6"></path></svg>
-    </button>
+    <BackToTop />
 
     <script>
       const MIN_SAFE_ANIMATION_MS = 400;
@@ -774,18 +768,7 @@ const currentPath = Astro.url.pathname;
         clearHomeSearchError();
       });
 
-      const backBtn = document.getElementById('back-to-top');
-      const syncBackToTopVisibility = () => {
-        if (!(backBtn instanceof HTMLButtonElement)) return;
-        const shouldShow = window.scrollY > 400;
-        backBtn.classList.toggle('visible', shouldShow);
-      };
 
-      syncBackToTopVisibility();
-      window.addEventListener('scroll', () => {
-        syncBackToTopVisibility();
-      });
-      backBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
     </script>
         </>
       )

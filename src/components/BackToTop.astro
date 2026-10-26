@@ -1,0 +1,43 @@
+<button id="back-to-top" class="monkey-back-to-top" type="button" aria-label="Revenir en haut de la page" title="Revenir en haut" hidden>
+  <svg aria-hidden="true" focusable="false" viewBox="0 0 80 80" width="64" height="64" fill="none">
+    <g stroke="#35271f" stroke-width="2.5" stroke-linejoin="round">
+      <circle cx="14" cy="36" r="11" fill="#8d5939" />
+      <circle cx="66" cy="36" r="11" fill="#8d5939" />
+      <circle cx="14" cy="36" r="6" fill="#e7b986" stroke="none" />
+      <circle cx="66" cy="36" r="6" fill="#e7b986" stroke="none" />
+      <path d="M12 38C10 19 21 8 39 8c19 0 30 12 29 30l-2 11c-3 15-15 23-26 23S17 64 14 49Z" fill="#8d5939" />
+      <path d="M39 28c-9-17-28-6-24 10 1 5 4 7 5 11 2 10 10 18 20 18s18-8 20-18c1-4 4-6 5-11 4-16-15-27-24-10Z" fill="#f4d5a5" />
+      <path d="M33 11c0-3 3-6 6-7l-1 7 8-4-3 7" fill="#8d5939" stroke-linecap="round" />
+    </g>
+    <ellipse cx="29" cy="37" rx="3" ry="4" fill="#35271f" />
+    <ellipse cx="51" cy="37" rx="3" ry="4" fill="#35271f" />
+    <path d="m36 47 4 2 4-2M31 54c5 6 13 6 18 0" stroke="#35271f" stroke-width="2.5" stroke-linecap="round" />
+    <circle cx="65" cy="64" r="13" fill="#34786e" stroke="#fff" stroke-width="2" />
+    <path d="M65 71V57m-5 5 5-5 5 5" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</button>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.monkey-back-to-top');
+  if (button) {
+    const syncVisibility = () => { button.hidden = window.scrollY <= 400; };
+    syncVisibility();
+    window.addEventListener('scroll', syncVisibility, { passive: true });
+    button.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+      const main = document.getElementById('main-content');
+      if (main) {
+        main.setAttribute('tabindex', '-1');
+        main.focus({ preventScroll: true });
+      }
+    });
+  }
+</script>
+<style>
+  .monkey-back-to-top { position: fixed; right: 24px; bottom: max(20px, env(safe-area-inset-bottom)); z-index: 90; display: grid; place-items: center; width: 68px; height: 68px; padding: 0; border: 0; border-radius: 18px; background: transparent; cursor: pointer; filter: drop-shadow(0 4px 6px #0004); transition: transform .18s ease; }
+  .monkey-back-to-top[hidden] { display: none; }
+  .monkey-back-to-top svg { display: block; width: 64px; height: 64px; }
+  .monkey-back-to-top:hover { transform: translateY(-4px); }
+  .monkey-back-to-top:focus-visible { outline: 3px solid var(--brand-green, var(--accent, #34786e)); outline-offset: 4px; }
+  @media (max-width: 640px) { .monkey-back-to-top { right: 12px; width: 60px; height: 60px; } .monkey-back-to-top svg { width: 56px; height: 56px; } }
+  @media (prefers-reduced-motion: reduce) { .monkey-back-to-top { transition: none; } .monkey-back-to-top:hover { transform: none; } }
+</style>
