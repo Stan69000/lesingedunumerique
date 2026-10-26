@@ -124,7 +124,7 @@
     outline-offset: 3px;
   }
 
-  .hero-section { position: relative; padding: 2.5rem 0 4rem; text-align: center; overflow: hidden; }
+  .hero-section { position: relative; padding: 2.5rem 0 1.5rem; text-align: center; overflow: hidden; }
   .glow-bg { position: absolute; border-radius: 50%; filter: blur(90px); z-index: -1; opacity: var(--glow-opacity); animation: float 2.2s ease-in-out 2 both; }
   .glow-green { width: 400px; height: 400px; background: var(--brand-green); top: -100px; left: -100px; }
   .glow-orange { width: 500px; height: 500px; background: var(--brand-orange); bottom: 0; right: -100px; animation-delay: 0.6s; }
@@ -216,12 +216,9 @@
   .gradient-text { color: var(--brand-green); }
   .hero-desc { font-size: 1.1rem; color: var(--text-muted); max-width: 680px; margin: 0 auto 2.2rem; line-height: 1.75; }
 
-  .quick-actions { display: flex; gap: 12px; align-items: center; justify-content: center; flex-wrap: wrap; margin-top: 1.4rem; }
-  .quick-label { font-size: 0.92rem; color: var(--text-muted); }
-  .quick-tag { font-size: 0.92rem; font-weight: 500; padding: 8px 15px; background: var(--chip-bg); border-radius: 20px; color: var(--chip-text); transition: all 0.2s; }
-  .quick-tag:hover { background: rgba(45, 212, 191, 0.15); color: var(--brand-green); }
 
   .content-section { padding: 4rem 0; }
+  .content-section.home-projects { padding: 1.5rem 0 3rem; --projects-margin: 0 0 2rem; }
   .content-section-alt { background: var(--bg-body); }
   .section-header { margin-bottom: 3rem; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
   .section-header h2 { font-size: 2.2rem; margin: 0; color: var(--text-main); background: var(--bg-card); padding: 0.15em 0.4em; border-radius: 10px; border: 1px solid var(--border-color); }
@@ -288,8 +285,6 @@
     .hero-title { font-size: 2.2rem; }
     .hero-logo { max-width: 100px; }
     .hero-desc { font-size: 1rem; }
-    .quick-actions { gap: 8px; }
-    .quick-tag { padding: 6px 12px; font-size: 0.85rem; }
     .section-header h2 { font-size: 1.8rem; }
     .footer-container { text-align: left; gap: 20px; }
     .footer-line { grid-template-columns: 1fr; gap: 6px; }
