@@ -27,8 +27,12 @@ Le frontmatter YAML doit contenir `title`, `description`, `pubDate`, `periodStar
 
 Le libellé existant dépend du type : `weekly` affiche « Hebdomadaire », `evergreen` affiche « Conseils pratiques ». Le design reste identique.
 
-## Automatisation ultérieure
+## Publication hebdomadaire automatique
 
-Une conversation ChatGPT seule n’écrit pas dans GitHub. Il reste à connecter un producteur autorisé (intégration GitHub ou workflow avec appel à une API de génération) qui prépare le même fichier Markdown, crée une branche et une PR, et attend la CI et la relecture humaine. Limiter les droits au dépôt, conserver les clés dans les secrets GitHub et prévenir les doublons par un nom stable d’édition. Ne pas connecter une entrée externe à une fusion automatique.
+L’automatisation Codex « Brief hebdomadaire d’Octet — publication automatique » prépare l’édition chaque dimanche à 8 h (Europe/Paris). Elle couvre le dimanche précédent au samedi inclus, consulte des sources primaires et crée `src/content/briefs/AAAA-MM-JJ-arnaques.md` sur une branche dédiée. Elle reprend une PR existante pour éviter les doublons.
 
-Le déploiement existant après fusion et le workflow de reconstruction peuvent être réutilisés ; aucun secret ni planification nouvelle n’est ajouté ici.
+Depuis l’autorisation explicite du 26 octobre 2026, l’agent relit les faits et leurs sources, valide le build et l’affichage du dernier brief, puis attend la réussite de tous les contrôles GitHub requis sur le dernier commit. Il marque la PR prête et la fusionne en squash, sans intervention manuelle si ces conditions sont réunies. Il ne fusionne que la PR du brief de cette édition, jamais une modification extérieure à ce périmètre. Les protections de branche restent appliquées.
+
+La fusion déclenche `Deploy O2Switch`. L’agent vérifie le déploiement, son contrôle de santé et la présence du brief sur `/veille/` et sur sa page avant d’annoncer sa publication. Une source insuffisante, un contrôle absent ou échoué, une modification humaine inattendue ou une panne de déploiement bloque la publication automatique et déclenche un signalement.
+
+La planification reste gérée dans Codex, hors du dépôt. Elle dépend de l’application disponible et de ses accès aux sources et à GitHub ; ce dépôt n’exécute pas un générateur autonome côté serveur. Les notifications sont limitées à une publication effective ou à un problème nécessitant une action. L’import local reste utilisable manuellement et ne pousse ni ne fusionne à lui seul.
