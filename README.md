@@ -208,3 +208,9 @@ Voir :
 
 - [LICENSE](./LICENSE)
 - [LICENSE-CONTENT.md](./LICENSE-CONTENT.md)
+
+## Décryptages hebdomadaires d’Octet
+
+Les briefs sont des fichiers Markdown versionnés dans `src/content/briefs/`.
+Voir [le guide d’ajout](docs/briefs.md) et [le modèle hebdomadaire](templates/brief-weekly.md).
+La commande `npm run brief:add -- /chemin/brief.md AAAA-MM-JJ-sujet.md` importe et vérifie un brief sur une branche dédiée avec le build Astro.
