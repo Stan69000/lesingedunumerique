@@ -8,6 +8,7 @@ import ShareButtons from '../components/ShareButtons.astro';
 import { siteSettings } from '../config/site';
 import { estimateReadingTimeMinutes } from '../lib/reading-time';
 import { getPlanches, planchePath } from '../lib/bd';
+import { getPublishedBriefs } from '../lib/briefs';
 import aLaUne from '../data/a-la-une.json';
 import lexique from '../data/lexique.json';
 import { ariaCurrent, footerNav, mainNav, navCta } from '../config/nav';
@@ -27,6 +28,7 @@ const levelTags = [
   { label: 'Avancé', emoji: '⚡', tag: advancedTag },
 ].filter((level) => level.tag);
 
+const latestBrief = (await getPublishedBriefs()).find((brief) => !brief.data.demo);
 const planches = await getPlanches();
 const latestBd = [...planches].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
 const latestPost = [...posts].sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())[0];
@@ -261,7 +263,7 @@ const currentPath = Astro.url.pathname;
             pensé pour tous les niveaux. Voici ce que vous trouverez ici.
           </p>
 
-          {(latestBd || latestPost) && (
+          {(latestBd || latestPost || latestBrief) && (
             <section class="home-news" aria-labelledby="home-news-title">
               <div class="home-news-heading">
                 <h2 id="home-news-title">À découvrir en ce moment</h2>
@@ -287,6 +289,18 @@ const currentPath = Astro.url.pathname;
                       <h3><a href={`/blog/${latestPost.id}/`}>{latestPost.data.title}</a></h3>
                       <p class="home-news-meta"><time datetime={latestPost.data.pubDate.toISOString()}>{formatNewsDate(latestPost.data.pubDate)}</time> · {estimateReadingTimeMinutes(latestPost.body)} min de lecture</p>
                       <span class="home-news-cta" aria-hidden="true">Lire l’article →</span>
+                    </div>
+                  </article>
+                )}
+                {latestBrief && (
+                  <article class="home-news-item home-news-brief">
+                    <span class="home-news-icon" aria-hidden="true">🐒</span>
+                    <div class="home-news-body">
+                      <p class="home-news-label">Le décryptage d’Octet</p>
+                      <h3><a href={`/veille/briefs/${latestBrief.id}/`}>{latestBrief.data.title}</a></h3>
+                      <p class="home-news-description">{latestBrief.data.description}</p>
+                      <p class="home-news-meta"><time datetime={latestBrief.data.pubDate.toISOString()}>{formatNewsDate(latestBrief.data.pubDate)}</time>{latestBrief.data.type === 'weekly' && ' · Le rendez-vous du dimanche'}</p>
+                      <span class="home-news-cta" aria-hidden="true">Comprendre les pièges et les bons réflexes →</span>
                     </div>
                   </article>
                 )}

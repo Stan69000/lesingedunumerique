@@ -406,6 +406,8 @@
   .home-news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; }
   .home-news-item { --news-tone: var(--brand-green); position: relative; display: flex; align-items: center; gap: 18px; min-width: 0; padding: 18px; border: 1px solid var(--border-color); border-radius: 14px; background: color-mix(in srgb, var(--news-tone) 4%, var(--bg-card)); }
   .home-news-bd { --news-tone: var(--brand-blue); }
+  .home-news-brief { --news-tone: var(--brand-orange); grid-column: 1 / -1; }
+  .home-news-description { margin: 0 0 10px; font-size: .85rem; line-height: 1.6; color: var(--text-muted); }
   .home-news-item:hover, .home-news-item:focus-within { border-color: var(--news-tone); }
   .home-news-image { flex: 0 0 76px; width: 76px; height: 104px; object-fit: contain; border-radius: 5px; }
   .home-news-icon { flex: 0 0 52px; width: 52px; height: 64px; display: grid; place-items: center; font-size: 2rem; background: color-mix(in srgb, var(--news-tone) 10%, transparent); border-radius: 12px; }
