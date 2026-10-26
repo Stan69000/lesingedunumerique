@@ -1,0 +1,31 @@
+---
+import { associationProjects } from '../config/projects';
+interface Props { topic?: string; project?: 'signal-clair' | 'rgaa-audit'; }
+const { topic = '', project } = Astro.props;
+const normalized = topic.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const accessibility = /\b(accessibilite|rgaa|handicap|lecteur d.ecran|contrastes?)\b/.test(normalized);
+const security = /\b(arnaques?|phishing|hameconnage|sms|mails?|cybersecurite|fuites?|donnees|mots? de passe|authentification|faux|wi.fi|verrouiller|intelligence artificielle|ia)\b/.test(normalized);
+const scam = project === 'signal-clair' || /\b(arnaques?|phishing|hameconnage|sms|mails?|faux)\b/.test(normalized);
+const ai = /\b(intelligence artificielle|ia)\b/.test(normalized);
+const signalHref = scam ? 'https://lesignalclair.fr/signalements' : ai ? 'https://lesignalclair.fr/?theme=intelligence-artificielle' : 'https://lesignalclair.fr/';
+const signalCta = scam ? 'Voir les arnaques signalées sur Le Signal Clair' : ai ? 'Suivre l’actualité de l’IA sur Le Signal Clair' : 'Explorer l’actualité sur Le Signal Clair';
+const selected = associationProjects.filter((item) => project ? item.id === project : item.id === 'rgaa-audit' ? accessibility : security);
+---
+{selected.map((item) => (
+  <aside class="project-related" aria-label={`Pour aller plus loin avec ${item.name}`}>
+    <p class="related-kicker">Pour aller plus loin · Un projet de l’association</p>
+    <h2>{item.id === 'signal-clair' ? 'Du bon réflexe à l’actualité' : 'Passer à la pratique avec RGAA Audit'}</h2>
+    <p>{item.id === 'signal-clair'
+      ? 'Ici, vous apprenez à reconnaître les pièges et à vous protéger. Le Signal Clair vous permet d’explorer les arnaques signalées et l’actualité numérique, avec leurs sources.'
+      : 'Vous gérez un site ? Notre outil de pré-audit aide à repérer des problèmes d’accessibilité et à prioriser les améliorations. Il complète les vérifications humaines et ne constitue pas une certification de conformité.'}</p>
+    <a href={item.id === 'signal-clair' ? signalHref : item.href}>{item.id === 'signal-clair' ? signalCta : 'Découvrir RGAA Audit'} <span aria-hidden="true">↗</span></a>
+  </aside>
+))}
+<style>
+  .project-related { margin: 2rem 0; padding: 24px; background: var(--bg-card); border: 1px solid var(--border-color, var(--border)); border-left: 4px solid var(--brand-green, var(--accent)); border-radius: 16px; color: var(--text-main); text-align: left; }
+  .related-kicker { margin: 0 0 8px; font-size: .8rem; font-weight: 700; color: var(--brand-green, var(--accent)); }
+  .project-related h2 { color: var(--text-main); margin: 0 0 12px; font-size: 1.25rem; line-height: 1.4; }
+  .project-related p:not(.related-kicker) { margin: 0 0 16px; color: var(--text-muted); line-height: 1.7; }
+  .project-related a { color: var(--brand-green, var(--accent)); font-weight: 700; text-decoration: underline; text-underline-offset: 4px; }
+  .project-related a:focus-visible { outline: 2px solid var(--brand-green, var(--accent)); outline-offset: 4px; }
+</style>
