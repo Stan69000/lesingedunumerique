@@ -1,0 +1,26 @@
+---
+// Mesure d'audience sans cookie : une page vue = un signal envoyé à la
+// super-admin (admin.stan-bouchet.fr), qui ne garde que des compteurs par jour.
+// Rien n'est stocké dans le navigateur. Pour exclure ses propres visites :
+// localStorage.setItem('lsdn-no-stats', '1') dans la console du site.
+const endpoint = import.meta.env.DEV
+  ? (import.meta.env.PUBLIC_LSDN_STATS_ENDPOINT ?? 'http://localhost:3000/api/public/lsdn/nav')
+  : 'https://admin.stan-bouchet.fr/api/public/lsdn/nav';
+const dev = import.meta.env.DEV;
+---
+
+<script is:inline define:vars={{ endpoint, dev }}>
+  (() => {
+    if (navigator.webdriver || !navigator.sendBeacon) return;
+    if (!dev && !/^(www\.)?lesingedunumerique\.fr$/.test(location.hostname)) return;
+    try {
+      if (localStorage.getItem('lsdn-no-stats')) return;
+    } catch {}
+    const body = JSON.stringify({
+      p: location.pathname,
+      r: document.referrer,
+      u: new URLSearchParams(location.search).get('utm_source'),
+    });
+    navigator.sendBeacon(endpoint, new Blob([body], { type: 'text/plain' }));
+  })();
+</script>

@@ -1,4 +1,5 @@
 ---
+import AudienceBeacon from '../components/AudienceBeacon.astro';
 import SearchDiscovery from '../components/SearchDiscovery.astro';
 import SearchTrigger from '../components/SearchTrigger.astro';
 import CommandPalette from '../components/CommandPalette.astro';
@@ -156,6 +157,7 @@ const currentPath = Astro.url.pathname;
     />
     <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
     <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)}></script>
+    <AudienceBeacon />
   </head>
 
   <body>
