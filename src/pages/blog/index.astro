@@ -1,4 +1,5 @@
 ---
+import AudienceBeacon from '../../components/AudienceBeacon.astro';
 import SearchTrigger from '../../components/SearchTrigger.astro';
 import CommandPalette from '../../components/CommandPalette.astro';
 import FooterProjects from '../../components/FooterProjects.astro';
@@ -78,6 +79,7 @@ const blogSchema = {
       rel="stylesheet"
     />
     <script type="application/ld+json" set:html={JSON.stringify(blogSchema)}></script>
+    <AudienceBeacon />
   </head>
   <body>
     {
