@@ -7,7 +7,22 @@
   .header-search svg { color:var(--brand-green,#2dd4bf); } kbd { font:inherit; font-size:.65rem; color:var(--text-muted,#94a3b8); border:1px solid var(--border-color,#334155); border-radius:4px; padding:2px 4px; }
   .header-search:hover { background:var(--bg-body,#0b1120); box-shadow:0 0 0 1px var(--brand-green,#2dd4bf); } .header-search:focus-visible { outline:2px solid var(--brand-green,#2dd4bf); outline-offset:4px; }
   :global(.nav-container:has(.header-search) .brand-text) { display:none; }
-  @media(max-width:1100px) {
+  /* Le contenu reste à sa largeur naturelle : aucun lien sous un bouton.
+     Le conteneur de navigation peut être plus large que celui des articles. */
+  :global(.nav-container:has(.header-search)) { width:100%; max-width:1440px; box-sizing:border-box; gap:16px; container:site-navigation / inline-size; }
+  :global(.nav-container:has(.header-search) .brand-logo),
+  :global(.nav-container:has(.header-search) .nav-right),
+  :global(.nav-container:has(.header-search) .nav-links),
+  :global(.nav-container:has(.header-search) .nav-cta) { flex-shrink:0; }
+  :global(.nav-container:has(.header-search) .nav-links) { min-width:max-content; }
+  :global(.navbar:has(.header-search) .mobile-menu) { max-height:calc(100dvh - 5.5rem); overflow-y:auto; overscroll-behavior:contain; }
+  @container site-navigation (max-width:84rem) {
+    :global(.nav-container:has(.header-search) .nav-right) { display:none; }
+    :global(.nav-container:has(.header-search) .burger-btn) { display:flex; flex-shrink:0; }
+    .header-search { margin-left:auto; }
+  }
+  /* Repli pour les navigateurs sans requêtes de conteneur. */
+  @media(max-width:1400px) {
     :global(.nav-container:has(.header-search) .nav-right) { display:none; }
     :global(.nav-container:has(.header-search) .burger-btn) { display:flex; }
     .header-search { margin-left:auto; }

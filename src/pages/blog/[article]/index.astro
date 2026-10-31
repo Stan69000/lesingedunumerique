@@ -557,6 +557,27 @@ const articleSchema = {
       .article-content :global(ol) { margin-bottom: 1.5rem; padding-left: 20px; color: var(--text-muted); }
       .article-content :global(li) { margin-bottom: 0.5rem; }
 
+      /* Le Markdown est rendu sans les attributs CSS du composant Astro. */
+      .article-content :global(a:any-link) {
+        color: var(--accent);
+        text-decoration: underline;
+        text-decoration-thickness: 0.08em;
+        text-underline-offset: 0.2em;
+        text-decoration-skip-ink: auto;
+        overflow-wrap: anywhere;
+      }
+      .article-content :global(a:hover),
+      .article-content :global(a:focus-visible) {
+        color: var(--accent-alt);
+        text-decoration-thickness: 0.14em;
+      }
+      .article-content :global(a:focus-visible) {
+        outline: 2px solid currentColor;
+        outline-offset: 4px;
+        border-radius: 2px;
+      }
+
+
       .article-content :global(pre) {
         background: var(--code-bg); padding: 20px; border-radius: 8px;
         overflow-x: auto; border: 1px solid var(--border);
