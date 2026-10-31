@@ -1,0 +1,300 @@
+[
+  {
+    "terme": "MCP",
+    "aussi": [
+      "Model Context Protocol",
+      "protocole MCP"
+    ],
+    "definition": "Une façon commune de brancher une IA à des applications pour lui permettre de leur demander des informations ou des actions. Comme une prise compatible : chaque outil sait comment recevoir les demandes et y répondre.",
+    "situation": "Vous demandez à un assistant de retrouver une tâche. Une connexion MCP peut lui permettre de consulter votre outil de tâches, si cette fonction est proposée et autorisée.",
+    "reflexe": "Vérifiez ce que la connexion permet de lire ou de modifier. MCP ne donne pas automatiquement accès à toutes vos applications et ne rend pas toutes les actions sûres.",
+    "theme": "IA et jargon technique · Connexions",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://modelcontextprotocol.io/docs/getting-started/intro",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "API",
+    "aussi": [
+      "Application Programming Interface",
+      "interface de programmation"
+    ],
+    "definition": "Un guichet prévu pour que des logiciels se demandent des informations ou des services. Chaque guichet précise ce qu’on peut demander et comment.",
+    "situation": "Le site d’une association demande à un service de cartographie où placer un lieu, plutôt que de le recopier à la main.",
+    "reflexe": "Une API n’est pas forcément publique ou gratuite. Regardez les données échangées, les autorisations et les limites d’utilisation.",
+    "theme": "IA et jargon technique · Connexions",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/fr/docs/Glossary/API",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "SDK",
+    "aussi": [
+      "Software Development Kit",
+      "kit de développement"
+    ],
+    "definition": "Une boîte à outils fournie aux développeurs pour utiliser plus facilement un service, sans tout fabriquer eux-mêmes.",
+    "situation": "Un service de paiement fournit du code et des exemples pour aider à ajouter le paiement à un site.",
+    "reflexe": "API et SDK ne désignent pas la même chose : l’API est le guichet, le SDK est une boîte à outils pour s’en servir.",
+    "theme": "IA et jargon technique · Connexions",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/en-US/docs/Glossary/SDK",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Webhook",
+    "aussi": [
+      "notification entre applications"
+    ],
+    "definition": "Une notification envoyée d’un logiciel à un autre lorsqu’un événement se produit. C’est le coup de sonnette qui évite de vérifier sans arrêt.",
+    "situation": "Quand un formulaire est reçu, un service prévient automatiquement votre outil de suivi.",
+    "reflexe": "Vérifiez qui envoie la notification et ce qu’elle déclenche. Recevoir un message ne suffit pas à prouver qu’il est authentique.",
+    "theme": "IA et jargon technique · Connexions",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://docs.github.com/en/webhooks/about-webhooks",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Endpoint",
+    "aussi": [
+      "point d’accès API"
+    ],
+    "definition": "Une adresse précise à laquelle un logiciel envoie une demande. Dans un guichet, c’est le comptoir qui traite un type de demande.",
+    "situation": "L’outil d’audit envoie l’adresse à analyser au point d’accès prévu pour lancer une analyse.",
+    "reflexe": "Une adresse de connexion ne doit pas contenir de secret partagé publiquement. N’utilisez que les points d’accès documentés du service.",
+    "theme": "IA et jargon technique · Connexions",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://docs.github.com/en/rest/using-the-rest-api/getting-started-with-the-rest-api",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Connecteur",
+    "aussi": [
+      "intégration entre outils"
+    ],
+    "definition": "Une liaison préparée pour faire communiquer deux services. Elle peut transmettre des informations ou déclencher des actions selon ses possibilités.",
+    "situation": "Une note vocale devient une tâche dans un autre outil grâce à une intégration configurée.",
+    "reflexe": "Lisez les permissions et vérifiez le sens des échanges. Relier deux services ne signifie pas que toutes leurs fonctions sont disponibles.",
+    "theme": "IA et jargon technique · Connexions",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://modelcontextprotocol.io/docs/getting-started/intro",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "LLM",
+    "aussi": [
+      "grand modèle de langage",
+      "Large Language Model"
+    ],
+    "definition": "Le moteur de nombreuses IA qui rédigent du texte. Il a appris des régularités dans de grandes quantités de données pour produire une réponse.",
+    "situation": "L’assistant peut reformuler un rapport dans un langage plus simple, mais aussi ajouter une erreur qui paraît convaincante.",
+    "reflexe": "Un texte fluide ne prouve pas qu’il est exact. Vérifiez les faits importants et les sources, surtout pour une décision engageante.",
+    "theme": "IA et jargon technique · Comprendre l’IA",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://www.cnil.fr/fr/definition/modele-de-langage",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "RAG",
+    "aussi": [
+      "Retrieval-Augmented Generation",
+      "recherche documentaire augmentée"
+    ],
+    "definition": "Faire chercher des documents à un assistant avant qu’il prépare sa réponse. C’est un peu comme lui ouvrir le bon classeur au lieu de lui demander de répondre de mémoire.",
+    "situation": "Pour répondre sur une procédure interne, l’assistant retrouve les documents autorisés et s’appuie sur eux.",
+    "reflexe": "Vérifiez les documents retenus, leur date et les droits d’accès. Trouver un document ne garantit ni sa pertinence ni une réponse sans erreur.",
+    "theme": "IA et jargon technique · Comprendre l’IA",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://www.cnil.fr/fr/les-questions-reponses-de-la-cnil-sur-lutilisation-dun-systeme-dia-generative",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Agent IA",
+    "aussi": [
+      "assistant qui utilise des outils"
+    ],
+    "definition": "Un système qui utilise une IA pour enchaîner certaines étapes et parfois agir avec des outils. Ses possibilités dépendent des fonctions et accès prévus.",
+    "situation": "L’assistant retrouve un document, en extrait les actions puis prépare des tâches à valider.",
+    "reflexe": "Définissez ce qu’il peut faire seul et ce qui demande votre validation. Une consigne générale ne doit pas devenir un accès sans limites.",
+    "theme": "IA et jargon technique · Comprendre l’IA",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://www.anthropic.com/engineering/building-effective-agents",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Token d’IA",
+    "aussi": [
+      "jeton de texte",
+      "tokens"
+    ],
+    "definition": "Un morceau de texte compté par un modèle : parfois un mot, parfois une partie de mot ou un signe. C’est une unité de traitement, pas un nombre fixe de caractères.",
+    "situation": "Le texte de votre demande et la réponse utilisent des tokens ; certains services s’en servent pour calculer des limites ou un coût.",
+    "reflexe": "Ne comparez pas directement tokens et mots. Le découpage et la facturation dépendent du modèle et du service.",
+    "theme": "IA et jargon technique · Comprendre l’IA",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://docs.anthropic.com/en/docs/build-with-claude/token-counting",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Jeton d’accès",
+    "aussi": [
+      "access token",
+      "token d’accès"
+    ],
+    "definition": "Un laissez-passer numérique qu’un logiciel présente pour accéder à un service. Il peut avoir une durée et des permissions limitées.",
+    "situation": "Une application utilise un jeton pour lire votre calendrier sans vous demander votre mot de passe à chaque requête.",
+    "reflexe": "Gardez-le secret et révoquez-le si nécessaire. Un token d’accès n’est pas un token de texte utilisé pour compter une réponse d’IA.",
+    "theme": "IA et jargon technique · Connexions",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://oauth.net/2/access-tokens/",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "OAuth",
+    "aussi": [
+      "autorisation déléguée"
+    ],
+    "definition": "Une méthode pour autoriser une application à accéder à certaines fonctions d’un autre service sans lui donner directement votre mot de passe.",
+    "situation": "Un écran vous demande si un outil peut consulter votre calendrier ou modifier vos événements.",
+    "reflexe": "Examinez les permissions réellement demandées. OAuth est un mécanisme d’autorisation, pas à lui seul une preuve de confiance.",
+    "theme": "IA et jargon technique · Connexions",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://oauth.net/2/",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "CLI",
+    "aussi": [
+      "ligne de commande",
+      "Command Line Interface"
+    ],
+    "definition": "Une façon d’utiliser un outil en écrivant une commande plutôt qu’en cliquant sur des boutons. Le terminal est le lieu où vous la saisissez.",
+    "situation": "Pour lancer un audit, vous écrivez une commande suivie de l’adresse du site.",
+    "reflexe": "Comprenez la commande avant de l’exécuter, surtout si elle supprime des fichiers ou demande des droits élevés.",
+    "theme": "IA et jargon technique · Hébergement et outils",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://ubuntu.com/tutorials/command-line-for-beginners",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Docker",
+    "aussi": [
+      "conteneur logiciel"
+    ],
+    "definition": "Un outil qui permet de faire fonctionner des applications dans des espaces séparés, avec ce dont elles ont besoin. Imaginez des boîtes de travail sur une même machine.",
+    "situation": "Cortex, un site et une base de données fonctionnent dans des conteneurs distincts sur votre VPS.",
+    "reflexe": "Les conteneurs partagent les ressources de la machine. Leurs données doivent être conservées et sauvegardées au bon endroit.",
+    "theme": "IA et jargon technique · Hébergement et outils",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://docs.docker.com/get-started/docker-overview/",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "VPS",
+    "aussi": [
+      "serveur privé virtuel",
+      "Virtual Private Server"
+    ],
+    "definition": "Un ordinateur virtuel loué chez un hébergeur pour faire fonctionner des sites ou des applications. Vous disposez de ressources et d’un système à administrer selon l’offre.",
+    "situation": "Vos applications restent disponibles même quand votre ordinateur personnel est éteint.",
+    "reflexe": "Vérifiez mémoire, stockage, sauvegardes et responsabilités. Un VPS non managé demande de maintenir le système et les logiciels.",
+    "theme": "IA et jargon technique · Hébergement et outils",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://www.infomaniak.com/fr/support/faq/1730/comprendre-la-difference-entre-serveur-cloud-et-vps",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Base de données",
+    "aussi": [
+      "database",
+      "BDD"
+    ],
+    "definition": "Un rangement organisé pour retrouver et mettre à jour des informations. C’est le classeur de l’application, avec ses règles de classement.",
+    "situation": "Le site conserve les inscriptions à un atelier et retrouve les places restantes.",
+    "reflexe": "Sauvegardez les données, pas seulement le logiciel. Copier les fichiers d’une base en cours d’utilisation ne suffit pas toujours à obtenir une sauvegarde fiable.",
+    "theme": "IA et jargon technique · Hébergement et outils",
+    "domaines": [
+      "numerique",
+      "jargon"
+    ],
+    "source": {
+      "href": "https://www.postgresql.org/docs/current/intro-whatis.html",
+      "label": "Lire la documentation de référence"
+    }
+  }
+]

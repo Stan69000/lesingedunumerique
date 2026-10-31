@@ -1,0 +1,513 @@
+[
+  {
+    "terme": "RGAA",
+    "aussi": [
+      "Référentiel général d’amélioration de l’accessibilité"
+    ],
+    "definition": "La méthode française qui sert à vérifier l’accessibilité numérique au moyen de critères et de tests. Pensez à une grille de visite, pas à un badge obtenu par un bouton magique.",
+    "situation": "Votre association veut savoir comment examiner les obstacles rencontrés sur son site.",
+    "reflexe": "Utilisez la version publiée du référentiel et combinez les vérifications techniques avec des essais humains.",
+    "theme": "Accessibilité et RGAA · Repères",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://accessibilite.numerique.gouv.fr/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "WCAG",
+    "aussi": [
+      "Web Content Accessibility Guidelines"
+    ],
+    "definition": "Des recommandations internationales du W3C pour rendre les contenus web accessibles. Elles donnent des objectifs et des critères de réussite.",
+    "situation": "Un prestataire évoque les niveaux A, AA et AAA sans expliquer ce qu’il contrôle.",
+    "reflexe": "Demandez quels critères, quelle version et quelles pages ont été vérifiés. Un niveau annoncé ne remplace pas les résultats.",
+    "theme": "Accessibilité et RGAA · Repères",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/standards-guidelines/wcag/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Audit d’accessibilité",
+    "aussi": [
+      "audit RGAA"
+    ],
+    "definition": "Un examen organisé du service, sur un périmètre et avec des tests précisés, pour identifier les critères respectés ou non.",
+    "situation": "Un rapport présente les pages testées, les obstacles et les corrections nécessaires.",
+    "reflexe": "Conservez le périmètre, la méthode et les preuves. Un simple scan automatique n’est pas un audit complet.",
+    "theme": "Accessibilité et RGAA · Vérification",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://accessibilite.numerique.gouv.fr/methode/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Pré-audit automatique",
+    "aussi": [
+      "scan accessibilité"
+    ],
+    "definition": "Une première série de contrôles logiciels qui repère certains problèmes. C’est un détecteur d’indices, pas un certificat.",
+    "situation": "Un outil signale une image sans alternative mais ne sait pas si la description d’une autre image est pertinente.",
+    "reflexe": "Utilisez-le pour commencer, puis vérifiez au clavier, avec les technologies d’assistance et avec des personnes.",
+    "theme": "Accessibilité et RGAA · Vérification",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/test-evaluate/tools/selecting/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Critère d’accessibilité",
+    "aussi": [
+      "critère RGAA"
+    ],
+    "definition": "Un point de la grille qui pose une question précise sur l’accessibilité d’un contenu ou d’une fonction.",
+    "situation": "Le contrôle demande si chaque image porteuse d’information a une alternative pertinente.",
+    "reflexe": "Lisez les tests, les cas particuliers et l’applicabilité avant de conclure à une erreur.",
+    "theme": "Accessibilité et RGAA · Vérification",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://accessibilite.numerique.gouv.fr/methode/criteres-et-tests/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Échantillon d’audit",
+    "aussi": [
+      "pages testées"
+    ],
+    "definition": "L’ensemble des pages et situations retenues pour examiner un service selon une méthode. Il doit représenter ses contenus et fonctions.",
+    "situation": "Tester seulement l’accueil laisse de côté l’inscription, le paiement ou le formulaire de contact.",
+    "reflexe": "Incluez les parcours importants et les types de pages prévus par la méthode ; expliquez ce qui n’a pas été testé.",
+    "theme": "Accessibilité et RGAA · Vérification",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://accessibilite.numerique.gouv.fr/obligations/evaluation-conformite/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Déclaration d’accessibilité",
+    "aussi": [
+      "état de conformité"
+    ],
+    "definition": "Un document qui présente notamment l’état d’accessibilité évalué du service, les contenus non accessibles et les moyens de contact prévus.",
+    "situation": "La page « Accessibilité » explique les limites connues plutôt que d’afficher seulement un logo.",
+    "reflexe": "Fondez les informations sur une évaluation et tenez-les à jour. Une phrase rassurante ne constitue pas une preuve de conformité.",
+    "theme": "Accessibilité et RGAA · Repères",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://accessibilite.numerique.gouv.fr/obligations/declaration-accessibilite/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Lecteur d’écran",
+    "aussi": [
+      "synthèse vocale",
+      "NVDA",
+      "VoiceOver"
+    ],
+    "definition": "Un logiciel qui restitue l’interface et ses informations, par la voix ou avec une plage braille. Il s’appuie sur la structure et les noms des éléments.",
+    "situation": "Une personne parcourt les titres de la page pour atteindre directement le formulaire.",
+    "reflexe": "Donnez aux éléments un sens et un nom utiles ; écouter une lecture linéaire ne suffit pas à vérifier tout un site.",
+    "theme": "Accessibilité et RGAA · Navigation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/people-use-web/tools-techniques/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Technologie d’assistance",
+    "aussi": [
+      "aide technique"
+    ],
+    "definition": "Un outil matériel ou logiciel qui aide une personne à utiliser un service : lecteur d’écran, grossissement ou dispositif de saisie adapté, par exemple.",
+    "situation": "Une personne pilote son ordinateur avec un contacteur plutôt qu’une souris.",
+    "reflexe": "Concevez des fonctions utilisables par différents moyens, sans imposer un appareil ou une façon unique d’interagir.",
+    "theme": "Accessibilité et RGAA · Navigation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/people-use-web/tools-techniques/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Navigation au clavier",
+    "aussi": [
+      "sans souris",
+      "tabulation"
+    ],
+    "definition": "L’utilisation d’un site avec les touches du clavier ou un dispositif équivalent pour parcourir et activer ses fonctions.",
+    "situation": "Une personne utilise Tab pour atteindre le bouton d’inscription, puis l’active au clavier.",
+    "reflexe": "Essayez les parcours essentiels sans souris. Repérez les fonctions impossibles à atteindre ou les endroits où vous restez bloqué.",
+    "theme": "Accessibilité et RGAA · Navigation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/WCAG21/Understanding/keyboard.html",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Focus clavier",
+    "aussi": [
+      "élément actif"
+    ],
+    "definition": "Le repère qui indique quel élément recevra la prochaine action du clavier. C’est le curseur de déplacement entre les commandes.",
+    "situation": "En appuyant sur Tab, un contour permet de savoir quel bouton sera activé.",
+    "reflexe": "Gardez un repère visible et un ordre de déplacement cohérent. Ne supprimez pas le contour sans solution de remplacement.",
+    "theme": "Accessibilité et RGAA · Navigation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Piège au clavier",
+    "aussi": [
+      "focus bloqué"
+    ],
+    "definition": "Une situation où le clavier permet d’entrer dans un composant mais ne permet plus d’en sortir normalement.",
+    "situation": "Le calendrier s’ouvre, puis Tab tourne dedans sans moyen de le fermer ou de continuer.",
+    "reflexe": "Vérifiez l’entrée, la sortie et la fermeture des composants. Une fenêtre modale peut retenir le focus si son fonctionnement permet d’en sortir.",
+    "theme": "Accessibilité et RGAA · Navigation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/WCAG22/Understanding/no-keyboard-trap.html",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Lien d’évitement",
+    "aussi": [
+      "aller au contenu"
+    ],
+    "definition": "Un raccourci qui permet de passer un bloc répété, comme le menu, pour atteindre directement une partie utile de la page.",
+    "situation": "Sans ce lien, une personne au clavier traverse le même long menu à chaque nouvelle page.",
+    "reflexe": "Proposez un accès au contenu principal, visible au focus, et vérifiez sa destination.",
+    "theme": "Accessibilité et RGAA · Navigation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/WCAG22/Understanding/bypass-blocks.html",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Nom accessible",
+    "aussi": [
+      "accessible name"
+    ],
+    "definition": "Le nom calculé d’un bouton, d’un lien ou d’un champ, que les outils d’assistance utilisent pour l’identifier.",
+    "situation": "Une icône de loupe doit être annoncée comme « Rechercher », pas comme un bouton sans nom.",
+    "reflexe": "Privilégiez un libellé visible et explicite. Si vous ajoutez un nom technique, gardez-le cohérent avec le texte affiché.",
+    "theme": "Accessibilité et RGAA · Formulaires",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/ARIA/apg/practices/names-and-descriptions/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Libellé de formulaire",
+    "aussi": [
+      "label",
+      "étiquette de champ"
+    ],
+    "definition": "Le texte qui explique ce qu’il faut renseigner et qui est associé au champ dans le code.",
+    "situation": "L’adresse e-mail doit être saisie dans un champ dont l’étiquette reste visible pendant la saisie.",
+    "reflexe": "Ne comptez pas seulement sur le texte qui disparaît dans le champ. Associez un libellé clair et les consignes utiles.",
+    "theme": "Accessibilité et RGAA · Formulaires",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/tutorials/forms/labels/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Message d’erreur accessible",
+    "aussi": [
+      "erreur de saisie"
+    ],
+    "definition": "Une indication compréhensible et repérable qui aide à identifier un problème de saisie et à le corriger.",
+    "situation": "Le formulaire devient rouge sans préciser quel champ pose problème.",
+    "reflexe": "Dites où est l’erreur et comment la corriger quand c’est possible. N’utilisez pas la couleur comme seul signal.",
+    "theme": "Accessibilité et RGAA · Formulaires",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/tutorials/forms/notifications/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Contraste",
+    "aussi": [
+      "lisibilité des couleurs"
+    ],
+    "definition": "La différence de luminosité entre deux couleurs, par exemple un texte et son fond. Elle aide à distinguer les éléments.",
+    "situation": "Un texte gris très pâle devient difficile à lire sur fond blanc.",
+    "reflexe": "Mesurez le contraste dans le contexte réel. Les exigences dépendent notamment du type d’élément et de la taille du texte.",
+    "theme": "Accessibilité et RGAA · Présentation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Information par la couleur",
+    "aussi": [
+      "signal visuel"
+    ],
+    "definition": "Une information transmise uniquement par une couleur, qui peut être perdue si les couleurs sont mal distinguées.",
+    "situation": "Les créneaux libres sont verts et les créneaux complets rouges, sans texte ni symbole.",
+    "reflexe": "Ajoutez une indication textuelle ou un autre repère compréhensible ; changer les couleurs ne suffit pas toujours.",
+    "theme": "Accessibilité et RGAA · Présentation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/WCAG22/Understanding/use-of-color.html",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Zoom et redistribution",
+    "aussi": [
+      "reflow",
+      "grossissement"
+    ],
+    "definition": "L’adaptation d’un contenu quand on l’agrandit ou que l’espace d’affichage diminue, pour continuer à lire et à agir.",
+    "situation": "Avec le zoom, le bouton « Envoyer » disparaît derrière une colonne figée.",
+    "reflexe": "Testez l’agrandissement et les petits espaces d’affichage. Ne bloquez pas le zoom et vérifiez les fonctions, pas seulement le texte.",
+    "theme": "Accessibilité et RGAA · Présentation",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Sous-titres accessibles",
+    "aussi": [
+      "captions"
+    ],
+    "definition": "Une restitution textuelle synchronisée des paroles et des sons nécessaires pour comprendre une vidéo.",
+    "situation": "Une alarme importante pour la scène doit être indiquée en plus des dialogues.",
+    "reflexe": "Relisez les sous-titres automatiques et vérifiez leur synchronisation ainsi que les informations sonores utiles.",
+    "theme": "Accessibilité et RGAA · Médias",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/media/av/captions/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Transcription",
+    "aussi": [
+      "version textuelle d’un média"
+    ],
+    "definition": "Une version textuelle des informations d’un enregistrement, qui peut inclure les informations visuelles utiles selon le média.",
+    "situation": "Une personne consulte le texte d’un podcast pour retrouver une explication sans écouter l’enregistrement.",
+    "reflexe": "Restituez le sens et les informations utiles ; ne confondez pas transcription, sous-titres synchronisés et audiodescription.",
+    "theme": "Accessibilité et RGAA · Médias",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/media/av/transcripts/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "Audiodescription",
+    "aussi": [
+      "description audio"
+    ],
+    "definition": "Une description sonore des informations visuelles nécessaires pour comprendre un contenu vidéo.",
+    "situation": "Une vidéo montre un code d’erreur à l’écran mais la voix ne le mentionne jamais.",
+    "reflexe": "Identifiez ce qui serait perdu sans l’image et choisissez une restitution adaptée au contenu et aux exigences applicables.",
+    "theme": "Accessibilité et RGAA · Médias",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/media/av/description/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "WAI-ARIA",
+    "aussi": [
+      "ARIA",
+      "rôle",
+      "état"
+    ],
+    "definition": "Des attributs qui peuvent préciser aux technologies d’assistance le rôle, le nom ou l’état de composants web. Ils complètent le code sans créer automatiquement leur comportement.",
+    "situation": "Un attribut annonce qu’un panneau est ouvert, alors qu’il est fermé à l’écran.",
+    "reflexe": "Utilisez d’abord les éléments HTML adaptés. Ajouter un rôle de bouton ne fournit pas à lui seul la navigation et l’activation au clavier.",
+    "theme": "Accessibilité et RGAA · Technique",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/ARIA/apg/practices/read-me-first/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  },
+  {
+    "terme": "HTML sémantique",
+    "aussi": [
+      "structure du document"
+    ],
+    "definition": "L’utilisation d’éléments HTML correspondant au sens et à la fonction du contenu : titre, liste, bouton, formulaire…",
+    "situation": "Un vrai bouton permet au navigateur de fournir des comportements qu’un simple texte cliquable n’a pas.",
+    "reflexe": "Choisissez l’élément adapté avant d’ajouter du code. Une présentation visuelle correcte ne garantit pas une structure compréhensible.",
+    "theme": "Accessibilité et RGAA · Technique",
+    "domaines": [
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://www.w3.org/WAI/tutorials/page-structure/",
+      "label": "Lire la référence RGAA ou W3C"
+    },
+    "lien": {
+      "href": "https://stan69000.github.io/rgaa-audit/",
+      "label": "Découvrir le pré-audit RGAA du Singe"
+    }
+  }
+]

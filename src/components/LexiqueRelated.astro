@@ -1,21 +1,24 @@
 ---
-import lexique from '../data/lexique.json';
+import { lexique } from '../lib/lexique';
+import { lexiqueForPath } from '../lib/lexique-links.mjs';
 const { path } = Astro.props;
-const clean = (value: string) => value.replace(/\/+$/, '');
-const entries = lexique.filter((entry) => entry.lien && clean(entry.lien.href) === clean(path)).slice(0, 6);
+const entries = lexiqueForPath(lexique, path).sort((a, b) => a.terme.localeCompare(b.terme, 'fr'));
 const anchor = (value: string) => value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 ---
 <aside class="lexique-related" aria-label="Le lexique d’Octet">
   <strong>🐒 Un mot vous échappe ?</strong>
   <p>Octet vous l’explique avec des exemples du quotidien.</p>
   <ul>
-    {entries.map((entry) => <li><a href={`/lexique/#${anchor(entry.terme)}`}>{entry.terme}</a></li>)}
+    {entries.slice(0, 6).map((entry) => <li><a href={`/lexique/#${anchor(entry.terme)}`}>{entry.terme}</a></li>)}
     <li><a href="/lexique/">Tout le lexique →</a></li>
   </ul>
+  {entries.length > 6 && <details><summary>{entries.length - 6} autres mots expliqués</summary><ul>{entries.slice(6).map(entry => <li><a href={`/lexique/#${anchor(entry.terme)}`}>{entry.terme}</a></li>)}</ul></details>}
 </aside>
 <style>
 .lexique-related { margin: 2rem 0; padding: 1.25rem; border: 1px solid var(--border-color, var(--border)); border-radius: 16px; background: var(--bg-card); color: var(--text-main); }
 .lexique-related p { margin: .4rem 0 .8rem; color: var(--text-muted); }
 .lexique-related ul { display: flex; flex-wrap: wrap; gap: .6rem 1.1rem; margin: 0; padding: 0; list-style: none; }
+.lexique-related details { margin-top: 1rem; }
+.lexique-related summary { cursor: pointer; margin-bottom: .6rem; }
 .lexique-related a { color: var(--brand-green, var(--accent)); text-decoration: underline; text-underline-offset: 3px; }
 </style>

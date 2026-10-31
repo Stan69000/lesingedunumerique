@@ -1,0 +1,598 @@
+[
+  {
+    "terme": "SEO",
+    "aussi": [
+      "référencement naturel"
+    ],
+    "definition": "Les pratiques qui aident les moteurs à découvrir et comprendre vos pages, pour les proposer quand elles répondent à une recherche.",
+    "situation": "Votre association organise des ateliers, mais une recherche sur son activité ne fait pas ressortir son site.",
+    "reflexe": "Commencez par expliquer votre activité et rendre vos pages accessibles. Aucune recette ne garantit la première place.",
+    "theme": "SEO et GEO · Les bases",
+    "source": {
+      "href": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "GEO",
+    "aussi": [
+      "Generative Engine Optimization",
+      "visibilité dans les IA"
+    ],
+    "definition": "Le nom donné aux démarches visant à rendre un contenu compréhensible et susceptible d’être utilisé dans les réponses des moteurs avec IA. Ce n’est pas une certification.",
+    "situation": "Un assistant répond à une question sur les ateliers numériques en s’appuyant sur plusieurs sites.",
+    "reflexe": "Soignez la qualité et la clarté des informations. Un score GEO ne prouve pas qu’une IA vous citera.",
+    "theme": "SEO et GEO · Visibilité et IA",
+    "source": {
+      "href": "https://developers.google.com/search/docs/appearance/ai-features",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Exploration",
+    "aussi": [
+      "crawl",
+      "crawling"
+    ],
+    "definition": "Le passage d’un robot qui récupère des pages, comme un visiteur suivant les couloirs et les panneaux d’un bâtiment.",
+    "situation": "Une nouvelle page existe mais aucun lien du site ne permet de la trouver.",
+    "reflexe": "Reliez les pages importantes depuis des pages déjà accessibles. Une visite du robot ne garantit pas une indexation.",
+    "theme": "SEO et GEO · Découverte",
+    "source": {
+      "href": "https://developers.google.com/search/docs/fundamentals/how-search-works",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Indexation",
+    "aussi": [
+      "index"
+    ],
+    "definition": "L’enregistrement des informations d’une page dans le répertoire d’un moteur, pour qu’elle puisse être proposée dans ses résultats.",
+    "situation": "Votre page est en ligne, mais vous ne savez pas si Google la connaît.",
+    "reflexe": "Vérifiez son état dans Search Console. Être en ligne, être exploré et être indexé sont trois choses différentes.",
+    "theme": "SEO et GEO · Découverte",
+    "source": {
+      "href": "https://developers.google.com/search/docs/fundamentals/how-search-works",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Positionnement",
+    "aussi": [
+      "classement",
+      "ranking"
+    ],
+    "definition": "La place d’un résultat pour une recherche donnée. Elle peut varier selon le moment, le lieu et le contexte.",
+    "situation": "Votre site apparaît pour son nom mais pas pour « atelier informatique près de chez moi ».",
+    "reflexe": "Précisez quelle recherche vous mesurez. Une position isolée ne résume pas la visibilité du site.",
+    "theme": "SEO et GEO · Les bases",
+    "source": {
+      "href": "https://developers.google.com/search/docs/fundamentals/how-search-works",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Requête",
+    "aussi": [
+      "mot-clé",
+      "recherche"
+    ],
+    "definition": "Les mots ou la question saisis par une personne dans un moteur. Le sujet recherché peut s’exprimer de nombreuses façons.",
+    "situation": "Une personne écrit « aide ordinateur senior Lyon » plutôt que le nom de votre association.",
+    "reflexe": "Utilisez les mots de vos visiteurs naturellement, sans les répéter partout comme une formule magique.",
+    "theme": "SEO et GEO · Contenu",
+    "source": {
+      "href": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Intention de recherche",
+    "aussi": [
+      "besoin du visiteur"
+    ],
+    "definition": "Ce qu’une personne cherche à accomplir derrière ses mots : comprendre, comparer, trouver un lieu ou passer à l’action.",
+    "situation": "« Atelier numérique » peut vouloir dire trouver une séance ou apprendre à en organiser une.",
+    "reflexe": "Faites lire votre page à quelqu’un : répond-elle au besoin annoncé ? Le nombre de mots ne suffit pas.",
+    "theme": "SEO et GEO · Contenu",
+    "source": {
+      "href": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "SERP",
+    "aussi": [
+      "page de résultats"
+    ],
+    "definition": "La page de réponses d’un moteur : liens, images, cartes et parfois réponses générées. Pensez à une vitrine qui rassemble plusieurs types d’informations.",
+    "situation": "Une recherche locale affiche une carte avant les liens classiques.",
+    "reflexe": "Regardez ce que le moteur présente pour les questions de votre public, sans supposer que chaque affichage est identique.",
+    "theme": "SEO et GEO · Les bases",
+    "source": {
+      "href": "https://developers.google.com/search/docs/appearance/visual-elements-gallery",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Balise title",
+    "aussi": [
+      "titre SEO",
+      "titre HTML"
+    ],
+    "definition": "Le titre déclaré dans le code d’une page, souvent visible dans l’onglet du navigateur. C’est une indication que le moteur peut utiliser pour nommer le résultat.",
+    "situation": "Dix onglets portent tous le titre « Accueil » : impossible de reconnaître votre atelier.",
+    "reflexe": "Donnez un titre précis à chaque page. Le moteur peut le reformuler ; une longueur fixe ne garantit pas son affichage.",
+    "theme": "SEO et GEO · Contenu",
+    "source": {
+      "href": "https://developers.google.com/search/docs/appearance/title-link",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Méta-description",
+    "aussi": [
+      "meta description",
+      "description SEO"
+    ],
+    "definition": "Un court résumé proposé dans le code pour présenter la page. Le moteur peut choisir ce texte ou un autre extrait.",
+    "situation": "Vous voulez expliquer en quelques mots à qui s’adressent vos ateliers.",
+    "reflexe": "Écrivez un résumé fidèle et utile. Ce n’est ni une publicité obligatoire ni une garantie de meilleur classement.",
+    "theme": "SEO et GEO · Contenu",
+    "source": {
+      "href": "https://developers.google.com/search/docs/appearance/snippet",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Titres H1 et H2",
+    "aussi": [
+      "H1",
+      "H2",
+      "H3",
+      "H4",
+      "H5",
+      "H6",
+      "niveaux de titre",
+      "titres HTML"
+    ],
+    "definition": "Les titres qui organisent le document en six niveaux, de H1 à H6. H1 désigne un titre de premier niveau ; H2 ouvre une section, H3 une sous-section, comme dans le plan d’un guide.",
+    "situation": "Un texte en gros ressemble à un titre mais reste un simple paragraphe dans le code.",
+    "reflexe": "Utilisez les vrais niveaux de titre pour organiser la lecture. Plusieurs H1 ne prouvent pas à eux seuls une pénalité SEO.",
+    "theme": "SEO et GEO · Contenu",
+    "source": {
+      "href": "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Texte alternatif",
+    "aussi": [
+      "alt",
+      "alternative textuelle"
+    ],
+    "definition": "Le texte qui transmet l’information d’une image lorsqu’elle ne peut pas être vue. Une image purement décorative peut avoir une alternative vide.",
+    "situation": "Une affiche contient la date d’un événement, mais cette date n’existe nulle part en texte.",
+    "reflexe": "Rendez l’information disponible en texte. Décrivez l’utilité de l’image plutôt que d’empiler des mots-clés.",
+    "theme": "SEO et GEO · Contenu",
+    "source": {
+      "href": "https://www.w3.org/WAI/tutorials/images/",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Maillage interne",
+    "aussi": [
+      "liens internes"
+    ],
+    "definition": "Les liens entre les pages de votre propre site. Ce sont les chemins qui permettent de passer d’une information à l’autre.",
+    "situation": "Votre article parle d’un atelier sans lien vers la page d’inscription.",
+    "reflexe": "Ajoutez un lien là où il aide le lecteur, avec un intitulé qui décrit sa destination.",
+    "theme": "SEO et GEO · Découverte",
+    "source": {
+      "href": "https://developers.google.com/search/docs/crawling-indexing/links-crawlable",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Backlink",
+    "aussi": [
+      "lien entrant"
+    ],
+    "definition": "Un lien placé sur un autre site qui mène au vôtre, comme une recommandation vers une adresse utile.",
+    "situation": "La mairie cite votre association et relie sa présentation à votre site.",
+    "reflexe": "Cherchez des liens pertinents et légitimes. Acheter des lots de liens peut enfreindre les règles des moteurs.",
+    "theme": "SEO et GEO · Découverte",
+    "source": {
+      "href": "https://developers.google.com/search/docs/essentials/spam-policies#link-spam",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "URL canonique",
+    "aussi": [
+      "canonical",
+      "adresse de référence"
+    ],
+    "definition": "L’adresse indiquée comme version de référence quand plusieurs URLs présentent un contenu identique ou très proche. C’est un signal, pas un ordre absolu au moteur.",
+    "situation": "Une même page est accessible par deux adresses différentes.",
+    "reflexe": "Vérifiez la version souhaitée avant de modifier ce réglage. Un canonique erroné peut orienter le moteur vers une autre page.",
+    "theme": "SEO et GEO · Technique",
+    "source": {
+      "href": "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "robots.txt",
+    "aussi": [
+      "règles d’exploration"
+    ],
+    "definition": "Un fichier qui indique à certains robots quelles parties du site ils peuvent explorer. C’est un panneau de circulation, pas une serrure.",
+    "situation": "Le fichier interdit une rubrique aux robots mais son adresse reste accessible aux internautes.",
+    "reflexe": "Ne l’utilisez pas pour protéger des données privées. Ne bloquez pas la lecture d’une directive noindex que vous voulez faire appliquer.",
+    "theme": "SEO et GEO · Technique",
+    "source": {
+      "href": "https://developers.google.com/search/docs/crawling-indexing/robots/intro",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "noindex",
+    "aussi": [
+      "directive d’exclusion"
+    ],
+    "definition": "Une instruction demandant aux moteurs compatibles de ne pas indexer une page. Elle peut être dans le HTML ou un en-tête de réponse.",
+    "situation": "Un brouillon doit rester accessible à l’équipe mais ne pas être proposé dans les recherches.",
+    "reflexe": "Confirmez l’intention avant de supprimer noindex. Cette instruction ne protège pas l’accès à la page.",
+    "theme": "SEO et GEO · Technique",
+    "source": {
+      "href": "https://developers.google.com/search/docs/crawling-indexing/block-indexing",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Sitemap",
+    "aussi": [
+      "plan XML"
+    ],
+    "definition": "Un fichier qui signale au moteur les URLs que vous souhaitez lui faire découvrir, comme une liste d’adresses.",
+    "situation": "Un site publie beaucoup de ressources dont certaines sont difficiles à trouver par les liens.",
+    "reflexe": "Listez les pages pertinentes et maintenez le fichier à jour. Leur présence dans le sitemap ne garantit pas leur indexation.",
+    "theme": "SEO et GEO · Découverte",
+    "source": {
+      "href": "https://developers.google.com/search/docs/crawling-indexing/sitemaps/overview",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Redirection 301",
+    "aussi": [
+      "déplacement permanent"
+    ],
+    "definition": "Une réponse du serveur qui envoie le visiteur vers une nouvelle adresse de façon permanente, comme un avis de changement d’adresse.",
+    "situation": "Votre ancien lien « /ateliers-2025 » doit désormais mener vers la page actuelle correspondante.",
+    "reflexe": "Redirigez vers une page réellement pertinente et évitez les enchaînements inutiles.",
+    "theme": "SEO et GEO · Technique",
+    "source": {
+      "href": "https://developers.google.com/search/docs/crawling-indexing/301-redirects",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Erreur 404",
+    "aussi": [
+      "page introuvable"
+    ],
+    "definition": "La réponse qui indique qu’aucune page n’a été trouvée à cette adresse. Elle est normale pour une page vraiment supprimée.",
+    "situation": "Un lien d’article mène vers une page qui n’existe plus.",
+    "reflexe": "Corrigez les liens cassés. Ne redirigez pas toutes les pages supprimées vers l’accueil sans tenir compte de leur sujet.",
+    "theme": "SEO et GEO · Technique",
+    "source": {
+      "href": "https://developers.google.com/search/docs/crawling-indexing/http-network-errors",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Données structurées",
+    "aussi": [
+      "schema.org",
+      "balisage structuré"
+    ],
+    "definition": "Des informations décrites avec un vocabulaire reconnu pour préciser ce que représente une page : organisation, article, événement…",
+    "situation": "Une page annonce un événement et fournit aussi son nom, sa date et son lieu sous une forme structurée.",
+    "reflexe": "Décrivez seulement des informations exactes, cohérentes avec le contenu visible. Aucun affichage enrichi n’est garanti.",
+    "theme": "SEO et GEO · Technique",
+    "source": {
+      "href": "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "JSON-LD",
+    "aussi": [
+      "format de données structurées"
+    ],
+    "definition": "Une façon d’insérer des données structurées dans un bloc du code. Pensez à une fiche descriptive jointe à la page.",
+    "situation": "Le bloc décrit le nom de l’association mais contient une virgule mal placée.",
+    "reflexe": "Vérifiez la syntaxe et le sens : un JSON valide peut encore décrire des informations fausses ou inadaptées.",
+    "theme": "SEO et GEO · Technique",
+    "source": {
+      "href": "https://developers.google.com/search/docs/appearance/structured-data/intro-structured-data",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Core Web Vitals",
+    "aussi": [
+      "LCP",
+      "INP",
+      "CLS"
+    ],
+    "definition": "Des mesures de l’expérience vécue : chargement du contenu principal, réaction aux interactions et stabilité visuelle.",
+    "situation": "Vous allez cliquer, mais une image se charge et déplace le bouton.",
+    "reflexe": "Mesurez des pages représentatives et distinguez tests de laboratoire et données de visiteurs. Une bonne mesure ne garantit pas un classement.",
+    "theme": "SEO et GEO · Mesure",
+    "source": {
+      "href": "https://developers.google.com/search/docs/appearance/core-web-vitals",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Search Console",
+    "aussi": [
+      "Google Search Console"
+    ],
+    "definition": "L’outil de Google pour suivre notamment l’exploration, l’indexation et certaines performances de recherche d’un site dont vous validez la propriété.",
+    "situation": "Vous voulez savoir quelles pages Google connaît et quelles recherches apportent des visites.",
+    "reflexe": "Consultez les données sur une période suffisante. Ce service ne représente pas tous les moteurs ni tous les assistants IA.",
+    "theme": "SEO et GEO · Mesure",
+    "source": {
+      "href": "https://support.google.com/webmasters/answer/9128668?hl=fr",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Impression",
+    "aussi": [
+      "affichage dans les résultats"
+    ],
+    "definition": "Un affichage comptabilisé selon les règles d’un outil de mesure. Ce n’est pas nécessairement une visite du site.",
+    "situation": "Votre résultat apparaît souvent dans les recherches mais peu de personnes cliquent.",
+    "reflexe": "Lisez la définition de l’outil et comparez des périodes et types de résultats comparables.",
+    "theme": "SEO et GEO · Mesure",
+    "source": {
+      "href": "https://support.google.com/webmasters/answer/7042828?hl=fr",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Clic",
+    "aussi": [
+      "clic depuis un moteur"
+    ],
+    "definition": "Une action comptabilisée lorsqu’une personne suit un lien, selon les règles de la plateforme qui la mesure.",
+    "situation": "Le moteur affiche votre page cent fois et comptabilise cinq clics.",
+    "reflexe": "Un clic n’est pas forcément une inscription. Reliez les mesures à ce que vous souhaitez aider le visiteur à faire.",
+    "theme": "SEO et GEO · Mesure",
+    "source": {
+      "href": "https://support.google.com/webmasters/answer/7042828?hl=fr",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "CTR",
+    "aussi": [
+      "taux de clic"
+    ],
+    "definition": "La proportion de clics par rapport aux impressions : clics divisés par impressions, puis multipliés par cent.",
+    "situation": "Cinq clics pour cent impressions donnent un CTR de 5 %.",
+    "reflexe": "Comparez des contextes semblables : le type de recherche et l’affichage des résultats influencent ce taux.",
+    "theme": "SEO et GEO · Mesure",
+    "source": {
+      "href": "https://support.google.com/webmasters/answer/7042828?hl=fr",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Rendu JavaScript",
+    "aussi": [
+      "HTML initial",
+      "page dynamique"
+    ],
+    "definition": "L’exécution du code qui peut construire ou modifier une page dans le navigateur. Le contenu reçu au départ peut différer de ce que vous voyez ensuite.",
+    "situation": "Le texte apparaît après le chargement, mais un outil qui lit uniquement le HTML initial ne le trouve pas.",
+    "reflexe": "Vérifiez ce que l’outil a réellement analysé avant de conclure à une absence de contenu.",
+    "theme": "SEO et GEO · Technique",
+    "source": {
+      "href": "https://developers.google.com/search/docs/crawling-indexing/javascript/javascript-seo-basics",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Citation IA",
+    "aussi": [
+      "source citée"
+    ],
+    "definition": "Une référence à une page dans une réponse générée. Une simple mention du nom d’une organisation ne prouve pas qu’un lien vers son site est cité.",
+    "situation": "Un assistant nomme votre association sans fournir votre URL.",
+    "reflexe": "Conservez la question, le service, la date, la réponse et les liens. Une citation observée une fois n’est pas une présence garantie.",
+    "theme": "SEO et GEO · Visibilité et IA",
+    "source": {
+      "href": "https://www.bing.com/webmasters/help/ai-performance-9f8e7d6c",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Robots IA",
+    "aussi": [
+      "GPTBot",
+      "OAI-SearchBot"
+    ],
+    "definition": "Des programmes qui récupèrent des contenus pour différents usages liés à l’IA. L’exploration pour la recherche et la collecte pour l’entraînement peuvent utiliser des robots distincts.",
+    "situation": "Vous souhaitez être accessible dans une recherche tout en examinant séparément les règles de collecte pour l’entraînement.",
+    "reflexe": "Lisez la documentation de chaque service avant de changer robots.txt : autoriser ou bloquer un robot n’est pas une règle universelle pour toutes les IA.",
+    "theme": "SEO et GEO · Visibilité et IA",
+    "source": {
+      "href": "https://developers.openai.com/api/docs/bots",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "llms.txt",
+    "aussi": [
+      "fichier pour les modèles de langage"
+    ],
+    "definition": "Une convention proposée pour présenter des ressources à des outils d’IA. Ce fichier n’est pas un prérequis universel pour apparaître dans leurs réponses.",
+    "situation": "Un prestataire vous promet d’être cité par une IA après avoir ajouté ce seul fichier.",
+    "reflexe": "Demandez une preuve du bénéfice annoncé. Google n’exige pas de fichier spécial IA pour ses fonctions de recherche avec IA.",
+    "theme": "SEO et GEO · Visibilité et IA",
+    "source": {
+      "href": "https://developers.google.com/search/docs/appearance/ai-features",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  },
+  {
+    "terme": "Contenu utile",
+    "aussi": [
+      "qualité éditoriale"
+    ],
+    "definition": "Une information créée pour aider un public réel, avec des réponses fiables, adaptées à son besoin et une origine compréhensible.",
+    "situation": "Votre page donne les lieux, les horaires et les conditions d’un atelier plutôt qu’un long texte répétitif sur le numérique.",
+    "reflexe": "Relisez avec un visiteur extérieur. Ajoutez les faits qui l’aident à agir, et des sources quand elles sont nécessaires.",
+    "theme": "SEO et GEO · Contenu",
+    "source": {
+      "href": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Comprendre son site avec la Boussole d’Octet"
+    }
+  }
+]

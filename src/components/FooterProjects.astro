@@ -4,7 +4,7 @@ import { associationProjects } from '../config/projects';
 <nav class="footer-projects" aria-label="Les projets de l’association">
   <h2>Les projets de l’association</h2>
   <ul>
-    {associationProjects.map((project) => <li><a href={project.href}>{project.name} <span aria-hidden="true">↗</span></a></li>)}
+    {associationProjects.map((project) => <li><a href={project.href}>{project.name} <span aria-hidden="true">{project.href.startsWith('/') ? '→' : '↗'}</span></a></li>)}
   </ul>
 </nav>
 <style>

@@ -10,7 +10,7 @@ import { associationProjects } from '../config/projects';
       <article class="project-card">
         <span class="project-icon" aria-hidden="true">{project.icon}</span>
         <p class="project-promise">{project.promise}</p>
-        <h3><a href={project.href}>{project.name} <span aria-hidden="true">↗</span></a></h3>
+        <h3><a href={project.href}>{project.name} <span aria-hidden="true">{project.href.startsWith('/') ? '→' : '↗'}</span></a></h3>
         <p class="project-description">{project.description}</p>
         <p class="project-note">{project.note}</p>
         <span class="project-cta" aria-hidden="true">{project.cta} →</span>

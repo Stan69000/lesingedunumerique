@@ -1,0 +1,175 @@
+# La Boussole d’Octet — première version
+
+Route : `/outils/boussole/`. Moteur 0.1.0. Le rapport décrit une page et ne constitue pas un audit exhaustif du site.
+
+## Fonctionnement livré
+
+- Page Astro intégrée au site, au pied de page, au plan du site et au sitemap.
+- Formulaire sans compte, objectif contextualisé, conseils selon l’outil de publication.
+- Moteur PHP commun à l’API et à la CLI : 11 contrôles, preuves, sources, actions et limites.
+- HTML initial uniquement ; aucun navigateur distant ni fournisseur IA.
+- Rapport web filtrable, nouvelle analyse, exports Markdown/JSON/consignes IA.
+- Impression adaptée : enregistrer en PDF dans le navigateur, tous les constats inclus. Pas de génération serveur de PDF à ce stade.
+- Pas de stockage des rapports, ni de clé IA nécessaire. Les journaux de l’hébergeur restent applicables.
+
+## Exécution
+
+Prérequis : PHP 8.1 ou supérieur, extensions cURL et DOM ; Node selon la version du dépôt pour Astro.
+
+```sh
+npm run test:boussole
+npm run audit:page -- https://lesingedunumerique.fr --goal=association
+npm run build
+php -S 127.0.0.1:4322 -t dist
+```
+
+Ouvrir `http://127.0.0.1:4322/outils/boussole/`. `astro dev` ne sait pas exécuter l’API PHP : utiliser le build et un serveur PHP pour un essai complet. Le script CLI écrit le JSON sur stdout et les erreurs sur stderr ; code de sortie 1 en cas d’échec. Les objectifs acceptés sont `association`, `activite`, `publication`.
+
+## Réseau et limites d’exploitation
+
+- HTTP(S) public, IPv4 uniquement ; noms de domaine ASCII, pas d’IP littérale, identifiants, paramètres de requête ni port non standard.
+- Validation de toutes les IPv4 résolues et épinglage de la destination cURL pour prévenir le rebinding DNS. Pas de proxy ambiant ni de suivi automatique des redirections.
+- Chaque redirection est à nouveau validée ; maximum 3, et aucun retour de HTTPS vers HTTP.
+- Lecture prudente de robots.txt : blocage sur une règle Disallow applicable à `*` ou `OctetAudit`, même en présence d’exceptions Allow. Les réponses 404/410 sont acceptées ; les autres erreurs et redirections arrêtent l’audit. Ce comportement conservateur peut refuser des sites pourtant explorables par d’autres outils.
+- Timeout de 10 secondes par requête, 1,5 Mo maximum par corps décompressé ; au plus 4 pages de redirection et un robots.txt par origine.
+- API : JSON POST uniquement, plafond 4 Ko, 10 tentatives/IP/heure et 100 globales/heure (fenêtres calendaires UTC). Le proxy doit transmettre une adresse client fiable dans REMOTE_ADDR ; X-Forwarded-For n’est pas utilisé.
+- Un seul audit réseau simultané. Les limites sont basées sur des fichiers temporaires et supposent une seule instance serveur. Empreintes IP horaires sans IP brute ni URL ; nettoyage opportuniste après deux heures.
+- La CLI applique les restrictions de destination et robots.txt mais pas les quotas de l’API.
+- Les textes distants sont affichés avec textContent, sans insertion HTML. Les exports avertissent l’IA de traiter les preuves comme des données non fiables.
+
+## Déploiement et VPS
+
+Le code est dans le dépôt existant. Le workflow de production O2Switch copie `dist/` et ses fichiers PHP après une publication sur main. Aucun changement serveur n’est nécessaire si cURL et DOM y sont disponibles. Vérifier ces modules et un audit réel avant d’annoncer l’ouverture publique.
+
+L’API reste relative (`/boussole/audit.php`). Pour déplacer le moteur sur le VPS, utiliser un reverse proxy sur ce chemin : l’interface reste sur le site du Singe, et le navigateur n’a pas besoin d’accès interdomaines. Le moteur PHP actuel est transportable ; les futures tâches longues peuvent utiliser un service distinct.
+
+Architecture cible à dimensionner après inventaire du VPS : API → file de travaux → workers d’exploration et navigateur isolé → stockage des rapports. Les navigateurs et rendus JavaScript exigent un filtrage réseau au niveau du conteneur : la protection cURL actuelle ne protège pas un futur navigateur.
+
+La commande `ssh veille` a été tentée pendant cette réalisation ; le réseau de la session l’a refusée avant authentification. Aucun inventaire ni déploiement VPS n’a eu lieu.
+
+## À construire ensuite
+
+1. Vérification visuelle et audit HTTP réel sur un serveur accessible ; tests de bout en bout des exports et de l’impression.
+2. Inventaire CPU/RAM/disque, services et reverse proxy du VPS, puis dimensionnement.
+3. Exploration limitée multi-pages, tâches en arrière-plan et rendu JavaScript isolé.
+4. PDF serveur, historique volontaire avec durée de conservation, comparaison entre audits.
+5. Mesures de visibilité réelles, connecteurs, extension Chrome et CLI distribuable.
+
+La CLI actuelle est un script du dépôt, pas encore un paquet installable. L’extension Chrome et les citations IA ne sont pas implémentées. Aucun score de classement ou de « probabilité de citation » n’est calculé.
+
+## Sources des règles
+
+Les sources sont attachées à chaque constat : Google Search Central (titres, extraits, robots, canonique, mobile, données structurées, contenus utiles, fonctions IA), W3C WAI (images, langue). Présence d’un champ, validité JSON, conformité métier et qualité éditoriale sont des observations distinctes. L’absence d’un canonique ou de JSON-LD n’est pas automatiquement considérée comme une erreur.
+
+## Installation isolée sur le VPS (moteur seul)
+
+L’inventaire fourni le 31 octobre 2026 indique Ubuntu 24.04, 4 CPU, 7,8 Gio de RAM (2,6 disponibles), 75 Go de disque disponibles, Docker et Caddy. PHP n’est pas installé sur l’hôte. La swap occupée (1,7/2 Gio) justifie une mesure avec `vmstat`, sans démontrer à elle seule une pression actuelle.
+
+La configuration `deploy/boussole/compose.yaml` utilise l’image officielle PHP 8.4 Apache, sans compilation d’extensions. Le build vérifie cURL et DOM et s’arrête si nécessaire. Limites de fonctionnement : 384 Mio de mémoire sans swap supplémentaire, 0,5 CPU, 2 processus Apache, une seule analyse réseau. Le build lui-même n’est pas limité par ces contraintes d’exécution. Le port 3012 n’apparaît pas dans l’inventaire fourni : vérifier à nouveau avant démarrage.
+
+Depuis le Mac, à la racine du dépôt :
+
+```sh
+ssh veille 'mkdir -p ~/boussole-octet/public ~/boussole-octet/deploy'
+scp -r public/boussole veille:boussole-octet/public/
+scp -r deploy/boussole veille:boussole-octet/deploy/
+```
+
+Puis sur le VPS :
+
+```sh
+cd ~/boussole-octet
+docker compose version
+ss -ltn 'sport = :3012'
+docker stats --no-stream
+vmstat 1 5
+docker compose -f deploy/boussole/compose.yaml config --quiet
+docker compose -f deploy/boussole/compose.yaml up -d --build
+docker compose -f deploy/boussole/compose.yaml ps
+curl -i http://127.0.0.1:3012/boussole/audit.php
+curl --max-time 100 -sS -H 'Content-Type: application/json' --data '{"url":"https://lesingedunumerique.fr/","goal":"association"}' http://127.0.0.1:3012/boussole/audit.php
+```
+
+Le premier GET doit répondre 405 avec du JSON. Le POST doit renvoyer un rapport, ou une erreur explicite liée à la page et aux règles du moteur. Ne pas continuer si le port est occupé. Inspecter les logs en cas d’échec : `docker compose -f deploy/boussole/compose.yaml logs --tail=60`.
+
+Arrêt réversible de ce service uniquement :
+
+```sh
+docker compose -f deploy/boussole/compose.yaml down
+```
+
+Cette étape n’expose pas le moteur publiquement et ne modifie pas Caddy. Pour raccorder le site O2Switch à ce moteur, il faut ensuite choisir et configurer un relais serveur authentifié (quotas et identité client à adapter) ou héberger l’interface et l’API ensemble sur un sous-domaine. Le Caddy du VPS ne peut pas, à lui seul, intercepter les requêtes du domaine hébergé chez O2Switch. Aucun raccordement public n’est encore livré.
+
+La validation locale couvre la syntaxe PHP et les tests du moteur. Docker n’est pas disponible dans l’environnement de développement : ni construction ni démarrage du conteneur n’ont été vérifiés ici.
+
+## Démonstration avant publication
+
+- Sur la page : bouton « Essayer avec un exemple fictif », ou `/outils/boussole/?demo=1`.
+- Aperçu autonome : `previews/boussole-demo.html`, à ouvrir directement dans un navigateur, sans PHP, serveur ou connexion.
+- Le mode autonome ne lance jamais l’API ; l’adresse fictive est en lecture seule. Les boutons avant/après, les filtres et les exports réutilisent l’interface réelle. Le PDF passe par l’impression du navigateur.
+- Les résultats viennent du moteur exécuté sur deux petits fichiers HTML fictifs dans `tests/fixtures`. Aucun diagnostic de site réel ne doit être déduit de cet exemple.
+- Les rapports et exports portent le marquage SIMULATION, y compris le JSON (`demo: true`).
+
+Régénération après modification :
+
+```sh
+php scripts/boussole-demo.php > src/data/boussole-demo.json
+npm run build
+python3 scripts/boussole-standalone.py
+```
+
+Le build, les 32 contrôles existants, les marqueurs de simulation et la syntaxe du JavaScript autonome ont été vérifiés. L’ouverture automatique du fichier local par le navigateur de contrôle est interdite par sa politique d’URL ; la validation visuelle et les essais des téléchargements restent à effectuer manuellement.
+
+## Accompagnement et lexique SEO/GEO
+
+La Boussole propose désormais un plan de trois actions ou une sélection respectant un budget indicatif total de 15 minutes. La sélection se limite aux actions et suggestions ; les décisions humaines (par exemple un noindex volontaire) ne sont pas transformées en corrections automatiques. Les cases cochées déclarent une action effectuée mais ne changent pas les résultats du moteur. Ce suivi reste en mémoire dans l’onglet et est ajouté aux exports sous une forme explicitement non vérifiée.
+
+32 définitions sourcées sont disponibles dans `src/data/lexique-seo.json`, à la fois dans `/lexique-seo/`, le lexique général et la Boussole. Chaque constat renvoie à ses mots utiles. Les fiches comprennent une définition, une situation, le réflexe d’Octet et une source primaire. La recherche globale indexe aussi ces entrées. Le composant partagé `LexiqueExplorer.astro` conserve les recherches, thèmes et liens directs du lexique initial.
+
+Le vocabulaire utile figure également dans l’export JSON. Le mode d’analyse reste limité à une page HTML : cet enrichissement n’ajoute pas d’exploration multi-pages, de mesure de citations ni d’IA distante.
+
+Deux aperçus locaux sans serveur :
+
+- `previews/boussole-demo.html` : exemple fictif avant/après, plan d’action, filtres, vocabulaire et exports.
+- `previews/lexique-seo-demo.html` : les 32 fiches éditoriales et leur recherche (le contenu du lexique n’est pas fictif).
+
+```sh
+npm run test:boussole
+npm run build
+python3 scripts/boussole-standalone.py
+python3 scripts/boussole-standalone.py --lexique
+```
+
+Validation : build de 74 pages, 32 contrôles PHP et 4 tests Node sur le budget d’actions, la séparation du suivi et du diagnostic, la correspondance des termes et les sources ; vérification des ancres uniques, des 113 entrées dans la recherche générale et de la syntaxe des deux JavaScript autonomes. Validation visuelle et essais navigateur des exports restent à faire ; aucun déploiement effectué.
+
+## Lexique commun : numérique, SEO/GEO et accessibilité
+
+La page principale `/lexique/` réunit désormais 137 fiches : 81 existantes, 32 SEO/GEO et 24 nouvelles sur l’accessibilité/RGAA. Un filtre « univers » se combine avec la recherche et les thèmes. Les termes transversaux sont associés à plusieurs univers sans duplication de fiche ni d’ancre. Le paramètre `?univers=seo` ou `?univers=accessibilite` ouvre un univers ; les changements de filtre mettent à jour l’adresse. Un lien direct vers une fiche masquée réinitialise les filtres nécessaires pour la révéler.
+
+L’ancien point d’entrée `/lexique-seo/` renvoie à `/lexique/?univers=seo`. Le pied de page présente une entrée générale pour le lexique. Le lexique d’accessibilité renvoie aux sources officielles RGAA et W3C WAI ainsi qu’au projet de pré-audit de l’association. Il ne constitue pas une attestation de conformité.
+
+L’aperçu complet est `previews/lexique-demo.html`. L’ancien fichier `previews/lexique-seo-demo.html` est maintenu avec le même contenu commun pour les liens déjà partagés. Les tests couvrent la présence d’un terme dans plusieurs univers, les recherches avec accents/synonymes et la combinaison des filtres. Build de 74 pages, 32 contrôles PHP et 8 tests Node validés ; les 137 fiches et leurs ancres sont présentes dans le build et la recherche. Le rendu visuel et les interactions navigateur restent à valider manuellement. Rien n’a été publié.
+
+## Arnaques et jargon IA
+
+Le lexique commun atteint 205 fiches après ajout de 44 fiches « Arnaques et manipulation » et de 16 fiches techniques. Les entrées antérieures rejoignent les filtres utiles sans duplication : 57 fiches sont visibles dans l’univers arnaques et 29 dans le jargon. Les cinq univers restent combinables avec les thèmes et la recherche. Des expressions du quotidien, conservées dans le champ `recherches`, permettent notamment de retrouver la demande de secret ou l’engrenage des paiements. Ce champ est aussi intégré à la recherche générale.
+
+Les intitulés de manipulation décrivent des situations observables, pas des diagnostics psychologiques. Une note éditoriale le précise et oriente vers 17Cyber. Les sources sont Cybermalveillance.gouv.fr, l’AMF et la DGCCRF ; chaque fiche garde sa situation et son réflexe. Les pages sources non résolues pendant la rédaction ont été remplacées par des références identifiées (notamment location, cagnotte, chèque et sextorsion).
+
+MCP, API, SDK, webhook, endpoint, connecteur, LLM, RAG, agent IA, token d’IA, jeton d’accès, OAuth, CLI, Docker, VPS et base de données sont définis avec des exemples et des limites. Les jetons d’accès sont distingués des tokens de texte, et MCP n’est pas présenté comme un accès automatique aux applications.
+
+Validation : 32 contrôles PHP et 11 tests Node réussis, build de 74 pages, 205 fiches dans l’index et la page, ancres uniques et syntaxe des deux aperçus autonomes vérifiées. Rien n’a été publié ; rendu navigateur à vérifier manuellement.
+
+## Liens entre le lexique et les contenus existants
+
+Une sélection éditoriale dans `src/data/lexique-relations.json` ajoute 67 associations entre 48 termes et 14 contenus relus : huit articles, quatre BD et deux décryptages arnaques. Chaque relation correspond à un sujet effectivement expliqué ou illustré ; aucune association d’article n’est inventée pour MCP, JSON ou RAG. Les références officielles et les liens antérieurs sont conservés, sans doublon de destination.
+
+Le catalogue commun `src/lib/lexique.ts` alimente la page, la recherche et les encadrés des contenus. Une fiche peut proposer plusieurs lectures. `LexiqueRelated` consulte désormais les cinq univers et toutes les destinations ; après six termes, les autres restent accessibles dans un volet dépliable. Les décryptages publiés affichent aussi cet encadré, à l’exclusion des démonstrations.
+
+Validation : 32 contrôles PHP et 13 tests Node réussis ; build de 74 pages. Vérification des 67 relations dans les deux sens sur le HTML généré, des 205 fiches de recherche et de la syntaxe JavaScript des deux aperçus autonomes régénérés. Rendu visuel et interactions navigateur à vérifier manuellement ; aucun déploiement.
+
+## Publication : accueil, outils et article
+
+La Boussole rejoint le catalogue partagé des projets (accueil, association et pied de page). Une entrée « Nos outils » mène à `/outils/`, avec la Boussole et RGAA Audit. L’article `/blog/votre-site-est-en-ligne-octet-sort-sa-boussole/` explique le fonctionnement, les exports et les limites ; il est relié à l’outil et au lexique. Le compteur du lexique sur l’accueil utilise désormais le catalogue commun de 205 termes.
+
+Les fichiers récents de main ont été intégrés avant publication, notamment la mesure d’audience et l’article RGAA Audit. Les relations éditoriales couvrent désormais 88 associations, 16 contenus et les nouvelles lectures SEO et accessibilité. Les tests sont aussi exécutés en CI et avant le déploiement. Un contrôle de production supplémentaire vérifie les pages, la réponse JSON 405 à un GET et un audit réel de la page d’accueil (11 constats), depuis le runner GitHub autorisé à accéder au réseau.

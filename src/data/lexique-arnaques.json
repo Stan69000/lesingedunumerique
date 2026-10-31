@@ -1,0 +1,982 @@
+[
+  {
+    "terme": "Fausse urgence",
+    "aussi": [
+      "pression du temps",
+      "vite maintenant"
+    ],
+    "definition": "Vous pousser à décider tout de suite, avant de pouvoir vérifier. L’horloge sert ici à vous couper le temps de réfléchir.",
+    "situation": "« Votre compte sera fermé dans dix minutes si vous ne payez pas. »",
+    "reflexe": "Faites une pause et vérifiez par un moyen connu. Une urgence seule ne prouve pas une arnaque.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/dossier-phishing",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    },
+    "recherches": [
+      "on me demande de faire vite"
+    ]
+  },
+  {
+    "terme": "Fausse autorité",
+    "aussi": [
+      "prétexte hiérarchique",
+      "prétexting"
+    ],
+    "definition": "Se donner un titre ou un rôle rassurant pour obtenir votre obéissance : responsable, conseiller, service de sécurité…",
+    "situation": "Un message signé du président de votre association vous demande un virement inhabituel.",
+    "reflexe": "Contactez la personne par ses coordonnées habituelles et appliquez les vérifications prévues. Un titre ne remplace pas une preuve.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/escroquerie-faux-ordres-virement-fovi",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Demande de secret",
+    "aussi": [
+      "confidentialité imposée",
+      "ne le dites à personne"
+    ],
+    "definition": "Vous demander de cacher l’échange pour vous empêcher d’obtenir un second avis.",
+    "situation": "« Ne prévenez pas votre conseiller habituel : il fait partie de l’enquête. »",
+    "reflexe": "Parlez-en à une personne de confiance. Une demande de secret liée à un paiement mérite une vérification indépendante.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/fraude-faux-conseiller-bancaire",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    },
+    "recherches": [
+      "il me demande de garder le secret",
+      "on me demande de garder le secret"
+    ]
+  },
+  {
+    "terme": "Isolement de la victime",
+    "aussi": [
+      "on me demande de rester en ligne"
+    ],
+    "definition": "Maintenir quelqu’un seul face aux instructions, pour rendre plus difficile une pause ou une vérification.",
+    "situation": "L’interlocuteur exige que vous restiez au téléphone pendant toutes les manipulations.",
+    "reflexe": "Interrompez l’échange et reprenez contact avec l’organisme par un canal connu. Vous avez le droit de demander de l’aide.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/fraude-faux-conseiller-bancaire",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Promesse de gain facile",
+    "aussi": [
+      "argent facile",
+      "rendement garanti"
+    ],
+    "definition": "Faire miroiter une récompense importante avec peu d’effort ou prétendument sans risque.",
+    "situation": "Une personne promet de doubler votre mise en quelques jours.",
+    "reflexe": "Vérifiez l’organisme et le placement auprès des sources officielles avant tout versement. La promesse ne constitue pas une garantie.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/escroquerie-placement-financier",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fausse preuve sociale",
+    "aussi": [
+      "tout le monde le fait",
+      "témoignages fabriqués"
+    ],
+    "definition": "Utiliser de prétendus clients satisfaits ou un groupe enthousiaste pour faire croire qu’une proposition est fiable.",
+    "situation": "Dans une conversation, plusieurs inconnus annoncent avoir gagné beaucoup d’argent sur le même placement.",
+    "reflexe": "Cherchez des informations indépendantes du groupe et du vendeur. Des captures ou témoignages peuvent être fabriqués.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/eviter-les-arnaques/quelles-sont-les-arnaques-les-plus-courantes",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Confiance progressive",
+    "aussi": [
+      "mise en confiance",
+      "relation privilégiée"
+    ],
+    "definition": "Multiplier les échanges rassurants avant une demande d’argent ou d’informations. Le piège peut se construire sur la durée.",
+    "situation": "Un contact discute régulièrement avec vous, puis vous propose un investissement réservé à ses proches.",
+    "reflexe": "Vérifiez la proposition indépendamment de la sympathie ressentie. Une relation en ligne n’est pas une preuve financière.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/comment-reagir-en-cas-descroquerie-sentimentale",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Engrenage des paiements",
+    "aussi": [
+      "encore un dernier paiement",
+      "coûts déjà engagés"
+    ],
+    "definition": "Réclamer de nouvelles sommes après un premier paiement, en prétendant qu’elles permettront enfin d’obtenir ce qui était promis.",
+    "situation": "Après des frais de dossier, on vous réclame une taxe pour débloquer votre argent.",
+    "reflexe": "N’ajoutez pas un paiement uniquement pour sauver les précédents. Faites examiner la situation et contactez votre banque si des fonds ont été envoyés.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/escroquerie-placement-financier",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    },
+    "recherches": [
+      "j’ai déjà payé et on réclame encore de l’argent"
+    ]
+  },
+  {
+    "terme": "Menace et intimidation",
+    "aussi": [
+      "pression par la peur"
+    ],
+    "definition": "Faire craindre une sanction ou une exposition publique pour obtenir une action. Une menace écrite n’est pas une preuve de ce qu’elle affirme.",
+    "situation": "Un message prétend que vous serez arrêté si vous ne réglez pas une somme discrètement.",
+    "reflexe": "Conservez le message et vérifiez hors de l’échange. Ne payez pas sous la pression d’un message de menace.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/campagnes-messages-escroquerie-usurpant-identite-police-nationale",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fausse occasion limitée",
+    "aussi": [
+      "rareté artificielle",
+      "dernière chance"
+    ],
+    "definition": "Présenter une offre comme presque épuisée ou imminente pour empêcher la comparaison. Ce signal seul ne permet pas de conclure à une fraude.",
+    "situation": "Le compteur d’une offre exceptionnelle semble repartir à zéro à chaque visite.",
+    "reflexe": "Prenez le temps de vérifier le vendeur et les conditions. Ne laissez pas un compteur décider à votre place.",
+    "theme": "Arnaques et manipulation · Manipulation",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/zoom-sur-les-achats-en-ligne",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux QR code",
+    "aussi": [
+      "quishing",
+      "hameçonnage par QR code"
+    ],
+    "definition": "Un QR code qui conduit vers un piège, parfois collé à la place d’un code légitime. Le code est un raccourci, pas une preuve de confiance.",
+    "situation": "Vous scannez un autocollant pour payer et arrivez sur une adresse inattendue.",
+    "reflexe": "Contrôlez l’adresse et le contexte avant de payer. En cas de doute, cherchez le service par son application ou son site connu.",
+    "theme": "Arnaques et manipulation · Moyens utilisés",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/quishing-hameconnage-qr-code",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Numéro de téléphone usurpé",
+    "aussi": [
+      "spoofing téléphonique",
+      "numéro affiché trompeur"
+    ],
+    "definition": "Faire afficher un numéro qui ne prouve pas l’identité réelle de l’appelant. Voir le nom de votre banque n’authentifie pas la personne.",
+    "situation": "L’écran affiche votre agence, mais on vous demande un code pour prétendument annuler un paiement.",
+    "reflexe": "Raccrochez et composez vous-même un numéro officiel obtenu indépendamment, pas celui dicté pendant l’appel.",
+    "theme": "Arnaques et manipulation · Moyens utilisés",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/fraude-faux-conseiller-bancaire",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    },
+    "recherches": [
+      "le numéro affiché est celui de ma banque"
+    ]
+  },
+  {
+    "terme": "Expéditeur de mail usurpé",
+    "aussi": [
+      "spoofing de mail",
+      "nom affiché trompeur"
+    ],
+    "definition": "Présenter un message sous une identité trompeuse. Le nom affiché et l’adresse doivent être examinés, sans être considérés comme une garantie suffisante.",
+    "situation": "Un mail semble signé par un collègue alors que la demande et le lien sont inhabituels.",
+    "reflexe": "Confirmez la demande par un autre canal connu. Ne transmettez pas de code sur la seule foi de la signature.",
+    "theme": "Arnaques et manipulation · Moyens utilisés",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/dossier-phishing",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Adresse Internet ressemblante",
+    "aussi": [
+      "typosquattage",
+      "typosquatting",
+      "faute dans le domaine"
+    ],
+    "definition": "Une adresse choisie pour ressembler à celle d’un service connu et profiter d’une lecture rapide.",
+    "situation": "Vous reconnaissez presque le nom de votre banque, mais une lettre ou un mot diffère.",
+    "reflexe": "Accédez au service par un favori fiable ou son application. Une ressemblance et un cadenas ne suffisent pas.",
+    "theme": "Arnaques et manipulation · Moyens utilisés",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/usurpation-site-internet-professionnel",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Site copié",
+    "aussi": [
+      "site cloné",
+      "copie de marque"
+    ],
+    "definition": "Un site qui reprend l’apparence ou les informations d’une organisation pour donner confiance. La copie peut servir au vol de données ou à une fausse vente.",
+    "situation": "Logo, adresse postale et présentation semblent familiers, mais le site a une autre adresse.",
+    "reflexe": "Vérifiez l’adresse par une source indépendante. Les mentions légales peuvent elles aussi avoir été recopiées.",
+    "theme": "Arnaques et manipulation · Moyens utilisés",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/usurpation-site-internet-professionnel",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Publicité frauduleuse",
+    "aussi": [
+      "annonce sponsorisée trompeuse",
+      "malvertising"
+    ],
+    "definition": "Une publicité utilisée pour attirer vers une escroquerie ou un contenu malveillant. Payer pour être affiché ne rend pas l’annonce fiable.",
+    "situation": "Le premier résultat sponsorisé propose un logiciel ou un placement que vous cherchiez.",
+    "reflexe": "Rejoignez l’éditeur ou l’organisme par son adresse officielle. Ne confondez pas place publicitaire et recommandation.",
+    "theme": "Arnaques et manipulation · Moyens utilisés",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/zoom-sur-les-achats-en-ligne",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Prise en main à distance détournée",
+    "aussi": [
+      "contrôle à distance",
+      "logiciel de téléassistance"
+    ],
+    "definition": "L’utilisation abusive d’un outil de dépannage pour voir ou manipuler votre appareil. Les logiciels de téléassistance ont aussi des usages légitimes.",
+    "situation": "Un prétendu technicien vous fait installer un programme puis ouvre vos documents ou votre banque.",
+    "reflexe": "N’autorisez pas un inconnu à prendre la main. Si l’accès a été accordé, coupez la connexion et faites-vous accompagner pour sécuriser l’appareil.",
+    "theme": "Arnaques et manipulation · Moyens utilisés",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/arnaques-au-faux-support-technique",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    },
+    "recherches": [
+      "on me demande d’installer un logiciel"
+    ]
+  },
+  {
+    "terme": "Code de validation dérobé",
+    "aussi": [
+      "code SMS demandé",
+      "OTP volé"
+    ],
+    "definition": "Obtenir le code qui permet de valider une connexion ou une opération, souvent en prétendant le contraire.",
+    "situation": "« Donnez-moi le code reçu pour bloquer l’achat. » Il pourrait en réalité servir à l’autoriser.",
+    "reflexe": "Lisez le message complet et ne dictez pas le code. Contactez le service par un canal connu si une opération vous surprend.",
+    "theme": "Arnaques et manipulation · Moyens utilisés",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/fraude-faux-conseiller-bancaire",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fausse livraison de colis",
+    "aussi": [
+      "faux colis",
+      "frais de livraison suspects"
+    ],
+    "definition": "Un message invente un problème de livraison pour obtenir un paiement ou des renseignements.",
+    "situation": "On vous réclame une petite somme pour reprogrammer un colis que vous n’identifiez pas.",
+    "reflexe": "Consultez votre commande et le suivi depuis le vendeur ou le transporteur connu, sans utiliser le lien du message.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/smishing-hameconnage-sms",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fausse amende",
+    "aussi": [
+      "ANTAI usurpée",
+      "contravention frauduleuse"
+    ],
+    "definition": "Une demande de règlement qui imite un organisme de gestion des amendes pour recueillir des données ou un paiement.",
+    "situation": "Un SMS annonce une contravention majorée si vous ne payez pas immédiatement.",
+    "reflexe": "Vérifiez votre situation en rejoignant vous-même le service officiel. Ne vous fiez pas seulement au logo ou au montant.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/campagne-de-messages-frauduleux-reclamant-le-paiement-dune-contravention",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux remboursement",
+    "aussi": [
+      "remboursement des impôts",
+      "remboursement carte Vitale"
+    ],
+    "definition": "Un prétendu remboursement sert d’appât pour obtenir des informations personnelles ou bancaires.",
+    "situation": "Un message promet un trop-perçu mais demande le numéro complet de votre carte et son code de sécurité.",
+    "reflexe": "Vérifiez depuis votre espace officiel. Un remboursement annoncé ne justifie pas de transmettre vos codes à un interlocuteur.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/smishing-hameconnage-sms",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fausse confirmation de commande",
+    "aussi": [
+      "achat inconnu",
+      "fausse commande"
+    ],
+    "definition": "Une commande inventée sert à vous faire appeler un faux service d’opposition ou ouvrir un lien piégé.",
+    "situation": "Vous recevez la confirmation d’un achat coûteux avec un numéro pour l’annuler.",
+    "reflexe": "Contrôlez vos comptes depuis vos applications et contactez le service par des coordonnées indépendantes du message.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/zoom-sur-les-achats-en-ligne",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux proche en difficulté",
+    "aussi": [
+      "coucou maman",
+      "coucou papa",
+      "nouveau numéro de mon enfant"
+    ],
+    "definition": "Quelqu’un se fait passer pour un proche afin de demander de l’argent ou une aide urgente.",
+    "situation": "« Mon téléphone est cassé, voici mon nouveau numéro. Peux-tu payer cette facture ? »",
+    "reflexe": "Contactez votre proche par son ancien numéro ou un autre moyen connu. Vérifiez avant de payer, même si le message paraît familier.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/dossier-phishing",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux coursier bancaire",
+    "aussi": [
+      "récupération de carte bancaire"
+    ],
+    "definition": "Un faux service de sécurité envoie une personne récupérer une carte ou des biens sous prétexte de protection.",
+    "situation": "Après un appel inquiétant, on annonce qu’un coursier va prendre votre carte bancaire.",
+    "reflexe": "Ne remettez ni carte ni code. Contactez votre banque par un numéro officiel ; si la carte a été remise, demandez rapidement son opposition.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/fraude-faux-conseiller-bancaire",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux RIB",
+    "aussi": [
+      "fraude au changement de RIB"
+    ],
+    "definition": "Remplacer les coordonnées bancaires du destinataire attendu par celles d’un escroc.",
+    "situation": "Votre association reçoit une facture habituelle mais un message annonce un nouveau compte pour le paiement.",
+    "reflexe": "Faites confirmer tout changement par un contact déjà connu, sans réutiliser les coordonnées du message suspect.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/que-faire-en-cas-de-fraude-au-virement-ou-au-faux-rib",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fraude au président",
+    "aussi": [
+      "faux dirigeant",
+      "faux ordre de virement",
+      "FOVI"
+    ],
+    "definition": "Se faire passer pour un responsable afin d’obtenir un virement ou une action inhabituelle, souvent présentés comme urgents et confidentiels.",
+    "situation": "Le président supposé vous demande de payer un fournisseur sans suivre la procédure de l’association.",
+    "reflexe": "Vérifiez directement auprès du responsable et gardez les contrôles habituels. L’urgence ne remplace pas une validation.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/escroquerie-faux-ordres-virement-fovi",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Détournement de loyer",
+    "aussi": [
+      "faux bailleur",
+      "nouveau compte du propriétaire"
+    ],
+    "definition": "Un escroc se fait passer pour le bailleur afin de faire verser un loyer sur un autre compte.",
+    "situation": "Un mail vous demande de modifier les coordonnées de paiement du mois suivant.",
+    "reflexe": "Joignez le propriétaire ou l’agence avec les coordonnées de votre contrat avant toute modification.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/dossier-phishing",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fausse offre d’emploi",
+    "aussi": [
+      "faux recrutement",
+      "faux recruteur"
+    ],
+    "definition": "Une proposition de travail sert à recueillir des documents ou vous soutirer de l’argent plutôt qu’à recruter.",
+    "situation": "Un recruteur promet une embauche rapide et réclame des frais avant tout échange sérieux.",
+    "reflexe": "Vérifiez l’entreprise par un contact indépendant. Ne versez pas d’argent pour débloquer un poste présenté par un inconnu.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/arnaques-a-l-emploi",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Arnaque à la tâche",
+    "aussi": [
+      "payer pour travailler",
+      "opérateur marketing frauduleux"
+    ],
+    "definition": "De petites missions rémunérées servent à vous attirer, puis on vous demande d’avancer votre argent pour continuer ou retirer les gains.",
+    "situation": "Après quelques avis ou clics, il faut déposer une somme pour accéder à la série suivante de missions.",
+    "reflexe": "Ne payez pas pour récupérer une rémunération promise. Si vous avez déjà versé, cessez les paiements et demandez de l’aide.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/escroquerie-offres-emploi-operateur-marketing-internet",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Arnaque sentimentale",
+    "aussi": [
+      "arnaque à la romance",
+      "romance scam"
+    ],
+    "definition": "Construire une relation affective trompeuse pour obtenir de l’argent ou d’autres avantages. La personne visée n’est pas responsable de la manipulation.",
+    "situation": "Un contact très attentionné invoque ensuite une difficulté financière que vous seul pourriez résoudre.",
+    "reflexe": "Demandez un avis extérieur avant un paiement. Si vous avez été trompé, conservez les échanges et contactez votre banque pour les fonds envoyés.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/comment-reagir-en-cas-descroquerie-sentimentale",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux placement financier",
+    "aussi": [
+      "investissement frauduleux"
+    ],
+    "definition": "Une proposition d’investissement trompeuse détourne l’argent au lieu de le placer comme annoncé.",
+    "situation": "Un conseiller inconnu promet un placement très rentable et vous pousse à déposer rapidement.",
+    "reflexe": "Vérifiez l’autorisation de l’interlocuteur via les registres et conseils officiels de l’AMF. Les logos peuvent être copiés.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/escroquerie-placement-financier",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Gains fictifs",
+    "aussi": [
+      "solde inventé",
+      "faux tableau de gains"
+    ],
+    "definition": "Afficher un bénéfice sur un site ou une application pour donner envie de déposer davantage. Le chiffre affiché ne prouve pas l’existence de fonds récupérables.",
+    "situation": "Votre compte semble gagner beaucoup, mais chaque demande de retrait entraîne de nouveaux frais.",
+    "reflexe": "N’envoyez pas d’argent supplémentaire pour libérer ces gains. Faites examiner la situation par un interlocuteur indépendant.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/eviter-les-arnaques/quelles-sont-les-arnaques-les-plus-courantes",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fausse récupération de fonds",
+    "aussi": [
+      "recovery room",
+      "seconde arnaque"
+    ],
+    "definition": "Une nouvelle escroquerie visant une personne déjà victime : quelqu’un promet de récupérer l’argent perdu contre des frais.",
+    "situation": "Un prétendu enquêteur vous propose de retrouver votre investissement après paiement d’une taxe.",
+    "reflexe": "Vérifiez le professionnel par des coordonnées indépendantes. L’AMF ne propose pas de service de récupération des fonds.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.amf-france.org/fr/espace-epargnants/proteger-son-epargne/eviter-les-arnaques/quelles-sont-les-arnaques-les-plus-courantes",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Arnaque au chèque",
+    "aussi": [
+      "chèque frauduleux",
+      "remboursement après encaissement"
+    ],
+    "definition": "Faire croire à un paiement fiable par chèque puis demander un envoi d’argent avant que sa validité soit réellement établie.",
+    "situation": "Un prétendu employeur envoie un chèque pour du matériel et demande de reverser une partie de la somme.",
+    "reflexe": "Un crédit affiché sur le compte ne prouve pas que le chèque est définitivement payé. Vérifiez avec votre banque avant de transférer des fonds.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/propositions-d-emploi-non-sollicitees",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux acheteur",
+    "aussi": [
+      "arnaque au vendeur"
+    ],
+    "definition": "Se faire passer pour un acheteur afin de voler des données ou obtenir un paiement du vendeur.",
+    "situation": "Pour recevoir le prix de votre objet, on vous demande de payer une prétendue activation de compte.",
+    "reflexe": "Restez dans le parcours officiel de la plateforme et vérifiez les paiements dans votre compte, pas sur une capture reçue.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/zoom-sur-les-achats-en-ligne",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux vendeur",
+    "aussi": [
+      "objet jamais livré"
+    ],
+    "definition": "Proposer un bien ou une prestation sans intention de fournir ce qui est annoncé.",
+    "situation": "Un objet très recherché est proposé à un prix séduisant avec une demande de paiement hors plateforme.",
+    "reflexe": "Comparez, vérifiez le vendeur et utilisez les moyens de protection du service. Une belle annonce ne suffit pas.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/zoom-sur-les-achats-en-ligne",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Fausse annonce de location",
+    "aussi": [
+      "location immobilière frauduleuse"
+    ],
+    "definition": "Une annonce sert à obtenir de l’argent ou des documents pour un logement que l’annonceur ne peut pas réellement louer.",
+    "situation": "Un logement attractif exige un versement pour réserver une visite.",
+    "reflexe": "Vérifiez le logement et l’interlocuteur avant paiement ; protégez les copies de documents et ne cédez pas à la pression.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/arnaques-location-immobiliere",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux concours",
+    "aussi": [
+      "faux cadeau",
+      "loterie frauduleuse"
+    ],
+    "definition": "Une récompense inventée sert à recueillir des données ou demander des frais.",
+    "situation": "Vous auriez gagné un appareil sans avoir participé, mais il faut payer pour le recevoir.",
+    "reflexe": "Vérifiez le concours depuis l’organisateur connu. Ne payez pas sur la seule foi d’un message annonçant un gain.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/dossier-phishing",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    },
+    "recherches": [
+      "on me demande de payer pour recevoir mon gain"
+    ]
+  },
+  {
+    "terme": "Fausse cagnotte",
+    "aussi": [
+      "collecte frauduleuse",
+      "fausse association"
+    ],
+    "definition": "Une collecte détourne la confiance et les dons en imitant une cause ou un organisme.",
+    "situation": "Un message émouvant renvoie vers une collecte dont l’association ne confirme pas l’existence.",
+    "reflexe": "Rejoignez l’organisme par son site connu et vérifiez la destination du don. L’émotion ne remplace pas la vérification.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/appels-frauduleux-aux-dons-fausses-cagnottes-restez-vigilant",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux message de police",
+    "aussi": [
+      "fausse convocation",
+      "police usurpée"
+    ],
+    "definition": "Un message imite une autorité et invente des accusations pour obtenir une réponse ou de l’argent.",
+    "situation": "Un document à logos officiels menace de rendre une affaire publique sans règlement immédiat.",
+    "reflexe": "Ne payez pas sous la menace du message. Gardez les preuves et demandez conseil par un canal officiel indépendant.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/campagnes-messages-escroquerie-usurpant-identite-police-nationale",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Chantage à la webcam prétendument piratée",
+    "aussi": [
+      "faux piratage",
+      "cryptoporno"
+    ],
+    "definition": "Un escroc affirme détenir des images compromettantes sans en apporter une preuve fiable. Un ancien mot de passe peut servir à rendre la menace crédible.",
+    "situation": "Un mail exige une rançon et prétend avoir enregistré votre webcam.",
+    "reflexe": "Ne répondez pas et ne payez pas. Conservez le message ; si un mot de passe est divulgué, remplacez-le là où il est encore utilisé.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/chantage-a-lordinateur-ou-a-la-webcam-pretendus-pirates",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Sextorsion",
+    "aussi": [
+      "chantage intime"
+    ],
+    "definition": "Menacer de diffuser un contenu intime, réel ou prétendu, pour obtenir de l’argent ou d’autres actes.",
+    "situation": "Après un échange, une personne menace de transmettre des images à vos proches.",
+    "reflexe": "Ne restez pas seul face à la menace. Conservez les preuves, cessez les échanges et cherchez un accompagnement officiel.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/sextorsion",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Abonnement caché",
+    "aussi": [
+      "paiement récurrent inattendu"
+    ],
+    "definition": "Un achat ou une offre d’essai dissimule ou présente mal un paiement répété. Toute mauvaise surprise n’établit pas à elle seule une fraude.",
+    "situation": "Une petite somme pour un cadeau est suivie de prélèvements réguliers que vous n’aviez pas compris accepter.",
+    "reflexe": "Relisez les conditions et conservez les preuves. Contestez auprès du professionnel et demandez à votre banque les démarches adaptées si le paiement est litigieux.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/zoom-sur-les-achats-en-ligne",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  },
+  {
+    "terme": "Faux vote en ligne",
+    "aussi": [
+      "concours WhatsApp",
+      "vote pour mon enfant"
+    ],
+    "definition": "Une demande de soutien ou de vote mène à un piège qui cherche notamment à prendre le contrôle d’un compte.",
+    "situation": "Un contact vous demande de voter pour son enfant, puis le site réclame un code reçu sur votre téléphone.",
+    "reflexe": "Ne transmettez pas le code. Vérifiez auprès du contact par un autre moyen : son compte peut avoir été détourné.",
+    "theme": "Arnaques et manipulation · Scénarios",
+    "domaines": [
+      "arnaques"
+    ],
+    "source": {
+      "href": "https://www.cybermalveillance.gouv.fr/tous-nos-contenus/actualites/vigilance-faux-vote-whatsapp",
+      "label": "Lire la fiche officielle de prévention"
+    },
+    "lien": {
+      "href": "/veille/arnaques/",
+      "label": "Voir les décryptages d’Octet sur les arnaques"
+    }
+  }
+]
