@@ -1,7 +1,7 @@
 ---
 import AudienceBeacon from '../components/AudienceBeacon.astro';
 import SearchDiscovery from '../components/SearchDiscovery.astro';
-import SearchTrigger from '../components/SearchTrigger.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 import CommandPalette from '../components/CommandPalette.astro';
 import BackToTop from '../components/BackToTop.astro';
 import AssociationProjects from '../components/AssociationProjects.astro';
@@ -15,7 +15,7 @@ import { getPlanches, planchePath } from '../lib/bd';
 import { getPublishedBriefs } from '../lib/briefs';
 import aLaUne from '../data/a-la-une.json';
 import { lexique } from '../lib/lexique';
-import { ariaCurrent, footerNav, mainNav, navCta } from '../config/nav';
+import { footerNav } from '../config/nav';
 import '../styles/global.css';
 import '../styles/home.css';
 
@@ -169,73 +169,7 @@ const currentPath = Astro.url.pathname;
     <CommandPalette />
 <a class="skip-link" href="#main-content">Aller au contenu principal</a>
 
-    <header>
-    <nav class="navbar" aria-label="Navigation principale">
-      <div class="container nav-container">
-        <a href="/" class="brand-logo" aria-label="Le Singe Du Numérique, accueil">
-          <img src="/logo.svg" alt="" aria-hidden="true" class="navbar-logo" />
-          <span class="brand-text">Le Singe Du Numérique</span>
-        </a>
-
-        <div class="nav-right">
-          <ul class="nav-links">
-{mainNav.map((item) => (
-<li><a href={item.href} class="nav-item" aria-current={ariaCurrent(item, currentPath)}>{item.label}</a></li>
-))}
-          </ul>
-          <a href={navCta.href} class="nav-cta" aria-current={ariaCurrent(navCta, currentPath)}>{navCta.label}</a>
-          <button
-            id="theme-toggle"
-            class="theme-btn"
-            type="button"
-            aria-label="Activer le thème clair"
-            aria-pressed="false"
-          >
-            <span class="icon-light">☀️</span>
-            <span class="icon-dark">🌙</span>
-          </button>
-        </div>
-
-        <SearchTrigger />
-<button
-          class="burger-btn"
-          id="burger-btn"
-          aria-label="Ouvrir le menu principal"
-          aria-controls="mobile-menu"
-          aria-expanded="false"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-
-      <div
-        class="mobile-menu"
-        id="mobile-menu"
-        aria-label="Navigation mobile"
-        aria-hidden="true"
-        inert
-        hidden
-      >
-{[...mainNav, navCta].map((item) => (
-<a href={item.href} class="mobile-item" aria-current={ariaCurrent(item, currentPath)}>{item.label}</a>
-))}
-        <div class="mobile-theme-toggle">
-          <span>Changer le thème</span>
-          <button
-            id="mobile-theme-btn"
-            class="theme-btn-small"
-            type="button"
-            aria-label="Activer le thème clair"
-            aria-pressed="false"
-          >
-            🌙
-          </button>
-        </div>
-      </div>
-    </nav>
-    </header>
+    <SiteHeader />
 
     <main id="main-content">
       <section class="hero-section">
@@ -517,142 +451,6 @@ const currentPath = Astro.url.pathname;
       }
 
       window.addEventListener('load', enforceMinimumAnimationDuration);
-
-      const themeBtn = document.getElementById('theme-toggle');
-      const mobileThemeBtn = document.getElementById('mobile-theme-btn');
-      const body = document.body;
-      let lastFocusedElement = null;
-
-      function syncThemeControls() {
-        const isLight = body.classList.contains('light-mode');
-        const icon = isLight ? '☀️' : '🌙';
-        const actionLabel = isLight ? 'Activer le thème sombre' : 'Activer le thème clair';
-
-        if (themeBtn) {
-          themeBtn.innerHTML = isLight
-            ? '<span class="icon-light">☀️</span>'
-            : '<span class="icon-dark">🌙</span>';
-          themeBtn.setAttribute('aria-label', actionLabel);
-          themeBtn.setAttribute('aria-pressed', String(isLight));
-        }
-
-        if (mobileThemeBtn) {
-          mobileThemeBtn.textContent = icon;
-          mobileThemeBtn.setAttribute('aria-label', actionLabel);
-          mobileThemeBtn.setAttribute('aria-pressed', String(isLight));
-        }
-      }
-
-      const storedTheme = localStorage.getItem('theme');
-      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-      if (storedTheme === 'light' || (!storedTheme && prefersLight)) {
-        body.classList.add('light-mode');
-      }
-
-      syncThemeControls();
-
-      function toggleTheme() {
-        body.classList.toggle('light-mode');
-        const isLight = body.classList.contains('light-mode');
-        syncThemeControls();
-        localStorage.setItem('theme', isLight ? 'light' : 'dark');
-      }
-
-      if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
-      if (mobileThemeBtn) mobileThemeBtn.addEventListener('click', toggleTheme);
-
-      const burgerBtn = document.getElementById('burger-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-
-      if (burgerBtn && mobileMenu) {
-        const mobileFocusableSelector =
-          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-        const getMenuFocusableElements = () =>
-          Array.from(mobileMenu.querySelectorAll(mobileFocusableSelector)).filter(
-            (element) => !element.hasAttribute('hidden'),
-          );
-
-        const setMenuState = (isOpen) => {
-          mobileMenu.classList.toggle('active', isOpen);
-          burgerBtn.classList.toggle('active', isOpen);
-          burgerBtn.setAttribute('aria-expanded', String(isOpen));
-          burgerBtn.setAttribute(
-            'aria-label',
-            isOpen ? 'Fermer le menu principal' : 'Ouvrir le menu principal',
-          );
-          mobileMenu.hidden = !isOpen;
-          mobileMenu.setAttribute('aria-hidden', String(!isOpen));
-          if (isOpen) {
-            mobileMenu.removeAttribute('inert');
-          } else {
-            mobileMenu.setAttribute('inert', '');
-          }
-          document.body.style.overflow = isOpen ? 'hidden' : '';
-
-          const navRight = document.querySelector('.nav-right');
-          const mainContent = document.getElementById('main-content');
-          const footer = document.querySelector('.footer');
-
-          [navRight, mainContent, footer].forEach((element) => {
-            if (!element) return;
-            if (isOpen) {
-              element.setAttribute('inert', '');
-            } else {
-              element.removeAttribute('inert');
-            }
-          });
-
-          if (isOpen) {
-            lastFocusedElement = document.activeElement;
-            window.setTimeout(() => {
-              getMenuFocusableElements()[0]?.focus();
-            }, 0);
-          } else if (lastFocusedElement instanceof HTMLElement) {
-            lastFocusedElement.focus();
-            lastFocusedElement = null;
-          }
-        };
-
-        setMenuState(false);
-
-        burgerBtn.addEventListener('click', () => {
-          const isOpen = burgerBtn.getAttribute('aria-expanded') !== 'true';
-          setMenuState(isOpen);
-        });
-
-        document.querySelectorAll('.mobile-item').forEach((item) => {
-          item.addEventListener('click', () => {
-            setMenuState(false);
-          });
-        });
-
-        document.addEventListener('keydown', (event) => {
-          const menuIsOpen = burgerBtn.getAttribute('aria-expanded') === 'true';
-
-          if (event.key === 'Escape' && menuIsOpen) {
-            setMenuState(false);
-            return;
-          }
-
-          if (event.key === 'Tab' && menuIsOpen) {
-            const focusableElements = getMenuFocusableElements();
-            if (focusableElements.length === 0) return;
-
-            const firstElement = focusableElements[0];
-            const lastElement = focusableElements[focusableElements.length - 1];
-            const activeElement = document.activeElement;
-
-            if (event.shiftKey && activeElement === firstElement) {
-              event.preventDefault();
-              lastElement.focus();
-            } else if (!event.shiftKey && activeElement === lastElement) {
-              event.preventDefault();
-              firstElement.focus();
-            }
-          }
-        });
-      }
 
       const serviceStatusDot = document.getElementById('service-status-dot');
       const serviceStatusText = document.getElementById('service-status-text');
