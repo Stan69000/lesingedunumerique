@@ -1,0 +1,261 @@
+---
+import { domainLabels, domainsFor } from '../lib/lexique-domains.mjs';
+interface Entry { liens?:{href:string;label:string}[]; recherches?:string[]; domaines?:string[]; terme:string; aussi?:string[]; definition:string; situation:string; reflexe:string; theme:string; lien?:{href:string;label:string}; source?:{href:string;label:string}; }
+interface Props { entries: Entry[]; searchPlaceholder?:string; }
+const { entries: lexique, searchPlaceholder = 'Un mot ou une situation : colis, photos, Wi-Fi…' } = Astro.props;
+const entrees = [...lexique].sort((a, b) => a.terme.localeCompare(b.terme, 'fr'));
+const ancre = (terme: string) =>
+  terme
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+const domains = [...new Set(entrees.flatMap(domainsFor))];
+const themes = [...new Set(entrees.map((entree) => entree.theme))].sort((a, b) => a.localeCompare(b, 'fr'));
+const lettres = [...new Set(entrees.map((entree) => entree.terme[0].toUpperCase()))];
+const premiereDeLaLettre = new Set(
+  lettres.map((lettre) => entrees.find((entree) => entree.terme[0].toUpperCase() === lettre)?.terme),
+);
+---
+  <div class="lexique-tools">
+    <label for="lexique-search">Chercher un mot</label>
+    <input id="lexique-search" type="search" placeholder={searchPlaceholder} autocomplete="off" />
+    <label for="lexique-domain">Choisir un univers</label>
+    <select id="lexique-domain"><option value="">Tous les univers</option>{Object.entries(domainLabels).filter(([key])=>domains.includes(key)).map(([key,label])=><option value={key}>{label}</option>)}</select>
+    <label for="lexique-theme">Explorer un thème</label>
+    <select id="lexique-theme"><option value="">Tous les thèmes</option>{themes.map((theme) => <option value={theme}>{theme}</option>)}</select>
+    <button id="lexique-reset" type="button" hidden>Tout afficher</button>
+    <nav aria-label="Aller à une lettre">
+      <ul class="lexique-letters">
+        {lettres.map((lettre) => <li><a data-letter={lettre} href={`#lettre-${lettre}`}>{lettre}</a></li>)}
+      </ul>
+    </nav>
+    <p id="lexique-status" class="lexique-status" role="status">{entrees.length} mots expliqués</p>
+  </div>
+
+  <dl class="lexique-list">
+    {entrees.map((entree) => (
+      <div
+        class="lexique-entry"
+        id={ancre(entree.terme)}
+        data-domain={domainsFor(entree).join(' ')}
+        data-theme={entree.theme}
+        data-search={[entree.terme, ...(entree.aussi ?? []), ...(entree.recherches ?? []), entree.definition, entree.situation, entree.reflexe, entree.theme].join(' ')}
+      >
+        <dt>
+          <span id={premiereDeLaLettre.has(entree.terme) ? `lettre-${entree.terme[0].toUpperCase()}` : undefined}>
+            {entree.terme}
+          </span>
+          {entree.aussi && <small>aussi appelé {entree.aussi.join(', ')}</small>}
+        </dt>
+        <dd>
+          <p class="lexique-theme">{entree.theme}</p>
+          <p><strong>En clair.</strong> {entree.definition}</p>
+          <p><strong>Ça vous parle ?</strong> {entree.situation}</p>
+          <p class="octet-reflexe"><strong>🐒 Le réflexe d’Octet</strong><br />{entree.reflexe}</p>
+          {entree.source && <p><a href={entree.source.href} target="_blank" rel="noopener noreferrer">{entree.source.label} ↗</a></p>}
+          <a class="lexique-permalink" href={`#${ancre(entree.terme)}`} aria-label={`Lien direct vers ${entree.terme}`}>Lien vers ce mot</a>
+          {(entree.liens?.length || entree.lien) && <div class="lexique-reading"><strong>Pour aller plus loin</strong><ul>{(entree.liens ?? (entree.lien ? [entree.lien] : [])).map(link => <li><a href={link.href}>{link.label} <span aria-hidden="true">→</span></a></li>)}</ul></div>}
+        </dd>
+      </div>
+    ))}
+  </dl>
+
+  <p class="lexique-empty" id="lexique-empty" hidden>
+    Aucun mot ne correspond à cette recherche et à ces filtres. Essayez un autre terme ou affichez tous les univers. Un mot manque ? <a href="/contact">Proposez-le à Octet</a>.
+  </p>
+
+  <script>
+    const input = document.getElementById('lexique-search') as HTMLInputElement;
+    const domain = document.getElementById('lexique-domain') as HTMLSelectElement;
+    const theme = document.getElementById('lexique-theme') as HTMLSelectElement;
+    const reset = document.getElementById('lexique-reset') as HTMLButtonElement;
+    const entries = Array.from(document.querySelectorAll<HTMLElement>('.lexique-entry'));
+    const status = document.getElementById('lexique-status');
+    const empty = document.getElementById('lexique-empty');
+    const normalize = (value) =>
+      (value || '')
+        .normalize('NFD')
+        .replace(/[̀-ͯ]/g, '')
+        .toLowerCase()
+        .trim();
+
+    const filter = () => {
+      const query = normalize(input.value);
+      let visible = 0;
+      entries.forEach((entry) => {
+        const match = (!domain.value || entry.dataset.domain?.split(' ').includes(domain.value)) && (!theme.value || entry.getAttribute('data-theme') === theme.value) && (!query || query.split(/\s+/).every((word) => normalize(entry.getAttribute('data-search')).includes(word)));
+        entry.hidden = !match;
+        if (match) visible += 1;
+      });
+      if (status) status.textContent = `${visible} mot${visible > 1 ? 's' : ''} ${query ? 'trouvé' : 'expliqué'}${visible > 1 ? 's' : ''}`;
+      if (empty) empty.hidden = visible !== 0;
+      reset.hidden = !query && !theme.value && !domain.value;
+      document.querySelectorAll('.lexique-letters a').forEach((link) => {
+        const letter = link.getAttribute('data-letter');
+        const first = entries.find((entry) => !entry.hidden && entry.querySelector('dt span')?.textContent?.trim().charAt(0).toUpperCase() === letter);
+        (link.parentElement as HTMLElement).hidden = !first;
+        if (first) link.setAttribute('href', `#${first.id}`);
+      });
+    };
+    const updateThemes = () => {
+      const allowed = new Set(entries.filter(e=>!domain.value || e.dataset.domain?.split(' ').includes(domain.value)).map(e=>e.dataset.theme));
+      for(const option of Array.from(theme.options)){option.hidden=!!option.value&&!allowed.has(option.value);option.disabled=option.hidden;}
+      if(theme.selectedOptions[0]?.disabled)theme.value='';
+    };
+    const updateURL = () => {
+      const url=new URL(location.href);
+      if(domain.value)url.searchParams.set('univers',domain.value);else url.searchParams.delete('univers');
+      try{history.replaceState(null,'',url);}catch{}
+    };
+    domain.addEventListener('change',()=>{updateThemes();filter();updateURL();});
+    const preset=new URLSearchParams(location.search).get('univers')||'';
+    if(Array.from(domain.options).some(o=>o.value===preset))domain.value=preset;
+    updateThemes();filter();
+    const revealHash = () => {
+      let id='';try{id=decodeURIComponent(location.hash.slice(1));}catch{return;}
+      const target=entries.find(e=>e.id===id);if(!target)return;
+      if(target.hidden){domain.value='';theme.value='';input.value='';updateThemes();filter();updateURL();}
+      target.scrollIntoView({block:'start'});
+    };
+    window.addEventListener('hashchange',revealHash);
+    if(location.hash)revealHash();
+    input?.addEventListener('input', filter);
+    theme?.addEventListener('change', filter);
+    reset?.addEventListener('click', () => { input.value = ''; theme.value = ''; domain.value=''; updateThemes(); filter(); updateURL(); input.focus(); });
+  </script>
+<style>
+  .lexique-reading { margin-top: 1rem; }
+  .lexique-reading ul { margin: .5rem 0 0; padding-left: 1.25rem; }
+  .lexique-reading li + li { margin-top: .4rem; }
+  .lexique-tools {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+
+  .lexique-tools label {
+    font-weight: 700;
+  }
+
+  .lexique-tools input, .lexique-tools select, .lexique-tools button {
+    width: 100%;
+    max-width: 420px;
+    min-height: 48px;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--bg-card);
+    color: var(--text-main);
+    font: inherit;
+  }
+
+  .lexique-letters {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .lexique-letters a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-main);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .lexique-letters a:hover {
+    border-color: var(--brand-green);
+    color: var(--brand-green);
+  }
+
+  .lexique-status {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .lexique-list {
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .lexique-entry {
+    scroll-margin-top: 110px;
+    padding: 1.1rem 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-card);
+  }
+
+  .lexique-entry[hidden] {
+    display: none;
+  }
+
+  .lexique-entry dt {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.2rem 0.8rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+  }
+
+  .lexique-entry dt span {
+    scroll-margin-top: 130px;
+  }
+
+  .lexique-entry dt small {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .lexique-entry dd {
+    margin: 0;
+  }
+
+  .lexique-entry dd p {
+    margin: 0 0 0.5rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  .lexique-entry dd a,
+  .lexique-empty a {
+    color: var(--brand-green);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .lexique-entry dd a:hover,
+  .lexique-empty a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<style>
+.octet-intro, .lexique-sources { padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 1.5rem; background: var(--bg-card); line-height: 1.7; }
+.octet-intro strong { color: var(--text-main); font-size: 1.15rem; }
+.octet-intro p { margin-bottom: 0; }
+.lexique-sources { margin-top: 2rem; }
+.lexique-entry dd .lexique-theme { font-size: .8rem; font-weight: 700; margin-bottom: .75rem; }
+.lexique-entry dd strong { color: var(--text-main); }
+.lexique-entry dd .octet-reflexe { border-left: 3px solid var(--brand-green); padding: .75rem 1rem; margin: 1rem 0; background: var(--bg-main); border-radius: 0 10px 10px 0; }
+.lexique-entry:target { border-color: var(--brand-green); }
+.lexique-entry dd .lexique-permalink { display: inline-block; margin-right: 1rem; font-weight: 500; font-size: .85rem; }
+.lexique-tools button { cursor: pointer; }
+.lexique-tools button[hidden], .lexique-letters li[hidden] { display: none; }
+.lexique-sources a { color: var(--brand-green); text-decoration: underline; }
+</style>

@@ -11,7 +11,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "brief:add": "node scripts/add-brief.mjs"
+    "brief:add": "node scripts/add-brief.mjs",
+    "audit:page": "php scripts/octet-audit.php",
+    "test:boussole": "php tests/boussole.php && node --test tests/boussole-plan.test.mjs tests/lexique.test.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

@@ -1,0 +1,186 @@
+[
+  {
+    "href": "/blog/ce-faux-abonnement-connait-votre-nom-votre-adresse-et-votre-iban-faut-il-panique/",
+    "label": ">-",
+    "termes": [
+      "Harponnage",
+      "Fuite de données",
+      "IBAN",
+      "Cryptogramme",
+      "Faux remboursement",
+      "Fausse urgence"
+    ]
+  },
+  {
+    "href": "/blog/contenus-generes-par-ia-une-nouvelle-etiquette-pour-nous-aider-mais-pas-pour-ref/",
+    "label": ">-",
+    "termes": [
+      "Deepfake",
+      "IA générative",
+      "AI Act",
+      "Désinformation",
+      "Métadonnée"
+    ]
+  },
+  {
+    "href": "/blog/ai-act-l-europe-met-des-regles-autour-de-l-intelligence-artificielle-mais-qu-est/",
+    "label": ">-",
+    "termes": [
+      "AI Act",
+      "IA générative",
+      "Chatbot"
+    ]
+  },
+  {
+    "href": "/blog/activer-la-2fa-sur-vos-comptes/",
+    "label": "Comment activer la double authentification sur vos comptes",
+    "termes": [
+      "Double authentification",
+      "Code de secours",
+      "Passkey"
+    ]
+  },
+  {
+    "href": "/blog/comment-bien-securiser-sa-vie-numerique/",
+    "label": "Comment bien sécuriser sa vie numérique",
+    "termes": [
+      "Mot de passe",
+      "Phrase de passe",
+      "Gestionnaire de mots de passe",
+      "Double authentification",
+      "Mise à jour",
+      "Logiciel malveillant",
+      "Sauvegarde",
+      "Rançongiciel"
+    ]
+  },
+  {
+    "href": "/blog/cybersecurite-pour-les-seniors-et-leur-entourage/",
+    "label": "Cybersécurité pour les seniors et leur entourage",
+    "termes": [
+      "Hameçonnage",
+      "Faux conseiller bancaire",
+      "Support technique frauduleux",
+      "Vishing",
+      "Ingénierie sociale"
+    ]
+  },
+  {
+    "href": "/blog/ils-passent-6-heures-par-jour-sur-leur-smartphone-mais-90-ne-reperent-pas-un-phi/",
+    "label": ">-",
+    "termes": [
+      "Hameçonnage",
+      "Cyberharcèlement",
+      "Données personnelles"
+    ]
+  },
+  {
+    "href": "/blog/proteger-les-enfants-et-les-ados-en-ligne/",
+    "label": "Parler de cybersécurité aux enfants et aux ados",
+    "termes": [
+      "Cyberharcèlement",
+      "Réseau social",
+      "Données personnelles"
+    ]
+  },
+  {
+    "href": "/bd/faux-sites-verifier-l-adresse-avant-de-se-connecter/",
+    "label": "Faux sites : vérifier l’adresse avant de se connecter",
+    "termes": [
+      "URL",
+      "Nom de domaine",
+      "HTTPS",
+      "Adresse Internet ressemblante",
+      "Site copié",
+      "Fausse urgence"
+    ]
+  },
+  {
+    "href": "/bd/faux-mail-reperer-les-signes-d-une-tentative-d-hameconnage/",
+    "label": "Faux mail : repérer les signes d’une tentative d’hameçonnage",
+    "termes": [
+      "Hameçonnage",
+      "Expéditeur de mail usurpé",
+      "Pièce jointe",
+      "Fausse urgence",
+      "Nom de domaine"
+    ]
+  },
+  {
+    "href": "/bd/le-faux-sms-ne-clique-pas-trop-vite/",
+    "label": "Le faux SMS : ne clique pas trop vite !",
+    "termes": [
+      "Smishing",
+      "Hameçonnage",
+      "Fausse urgence",
+      "Code de validation dérobé"
+    ]
+  },
+  {
+    "href": "/bd/c-est-quoi-une-ia/",
+    "label": "C'est quoi une IA ?",
+    "termes": [
+      "IA générative",
+      "Algorithme",
+      "Hallucination de l’IA",
+      "Chatbot"
+    ]
+  },
+  {
+    "href": "/veille/briefs/2026-10-18-arnaques/",
+    "label": "Faux numéro d’opposition : le piège commence avant l’appel",
+    "termes": [
+      "Fausse confirmation de commande",
+      "Faux remboursement",
+      "Fausse livraison de colis",
+      "Faux conseiller bancaire",
+      "Fausse urgence",
+      "Code de validation dérobé"
+    ]
+  },
+  {
+    "href": "/veille/briefs/2026-10-25-arnaques/",
+    "label": "Crypto, fonds perdus, webcam : ne payez pas sous pression",
+    "termes": [
+      "Faux placement financier",
+      "Fausse récupération de fonds",
+      "Chantage à la webcam prétendument piratée",
+      "Fuite de données",
+      "Engrenage des paiements",
+      "Menace et intimidation"
+    ]
+  },
+  {
+    "href": "/blog/un-numerique-accessible-a-tous-pourquoi-nous-avons-cree-rgaa-audit/",
+    "label": "🐒 Un numérique accessible à tous : pourquoi nous avons créé RGAA Audit",
+    "termes": [
+      "RGAA",
+      "Accessibilité numérique",
+      "Pré-audit automatique",
+      "Audit d’accessibilité",
+      "Lecteur d’écran",
+      "Navigation au clavier",
+      "Focus clavier",
+      "Libellé de formulaire",
+      "Message d’erreur accessible",
+      "Contraste",
+      "Information par la couleur",
+      "Sous-titres accessibles",
+      "Texte alternatif"
+    ]
+  },
+  {
+    "href": "/blog/votre-site-est-en-ligne-octet-sort-sa-boussole/",
+    "label": "Votre site est en ligne… mais est-ce qu’on le trouve ? Octet sort sa boussole",
+    "termes": [
+      "SEO",
+      "GEO",
+      "Balise title",
+      "Titres H1 et H2",
+      "Indexation",
+      "Données structurées",
+      "JSON",
+      "Markdown"
+    ]
+  }
+]

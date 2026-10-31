@@ -806,5 +806,158 @@
       "href": "/veille",
       "label": "Consulter les alertes arnaques"
     }
+  },
+  {
+    "terme": "JSON",
+    "aussi": [
+      "JavaScript Object Notation"
+    ],
+    "definition": "Une fiche de renseignements écrite pour que les logiciels puissent se la passer et la comprendre. Comme sur une fiche d’inscription, chaque information a son étiquette : le nom, la date, le nombre de places…",
+    "situation": "Octet trouve un problème sur votre site. Dans le rapport JSON, il range séparément l’adresse de la page, le problème repéré et la correction proposée. Un autre outil peut reprendre ces informations sans que vous ayez à tout recopier.",
+    "reflexe": "Pour lire votre audit, ouvrez le rapport à l’écran. Choisissez le fichier JSON si vous voulez confier les résultats à un autre outil ou à une IA. Vous n’avez pas besoin de savoir écrire du JSON pour utiliser la Boussole.",
+    "theme": "Comprendre le Web",
+    "domaines": [
+      "numerique",
+      "seo"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/fr/docs/Glossary/JSON",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Markdown",
+    "aussi": [
+      "MD",
+      "fichier .md"
+    ],
+    "definition": "Une manière d’écrire un texte avec quelques signes pour indiquer titres, listes, liens ou mots en gras. Le fichier reste lisible même sans mise en page.",
+    "situation": "Vous écrivez « # Mon rapport » pour un grand titre et « **Important** » pour signaler du gras.",
+    "reflexe": "Choisissez Markdown pour relire et adapter un rapport. Les variantes ne reconnaissent pas toutes les mêmes extensions, comme les tableaux.",
+    "theme": "Comprendre le Web",
+    "domaines": [
+      "numerique",
+      "seo"
+    ],
+    "source": {
+      "href": "https://commonmark.org/help/",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Balise HTML",
+    "aussi": [
+      "balise",
+      "tag"
+    ],
+    "definition": "Un repère entre chevrons dans le code HTML qui délimite un élément ou indique sa nature. Par exemple, <h1> et </h1> encadrent un titre. Certaines balises, comme <img>, n’ont pas de balise de fermeture.",
+    "situation": "Le texte « Nos ateliers » peut être placé dans <h1>Nos ateliers</h1> pour être identifié comme un titre de premier niveau.",
+    "reflexe": "Choisissez la balise pour le sens du contenu, pas seulement son apparence. Une balise title et un titre H1 ont des fonctions différentes.",
+    "theme": "Comprendre le Web",
+    "domaines": [
+      "numerique",
+      "seo",
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/fr/docs/Glossary/Tag",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Attribut HTML",
+    "aussi": [
+      "attribut"
+    ],
+    "definition": "Une précision ajoutée dans une balise, avec un nom et souvent une valeur. C’est une étiquette attachée à l’élément.",
+    "situation": "Dans <html lang=\"fr\">, lang indique la langue. Dans une image, alt peut fournir une alternative textuelle.",
+    "reflexe": "Vérifiez la valeur et le contexte : la présence d’un attribut ne prouve pas qu’il est correct ou pertinent.",
+    "theme": "Comprendre le Web",
+    "domaines": [
+      "numerique",
+      "seo",
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/fr/docs/Glossary/Attribute",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "HTML",
+    "aussi": [
+      "HyperText Markup Language"
+    ],
+    "definition": "Le langage qui décrit la structure et le sens d’une page web : titres, paragraphes, liens, images et formulaires. C’est son ossature.",
+    "situation": "Le navigateur interprète le HTML pour présenter une page ; un lecteur d’écran exploite aussi sa structure.",
+    "reflexe": "Distinguez structure HTML, présentation CSS et comportement JavaScript. Une page jolie peut avoir une structure difficile à parcourir.",
+    "theme": "Comprendre le Web",
+    "domaines": [
+      "numerique",
+      "seo",
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/fr/docs/Web/HTML",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "CSS",
+    "aussi": [
+      "feuille de style",
+      "Cascading Style Sheets"
+    ],
+    "definition": "Le langage qui règle la présentation d’un document web : couleurs, espacements, tailles et organisation visuelle. Pensez à l’aménagement de la maison.",
+    "situation": "Le même titre HTML peut apparaître en vert et en grand grâce à une règle CSS.",
+    "reflexe": "Une grande police ne transforme pas un paragraphe en titre. Vérifiez aussi le contraste, le zoom et les repères de navigation.",
+    "theme": "Comprendre le Web",
+    "domaines": [
+      "numerique",
+      "seo",
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/fr/docs/Web/CSS",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Code source",
+    "aussi": [
+      "source de la page"
+    ],
+    "definition": "Le texte des instructions ou descriptions à partir desquelles un logiciel construit un résultat. Sur le Web, le HTML reçu peut ensuite être modifié par du JavaScript.",
+    "situation": "L’audit ne trouve pas un texte que vous voyez à l’écran : il examine peut-être le HTML initial, avant l’exécution du code.",
+    "reflexe": "Avant de conclure à une erreur, demandez si l’outil a lu le HTML initial ou la page après son chargement. Ne partagez pas de secrets contenus dans un projet.",
+    "theme": "Comprendre le Web",
+    "domaines": [
+      "numerique",
+      "seo",
+      "accessibilite"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/fr/docs/Web/HTML",
+      "label": "Lire la documentation de référence"
+    }
+  },
+  {
+    "terme": "Métadonnée",
+    "aussi": [
+      "metadata",
+      "métadonnées"
+    ],
+    "definition": "Une information qui décrit une autre information : son titre, sa langue, son auteur ou sa date, par exemple. C’est l’étiquette sur le dossier.",
+    "situation": "La description SEO présente la page dans son code sans nécessairement apparaître comme un paragraphe à l’écran.",
+    "reflexe": "Gardez ces indications fidèles au contenu. La méta-description ne commande pas à elle seule le texte affiché par le moteur.",
+    "theme": "Comprendre le Web",
+    "domaines": [
+      "numerique",
+      "seo"
+    ],
+    "source": {
+      "href": "https://developer.mozilla.org/fr/docs/Glossary/Metadata",
+      "label": "Lire la documentation de référence"
+    }
   }
 ]

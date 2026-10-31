@@ -1,0 +1,26 @@
+name: octet-boussole
+services:
+  moteur:
+    build:
+      context: ../..
+      dockerfile: deploy/boussole/Dockerfile
+    ports:
+      - "127.0.0.1:3012:80"
+    restart: unless-stopped
+    cpus: 0.5
+    mem_limit: 384m
+    memswap_limit: 384m
+    pids_limit: 64
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "php", "/usr/local/bin/octet-health.php"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"

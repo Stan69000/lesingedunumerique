@@ -28,6 +28,9 @@ jobs:
       - name: Install dependencies (root)
         run: npm ci
 
+      - name: Test Boussole and unified lexicon
+        run: npm run test:boussole
+
       - name: Security audit (root production deps)
         run: npm audit --omit=dev --audit-level=high
 

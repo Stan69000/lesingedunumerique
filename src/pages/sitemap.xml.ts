@@ -23,6 +23,8 @@ export async function GET() {
     '/veille/associations/',
     '/flux/',
     '/lexique/',
+    '/outils/',
+    '/outils/boussole/',
     '/veille-sources/',
     '/plan-du-site/',
     '/accessibilite/',

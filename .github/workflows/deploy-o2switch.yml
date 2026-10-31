@@ -31,6 +31,9 @@ jobs:
       - name: Install dependencies (root)
         run: npm ci
 
+      - name: Test Boussole and unified lexicon
+        run: npm run test:boussole
+
       - name: Security audit (root production deps)
         run: npm audit --omit=dev --audit-level=high
 
@@ -173,6 +176,9 @@ jobs:
         if: steps.healthcheck.outcome == 'failure'
         run: |
           echo "::warning title=Post-deploy healthcheck failed::O2Switch returned an unhealthy response after deploy. Deployment was left in place and no automatic rollback was attempted."
+
+      - name: Verify Boussole pages and real PHP audit
+        run: python3 scripts/check-boussole-production.py
 
       - name: Publish new last known good artifact
         if: steps.healthcheck.outcome == 'success'

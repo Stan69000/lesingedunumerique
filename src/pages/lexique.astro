@@ -1,20 +1,9 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
-import lexique from '../data/lexique.json';
+import { lexique } from '../lib/lexique';
+import LexiqueExplorer from '../components/LexiqueExplorer.astro';
 
 const entrees = [...lexique].sort((a, b) => a.terme.localeCompare(b.terme, 'fr'));
-const ancre = (terme: string) =>
-  terme
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
-const themes = [...new Set(entrees.map((entree) => entree.theme))].sort((a, b) => a.localeCompare(b, 'fr'));
-const lettres = [...new Set(entrees.map((entree) => entree.terme[0].toUpperCase()))];
-const premiereDeLaLettre = new Set(
-  lettres.map((lettre) => entrees.find((entree) => entree.terme[0].toUpperCase() === lettre)?.terme),
-);
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'DefinedTermSet',
@@ -29,228 +18,25 @@ const schema = {
 
 <SiteLayout
   title="Le lexique d’Octet : les mots du numérique en clair | Le Singe Du Numérique"
-  description="Le lexique d’Octet : des mots du numérique expliqués avec des situations du quotidien, des réflexes utiles et des liens vers nos articles et BD."
+  description="Le lexique d’Octet : des mots du numérique expliqués avec des situations du quotidien, des réflexes utiles et des liens vers nos articles, BD et outils, avec les univers SEO/GEO, RGAA, arnaques et jargon IA."
   eyebrow="Comprendre, à votre rythme"
   headline="Le lexique"
   accent="d’Octet"
-  intro="Un SMS de livraison douteux, des photos qui disparaissent, une appli trop curieuse… Octet part de votre quotidien pour mettre des mots sur ce qui se passe. Pas besoin de tout connaître : piochez ce qui vous est utile."
+  intro="Un SMS de livraison douteux, des photos qui disparaissent, une appli trop curieuse… Octet part de votre quotidien pour mettre des mots sur ce qui se passe. De MCP aux faux colis, des titres HTML au clavier : piochez les mots qui vous sont utiles, sans avoir à tout connaître."
 >
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 
   <aside class="octet-intro"><strong>🐒 « Les mots compliqués, on les débrouille ensemble. »</strong><p>Pour chaque mot : une explication, une situation qui vous parle et un réflexe à emporter. Vous pouvez aussi chercher « colis », « photos » ou « association ».</p></aside>
 
-  <div class="lexique-tools">
-    <label for="lexique-search">Chercher un mot</label>
-    <input id="lexique-search" type="search" placeholder="Un mot ou une situation : colis, photos, Wi-Fi…" autocomplete="off" />
-    <label for="lexique-theme">Explorer un thème</label>
-    <select id="lexique-theme"><option value="">Tous les thèmes</option>{themes.map((theme) => <option value={theme}>{theme}</option>)}</select>
-    <button id="lexique-reset" type="button" hidden>Tout afficher</button>
-    <nav aria-label="Aller à une lettre">
-      <ul class="lexique-letters">
-        {lettres.map((lettre) => <li><a data-letter={lettre} href={`#lettre-${lettre}`}>{lettre}</a></li>)}
-      </ul>
-    </nav>
-    <p id="lexique-status" class="lexique-status" role="status">{entrees.length} mots expliqués</p>
-  </div>
+  <aside class="octet-intro"><strong>🐒 Choisissez les mots dont vous avez besoin.</strong><p>Un seul lexique, plusieurs portes d’entrée : <a href="/lexique/?univers=numerique">numérique au quotidien</a>, <a href="/lexique/?univers=seo">SEO et GEO</a> <a href="/lexique/?univers=accessibilite">accessibilité et RGAA</a>, <a href="/lexique/?univers=arnaques">arnaques et manipulation</a> ou <a href="/lexique/?univers=jargon">IA et jargon technique</a>. Les filtres se combinent avec la recherche et les thèmes. Un mot peut appartenir à plusieurs univers sans être dupliqué.</p></aside>
+  <aside class="octet-intro"><strong>Comprendre les arnaques sans culpabiliser.</strong><p>Les situations décrites aident à repérer des signaux, pas à diagnostiquer avec certitude chaque message. Certains intitulés de manipulation sont pédagogiques : une urgence ou une demande de confidentialité ne prouvent pas seules une fraude. Si cela vous arrive, <a href="https://17cyber.gouv.fr/">17Cyber peut vous orienter</a>. Les fiches renvoient aux conseils officiels adaptés.</p></aside>
+  <LexiqueExplorer entries={lexique} searchPlaceholder="Un mot ou une situation : MCP, faux colis, code SMS, H1…" />
 
-  <dl class="lexique-list">
-    {entrees.map((entree) => (
-      <div
-        class="lexique-entry"
-        id={ancre(entree.terme)}
-        data-theme={entree.theme}
-        data-search={[entree.terme, ...(entree.aussi ?? []), entree.definition, entree.situation, entree.reflexe, entree.theme].join(' ')}
-      >
-        <dt>
-          <span id={premiereDeLaLettre.has(entree.terme) ? `lettre-${entree.terme[0].toUpperCase()}` : undefined}>
-            {entree.terme}
-          </span>
-          {entree.aussi && <small>aussi appelé {entree.aussi.join(', ')}</small>}
-        </dt>
-        <dd>
-          <p class="lexique-theme">{entree.theme}</p>
-          <p><strong>En clair.</strong> {entree.definition}</p>
-          <p><strong>Ça vous parle ?</strong> {entree.situation}</p>
-          <p class="octet-reflexe"><strong>🐒 Le réflexe d’Octet</strong><br />{entree.reflexe}</p>
-          <a class="lexique-permalink" href={`#${ancre(entree.terme)}`} aria-label={`Lien direct vers ${entree.terme}`}>Lien vers ce mot</a>
-          {entree.lien && <a href={entree.lien.href}>{entree.lien.label} <span aria-hidden="true">→</span></a>}
-        </dd>
-      </div>
-    ))}
-  </dl>
+  <aside class="lexique-sources"><h2>Pour aller à la source</h2><p>Octet explique avec ses mots. Pour approfondir : <a href="https://www.cnil.fr/fr/definition">le vocabulaire de la CNIL</a> (vie privée et IA), <a href="https://www.cnil.fr/fr/definition/cookie">sa définition des cookies</a> et <a href="https://www.cybermalveillance.gouv.fr/tous-nos-contenus/bonnes-pratiques/10-mesures-essentielles-assurer-securite-numerique">les conseils de Cybermalveillance.gouv.fr</a> (comptes, sauvegardes et sécurité). Pour l’accessibilité : <a href="https://accessibilite.numerique.gouv.fr/">le RGAA officiel</a> et <a href="https://www.w3.org/WAI/">les ressources W3C WAI</a>. Les démarches et les services évoluent : les pages officielles restent le point de référence.</p></aside>
 
-  <p class="lexique-empty" id="lexique-empty" hidden>
-    Aucun mot ne correspond à cette recherche et à ce thème. Essayez un autre terme ou affichez tous les thèmes. Un mot manque ? <a href="/contact">Proposez-le à Octet</a>.
-  </p>
-
-  <aside class="lexique-sources"><h2>Pour aller à la source</h2><p>Octet explique avec ses mots. Pour approfondir : <a href="https://www.cnil.fr/fr/definition">le vocabulaire de la CNIL</a> (vie privée et IA), <a href="https://www.cnil.fr/fr/definition/cookie">sa définition des cookies</a> et <a href="https://www.cybermalveillance.gouv.fr/tous-nos-contenus/bonnes-pratiques/10-mesures-essentielles-assurer-securite-numerique">les conseils de Cybermalveillance.gouv.fr</a> (comptes, sauvegardes et sécurité). Les démarches et les services évoluent : les pages officielles restent le point de référence.</p></aside>
-
-  <script>
-    const input = document.getElementById('lexique-search') as HTMLInputElement;
-    const theme = document.getElementById('lexique-theme') as HTMLSelectElement;
-    const reset = document.getElementById('lexique-reset') as HTMLButtonElement;
-    const entries = Array.from(document.querySelectorAll('.lexique-entry'));
-    const status = document.getElementById('lexique-status');
-    const empty = document.getElementById('lexique-empty');
-    const normalize = (value) =>
-      (value || '')
-        .normalize('NFD')
-        .replace(/[̀-ͯ]/g, '')
-        .toLowerCase()
-        .trim();
-
-    const filter = () => {
-      const query = normalize(input.value);
-      let visible = 0;
-      entries.forEach((entry) => {
-        const match = (!theme.value || entry.getAttribute('data-theme') === theme.value) && (!query || query.split(/\s+/).every((word) => normalize(entry.getAttribute('data-search')).includes(word)));
-        entry.hidden = !match;
-        if (match) visible += 1;
-      });
-      if (status) status.textContent = `${visible} mot${visible > 1 ? 's' : ''} ${query ? 'trouvé' : 'expliqué'}${visible > 1 ? 's' : ''}`;
-      if (empty) empty.hidden = visible !== 0;
-      reset.hidden = !query && !theme.value;
-      document.querySelectorAll('.lexique-letters a').forEach((link) => {
-        const letter = link.getAttribute('data-letter');
-        const first = entries.find((entry) => !entry.hidden && entry.querySelector('dt span')?.textContent?.trim().charAt(0).toUpperCase() === letter);
-        (link.parentElement as HTMLElement).hidden = !first;
-        if (first) link.setAttribute('href', `#${first.id}`);
-      });
-    };
-    input?.addEventListener('input', filter);
-    theme?.addEventListener('change', filter);
-    reset?.addEventListener('click', () => { input.value = ''; theme.value = ''; filter(); input.focus(); });
-  </script>
 </SiteLayout>
 
 <style>
-  .lexique-tools {
-    display: grid;
-    gap: 0.75rem;
-    margin-bottom: 2rem;
-  }
-
-  .lexique-tools label {
-    font-weight: 700;
-  }
-
-  .lexique-tools input, .lexique-tools select, .lexique-tools button {
-    width: 100%;
-    max-width: 420px;
-    min-height: 48px;
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    background: var(--bg-card);
-    color: var(--text-main);
-    font: inherit;
-  }
-
-  .lexique-letters {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .lexique-letters a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 44px;
-    min-height: 44px;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    color: var(--text-main);
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .lexique-letters a:hover {
-    border-color: var(--brand-green);
-    color: var(--brand-green);
-  }
-
-  .lexique-status {
-    margin: 0;
-    color: var(--text-muted);
-  }
-
-  .lexique-list {
-    margin: 0;
-    display: grid;
-    gap: 1rem;
-  }
-
-  .lexique-entry {
-    scroll-margin-top: 110px;
-    padding: 1.1rem 1.25rem;
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    background: var(--bg-card);
-  }
-
-  .lexique-entry[hidden] {
-    display: none;
-  }
-
-  .lexique-entry dt {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 0.2rem 0.8rem;
-    margin-bottom: 0.4rem;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--text-main);
-  }
-
-  .lexique-entry dt span {
-    scroll-margin-top: 130px;
-  }
-
-  .lexique-entry dt small {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-muted);
-  }
-
-  .lexique-entry dd {
-    margin: 0;
-  }
-
-  .lexique-entry dd p {
-    margin: 0 0 0.5rem;
-    line-height: 1.7;
-    color: var(--text-muted);
-  }
-
-  .lexique-entry dd a,
-  .lexique-empty a {
-    color: var(--brand-green);
-    font-weight: 700;
-    text-decoration: none;
-  }
-
-  .lexique-entry dd a:hover,
-  .lexique-empty a:hover {
-    text-decoration: underline;
-  }
-</style>
-
-<style>
-.octet-intro, .lexique-sources { padding: 1.25rem; border: 1px solid var(--border-color); border-radius: 16px; margin-bottom: 1.5rem; background: var(--bg-card); line-height: 1.7; }
-.octet-intro strong { color: var(--text-main); font-size: 1.15rem; }
-.octet-intro p { margin-bottom: 0; }
-.lexique-sources { margin-top: 2rem; }
-.lexique-entry dd .lexique-theme { font-size: .8rem; font-weight: 700; margin-bottom: .75rem; }
-.lexique-entry dd strong { color: var(--text-main); }
-.lexique-entry dd .octet-reflexe { border-left: 3px solid var(--brand-green); padding: .75rem 1rem; margin: 1rem 0; background: var(--bg-main); border-radius: 0 10px 10px 0; }
-.lexique-entry:target { border-color: var(--brand-green); }
-.lexique-entry dd .lexique-permalink { display: inline-block; margin-right: 1rem; font-weight: 500; font-size: .85rem; }
-.lexique-tools button { cursor: pointer; }
-.lexique-tools button[hidden], .lexique-letters li[hidden] { display: none; }
-.lexique-sources a { color: var(--brand-green); text-decoration: underline; }
+.octet-intro,.lexique-sources{padding:1.25rem;border:1px solid var(--border-color);border-radius:16px;margin-bottom:1.5rem;background:var(--bg-card);line-height:1.7}
+.octet-intro strong{color:var(--text-main);font-size:1.15rem}.octet-intro p{margin-bottom:0}.lexique-sources{margin-top:2rem}.octet-intro a,.lexique-sources a{color:var(--brand-green);text-decoration:underline}
 </style>

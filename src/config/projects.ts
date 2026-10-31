@@ -1,6 +1,14 @@
 /** Projets portés par l’association ; liens partagés par les pages et les pieds de page. */
 export const associationProjects = [
   {
+    id: 'boussole', name: 'La Boussole d’Octet', icon: '🧭',
+    href: '/outils/boussole/',
+    promise: 'Comprendre comment améliorer la visibilité de son site',
+    description: 'Un premier bilan SEO et GEO gratuit : analysez une page et découvrez quoi améliorer, pourquoi et par où commencer.',
+    note: 'Première version : une page à la fois, des pistes expliquées et un rapport à partager.',
+    cta: 'Analyser mon site',
+  },
+  {
     id: 'signal-clair', name: 'Le Signal Clair', icon: '📡',
     href: 'https://lesignalclair.fr/',
     promise: 'Comprendre ce qui se passe aujourd’hui',
