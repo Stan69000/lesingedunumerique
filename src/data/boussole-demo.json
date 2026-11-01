@@ -1,7 +1,7 @@
 {
     "before": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.3.0",
+        "engineVersion": "0.4.0",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -112,6 +112,18 @@
                 "url": "https://ateliers-du-lien.example/"
             },
             {
+                "id": "SOCIAL-PREVIEW",
+                "category": "Partage",
+                "status": "action",
+                "title": "L’image qui s’affiche quand on partage cette page",
+                "evidence": "Aucune image de partage (og:image) n’est déclarée. Ni og:title ni og:description : les réseaux reprendront le titre et le résumé de la page, ce qui convient souvent.",
+                "why": "Les réseaux sociaux et les messageries ne lisent pas votre page : ils affichent un aperçu construit à partir de quelques indications placées dans son code. Sans image déclarée, votre lien apparaît comme une simple ligne de texte, bien moins remarquée. L’outil ne télécharge pas l’image : ni son poids ni ses dimensions ne sont vérifiés.",
+                "action": "Choisissez une image qui représente cette page — votre logo, une photo d’activité — et faites-la déclarer comme image de partage. Dans la plupart des outils de publication, ce réglage s’appelle « image à la une », « image de partage » ou « Open Graph ». Un format d’environ 1200 par 630 pixels convient à la majorité des réseaux.",
+                "source": "https://ogp.me/",
+                "minutes": 10,
+                "url": "https://ateliers-du-lien.example/"
+            },
+            {
                 "id": "GEO-STRUCTURE",
                 "category": "GEO",
                 "status": "action",
@@ -153,7 +165,7 @@
     },
     "after": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.3.0",
+        "engineVersion": "0.4.0",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -260,6 +272,18 @@
                 "action": "Ouvrez la page sur un téléphone : vérifiez texte, menus et boutons. Faites vérifier le viewport si nécessaire.",
                 "source": "https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing",
                 "minutes": 10,
+                "url": "https://ateliers-du-lien.example/"
+            },
+            {
+                "id": "SOCIAL-PREVIEW",
+                "category": "Partage",
+                "status": "ok",
+                "title": "L’image qui s’affiche quand on partage cette page",
+                "evidence": "Image de partage déclarée : https://ateliers-du-lien.example/partage-atelier.png · Également déclaré : og:title et og:description.",
+                "why": "Les réseaux sociaux et les messageries ne lisent pas votre page : ils affichent un aperçu construit à partir de quelques indications placées dans son code. Sans image déclarée, votre lien apparaît comme une simple ligne de texte, bien moins remarquée. L’outil ne télécharge pas l’image : ni son poids ni ses dimensions ne sont vérifiés.",
+                "action": "Collez l’adresse de cette page dans une conversation ou un message privé et regardez l’aperçu obtenu. S’il vous convient, ne changez rien. L’image n’ayant pas été téléchargée, son poids et ses dimensions restent à vérifier.",
+                "source": "https://ogp.me/",
+                "minutes": 5,
                 "url": "https://ateliers-du-lien.example/"
             },
             {

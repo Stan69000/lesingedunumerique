@@ -25,6 +25,7 @@ export const glossaryByCheck = {
   'CONTENT-IMAGES': ['Texte alternatif'],
   'CONTENT-LANG': ['SEO'],
   'TECH-MOBILE': ['Core Web Vitals', 'Rendu JavaScript'],
+  'SOCIAL-PREVIEW': ['Open Graph', 'CTR'],
   'GEO-STRUCTURE': ['Données structurées', 'JSON-LD'],
   'GEO-USEFULNESS': ['Contenu utile', 'GEO'],
   'GEO-CITATIONS': ['Citation IA', 'Robots IA', 'llms.txt'],

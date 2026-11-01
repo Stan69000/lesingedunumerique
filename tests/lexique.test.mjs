@@ -7,7 +7,7 @@ const load=name=>JSON.parse(readFileSync(new URL(`../src/data/${name}.json`,impo
 const general=load('lexique'),seo=load('lexique-seo'),rgaa=load('lexique-rgaa'),scams=load('lexique-arnaques'),jargon=load('lexique-jargon');
 const all=[...general,...seo,...rgaa,...scams,...jargon];
 test('unified lexicon has no duplicate words or permalink collisions',()=>{
-  assert.equal(rgaa.length,24);assert.equal(all.length,205);
+  assert.equal(rgaa.length,24);assert.equal(all.length,206);
   assert.equal(new Set(all.map(e=>glossaryAnchor(e.terme))).size,all.length);
 });
 test('shared terms appear in several universes as a single record',()=>{

@@ -596,5 +596,24 @@
       "href": "/outils/boussole/",
       "label": "Comprendre son site avec la Boussole d’Octet"
     }
+  },
+  {
+    "terme": "Open Graph",
+    "aussi": [
+      "og:image",
+      "aperçu de partage"
+    ],
+    "definition": "Quelques indications placées dans le code d’une page pour dire aux réseaux sociaux et aux messageries quoi afficher quand on partage son adresse : un titre, un résumé et surtout une image.",
+    "situation": "Vous partagez l’annonce de votre prochain atelier sur un groupe local : le lien apparaît comme une ligne de texte grise, sans image, et personne ne clique.",
+    "reflexe": "Déclarez une image de partage par page importante, avec une adresse complète en https://. Testez en collant le lien dans une conversation : ce que vous voyez est ce que verront les autres.",
+    "theme": "SEO et GEO · Découverte",
+    "source": {
+      "href": "https://ogp.me/",
+      "label": "Consulter la documentation de référence"
+    },
+    "lien": {
+      "href": "/outils/boussole/",
+      "label": "Vérifier l’aperçu de partage avec la Boussole d’Octet"
+    }
   }
 ]

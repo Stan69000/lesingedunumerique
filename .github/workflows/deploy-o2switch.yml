@@ -50,7 +50,7 @@ jobs:
           ids = {check['id'] for check in report['checks']}
           missing = {'SEO-TITLE', 'SEO-DESCRIPTION', 'SEO-NOINDEX', 'SEO-CANONICAL', 'CONTENT-HEADINGS',
                      'CONTENT-IMAGES', 'CONTENT-LANG', 'TECH-MOBILE', 'GEO-STRUCTURE', 'GEO-USEFULNESS',
-                     'GEO-CITATIONS'} - ids
+                     'GEO-CITATIONS', 'SOCIAL-PREVIEW'} - ids
           assert not missing, f'Checks missing from the report: {sorted(missing)}'
           assert report['url'].startswith('https://lesingedunumerique.fr'), 'Unexpected target'
           assert not report.get('demo'), 'Expected a real report'

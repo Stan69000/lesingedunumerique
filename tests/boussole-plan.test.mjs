@@ -22,11 +22,12 @@ test('every contextual term exists and all glossary anchors are unique',()=>{
   assert.equal(new Set(glossary.map(e=>glossaryAnchor(e.terme))).size,glossary.length);
   assert.equal(glossaryAnchor('Méta-description'),'meta-description');
 });
-test('32 entries each have a situation, action and primary documentation source',()=>{
-  assert.equal(glossary.length,32);
+test('33 entries each have a situation, action and primary documentation source',()=>{
+  assert.equal(glossary.length,33);
   for(const entry of glossary){
     assert.ok(entry.definition&&entry.situation&&entry.reflexe);
-    assert.ok(['developers.google.com','support.google.com','www.w3.org','developers.openai.com','www.bing.com'].includes(new URL(entry.source.href).hostname));
+    // ogp.me is the Open Graph protocol's own specification, not a vendor's reading of it.
+    assert.ok(['developers.google.com','support.google.com','www.w3.org','developers.openai.com','www.bing.com','ogp.me'].includes(new URL(entry.source.href).hostname));
   }
 });
 
