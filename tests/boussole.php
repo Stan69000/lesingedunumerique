@@ -24,7 +24,7 @@ $empty=\Octet\analyze_html('<html><body>Test</body></html>','https://example.com
 check($empty['checks'][0]['status']==='action','missing title');
 $none=\Octet\analyze_html('<html><head><meta name="robots" content="none"></head><body>x</body></html>','https://example.com/');
 check(array_column($none['checks'],null,'id')['SEO-NOINDEX']['status']==='review','robots none');
-check(count($report['checks'])===12,'stable scope');
+check(count($report['checks'])===13,'stable scope');
 
 // Realistic regression cases: a root slash must not alarm a beginner, while
 // a different host, scheme or article path must never be silently accepted.
@@ -70,6 +70,45 @@ check(count(\Octet\discover_links($many,'https://example.com/'))===80,'link disc
 check(\Octet\resolve_location('https://example.com/dir/','next/')==='https://example.com/dir/next/','relative directory link is retained');
 try { \Octet\fetch_public('https://example.com/',microtime(true)-1);check(false,'expired budget rejected before DNS'); }
 catch (RuntimeException $e) {check(str_contains($e->getMessage(),'délai'),'expired budget has an explicit error');}
+// Which assistant crawlers robots.txt turns away is the one thing about AI
+// visibility a static read can establish. Blocking them is a choice, not a fault.
+$named = "User-agent: GPTBot\nDisallow: /\n\nUser-agent: *\nAllow: /";
+$access = \Octet\ai_crawler_access($named, '/page');
+check(array_keys($access['blocked']) === ['GPTBot'], 'a rule naming one crawler blocks only that one');
+check($access['blocked']['GPTBot'] === 'règle propre à ce robot', 'a named rule is reported as deliberate');
+check(in_array('ClaudeBot', $access['allowed'], true), 'the others stay allowed');
+$catchAll = \Octet\ai_crawler_access("User-agent: *\nDisallow: /", '/page');
+check(count($catchAll['blocked']) === count(\Octet\AI_CRAWLERS) && $catchAll['allowed'] === [], 'a catch-all rule reaches every assistant crawler');
+check($catchAll['blocked']['ClaudeBot'] === 'règle générale', 'a catch-all block is told apart from a named one');
+check(\Octet\ai_crawler_access("User-agent: *\nAllow: /", '/page')['blocked'] === [], 'a permissive file blocks nobody');
+// A group naming the crawler wins over the catch-all, as the convention requires.
+$specific = \Octet\ai_crawler_access("User-agent: *\nDisallow: /\n\nUser-agent: ClaudeBot\nDisallow: /prive", '/page');
+check(!isset($specific['blocked']['ClaudeBot']) && isset($specific['blocked']['GPTBot']), 'a named group overrides the catch-all');
+
+$geo = static function (string $html, ?string $robots) {
+    foreach (\Octet\analyze_html($html, 'https://example.com/page', 'association', [], $robots)['checks'] as $c) {
+        if ($c['id'] === 'GEO-AI-CRAWLERS') return $c;
+    }
+    throw new RuntimeException('GEO-AI-CRAWLERS absent du rapport');
+};
+$page = '<html lang="fr"><head><title>T</title></head><body><h1>T</h1><p>'.str_repeat('mot ', 80).'</p></body></html>';
+check($geo($page, null)['status'] === 'unmeasured', 'without a robots.txt the crawler access is not guessed');
+check($geo($page, "User-agent: *\nAllow: /")['status'] === 'ok', 'a page open to the assistants passes');
+$closed = $geo($page, "User-agent: GPTBot\nDisallow: /");
+check($closed['status'] === 'review', 'blocking a crawler is a decision to review, never an error');
+check(str_contains($closed['evidence'], 'GPTBot') && str_contains($closed['why'], 'choix légitime'), 'the finding names the crawler without blaming the choice');
+
+// Usefulness now carries an observation: how much text the initial HTML holds.
+$useful = static function (string $html) {
+    foreach (\Octet\analyze_html($html, 'https://example.com/')['checks'] as $c) if ($c['id'] === 'GEO-USEFULNESS') return $c;
+    throw new RuntimeException('GEO-USEFULNESS absent');
+};
+$rich = $useful('<html><body><h1>T</h1><p>'.str_repeat('mot ', 120).'</p></body></html>');
+check($rich['status'] === 'review' && str_contains($rich['evidence'], '121 mot'), 'the word count of the initial HTML is reported');
+$shell = $useful('<html><body><div id="app"></div><script>var x = "beaucoup de texte dans le script";</script></body></html>');
+check($shell['status'] === 'action' && str_contains($shell['action'], 'JavaScript'), 'a page whose text is not in the HTML is an action');
+check(!str_contains($shell['evidence'], 'beaucoup de texte'), 'script contents are not counted as readable text');
+
 // Open Graph is what a shared link looks like. Only og:image has no fallback,
 // so it alone decides the status; a missing title or description is not a fault.
 $social = static function (string $head) {

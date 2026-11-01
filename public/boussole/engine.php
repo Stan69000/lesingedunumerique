@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.4.0';
+const VERSION = '0.5.0';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -83,25 +83,68 @@ function fetch_public(string $url, ?float $deadline = null): array {
 // stops this small public tool. Allow exceptions are intentionally not
 // interpreted. Returns which agents the rule names, so a page closed to every
 // crawler can be told apart from one that excludes this tool alone.
-function robots_rule(string $text, string $path): ?array {
-    $agents = []; $inRules = false;
+function robots_groups(string $text): array {
+    $groups = []; $agents = []; $inRules = false;
     foreach (preg_split('/\r?\n/', $text) as $line) {
         $line = trim(explode('#', $line, 2)[0]);
         if (!str_contains($line, ':')) continue;
         [$key,$value] = array_map('trim', explode(':', $line, 2));
-        if (strtolower($key) === 'user-agent') {
+        $key = strtolower($key);
+        if ($key === 'user-agent') {
             if ($inRules) { $agents = []; $inRules = false; }
             $agents[] = strtolower($value);
-        } elseif (strtolower($key) === 'disallow') {
+        } elseif ($key === 'disallow') {
             $inRules = true;
-            $named = array_values(array_intersect($agents, ['*','octetaudit']));
-            if ($value === '' || !$named) continue;
-            $end = str_ends_with($value, '$');
-            $pattern = str_replace('\\*', '.*', preg_quote($end ? substr($value,0,-1) : $value, '~'));
-            if (preg_match('~^'.$pattern.($end ? '$' : '').'~', $path)) return ['agents'=>$named, 'disallow'=>$value];
+            if ($value === '') continue;
+            foreach ($agents as $agent) $groups[$agent][] = $value;
         } elseif ($agents) $inRules = true;
     }
+    return $groups;
+}
+
+/** First Disallow of this group that covers the path, or null. Allow is not read. */
+function robots_path_blocked(array $disallows, string $path): ?string {
+    foreach ($disallows as $value) {
+        $end = str_ends_with($value, '$');
+        $pattern = str_replace('\\*', '.*', preg_quote($end ? substr($value,0,-1) : $value, '~'));
+        if (preg_match('~^'.$pattern.($end ? '$' : '').'~', $path)) return $value;
+    }
     return null;
+}
+
+/** A named group wins over the catch-all, as the robots.txt convention requires. */
+function robots_agent_blocked(array $groups, string $agent, string $path): ?string {
+    $agent = strtolower($agent);
+    $rules = $groups[$agent] ?? $groups['*'] ?? null;
+    return $rules === null ? null : robots_path_blocked($rules, $path);
+}
+
+function robots_rule(string $text, string $path): ?array {
+    $groups = robots_groups($text);
+    foreach (['*', 'octetaudit'] as $agent) {
+        $hit = isset($groups[$agent]) ? robots_path_blocked($groups[$agent], $path) : null;
+        if ($hit !== null) {
+            $named = array_values(array_filter(['*','octetaudit'], static fn($a) => ($groups[$a] ?? null) !== null && robots_path_blocked($groups[$a], $path) !== null));
+            return ['agents'=>$named, 'disallow'=>$hit];
+        }
+    }
+    return null;
+}
+
+// Documented crawlers of the assistants people actually use. Blocking them is a
+// legitimate editorial choice, so this is reported, never scored as a fault.
+const AI_CRAWLERS = ['GPTBot', 'OAI-SearchBot', 'ClaudeBot', 'PerplexityBot', 'Google-Extended', 'Applebot-Extended', 'CCBot'];
+
+/** Which assistant crawlers robots.txt turns away from this page. */
+function ai_crawler_access(string $robotsText, string $path): array {
+    $groups = robots_groups($robotsText);
+    $allowed = []; $blocked = [];
+    foreach (AI_CRAWLERS as $agent) {
+        $hit = robots_agent_blocked($groups, $agent, $path);
+        if ($hit === null) { $allowed[] = $agent; continue; }
+        $blocked[$agent] = isset($groups[strtolower($agent)]) ? 'règle propre à ce robot' : 'règle générale';
+    }
+    return ['allowed'=>$allowed, 'blocked'=>$blocked];
 }
 function robots_denies(string $text, string $path): bool { return robots_rule($text, $path) !== null; }
 
@@ -193,7 +236,7 @@ function audit_url(string $url, string $goal = 'association'): array {
         if ($page['status'] !== 200) throw new \RuntimeException('La page répond avec le code HTTP '.$page['status'].'. Aucun audit HTML fiable n’est disponible.');
         $type = strtolower($page['headers']['content-type'][0] ?? '');
         if (!str_contains($type, 'text/html') && !str_contains($type, 'application/xhtml+xml')) throw new \RuntimeException('Cette adresse ne renvoie pas une page HTML.');
-        return analyze_html($page['html'], $url, $goal, $page['headers']) + ['requestedUrl'=>$requested, 'discoveredLinks'=>discover_links($page['html'], $url)];
+        return analyze_html($page['html'], $url, $goal, $page['headers'], $robotsChecked[$origin]) + ['requestedUrl'=>$requested, 'discoveredLinks'=>discover_links($page['html'], $url)];
     }
     throw new \RuntimeException('Trop de redirections (maximum : 3).');
 }
@@ -230,7 +273,7 @@ function canonical_finding(array $addresses, string $pageUrl, bool $unsupported 
         'Ne modifiez pas le code au hasard. Transmettez ce rapport à la personne qui gère le site : « Pouvez-vous vérifier que le réglage URL canonique contient une adresse complète en https:// et qu’il est bien pris en compte pour cette page ? »'];
 }
 
-function analyze_html(string $html, string $url, string $goal = 'association', array $headers = []): array {
+function analyze_html(string $html, string $url, string $goal = 'association', array $headers = [], ?string $robotsText = null): array {
     $doc = new \DOMDocument();
     $previous = libxml_use_internal_errors(true);
     $doc->loadHTML('<?xml encoding="UTF-8">'.$html, LIBXML_NONET | LIBXML_NOERROR | LIBXML_NOWARNING);
@@ -316,13 +359,52 @@ function analyze_html(string $html, string $url, string $goal = 'association', a
         $ldCount++; json_decode($script->textContent); if (json_last_error() !== JSON_ERROR_NONE) $ldInvalid++;
     }
     $add('GEO-STRUCTURE','GEO',$ldInvalid ? 'action':'review','Les informations supplémentaires pour les moteurs',($ldInvalid ? "$ldInvalid bloc(s) d’informations ne peuvent pas être lus correctement." : ($ldCount ? "$ldCount bloc(s) d’informations ont été trouvés pour les moteurs. Leur exactitude reste à vérifier." : 'Aucun bloc de ce type n’a été trouvé dans le code analysé. Ce n’est pas automatiquement une erreur.')),'Ces informations peuvent décrire une organisation ou un article aux moteurs. Seul le format JSON-LD est vérifié ici ; les autres formats et le contenu ajouté par JavaScript ne le sont pas. Cela ne prouve pas qu’une IA citera votre site.',($ldInvalid ? 'Transmettez ce rapport à la personne qui gère le site avec ce message : « Un bloc d’informations pour les moteurs ne peut pas être lu. Pouvez-vous corriger la syntaxe de ce bloc JSON-LD ? »' : ($ldCount ? 'Faites vérifier que les informations déclarées, par exemple le nom de l’organisation, l’auteur ou la date selon le contenu, correspondent bien à ce qui est affiché sur la page. Si c’est le cas, gardez-les.' : 'Ce point n’est pas une erreur à corriger automatiquement. Occupez-vous d’abord des informations visibles de la page. Si vous êtes accompagné, demandez si une description technique de votre organisation ou de vos articles serait utile.')),$google.'appearance/structured-data/intro-structured-data',15);
+    // The one thing about assistants that a static read can actually establish.
+    $aiSource = $google.'crawling-indexing/overview-google-crawlers';
+    if ($robotsText === null) {
+        $add('GEO-AI-CRAWLERS','GEO','unmeasured','Les assistants ont-ils le droit de lire cette page ?',
+            'Le fichier robots.txt du site n’a pas été consulté pour cet exemple.',
+            'Les assistants envoient leurs propres robots. Un site peut les autoriser ou les écarter dans son fichier robots.txt, indépendamment des moteurs de recherche.',
+            'Lancez une analyse sur une adresse en ligne pour obtenir ce constat.', $aiSource, 10);
+    } else {
+        $access = ai_crawler_access($robotsText, parse_url($url, PHP_URL_PATH) ?: '/');
+        $blocked = $access['blocked'];
+        if (!$blocked) {
+            $add('GEO-AI-CRAWLERS','GEO','ok','Les assistants ont-ils le droit de lire cette page ?',
+                'Robots vérifiés : '.implode(', ', AI_CRAWLERS).'. Aucun n’est écarté par votre fichier robots.txt.',
+                'Les assistants envoient leurs propres robots. Votre fichier robots.txt les laisse passer : rien, de ce côté, ne les empêche de lire cette page. Cela ne garantit pas qu’ils la liront ni qu’ils la citeront.',
+                'Rien à modifier pour ce contrôle. Si vous souhaitez au contraire écarter certains de ces robots, c’est une décision à prendre avec la personne qui gère le site.',
+                $aiSource, 10);
+        } else {
+            $detail = [];
+            foreach ($blocked as $agent => $origin) $detail[] = $agent.' ('.$origin.')';
+            $general = in_array('règle générale', $blocked, true);
+            $add('GEO-AI-CRAWLERS','GEO','review','Les assistants ont-ils le droit de lire cette page ?',
+                'Écartés par votre fichier robots.txt : '.implode(', ', $detail).'. Autorisés : '.($access['allowed'] ? implode(', ', $access['allowed']) : 'aucun').'.',
+                'Les assistants envoient leurs propres robots. Ceux qui sont écartés ne liront pas cette page et ne pourront donc pas s’en servir pour répondre. Écarter ces robots est un choix légitime, que beaucoup de sites font volontairement.',
+                ($general
+                    ? 'Une partie de ces robots est écartée par une règle qui vise tous les robots, souvent sans intention particulière à leur égard. Décidez si c’est bien ce que vous vouliez, puis faites ajuster le fichier robots.txt en conséquence.'
+                    : 'Ces robots sont nommés explicitement dans votre fichier robots.txt : le choix semble délibéré. Si ce n’est pas le vôtre, demandez à la personne qui gère le site pourquoi ces règles sont présentes.'),
+                $aiSource, 10);
+        }
+    }
     $goals = [
         'association'=>'Une personne comprend-elle votre mission, votre territoire et comment participer ?',
         'activite'=>'Une personne comprend-elle votre offre, la zone desservie et comment vous contacter ?',
         'publication'=>'Le lecteur identifie-t-il les auteurs, les sources et les dates utiles ?',
     ];
     $goal = isset($goals[$goal]) ? $goal : 'association';
-    $add('GEO-USEFULNESS','GEO','review','Un visiteur comprend-il ce que vous proposez ?',$goals[$goal],'Les informations fiables, explicites et utiles aux lecteurs forment le socle d’un contenu exploitable. Un automate ne peut pas certifier votre expertise.','Demandez à une personne qui ne connaît pas votre site de lire cette page, puis posez-lui la question affichée ci-dessus. Si elle ne trouve pas la réponse, ajoutez les informations manquantes sur la page. Si elle comprend, gardez votre contenu.',$google.'fundamentals/creating-helpful-content',20);
+    foreach (iterator_to_array($x->query('//body//script|//body//style|//body//template')) as $node) $node->parentNode->removeChild($node);
+    // Joined with a space: textContent alone would weld the last word of a block
+    // to the first word of the next one and undercount.
+    $texts = [];
+    foreach ($x->query('//body//text()') as $node) { $value = $clean($node->textContent); if ($value !== '') $texts[] = $value; }
+    $wordCount = count(preg_split('/\s+/u', implode(' ', $texts), -1, PREG_SPLIT_NO_EMPTY));
+    // A page whose initial HTML holds almost no text gives an assistant nothing
+    // to read, whatever JavaScript adds afterwards.
+    $thin = $wordCount < 50;
+    $add('GEO-USEFULNESS','GEO',$thin ? 'action':'review','Un visiteur comprend-il ce que vous proposez ?',
+        'Environ '.$wordCount.' mot(s) de texte dans le HTML reçu, avant exécution du JavaScript. '.($thin ? 'C’est très peu : un robot qui n’exécute pas le JavaScript ne trouve presque rien à lire. ' : '').$goals[$goal],'Les informations fiables, explicites et utiles aux lecteurs forment le socle d’un contenu exploitable. Un automate ne peut pas certifier votre expertise.',($thin ? 'Vérifiez d’abord que votre texte est bien présent dans la page livrée et non ajouté ensuite par du JavaScript : montrez ce constat à la personne qui gère le site. Reprenez ensuite la question ci-dessus avec une personne extérieure.' : 'Demandez à une personne qui ne connaît pas votre site de lire cette page, puis posez-lui la question affichée ci-dessus. Si elle ne trouve pas la réponse, ajoutez les informations manquantes sur la page. Si elle comprend, gardez votre contenu.'),$google.'fundamentals/creating-helpful-content',20);
     $add('GEO-CITATIONS','GEO','unmeasured','Votre site apparaît-il dans les réponses des IA ?','Aucun service IA interrogé. Aucune donnée de citation connectée.','Une analyse HTML ne mesure pas votre présence dans les réponses des assistants.','Ce rapport ne permet pas de répondre. Pour un premier essai, posez à votre assistant une question qu’un visiteur pourrait poser sur votre activité, puis regardez s’il cite votre site. Un seul essai ne suffit pas à mesurer votre visibilité : les réponses peuvent varier.',$google.'appearance/ai-features',30);
     return ['schemaVersion'=>'1.0','engineVersion'=>VERSION,'generatedAt'=>gmdate('c'),'url'=>$url,'goal'=>$goal,'scope'=>'Une page HTML reçue par le serveur, sans exécution JavaScript.','limitations'=>[
         'Pas d’exploration du site, de contrôle des liens cassés ou d’analyse des autres pages.',
