@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.3.0';
+const VERSION = '0.4.0';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -270,6 +270,47 @@ function analyze_html(string $html, string $url, string $goal = 'association', a
     $add('CONTENT-LANG','Clarté',$lang ? 'ok':'action','Indiquer la langue du document',$lang ?: 'Attribut lang absent ou vide.','Les outils de lecture vocale ont besoin de connaître la langue pour bien prononcer le texte.',$lang ? 'Une langue est déclarée. Le code fr signifie français et en signifie anglais. Si la langue déclarée correspond à celle de votre texte, ne changez rien. Sinon, demandez à la personne qui gère le site de corriger la langue de cette page.' : 'Dans les réglages de votre site, vérifiez la langue du contenu. Si votre page est en français, demandez à la personne qui gère le site d’ajouter lang="fr" dans le modèle de page. Vous pouvez lui transmettre ce rapport.','https://www.w3.org/WAI/WCAG22/Understanding/language-of-page.html');
     $viewport = $meta('viewport');
     $add('TECH-MOBILE','Technique',str_contains(strtolower($viewport),'width=device-width') ? 'ok':'review','Préparer l’affichage sur téléphone',$viewport ?: 'Aucune balise viewport trouvée.','Cette indication aide à adapter la largeur de la page ; elle ne prouve pas que le site est confortable sur mobile.','Ouvrez la page sur un téléphone : vérifiez texte, menus et boutons. Faites vérifier le viewport si nécessaire.',$google.'crawling-indexing/mobile/mobile-sites-mobile-first-indexing',10);
+    // Open Graph decides how a shared link looks. Only og:image has no fallback:
+    // without it the post is a bare line of text, so that drives the status.
+    // Some publishing tools emit name= instead of property=; both are read.
+    $og = static function(string $property) use ($x) {
+        foreach ($x->query('//meta') as $node) {
+            $key = strtolower($node->getAttribute('property') ?: $node->getAttribute('name'));
+            if ($key !== $property) continue;
+            $value = trim($node->getAttribute('content'));
+            if ($value !== '') return $value;
+        }
+        return '';
+    };
+    $ogImage = $og('og:image');
+    $alsoDeclared = array_keys(array_filter(['og:title' => $og('og:title'), 'og:description' => $og('og:description')]));
+    $fallback = $alsoDeclared
+        ? 'Également déclaré : '.implode(' et ', $alsoDeclared).'.'
+        : 'Ni og:title ni og:description : les réseaux reprendront le titre et le résumé de la page, ce qui convient souvent.';
+    $ogWhy = 'Les réseaux sociaux et les messageries ne lisent pas votre page : ils affichent un aperçu construit à partir de quelques indications placées dans son code. Sans image déclarée, votre lien apparaît comme une simple ligne de texte, bien moins remarquée. L’outil ne télécharge pas l’image : ni son poids ni ses dimensions ne sont vérifiés.';
+    $ogSource = 'https://ogp.me/';
+    if ($ogImage === '') {
+        $add('SOCIAL-PREVIEW','Partage','action','L’image qui s’affiche quand on partage cette page',
+            'Aucune image de partage (og:image) n’est déclarée. '.$fallback, $ogWhy,
+            'Choisissez une image qui représente cette page — votre logo, une photo d’activité — et faites-la déclarer comme image de partage. Dans la plupart des outils de publication, ce réglage s’appelle « image à la une », « image de partage » ou « Open Graph ». Un format d’environ 1200 par 630 pixels convient à la majorité des réseaux.',
+            $ogSource, 10);
+    } elseif (!preg_match('~^https?://~i', $ogImage)) {
+        $add('SOCIAL-PREVIEW','Partage','action','L’image qui s’affiche quand on partage cette page',
+            'Image de partage déclarée : '.$ogImage.' · Cette adresse n’est pas complète. '.$fallback, $ogWhy,
+            'Les réseaux ont besoin d’une adresse complète, commençant par https:// et contenant votre nom de domaine. Transmettez ce message à la personne qui gère le site : « L’image de partage de cette page est déclarée avec une adresse relative ; pouvez-vous la remplacer par une adresse absolue ? »',
+            $ogSource, 10);
+    } elseif (preg_match('~\.svg$~i', (string) parse_url($ogImage, PHP_URL_PATH))) {
+        // Judged by extension only; the file itself is never downloaded.
+        $add('SOCIAL-PREVIEW','Partage','review','L’image qui s’affiche quand on partage cette page',
+            'Image de partage déclarée : '.$ogImage.' · Ce fichier est au format SVG. '.$fallback, $ogWhy,
+            'Les principaux réseaux et messageries n’affichent pas les images SVG : votre lien risque de paraître sans vignette. Faites remplacer cette image par un fichier PNG ou JPEG, d’environ 1200 par 630 pixels. Vérifiez ensuite en collant le lien dans une conversation. Ce constat se fonde sur l’extension du fichier, qui n’a pas été téléchargé.',
+            $ogSource, 10);
+    } else {
+        $add('SOCIAL-PREVIEW','Partage','ok','L’image qui s’affiche quand on partage cette page',
+            'Image de partage déclarée : '.$ogImage.' · '.$fallback, $ogWhy,
+            'Collez l’adresse de cette page dans une conversation ou un message privé et regardez l’aperçu obtenu. S’il vous convient, ne changez rien. L’image n’ayant pas été téléchargée, son poids et ses dimensions restent à vérifier.',
+            $ogSource, 5);
+    }
     $ldCount = 0; $ldInvalid = 0;
     foreach ($x->query('//script[@type="application/ld+json"]') as $script) {
         $ldCount++; json_decode($script->textContent); if (json_last_error() !== JSON_ERROR_NONE) $ldInvalid++;

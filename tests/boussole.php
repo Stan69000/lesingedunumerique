@@ -24,7 +24,7 @@ $empty=\Octet\analyze_html('<html><body>Test</body></html>','https://example.com
 check($empty['checks'][0]['status']==='action','missing title');
 $none=\Octet\analyze_html('<html><head><meta name="robots" content="none"></head><body>x</body></html>','https://example.com/');
 check(array_column($none['checks'],null,'id')['SEO-NOINDEX']['status']==='review','robots none');
-check(count($report['checks'])===11,'stable scope');
+check(count($report['checks'])===12,'stable scope');
 
 // Realistic regression cases: a root slash must not alarm a beginner, while
 // a different host, scheme or article path must never be silently accepted.
@@ -70,6 +70,30 @@ check(count(\Octet\discover_links($many,'https://example.com/'))===80,'link disc
 check(\Octet\resolve_location('https://example.com/dir/','next/')==='https://example.com/dir/next/','relative directory link is retained');
 try { \Octet\fetch_public('https://example.com/',microtime(true)-1);check(false,'expired budget rejected before DNS'); }
 catch (RuntimeException $e) {check(str_contains($e->getMessage(),'délai'),'expired budget has an explicit error');}
+// Open Graph is what a shared link looks like. Only og:image has no fallback,
+// so it alone decides the status; a missing title or description is not a fault.
+$social = static function (string $head) {
+    foreach (\Octet\analyze_html('<html><head>'.$head.'</head><body><h1>x</h1></body></html>', 'https://example.com/')['checks'] as $c) {
+        if ($c['id'] === 'SOCIAL-PREVIEW') return $c;
+    }
+    throw new RuntimeException('SOCIAL-PREVIEW absent du rapport');
+};
+$noImage = $social('<meta property="og:title" content="Nos ateliers">');
+check($noImage['status'] === 'action' && $noImage['category'] === 'Partage', 'a page with no share image is an action');
+check(str_contains($noImage['evidence'], 'og:title'), 'the tags that are declared are still listed');
+$relative = $social('<meta property="og:image" content="/images/atelier.png">');
+check($relative['status'] === 'action' && str_contains($relative['evidence'], 'n’est pas complète'), 'a relative share image is reported as incomplete');
+$good = $social('<meta property="og:image" content="https://example.com/atelier.png">');
+check($good['status'] === 'ok' && str_contains($good['evidence'], 'https://example.com/atelier.png'), 'an absolute share image passes and is shown');
+check(str_contains($good['why'], 'ne télécharge pas l’image'), 'the report says the image file itself was not checked');
+$svg = $social('<meta property="og:image" content="https://example.com/logo.svg">');
+check($svg['status'] === 'review' && str_contains($svg['evidence'], 'SVG'), 'an SVG share image is flagged: the big platforms do not render it');
+check(str_contains($svg['action'], 'PNG'), 'the SVG advice names a format that works');
+check($social('<meta property="og:image" content="https://example.com/carte.png">')['status'] === 'ok', 'a raster share image still passes');
+// Publishing tools that emit name= instead of property= must not be penalised.
+check($social('<meta name="og:image" content="https://example.com/a.png">')['status'] === 'ok', 'og:image declared with name= is read too');
+check($social('<meta property="og:image" content="   ">')['status'] === 'action', 'an empty og:image counts as missing');
+
 // A blocking robots.txt is a finding, not a failure: the page is still never
 // fetched, but the visitor is told which rule closed it and to whom.
 $all = \Octet\robots_rule("User-agent: *\nDisallow: /prive", '/prive/a');

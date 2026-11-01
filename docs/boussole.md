@@ -248,3 +248,22 @@ L'audit refuse toujours de récupérer une page que `robots.txt` lui interdit : 
 Le rapport rendu ne contient que ce constat : la page n'ayant pas été téléchargée, aucun autre contrôle n'a de preuve à montrer. Son `scope` et ses limites le disent explicitement, et `discoveredLinks` est vide, ce qui arrête proprement le mode exploration. Le chemin normal est inchangé : onze contrôles, mêmes identifiants.
 
 `SEO-ROBOTS` rejoint le plan d'action et renvoie aux fiches `robots.txt` et `Indexation` du lexique. Vérification : 119 contrôles PHP et 23 tests Node, et un audit réel de `https://www.google.com/search`, bloqué par `Disallow: /search`, qui rend bien le constat sans récupérer la page. Les exemples de démonstration et les aperçus autonomes sont régénérés en 0.3.0.
+
+## L'aperçu de partage — moteur 0.4.0
+
+Douzième contrôle, `SOCIAL-PREVIEW`, catégorie « Partage ». Pour une association, un lien circule surtout dans un groupe, une messagerie ou un fil d'actualité ; ce que ce lien donne à voir comptait autant que les contrôles déjà présents, et rien ne le regardait.
+
+Seule `og:image` n'a pas de repli : sans titre ni description Open Graph, les plateformes reprennent le `<title>` et la méta-description, que d'autres contrôles examinent déjà. C'est donc l'image qui détermine le statut, et les balises déclarées par ailleurs sont simplement listées dans la preuve. Les balises sont lues sur `property` comme sur `name`, certains outils de publication émettant la seconde forme.
+
+Quatre situations :
+
+- Aucune image déclarée, ou valeur vide : « À améliorer ». Le lien partagé se réduit à une ligne de texte.
+- Adresse relative : « À améliorer ». Les plateformes ont besoin d'une adresse complète.
+- Fichier SVG : « À vérifier ». Les principaux réseaux ne rendent pas ce format. Le constat se fonde sur l'extension ; l'image n'est jamais téléchargée, et ni son poids ni ses dimensions ne sont vérifiés.
+- Adresse absolue vers un format courant : « Point vérifié », avec l'invitation à coller le lien dans une conversation pour juger du résultat.
+
+Ce contrôle a trouvé un défaut réel sur notre propre site dès sa première exécution : `og:image` y désigne `logo.svg`, que Facebook, LinkedIn et WhatsApp n'affichent pas. Tous les partages de lesingedunumerique.fr paraissent donc sans vignette.
+
+La fiche « Open Graph » rejoint le lexique SEO, qui passe de 32 à 33 entrées et le lexique commun de 205 à 206. `ogp.me`, spécification du protocole, rejoint la liste des sources primaires admises par les tests. Le constat renvoie aux fiches « Open Graph » et « CTR ».
+
+L'exemple de démonstration raconte désormais aussi cette correction : le fichier « avant » n'a pas d'image de partage, le fichier « après » en déclare une. Vérification : 133 contrôles PHP, 23 tests Node, audit réel de notre site et rendu contrôlé dans le navigateur. L'étape de pré-déploiement attend maintenant douze identifiants.
