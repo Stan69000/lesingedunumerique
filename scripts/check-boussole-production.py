@@ -89,4 +89,7 @@ for attempt in range(6):
         print(f'Attempt {attempt + 1}/6 failed ({error}); retrying in 20 s.', flush=True)
         time.sleep(20)
 
-print(f"Production verified: {len(PAGES)} pages, JSON API rejects GET, engine {health['engineVersion']} ready (cURL and DOM present).")
+# Printing the hosting's PHP version records it in every deploy log, so a change
+# made in the hosting panel shows up here instead of as an unexplained failure.
+print(f"Production verified: {len(PAGES)} pages, JSON API rejects GET, engine {health['engineVersion']} "
+      f"ready on PHP {health.get('php', 'unknown')} (cURL and DOM present).")

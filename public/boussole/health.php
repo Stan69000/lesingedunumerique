@@ -13,6 +13,9 @@ $dom = extension_loaded('dom');
 http_response_code($curl && $dom ? 200 : 503);
 echo json_encode([
     'engineVersion' => \Octet\VERSION,
+    // Major and minor only: enough to notice a hosting change, without naming
+    // the patch level that maps a host to published vulnerabilities.
+    'php' => PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION,
     'curl' => $curl,
     'dom' => $dom,
     'ready' => $curl && $dom,
