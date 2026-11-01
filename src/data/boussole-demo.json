@@ -1,7 +1,7 @@
 {
     "before": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.4.0",
+        "engineVersion": "0.5.0",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -136,11 +136,23 @@
                 "url": "https://ateliers-du-lien.example/"
             },
             {
+                "id": "GEO-AI-CRAWLERS",
+                "category": "GEO",
+                "status": "review",
+                "title": "Les assistants ont-ils le droit de lire cette page ?",
+                "evidence": "Écartés par votre fichier robots.txt : GPTBot (règle générale), OAI-SearchBot (règle générale), ClaudeBot (règle générale), PerplexityBot (règle générale), Google-Extended (règle générale), Applebot-Extended (règle générale), CCBot (règle générale). Autorisés : aucun.",
+                "why": "Les assistants envoient leurs propres robots. Ceux qui sont écartés ne liront pas cette page et ne pourront donc pas s’en servir pour répondre. Écarter ces robots est un choix légitime, que beaucoup de sites font volontairement.",
+                "action": "Une partie de ces robots est écartée par une règle qui vise tous les robots, souvent sans intention particulière à leur égard. Décidez si c’est bien ce que vous vouliez, puis faites ajuster le fichier robots.txt en conséquence.",
+                "source": "https://developers.google.com/search/docs/crawling-indexing/overview-google-crawlers",
+                "minutes": 10,
+                "url": "https://ateliers-du-lien.example/"
+            },
+            {
                 "id": "GEO-USEFULNESS",
                 "category": "GEO",
                 "status": "review",
                 "title": "Un visiteur comprend-il ce que vous proposez ?",
-                "evidence": "Une personne comprend-elle votre mission, votre territoire et comment participer ?",
+                "evidence": "Environ 125 mot(s) de texte dans le HTML reçu, avant exécution du JavaScript. Une personne comprend-elle votre mission, votre territoire et comment participer ?",
                 "why": "Les informations fiables, explicites et utiles aux lecteurs forment le socle d’un contenu exploitable. Un automate ne peut pas certifier votre expertise.",
                 "action": "Demandez à une personne qui ne connaît pas votre site de lire cette page, puis posez-lui la question affichée ci-dessus. Si elle ne trouve pas la réponse, ajoutez les informations manquantes sur la page. Si elle comprend, gardez votre contenu.",
                 "source": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
@@ -165,7 +177,7 @@
     },
     "after": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.4.0",
+        "engineVersion": "0.5.0",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -299,11 +311,23 @@
                 "url": "https://ateliers-du-lien.example/"
             },
             {
+                "id": "GEO-AI-CRAWLERS",
+                "category": "GEO",
+                "status": "ok",
+                "title": "Les assistants ont-ils le droit de lire cette page ?",
+                "evidence": "Robots vérifiés : GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot-Extended, CCBot. Aucun n’est écarté par votre fichier robots.txt.",
+                "why": "Les assistants envoient leurs propres robots. Votre fichier robots.txt les laisse passer : rien, de ce côté, ne les empêche de lire cette page. Cela ne garantit pas qu’ils la liront ni qu’ils la citeront.",
+                "action": "Rien à modifier pour ce contrôle. Si vous souhaitez au contraire écarter certains de ces robots, c’est une décision à prendre avec la personne qui gère le site.",
+                "source": "https://developers.google.com/search/docs/crawling-indexing/overview-google-crawlers",
+                "minutes": 10,
+                "url": "https://ateliers-du-lien.example/"
+            },
+            {
                 "id": "GEO-USEFULNESS",
                 "category": "GEO",
                 "status": "review",
                 "title": "Un visiteur comprend-il ce que vous proposez ?",
-                "evidence": "Une personne comprend-elle votre mission, votre territoire et comment participer ?",
+                "evidence": "Environ 122 mot(s) de texte dans le HTML reçu, avant exécution du JavaScript. Une personne comprend-elle votre mission, votre territoire et comment participer ?",
                 "why": "Les informations fiables, explicites et utiles aux lecteurs forment le socle d’un contenu exploitable. Un automate ne peut pas certifier votre expertise.",
                 "action": "Demandez à une personne qui ne connaît pas votre site de lire cette page, puis posez-lui la question affichée ci-dessus. Si elle ne trouve pas la réponse, ajoutez les informations manquantes sur la page. Si elle comprend, gardez votre contenu.",
                 "source": "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",

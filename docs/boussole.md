@@ -286,3 +286,35 @@ L'image est reproductible : `scripts/partage-image.html` en contient la source, 
 ```
 
 Le rendu dépend des polices Space Grotesk et JetBrains Mono, chargées depuis Google Fonts : la machine qui régénère l'image doit avoir accès au réseau. Vérification : image reproduite à l'identique depuis le script versionné, `og:image` contrôlé dans quatre pages du build, planche de BD préservée, et le contrôle `SOCIAL-PREVIEW` de la Boussole qui passe de « À vérifier » à « Point vérifié » sur notre page d'accueil.
+
+## Le volet GEO mesure enfin quelque chose — moteur 0.5.0
+
+La page affichait « GEO : être compris par les IA » dans une colonne égale au SEO, alors que ses trois contrôles étaient un comptage de blocs JSON-LD, une question posée au lecteur sans aucune observation, et un « non mesuré » assumé. La parité visuelle promettait davantage que le contenu.
+
+Deux mesures réelles ont été ajoutées, et la promesse de la page a été réécrite pour correspondre à ce qui est fait.
+
+### Qui a le droit de lire la page
+
+`GEO-AI-CRAWLERS` interroge le `robots.txt` déjà récupéré pour l'audit et vérifie sept robots documentés : GPTBot, OAI-SearchBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot-Extended et CCBot. C'est la seule chose vérifiable, à partir d'une lecture statique, de ce qui détermine si un assistant peut se servir d'une page.
+
+L'analyseur de `robots.txt` a été regroupé par agent pour cela : `robots_groups()` construit les groupes, `robots_agent_blocked()` fait primer un groupe nommant le robot sur le groupe `*`, comme la convention l'exige. Les exceptions `Allow` restent non interprétées, et le rapport le dit.
+
+Un blocage n'est jamais une faute. Beaucoup de sites écartent ces robots volontairement : le constat est « Point vérifié » quand ils passent, « À vérifier » quand ils sont écartés, jamais « À améliorer ». Il distingue une règle nommant le robot, qui suggère une décision délibérée, d'une règle générale qui les attrape souvent sans intention particulière.
+
+### Ce qu'un robot trouve à lire
+
+`GEO-USEFULNESS` conserve sa question éditoriale mais porte désormais une observation : le nombre de mots de texte présents dans le HTML reçu, avant exécution du JavaScript. Les contenus de `script`, `style` et `template` sont retirés, et les nœuds de texte sont joints par une espace — `textContent` seul soudait le dernier mot d'un bloc au premier du suivant et sous-comptait.
+
+Sous cinquante mots, le constat passe en « À améliorer » : une page dont le texte n'arrive qu'avec le JavaScript ne donne rien à lire à un robot qui ne l'exécute pas. L'action invite alors à vérifier d'abord ce point avec la personne qui gère le site.
+
+### La promesse de la page
+
+La carte d'introduction devient « GEO : lisible par les assistants », et décrit ce qui est réellement fait : quels robots le site laisse passer, ce qu'un robot trouve à lire sans JavaScript, une relecture guidée — et la présence dans les réponses n'est toujours pas mesurée. La section méthodologie indique que le `robots.txt` est lu pour les moteurs comme pour les assistants.
+
+`GEO-CITATIONS` reste « non mesuré » : interroger des assistants demanderait des appels distants, un budget et une méthode d'échantillonnage. Rien ici ne prétend le contraire.
+
+### Vérifications
+
+151 contrôles PHP et 23 tests Node. Les nouveaux couvrent la priorité d'un groupe nommé sur le groupe `*`, la différence entre blocage nommé et blocage général, l'absence de `robots.txt` qui donne « non mesuré » plutôt qu'une supposition, le comptage de mots et l'exclusion du contenu des scripts. Audit réel de notre page d'accueil, rendu vérifié dans le navigateur.
+
+Les exemples de démonstration racontent aussi cette correction : l'association fictive écarte les assistants avant, les autorise après. Leurs fichiers ont reçu un contenu éditorial réaliste, les textes d'origine tombant sous le seuil des cinquante mots et déclenchant un constat qui n'aurait rien décrit de leur cas.
