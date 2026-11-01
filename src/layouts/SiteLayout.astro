@@ -34,7 +34,7 @@ const {
 } = Astro.props;
 const currentPath = Astro.url.pathname;
 const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
-const shareImage = new URL(image ?? '/logo.svg', siteSettings.siteUrl).toString();
+const shareImage = new URL(image ?? '/partage.png', siteSettings.siteUrl).toString();
 const isVeillePage = currentPath.startsWith('/veille');
 ---
 
