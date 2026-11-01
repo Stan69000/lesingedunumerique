@@ -209,3 +209,6 @@ Vérification : tests de découverte des liens et résolution relative, limites,
 ### Délais et résultats partiels (0.2.1)
 
 Le client distingue un arrêt demandé d’une réponse absente après 45 secondes. Un compteur d’attente reste visible. Chaque page réussie est affichée immédiatement ; les échecs suivants ne suppriment pas les résultats. Le moteur partage un budget réseau de 25 secondes entre robots.txt et les redirections, chaque récupération gardant un maximum de 10 secondes. La résolution DNS du système reste soumise à ses propres délais. Le script PHP a une limite d’exécution de 35 secondes. Ces limites évitent d’empiler les attentes ; elles ne prouvent pas la cause d’une réponse absente chez l’hébergeur.
+
+
+Le formulaire web transmet les mêmes champs avec URLSearchParams (application/x-www-form-urlencoded). L’API conserve aussi l’entrée JSON utilisée par les intégrations. Les contrôles d’origine, de taille, de types, de destination et les limites d’utilisation restent identiques. Les demandes ne transmettent pas de cookies et ne sont pas mises en cache.
