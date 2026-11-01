@@ -559,7 +559,7 @@ const articleSchema = {
 
       /* Le Markdown est rendu sans les attributs CSS du composant Astro. */
       .article-content :global(a:any-link) {
-        color: var(--accent);
+        color: var(--link-color);
         text-decoration: underline;
         text-decoration-thickness: 0.08em;
         text-underline-offset: 0.2em;
@@ -568,7 +568,7 @@ const articleSchema = {
       }
       .article-content :global(a:hover),
       .article-content :global(a:focus-visible) {
-        color: var(--accent-alt);
+        color: var(--link-hover);
         text-decoration-thickness: 0.14em;
       }
       .article-content :global(a:focus-visible) {

@@ -1,0 +1,36 @@
+/* Shared by every site layout through SiteHeader. Also covers links created by JS. */
+:root {
+  --link-color: #5eead4;
+  --link-hover: #99f6e4;
+}
+body.light-mode {
+  --link-color: #0f766e;
+  --link-hover: #115e59;
+}
+/* Components may give navigation, cards and buttons their own presentation. */
+body a:any-link {
+  color: var(--link-color);
+  text-decoration: underline;
+  text-decoration-thickness: .08em;
+  text-underline-offset: .2em;
+  text-decoration-skip-ink: auto;
+}
+body a:any-link:hover {
+  color: var(--link-hover);
+}
+body a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+/* Text containers must also reach Markdown and dynamically inserted report links. */
+body :is(.boussole, .article-content, .brief-detail, .prose-block) a:any-link:not(.cta-button) {
+  color: var(--link-color);
+  text-decoration: underline;
+  text-decoration-thickness: .08em;
+  text-underline-offset: .2em;
+}
+body :is(.boussole, .article-content, .brief-detail, .prose-block) a:any-link:not(.cta-button):hover {
+  color: var(--link-hover);
+  text-decoration-thickness: .14em;
+}
