@@ -1,5 +1,7 @@
 """Verify the deployed pages, JSON API and one real audit of our own site."""
 import json
+import re
+import html
 import time
 import urllib.error
 import urllib.request
@@ -35,7 +37,11 @@ for attempt in range(6):
         time.sleep(20)
 
 status, headers, body = request('/boussole/audit.php', {'url': BASE + '/', 'goal': 'association'})
-assert status == 200, f'Real audit failed: HTTP {status}, {body[:250]!r}'
+if status != 200:
+    title = re.search(r'<title[^>]*>(.*?)</title>', body.decode('utf-8', errors='replace'), re.I | re.S)
+    markers = [m for m in ['imunify360', 'webshield', 'captcha', 'cloudflare'] if m.encode() in body.lower()]
+    print('Audit response diagnostic:', {'status': status, 'type': headers.get('Content-Type'), 'server': headers.get('Server'), 'title': html.unescape(title.group(1)).strip()[:200] if title else None, 'protectionMarkers': markers}, flush=True)
+assert status == 200, f'Real audit failed: HTTP {status}; see safe response diagnostic above.'
 assert 'application/json' in headers.get('Content-Type', ''), 'Expected JSON report'
 report = json.loads(body)
 assert len(report.get('checks', [])) == 11, 'Expected 11 checks'

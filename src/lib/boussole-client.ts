@@ -105,7 +105,7 @@ async function fetchReport(url:string, goal:string, progress?:(seconds:number)=>
   const ticker=setInterval(()=>progress?.(Math.floor((Date.now()-started)/1000)),1000);
   const timer=setTimeout(()=>controller.abort(),45000);
   try {
-    const response=await fetch('/boussole/audit.php',{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:new URLSearchParams({url,goal}).toString(),signal:controller.signal});
+    const response=await fetch('/boussole/audit.php',{method:'POST',credentials:'omit',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,goal}),signal:controller.signal});
     if(!(response.headers.get('content-type')||'').includes('application/json'))throw new Error('L’hébergeur n’a pas répondu à cette analyse. Réessayez dans quelques instants.');
     const data=await response.json();if(!response.ok)throw new Error(data.error||'L’analyse n’a pas pu aboutir.');
     return data;

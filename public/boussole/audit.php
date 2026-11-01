@@ -15,13 +15,11 @@ if (isset($_SERVER['HTTP_ORIGIN'])) {
     $host = parse_url($_SERVER['HTTP_ORIGIN'], PHP_URL_HOST);
     if ($host !== preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'] ?? '')) reply(403,['error'=>'Origine non autorisée.']);
 }
-$contentType = strtolower(explode(';', $_SERVER['CONTENT_TYPE'] ?? '')[0]);
-if (!in_array($contentType, ['application/json','application/x-www-form-urlencoded'], true)) reply(415,['error'=>'Format de demande non pris en charge.']);
+if (!str_starts_with(strtolower($_SERVER['CONTENT_TYPE'] ?? ''), 'application/json')) reply(415,['error'=>'Format JSON requis.']);
 if ((int)($_SERVER['CONTENT_LENGTH'] ?? 0) > 4096) reply(413,['error'=>'Demande trop volumineuse.']);
 $raw = file_get_contents('php://input', false, null, 0, 4097);
 if (strlen($raw) > 4096) reply(413,['error'=>'Demande trop volumineuse.']);
-$input = $contentType === 'application/json' ? json_decode($raw, true) : [];
-if ($contentType === 'application/x-www-form-urlencoded') parse_str($raw, $input);
+$input = json_decode($raw, true);
 if (!is_array($input) || !is_string($input['url'] ?? null) || !is_string($input['goal'] ?? 'association')) reply(400,['error'=>'Adresse invalide.']);
 if (!extension_loaded('curl') || !extension_loaded('dom')) reply(503,['error'=>'Le serveur doit disposer des extensions PHP cURL et DOM.']);
 // Fixed-size limiter file per hour; no URLs or raw IP addresses are stored.
