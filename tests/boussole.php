@@ -70,6 +70,31 @@ check(count(\Octet\discover_links($many,'https://example.com/'))===80,'link disc
 check(\Octet\resolve_location('https://example.com/dir/','next/')==='https://example.com/dir/next/','relative directory link is retained');
 try { \Octet\fetch_public('https://example.com/',microtime(true)-1);check(false,'expired budget rejected before DNS'); }
 catch (RuntimeException $e) {check(str_contains($e->getMessage(),'délai'),'expired budget has an explicit error');}
+// A finding must show what was found, not how many of it there were.
+$only = static function (string $html, string $id) {
+    foreach (\Octet\analyze_html($html, 'https://example.com/page')['checks'] as $c) if ($c['id'] === $id) return $c;
+    throw new RuntimeException($id.' absent du rapport');
+};
+$head = $only('<html><body><h1>Nos ateliers du mardi</h1></body></html>', 'CONTENT-HEADINGS');
+check(str_contains($head['evidence'], 'Nos ateliers du mardi'), 'the heading the reader is asked to judge is shown');
+check(str_contains($head['action'], 'ci-dessus'), 'the advice points at the heading instead of sending the reader hunting');
+$twoHeads = $only('<html><body><h1>Un</h1><h1>Deux</h1></body></html>', 'CONTENT-HEADINGS');
+check(str_contains($twoHeads['evidence'], 'un seul est attendu') && str_contains($twoHeads['action'], 'sous-titres'), 'several headings are named and explained');
+check(str_contains($only('<html><body><p>x</p></body></html>', 'CONTENT-HEADINGS')['evidence'], 'Aucun grand titre'), 'a missing heading says so plainly');
+
+$noAlt = $only('<html><body><img src="/img/atelier-2024.png"><img src="/img/logo.svg" alt="Logo"></body></html>', 'CONTENT-IMAGES');
+check(str_contains($noAlt['evidence'], 'atelier-2024.png'), 'the image without a description is named');
+check(!str_contains($noAlt['evidence'], 'logo.svg'), 'an image that has its description is not blamed');
+$decorative = $only('<html><body><img src="a.png" alt=""></body></html>', 'CONTENT-IMAGES');
+check($decorative['status'] === 'ok' && str_contains($decorative['evidence'], 'décorative'), 'an empty description is read as a decorative image');
+
+check(\Octet\ld_types(['@graph'=>[['@type'=>'Organization'],['@type'=>['Blog','WebPage']]]]) === ['Organization','Blog','WebPage'], 'types are collected through @graph and arrays');
+$ld = $only('<html><body><script type="application/ld+json">{"@type":"Organization","name":"X"}</script></body></html>', 'GEO-STRUCTURE');
+check(str_contains($ld['evidence'], 'Organization'), 'the declared type is named instead of counted');
+check(str_contains($ld['action'], 'nom et les coordonnées'), 'the advice says what to compare for that type');
+$badLd = $only('<html><body><script type="application/ld+json">{bad}</script></body></html>', 'GEO-STRUCTURE');
+check($badLd['status'] === 'action' && str_contains($badLd['evidence'], 'syntaxe JSON'), 'an unreadable block stays an action and says why');
+
 // Which assistant crawlers robots.txt turns away is the one thing about AI
 // visibility a static read can establish. Blocking them is a choice, not a fault.
 $named = "User-agent: GPTBot\nDisallow: /\n\nUser-agent: *\nAllow: /";

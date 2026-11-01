@@ -337,3 +337,21 @@ Le constat est émis en tête des contrôles. `selectPlan()` suit l'ordre d'émi
 Un test indexait les constats par position plutôt que par identifiant ; il a été corrigé, cette fragilité n'ayant rien à voir avec le contrôle ajouté.
 
 Vérification : 160 contrôles PHP et 23 tests Node, audit réel de notre accueil en « Point vérifié », démonstration rejouée dans le navigateur avant et après.
+
+## Dire ce qui a été trouvé, et si c'est à corriger — moteur 0.7.0
+
+Trois reproches, trois causes différentes.
+
+**« Quelle page ? »** Chaque constat portait déjà son adresse dans les données, exportée en JSON, mais jamais affichée. Les actions disaient « cette page » sans que l'écran y réponde, et le mode exploration rendait l'ambiguïté complète puisque la page sélectionnée change. L'adresse figure désormais sous le titre de chaque constat.
+
+**« Il a trouvé quoi ? »** Dix constats sur quatorze montraient déjà le contenu relevé — le titre exact, la description, `index,follow`, la valeur du viewport, l'adresse de l'image de partage. Trois se contentaient d'un décompte :
+
+- `CONTENT-HEADINGS` annonçait « 1 titre H1 trouvé » et demandait ensuite d'aller lire ce titre sur la page, que l'outil avait pourtant sous les yeux. Le texte du titre est maintenant cité, les titres multiples sont signalés, et l'action renvoie au titre affiché.
+- `GEO-STRUCTURE` annonçait « 1 bloc d'informations ». Les types déclarés sont désormais nommés — Organization, Blog, Article — grâce à `ld_types()`, qui les collecte y compris dans un `@graph` ou un tableau. L'action indique quoi comparer selon le type.
+- `CONTENT-IMAGES` annonçait « 2 images sans alt sur 7 » sans dire lesquelles. Les fichiers concernés sont nommés, cinq au plus, et une description vide est présentée comme le marquage d'une image décorative plutôt que comme un manque.
+
+**« Pour info ou à corriger ? »** L'information existait — cinq statuts avec une sémantique documentée — mais l'écran la perdait : `check-label` sortait les cinq dans le même vert, et le statut ne pilotait aucun style. Chaque constat porte maintenant une couleur sur son libellé et sa bordure gauche : orange pour « À améliorer », bleu pour « Suggestion », gris pour « À vérifier » et « Non mesuré », vert pour « Point vérifié ». Les pastilles du résumé suivent la même convention, et une pastille à zéro s'efface.
+
+La couleur double le libellé écrit, qui reste le signal principal ; elle n'est jamais le seul indice. Les teintes viennent des variables de marque et basculent donc avec le thème clair ou sombre.
+
+Vérification : 171 contrôles PHP et 23 tests Node. Les nouveaux couvrent le titre cité, les titres multiples, le titre absent, les images nommées, la description vide, la collecte des types dans un `@graph` et le bloc JSON illisible. Rendu contrôlé dans les deux thèmes.

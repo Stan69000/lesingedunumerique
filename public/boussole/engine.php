@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.6.0';
+const VERSION = '0.7.0';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -293,6 +293,15 @@ function canonical_finding(array $addresses, string $pageUrl, bool $unsupported 
         'Ne modifiez pas le code au hasard. Transmettez ce rapport à la personne qui gère le site : « Pouvez-vous vérifier que le réglage URL canonique contient une adresse complète en https:// et qu’il est bien pris en compte pour cette page ? »'];
 }
 
+/** The @type names a JSON-LD block declares, including inside @graph or arrays. */
+function ld_types($data): array {
+    if (!is_array($data)) return [];
+    $types = [];
+    if (isset($data['@type'])) foreach ((array) $data['@type'] as $type) if (is_string($type) && $type !== '') $types[] = $type;
+    foreach ($data as $key => $value) if ($key !== '@type' && is_array($value)) $types = array_merge($types, ld_types($value));
+    return array_values(array_unique($types));
+}
+
 function analyze_html(string $html, string $url, string $goal = 'association', array $headers = [], ?string $robotsText = null): array {
     $doc = new \DOMDocument();
     $previous = libxml_use_internal_errors(true);
@@ -300,6 +309,7 @@ function analyze_html(string $html, string $url, string $goal = 'association', a
     libxml_clear_errors(); libxml_use_internal_errors($previous);
     $x = new \DOMXPath($doc);
     $clean = static fn($s) => trim(preg_replace('/\s+/u', ' ', $s) ?? '');
+    $short = static fn(string $s) => preg_match('/^.{0,110}/us', $s, $m) && strlen($m[0]) < strlen($s) ? $m[0].'…' : $s;
     $meta = static function(string $name) use ($x) {
         $values = [];
         foreach ($x->query('//meta') as $node) if (strtolower($node->getAttribute('name')) === $name) $values[] = $node->getAttribute('content');
@@ -334,10 +344,34 @@ function analyze_html(string $html, string $url, string $goal = 'association', a
     [$canonicalStatus, $canonicalTitle, $canonicalEvidence, $canonicalWhy, $canonicalAction] = canonical_finding($canonical, $url, $canonicalUnsupported);
     $add('SEO-CANONICAL','SEO',$canonicalStatus,$canonicalTitle,$canonicalEvidence,$canonicalWhy,$canonicalAction,$google.'crawling-indexing/consolidate-duplicate-urls',10);
     if (!$canonical) $checks[array_key_last($checks)]['planEligible'] = false;
-    $add('CONTENT-HEADINGS','Clarté',$h1->length > 0 ? 'review':'suggestion','Rendre le sujet visible',$h1->length.' titre(s) principal(aux) H1 trouvé(s).','Les titres organisent la lecture comme les panneaux d’un parcours. Leur présence seule ne prouve pas leur pertinence.','Lisez le grand titre au début de votre page. Comprend-on immédiatement son sujet ? Si oui, gardez-le. Sinon, réécrivez-le dans votre éditeur de page. Si aucun grand titre n’est trouvé, ajoutez-en un avec le style Titre 1 de votre éditeur ou demandez à la personne qui gère le site de le faire.',$google.'fundamentals/seo-starter-guide',10);
-    $missingAlt = 0; $images = $x->query('//img');
-    foreach ($images as $img) if (!$img->hasAttribute('alt')) $missingAlt++;
-    $add('CONTENT-IMAGES','Clarté',$missingAlt ? 'action':'ok','Expliquer les images utiles',"$missingAlt image(s) sans attribut alt sur {$images->length}.",'Une alternative textuelle donne accès à l’information quand une image ne peut pas être vue.',$images->length === 0 ? 'Aucune image n’a été trouvée dans la version de la page analysée : rien à modifier pour ce point.' : ($missingAlt ? 'Dans votre outil de publication, ouvrez les images de cette page et cherchez le champ Texte alternatif. Pour chaque image qui apporte une information, décrivez brièvement ce qu’elle montre. Laissez ce texte vide pour une image purement décorative. Si ce champ manque, transmettez ce rapport à la personne qui gère le site.' : 'Les images possèdent le champ de description attendu. Relisez les descriptions des images utiles : expliquent-elles bien leur contenu ? Si oui, gardez-les. Une description vide peut être volontaire pour une image décorative.'),'https://www.w3.org/WAI/tutorials/images/',15);
+    $h1Texts = [];
+    foreach ($h1 as $node) { $value = $clean($node->textContent); if ($value !== '') $h1Texts[] = $short($value); }
+    $severalH1 = count($h1Texts) > 1;
+    $headingEvidence = $h1Texts
+        ? 'Grand titre lu sur la page : « '.implode(' » · « ', $h1Texts).' »'.($severalH1 ? ' · '.count($h1Texts).' grands titres trouvés ; un seul est attendu.' : '')
+        : ($h1->length ? $h1->length.' grand(s) titre(s) trouvé(s), mais sans texte lisible.' : 'Aucun grand titre (H1) n’a été trouvé dans la page reçue.');
+    $headingAction = $h1Texts
+        ? 'Relisez le titre affiché ci-dessus : comprend-on immédiatement le sujet de cette page ? Si oui, gardez-le. Sinon, réécrivez-le dans votre éditeur, à l’endroit où il apparaît en haut de la page.'.($severalH1 ? ' Plusieurs grands titres se disputent le sujet : demandez à la personne qui gère le site de n’en garder qu’un et de passer les autres en sous-titres.' : '')
+        : 'Ajoutez en haut de la page un grand titre qui annonce son sujet, avec le style Titre 1 de votre éditeur. Si vous ne trouvez pas ce réglage, transmettez ce rapport à la personne qui gère le site.';
+    $add('CONTENT-HEADINGS','Clarté',$h1->length > 0 ? 'review':'suggestion','Rendre le sujet visible',$headingEvidence,'Les titres organisent la lecture comme les panneaux d’un parcours. Leur présence seule ne prouve pas leur pertinence.',$headingAction,$google.'fundamentals/seo-starter-guide',10);
+    $images = $x->query('//img'); $missing = []; $decorative = 0;
+    foreach ($images as $img) {
+        if (!$img->hasAttribute('alt')) {
+            $src = trim($img->getAttribute('src'));
+            $name = $src === '' ? 'image sans adresse' : (basename((string) parse_url($src, PHP_URL_PATH)) ?: $short($src));
+            $missing[] = $name;
+            continue;
+        }
+        if (trim($img->getAttribute('alt')) === '') $decorative++;
+    }
+    $missingAlt = count($missing);
+    $shown = array_slice($missing, 0, 5);
+    $imageEvidence = $images->length === 0
+        ? 'Aucune image n’a été trouvée dans la page reçue.'
+        : ($missingAlt
+            ? $missingAlt.' image(s) sans description sur '.$images->length.'. Concernée(s) : '.implode(', ', $shown).(count($missing) > count($shown) ? ', et '.(count($missing) - count($shown)).' autre(s).' : '.')
+            : $images->length.' image(s), toutes avec le champ de description.'.($decorative ? ' Dont '.$decorative.' description(s) vide(s) : ce réglage désigne une image purement décorative.' : ''));
+    $add('CONTENT-IMAGES','Clarté',$missingAlt ? 'action':'ok','Expliquer les images utiles',$imageEvidence,'Une alternative textuelle donne accès à l’information quand une image ne peut pas être vue.',$images->length === 0 ? 'Aucune image n’a été trouvée dans la version de la page analysée : rien à modifier pour ce point.' : ($missingAlt ? 'Dans votre outil de publication, ouvrez les images nommées ci-dessus et cherchez le champ Texte alternatif. Pour chaque image qui apporte une information, décrivez brièvement ce qu’elle montre. Laissez ce texte vide pour une image purement décorative. Si ce champ manque, transmettez ce rapport à la personne qui gère le site.' : 'Les images possèdent le champ de description attendu. Relisez les descriptions des images utiles : expliquent-elles bien leur contenu ? Si oui, gardez-les. Une description vide peut être volontaire pour une image décorative.'),'https://www.w3.org/WAI/tutorials/images/',15);
     $lang = $clean($x->evaluate('string(//html/@lang)'));
     $add('CONTENT-LANG','Clarté',$lang ? 'ok':'action','Indiquer la langue du document',$lang ?: 'Attribut lang absent ou vide.','Les outils de lecture vocale ont besoin de connaître la langue pour bien prononcer le texte.',$lang ? 'Une langue est déclarée. Le code fr signifie français et en signifie anglais. Si la langue déclarée correspond à celle de votre texte, ne changez rien. Sinon, demandez à la personne qui gère le site de corriger la langue de cette page.' : 'Dans les réglages de votre site, vérifiez la langue du contenu. Si votre page est en français, demandez à la personne qui gère le site d’ajouter lang="fr" dans le modèle de page. Vous pouvez lui transmettre ce rapport.','https://www.w3.org/WAI/WCAG22/Understanding/language-of-page.html');
     $viewport = $meta('viewport');
@@ -383,11 +417,26 @@ function analyze_html(string $html, string $url, string $goal = 'association', a
             'Collez l’adresse de cette page dans une conversation ou un message privé et regardez l’aperçu obtenu. S’il vous convient, ne changez rien. L’image n’ayant pas été téléchargée, son poids et ses dimensions restent à vérifier.',
             $ogSource, 5);
     }
-    $ldCount = 0; $ldInvalid = 0;
+    $ldCount = 0; $ldInvalid = 0; $ldTypes = [];
     foreach ($x->query('//script[@type="application/ld+json"]') as $script) {
-        $ldCount++; json_decode($script->textContent); if (json_last_error() !== JSON_ERROR_NONE) $ldInvalid++;
+        $ldCount++;
+        $decoded = json_decode($script->textContent, true);
+        if (json_last_error() !== JSON_ERROR_NONE) { $ldInvalid++; continue; }
+        foreach (ld_types($decoded) as $type) $ldTypes[$type] = true;
     }
-    $add('GEO-STRUCTURE','GEO',$ldInvalid ? 'action':'review','Les informations supplémentaires pour les moteurs',($ldInvalid ? "$ldInvalid bloc(s) d’informations ne peuvent pas être lus correctement." : ($ldCount ? "$ldCount bloc(s) d’informations ont été trouvés pour les moteurs. Leur exactitude reste à vérifier." : 'Aucun bloc de ce type n’a été trouvé dans le code analysé. Ce n’est pas automatiquement une erreur.')),'Ces informations peuvent décrire une organisation ou un article aux moteurs. Seul le format JSON-LD est vérifié ici ; les autres formats et le contenu ajouté par JavaScript ne le sont pas. Cela ne prouve pas qu’une IA citera votre site.',($ldInvalid ? 'Transmettez ce rapport à la personne qui gère le site avec ce message : « Un bloc d’informations pour les moteurs ne peut pas être lu. Pouvez-vous corriger la syntaxe de ce bloc JSON-LD ? »' : ($ldCount ? 'Faites vérifier que les informations déclarées, par exemple le nom de l’organisation, l’auteur ou la date selon le contenu, correspondent bien à ce qui est affiché sur la page. Si c’est le cas, gardez-les.' : 'Ce point n’est pas une erreur à corriger automatiquement. Occupez-vous d’abord des informations visibles de la page. Si vous êtes accompagné, demandez si une description technique de votre organisation ou de vos articles serait utile.')),$google.'appearance/structured-data/intro-structured-data',15);
+    $ldNames = array_keys($ldTypes);
+    $ldList = $ldNames ? implode(', ', array_slice($ldNames, 0, 6)).(count($ldNames) > 6 ? ', …' : '') : '';
+    $ldEvidence = $ldInvalid
+        ? $ldInvalid.' bloc(s) d’informations ne peuvent pas être lus : leur syntaxe JSON est incorrecte.'.($ldList ? ' Les blocs lisibles déclarent : '.$ldList.'.' : '')
+        : ($ldList
+            ? 'Informations déclarées aux moteurs : '.$ldList.'. Leur exactitude reste à vérifier.'
+            : ($ldCount ? $ldCount.' bloc(s) trouvé(s), mais aucun ne déclare de type reconnaissable.' : 'Aucun bloc de ce type n’a été trouvé dans le code analysé. Ce n’est pas automatiquement une erreur.'));
+    $ldAction = $ldInvalid
+        ? 'Transmettez ce rapport à la personne qui gère le site avec ce message : « Un bloc d’informations pour les moteurs ne peut pas être lu. Pouvez-vous corriger la syntaxe de ce bloc JSON-LD ? »'
+        : ($ldList
+            ? 'Comparez ces déclarations à ce que la page affiche réellement : pour Organization, le nom et les coordonnées ; pour Article ou BlogPosting, le titre, l’auteur et la date ; pour Event, les dates et le lieu. Si tout correspond, gardez-les en l’état.'
+            : 'Ce point n’est pas une erreur à corriger automatiquement. Occupez-vous d’abord des informations visibles de la page. Si vous êtes accompagné, demandez si une description technique de votre organisation ou de vos articles serait utile.');
+    $add('GEO-STRUCTURE','GEO',$ldInvalid ? 'action':'review','Les informations supplémentaires pour les moteurs',$ldEvidence,'Ces informations peuvent décrire une organisation ou un article aux moteurs. Seul le format JSON-LD est vérifié ici ; les autres formats et le contenu ajouté par JavaScript ne le sont pas. Cela ne prouve pas qu’une IA citera votre site.',$ldAction,$google.'appearance/structured-data/intro-structured-data',15);
     // The one thing about assistants that a static read can actually establish.
     $aiSource = $google.'crawling-indexing/overview-google-crawlers';
     if ($robotsText === null) {
