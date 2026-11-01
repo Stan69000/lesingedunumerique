@@ -10,6 +10,26 @@ function reply(int $status, array $body): never {
     http_response_code($status);
     echo json_encode($body, JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_SUBSTITUTE); exit;
 }
+// A few audits may run side by side. The slots still cap concurrent outbound
+// fetches, so a burst cannot exhaust the shared hosting, but two visitors
+// arriving together no longer turn each other away. When every slot is taken
+// the request waits briefly rather than refusing straight away; the handle is
+// released when the process ends.
+const AUDIT_SLOTS = 3;
+const AUDIT_WAIT_SECONDS = 2.0;
+function claim_audit_slot(): mixed {
+    $deadline = microtime(true) + AUDIT_WAIT_SECONDS;
+    do {
+        for ($slot = 0; $slot < AUDIT_SLOTS; $slot++) {
+            $handle = @fopen(sys_get_temp_dir().'/octet-audit-slot-'.$slot.'.lock', 'c+');
+            if (!$handle) continue;
+            if (flock($handle, LOCK_EX | LOCK_NB)) return $handle;
+            fclose($handle);
+        }
+        usleep(100000);
+    } while (microtime(true) < $deadline);
+    return null;
+}
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Allow: POST'); reply(405,['error'=>'L’analyse se lance depuis le formulaire.']); }
 if (isset($_SERVER['HTTP_ORIGIN'])) {
     $host = parse_url($_SERVER['HTTP_ORIGIN'], PHP_URL_HOST);
@@ -22,6 +42,12 @@ if (strlen($raw) > 4096) reply(413,['error'=>'Demande trop volumineuse.']);
 $input = json_decode($raw, true);
 if (!is_array($input) || !is_string($input['url'] ?? null) || !is_string($input['goal'] ?? 'association')) reply(400,['error'=>'Adresse invalide.']);
 if (!extension_loaded('curl') || !extension_loaded('dom')) reply(503,['error'=>'Le serveur doit disposer des extensions PHP cURL et DOM.']);
+// Claimed before the hourly allowance: a visitor turned away because the tool
+// is busy has not been audited, so the attempt must not cost one of their ten.
+$active = claim_audit_slot();
+if (!$active) {
+    header('Retry-After: 30'); reply(503,['error'=>'Beaucoup d’analyses sont en cours. Réessayez dans quelques instants.']);
+}
 // Fixed-size limiter file per hour; no URLs or raw IP addresses are stored.
 $path = sys_get_temp_dir().'/octet-audit-'.gmdate('YmdH').'.json';
 $lock = @fopen($path, 'c+');
@@ -35,11 +61,6 @@ $state[$key] = ($state[$key] ?? 0)+1; $state['_total'] = ($state['_total'] ?? 0)
 ftruncate($lock,0); rewind($lock); fwrite($lock,json_encode($state)); fflush($lock); flock($lock,LOCK_UN); fclose($lock);
 // Delete only expired files belonging to this limiter.
 foreach (glob(sys_get_temp_dir().'/octet-audit-??????????.json') ?: [] as $old) if (filemtime($old) < time()-7200) @unlink($old);
-// One network audit at a time protects the shared PHP hosting.
-$active = @fopen(sys_get_temp_dir().'/octet-audit-active.lock', 'c+');
-if (!$active || !flock($active, LOCK_EX | LOCK_NB)) {
-    header('Retry-After: 30'); reply(503,['error'=>'Octet analyse déjà une page. Réessayez dans quelques instants.']);
-}
 try { reply(200, \Octet\audit_url($input['url'], $input['goal'] ?? 'association')); }
 catch (\RuntimeException $e) { reply(422,['error'=>$e->getMessage()]); }
 catch (\Throwable $e) { reply(503,['error'=>'L’analyse n’a pas pu aboutir. Réessayez plus tard.']); }

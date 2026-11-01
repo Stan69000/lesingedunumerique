@@ -224,3 +224,13 @@ Après le déploiement, `scripts/check-boussole-production.py` n’envoie plus a
 L’étape est désormais `continue-on-error`, comme le healthcheck qui la précède, et une annotation d’avertissement signale son échec. Le déploiement a déjà eu lieu à ce stade ; un échec ne doit plus faire croire à une publication ratée. En contrepartie, un échec réel ne bloque plus rien : il faut lire les avertissements du run. Les six tentatives espacées de 20 secondes couvrent désormais l’ensemble des contrôles, pas seulement les pages.
 
 `npm run test:boussole` exécute `php -l` sur les trois fichiers PHP publics avant les tests. PHP n’est pas installé sur le poste de développement : sans ce garde-fou, une erreur de syntaxe n’apparaîtrait qu’en production.
+
+## Plusieurs analyses à la fois
+
+Le moteur n'acceptait qu'une analyse réseau simultanée sur tout le site : un verrou unique, pris sans attente, renvoyait aussitôt 503 à la seconde personne. Deux visiteurs arrivant ensemble se refusaient mutuellement, et le mode exploration, qui enchaîne cinq appels, rendait la collision courante dès qu'une deuxième personne utilisait l'outil.
+
+Trois créneaux remplacent ce verrou. La limite d'origine reste : le nombre de récupérations réseau menées de front est toujours borné, pour ne pas épuiser l'hébergement mutualisé. Quand les trois sont pris, la demande attend jusqu'à deux secondes qu'un créneau se libère au lieu de refuser immédiatement ; passé ce délai elle répond 503 avec `Retry-After`. Les constantes `AUDIT_SLOTS` et `AUDIT_WAIT_SECONDS` en tête de `audit.php` ajustent ces deux valeurs.
+
+Le créneau est pris avant le décompte horaire. Une demande écartée pour cause de charge n'a donné lieu à aucune analyse : elle ne consomme plus l'une des dix analyses de la personne. L'ancien fichier `octet-audit-active.lock` n'est plus utilisé ; trois fichiers de taille nulle le remplacent, aux noms fixes, sans nettoyage nécessaire.
+
+Vérification locale avec `PHP_CLI_SERVER_WORKERS` : cinq demandes simultanées réussissent toutes, dont deux après une attente inférieure à une seconde. En forçant un créneau unique et une attente de 0,2 seconde, la demande excédentaire reçoit bien le 503 et son message. Quatre contrôles supplémentaires verrouillent la forme du correctif, faute de pouvoir inclure le script de requête dans les tests.

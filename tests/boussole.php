@@ -70,4 +70,13 @@ check(count(\Octet\discover_links($many,'https://example.com/'))===80,'link disc
 check(\Octet\resolve_location('https://example.com/dir/','next/')==='https://example.com/dir/next/','relative directory link is retained');
 try { \Octet\fetch_public('https://example.com/',microtime(true)-1);check(false,'expired budget rejected before DNS'); }
 catch (RuntimeException $e) {check(str_contains($e->getMessage(),'délai'),'expired budget has an explicit error');}
+// The concurrency slots live in the request script, which cannot be included
+// here without running a request. These guard the shape of that fix rather than
+// its behaviour: several audits at once, and no allowance spent on a refusal.
+$auditSource = file_get_contents(__DIR__.'/../public/boussole/audit.php');
+check(preg_match('/const AUDIT_SLOTS = (\\d+);/', $auditSource, $slots) === 1 && (int)$slots[1] >= 2, 'several audits may run side by side');
+check(preg_match('/const AUDIT_WAIT_SECONDS = [\\d.]+;/', $auditSource) === 1, 'a saturated tool waits before refusing');
+check(!str_contains($auditSource, 'octet-audit-active.lock'), 'the single global lock is gone');
+check(strpos($auditSource, '$active = claim_audit_slot();') < strpos($auditSource, '$path = sys_get_temp_dir()'), 'a refusal for load costs no hourly allowance');
+
 echo "$count checks passed\n";
