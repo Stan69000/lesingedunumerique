@@ -9,7 +9,10 @@ test('15-minute plan respects total budget, priorities and excludes human decisi
   const plan=selectPlan(demos.before.checks,15);
   assert.ok(plan.minutes<=15);assert.ok(plan.checks.length<=3);
   assert.ok(plan.checks.every(c=>['action','suggestion'].includes(c.status)));
-  assert.equal(plan.checks[0].id,'SEO-TITLE');
+  // A page no crawler may reach heads the plan: fixing its title first would
+  // polish a page that search engines are not allowed to read.
+  assert.equal(plan.checks[0].id,'SEO-ROBOTS');
+  assert.ok(plan.checks.some(c=>c.id==='SEO-TITLE'));
 });
 test('planning never changes audit findings',()=>{
   const snapshot=JSON.stringify(demos.before);selectPlan(demos.before.checks,15);

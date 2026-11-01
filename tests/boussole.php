@@ -21,10 +21,10 @@ check(str_starts_with($checks['CONTENT-IMAGES']['evidence'],'1 image'),'decorati
 check($checks['GEO-STRUCTURE']['status']==='action','invalid JSON');
 check($checks['GEO-CITATIONS']['status']==='unmeasured','citations not invented');
 $empty=\Octet\analyze_html('<html><body>Test</body></html>','https://example.com/');
-check($empty['checks'][0]['status']==='action','missing title');
+check(array_column($empty['checks'],null,'id')['SEO-TITLE']['status']==='action','missing title');
 $none=\Octet\analyze_html('<html><head><meta name="robots" content="none"></head><body>x</body></html>','https://example.com/');
 check(array_column($none['checks'],null,'id')['SEO-NOINDEX']['status']==='review','robots none');
-check(count($report['checks'])===13,'stable scope');
+check(count($report['checks'])===14,'stable scope');
 
 // Realistic regression cases: a root slash must not alarm a beginner, while
 // a different host, scheme or article path must never be silently accepted.
@@ -141,17 +141,34 @@ $ours = \Octet\robots_rule("User-agent: OctetAudit\nDisallow: /", '/page');
 check($ours !== null && $ours['agents'] === ['octetaudit'], 'a rule aimed at this tool alone is told apart');
 check(\Octet\robots_rule("User-agent: other\nDisallow: /", '/') === null, 'a rule for another robot does not match');
 
-$blocked = \Octet\robots_finding($all, 'https://example.com', 'https://example.com/prive/a');
+$blocked = \Octet\robots_finding('blocked', 'https://example.com', 'https://example.com/prive/a', ['rule'=>$all]);
 check($blocked['id'] === 'SEO-ROBOTS' && $blocked['status'] === 'action', 'a site closed to every crawler is an action');
 check(str_contains($blocked['evidence'], 'Disallow: /prive') && str_contains($blocked['evidence'], 'Google'), 'the blocking rule and its reach are shown');
 check(($blocked['planEligible'] ?? true) !== false, 'the blocking rule can head the action plan');
-$mine = \Octet\robots_finding($ours, 'https://example.com', 'https://example.com/page');
+$mine = \Octet\robots_finding('blocked', 'https://example.com', 'https://example.com/page', ['rule'=>$ours]);
 check($mine['status'] === 'review' && str_contains($mine['why'], 'ne sont pas concernés'), 'excluding this tool alone is not an SEO fault');
-$unreadable = \Octet\robots_finding(null, 'https://example.com', 'https://example.com/', 500);
+$unreadable = \Octet\robots_finding('unreadable', 'https://example.com', 'https://example.com/', ['status'=>500]);
 check($unreadable['status'] === 'review' && str_contains($unreadable['evidence'], '500'), 'an unreadable robots.txt reports its HTTP code');
 
 $report = \Octet\robots_report($blocked, 'https://example.com/prive/a', 'https://example.com/prive/a', 'association');
 check(count($report['checks']) === 1 && $report['checks'][0]['id'] === 'SEO-ROBOTS', 'a blocked audit returns one explained finding');
+// Present in every report now, so a healthy site is told so instead of hearing nothing.
+$robotsOf = static function (?string $robots) {
+    foreach (\Octet\analyze_html('<html lang="fr"><head><title>T</title></head><body><h1>T</h1><p>'.str_repeat('mot ', 80).'</p></body></html>', 'https://example.com/page', 'association', [], $robots)['checks'] as $c) {
+        if ($c['id'] === 'SEO-ROBOTS') return $c;
+    }
+    throw new RuntimeException('SEO-ROBOTS absent du rapport');
+};
+$open = $robotsOf("User-agent: *\nAllow: /");
+check($open['status'] === 'ok' && str_contains($open['evidence'], 'Aucune de ses règles'), 'a permissive robots.txt is reported as a verified point');
+check(str_contains($open['action'], 'noindex'), 'the advice points to noindex for pages meant to stay out of search');
+$none = $robotsOf('');
+check($none['status'] === 'ok' && str_contains($none['evidence'], 'Aucun fichier robots.txt'), 'a missing file is told apart from a permissive one');
+check($robotsOf(null)['status'] === 'unmeasured', 'without a robots.txt the access is not guessed');
+// analyze_html is also called on its own, so it evaluates the rule rather than
+// trusting that audit_url already cleared the page.
+$shut = $robotsOf("User-agent: *\nDisallow: /");
+check($shut['status'] === 'action' && str_contains($shut['evidence'], 'Disallow: /'), 'a blocking file read directly is still reported as blocking');
 check($report['discoveredLinks'] === [] && str_contains($report['scope'], 'n’a pas été récupérée'), 'the report says the page was never downloaded');
 check($report['engineVersion'] === \Octet\VERSION && $report['schemaVersion'] === '1.0', 'the blocked report keeps the usual shape');
 
