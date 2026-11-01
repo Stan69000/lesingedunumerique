@@ -18,8 +18,7 @@ form.querySelectorAll('input[name="audit-mode"]').forEach(input=>input.addEventL
   get('mode-help').textContent=auditMode()==='site' ? 'Jusqu’à 5 pages reliées sur le même site. Gardez cet onglet ouvert. Les pages isolées ne seront pas découvertes.' : 'Une page sera analysée, sans visiter les autres rubriques.';
   get('audit-submit').firstChild!.textContent=auditMode()==='site' ? 'Explorer ce site ' : 'Analyser cette page ';
 }));
-const stopButton=document.createElement('button');stopButton.textContent='Arrêter l’exploration';
-stopButton.type='button';stopButton.hidden=true;get('audit-status').after(stopButton);
+const stopButton=get<HTMLButtonElement>('audit-stop');
 stopButton.addEventListener('click',()=>{stopped=true;activeController?.abort();});
 let checklistKey = '';
 const declaredDone = new Set<string>();
