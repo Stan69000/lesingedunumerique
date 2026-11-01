@@ -234,3 +234,17 @@ Trois créneaux remplacent ce verrou. La limite d'origine reste : le nombre de r
 Le créneau est pris avant le décompte horaire. Une demande écartée pour cause de charge n'a donné lieu à aucune analyse : elle ne consomme plus l'une des dix analyses de la personne. L'ancien fichier `octet-audit-active.lock` n'est plus utilisé ; trois fichiers de taille nulle le remplacent, aux noms fixes, sans nettoyage nécessaire.
 
 Vérification locale avec `PHP_CLI_SERVER_WORKERS` : cinq demandes simultanées réussissent toutes, dont deux après une attente inférieure à une seconde. En forçant un créneau unique et une attente de 0,2 seconde, la demande excédentaire reçoit bien le 503 et son message. Quatre contrôles supplémentaires verrouillent la forme du correctif, faute de pouvoir inclure le script de requête dans les tests.
+
+## Un robots.txt bloquant devient un constat — moteur 0.3.0
+
+Un site dont le `robots.txt` interdit l'exploration recevait une erreur 422 : « Une règle de robots.txt empêche cet audit. » La personne qui a précisément ce problème — l'oubli le plus fréquent après une mise en ligne, celui qui rend un site invisible dans les moteurs — était la seule à qui la Boussole ne disait rien. Le fichier n'était lu que pour décider si notre robot avait le droit de passer, jamais pour vérifier si Google l'avait.
+
+L'audit refuse toujours de récupérer une page que `robots.txt` lui interdit : cette règle ne change pas. Ce qui change, c'est la réponse rendue. `robots_rule()` remplace `robots_denies()` et indique quels agents la règle nomme, ce qui distingue trois situations :
+
+- La règle vise `*` : elle couvre tous les robots, ceux de Google compris. Constat `SEO-ROBOTS` en « À améliorer », avec la ligne exacte en preuve, l'explication du risque et la marche à suivre. La possibilité d'un blocage volontaire pendant la construction du site est rappelée dans l'action, sans présumer d'une erreur.
+- La règle ne vise que `OctetAudit` : le référencement n'est pas en cause. Constat « À vérifier » qui le dit, et explique comment autoriser notre robot.
+- Le fichier est illisible ou redirigé : constat « À vérifier » avec le code HTTP obtenu, sans attribuer la cause au site.
+
+Le rapport rendu ne contient que ce constat : la page n'ayant pas été téléchargée, aucun autre contrôle n'a de preuve à montrer. Son `scope` et ses limites le disent explicitement, et `discoveredLinks` est vide, ce qui arrête proprement le mode exploration. Le chemin normal est inchangé : onze contrôles, mêmes identifiants.
+
+`SEO-ROBOTS` rejoint le plan d'action et renvoie aux fiches `robots.txt` et `Indexation` du lexique. Vérification : 119 contrôles PHP et 23 tests Node, et un audit réel de `https://www.google.com/search`, bloqué par `Disallow: /search`, qui rend bien le constat sans récupérer la page. Les exemples de démonstration et les aperçus autonomes sont régénérés en 0.3.0.

@@ -70,6 +70,28 @@ check(count(\Octet\discover_links($many,'https://example.com/'))===80,'link disc
 check(\Octet\resolve_location('https://example.com/dir/','next/')==='https://example.com/dir/next/','relative directory link is retained');
 try { \Octet\fetch_public('https://example.com/',microtime(true)-1);check(false,'expired budget rejected before DNS'); }
 catch (RuntimeException $e) {check(str_contains($e->getMessage(),'délai'),'expired budget has an explicit error');}
+// A blocking robots.txt is a finding, not a failure: the page is still never
+// fetched, but the visitor is told which rule closed it and to whom.
+$all = \Octet\robots_rule("User-agent: *\nDisallow: /prive", '/prive/a');
+check($all !== null && $all['agents'] === ['*'] && $all['disallow'] === '/prive', 'a rule for every crawler is named as such');
+$ours = \Octet\robots_rule("User-agent: OctetAudit\nDisallow: /", '/page');
+check($ours !== null && $ours['agents'] === ['octetaudit'], 'a rule aimed at this tool alone is told apart');
+check(\Octet\robots_rule("User-agent: other\nDisallow: /", '/') === null, 'a rule for another robot does not match');
+
+$blocked = \Octet\robots_finding($all, 'https://example.com', 'https://example.com/prive/a');
+check($blocked['id'] === 'SEO-ROBOTS' && $blocked['status'] === 'action', 'a site closed to every crawler is an action');
+check(str_contains($blocked['evidence'], 'Disallow: /prive') && str_contains($blocked['evidence'], 'Google'), 'the blocking rule and its reach are shown');
+check(($blocked['planEligible'] ?? true) !== false, 'the blocking rule can head the action plan');
+$mine = \Octet\robots_finding($ours, 'https://example.com', 'https://example.com/page');
+check($mine['status'] === 'review' && str_contains($mine['why'], 'ne sont pas concernés'), 'excluding this tool alone is not an SEO fault');
+$unreadable = \Octet\robots_finding(null, 'https://example.com', 'https://example.com/', 500);
+check($unreadable['status'] === 'review' && str_contains($unreadable['evidence'], '500'), 'an unreadable robots.txt reports its HTTP code');
+
+$report = \Octet\robots_report($blocked, 'https://example.com/prive/a', 'https://example.com/prive/a', 'association');
+check(count($report['checks']) === 1 && $report['checks'][0]['id'] === 'SEO-ROBOTS', 'a blocked audit returns one explained finding');
+check($report['discoveredLinks'] === [] && str_contains($report['scope'], 'n’a pas été récupérée'), 'the report says the page was never downloaded');
+check($report['engineVersion'] === \Octet\VERSION && $report['schemaVersion'] === '1.0', 'the blocked report keeps the usual shape');
+
 // The concurrency slots live in the request script, which cannot be included
 // here without running a request. These guard the shape of that fix rather than
 // its behaviour: several audits at once, and no allowance spent on a refusal.

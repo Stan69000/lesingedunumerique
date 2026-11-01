@@ -23,3 +23,5 @@ public/contact-config.local.php
 
 # jetbrains setting folder
 .idea/
+# aperçus autonomes régénérés par scripts/boussole-standalone.py
+previews/

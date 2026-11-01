@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.2.1';
+const VERSION = '0.3.0';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -80,8 +80,10 @@ function fetch_public(string $url, ?float $deadline = null): array {
 }
 
 // Conservative robots policy: any matching Disallow in * or OctetAudit groups
-// stops this small public tool. Allow exceptions are intentionally not interpreted.
-function robots_denies(string $text, string $path): bool {
+// stops this small public tool. Allow exceptions are intentionally not
+// interpreted. Returns which agents the rule names, so a page closed to every
+// crawler can be told apart from one that excludes this tool alone.
+function robots_rule(string $text, string $path): ?array {
     $agents = []; $inRules = false;
     foreach (preg_split('/\r?\n/', $text) as $line) {
         $line = trim(explode('#', $line, 2)[0]);
@@ -92,13 +94,49 @@ function robots_denies(string $text, string $path): bool {
             $agents[] = strtolower($value);
         } elseif (strtolower($key) === 'disallow') {
             $inRules = true;
-            if ($value === '' || !array_intersect($agents, ['*','octetaudit'])) continue;
+            $named = array_values(array_intersect($agents, ['*','octetaudit']));
+            if ($value === '' || !$named) continue;
             $end = str_ends_with($value, '$');
             $pattern = str_replace('\\*', '.*', preg_quote($end ? substr($value,0,-1) : $value, '~'));
-            if (preg_match('~^'.$pattern.($end ? '$' : '').'~', $path)) return true;
+            if (preg_match('~^'.$pattern.($end ? '$' : '').'~', $path)) return ['agents'=>$named, 'disallow'=>$value];
         } elseif ($agents) $inRules = true;
     }
-    return false;
+    return null;
+}
+function robots_denies(string $text, string $path): bool { return robots_rule($text, $path) !== null; }
+
+/** A blocked page is a finding to explain, not a failure to report. */
+function robots_finding(?array $rule, string $origin, string $url, ?int $status = null): array {
+    $source = 'https://developers.google.com/search/docs/crawling-indexing/robots/intro';
+    $base = ['id'=>'SEO-ROBOTS', 'category'=>'SEO', 'source'=>$source, 'url'=>$url];
+    if ($rule === null) return $base + ['status'=>'review', 'minutes'=>5,
+        'title'=>'Le fichier robots.txt n’a pas pu être lu',
+        'evidence'=>'Réponse HTTP '.($status ?? 0).' pour '.$origin.'/robots.txt',
+        'why'=>'Ce fichier, placé à la racine du site, indique aux robots ce qu’ils ont le droit d’explorer. Faute d’avoir pu le lire, nous ignorons si l’exploration est autorisée : par prudence, la page n’a pas été récupérée. Cela ne prouve pas que les moteurs rencontrent la même difficulté.',
+        'action'=>'Ouvrez '.$origin.'/robots.txt dans votre navigateur. Si le fichier ne s’affiche pas comme du texte simple, demandez à la personne qui gère le site de vérifier qu’il est bien servi à cette adresse, puis relancez l’analyse.'];
+    $line = 'Disallow: '.$rule['disallow'];
+    if (!in_array('*', $rule['agents'], true)) return $base + ['status'=>'review', 'minutes'=>5,
+        'title'=>'Votre site refuse l’exploration par notre outil',
+        'evidence'=>$origin.'/robots.txt · User-agent: OctetAudit · '.$line,
+        'why'=>'Cette règle ne vise que le robot du Singe. Les moteurs de recherche ne sont pas concernés : votre référencement n’est pas en cause ici.',
+        'action'=>'Il n’y a rien à corriger pour les moteurs. Pour obtenir ce bilan, demandez à la personne qui gère le site d’autoriser le robot nommé OctetAudit dans le fichier robots.txt, puis relancez l’analyse.'];
+    return $base + ['status'=>'action', 'minutes'=>10,
+        'title'=>'Votre site demande aux robots de ne pas explorer cette page',
+        'evidence'=>$origin.'/robots.txt · User-agent: * · '.$line.' · Cette règle vise tous les robots, ceux de Google compris.',
+        'why'=>'Le fichier robots.txt indique aux robots ce qu’ils ont le droit d’explorer. Une règle qui couvre cette page empêche les moteurs de la lire : elle a donc peu de chances d’apparaître dans les résultats de recherche. C’est l’oubli le plus fréquent après la mise en ligne d’un site.',
+        'action'=>'Ouvrez '.$origin.'/robots.txt et retrouvez la ligne indiquée ci-dessus. Si vous souhaitez que cette page soit trouvable, demandez à la personne qui gère le site de retirer cette règle ou d’en réduire la portée. Ce blocage est parfois volontaire pendant la construction d’un site : dans ce cas, ne changez rien tant qu’il n’est pas prêt.'];
+}
+
+/** The page was never fetched, so the report carries that one finding alone. */
+function robots_report(array $finding, string $url, string $requested, string $goal): array {
+    return ['schemaVersion'=>'1.0', 'engineVersion'=>VERSION, 'generatedAt'=>gmdate('c'), 'url'=>$url, 'goal'=>$goal,
+        'scope'=>'Le fichier robots.txt du site a été lu. La page elle-même n’a pas été récupérée.',
+        'limitations'=>[
+            'Aucun contrôle du titre, du contenu ou des réglages de la page : elle n’a pas été téléchargée.',
+            'Respect prudent de robots.txt : les exceptions Allow ne sont pas interprétées.',
+            'Ce constat décrit une règle écrite dans votre fichier, pas le comportement réel des moteurs.',
+        ],
+        'checks'=>[$finding], 'requestedUrl'=>$requested, 'discoveredLinks'=>[]];
 }
 
 /** Public HTML links only: no forms, query strings, assets or other origins. */
@@ -136,10 +174,14 @@ function audit_url(string $url, string $goal = 'association'): array {
         $p = parse_url($url); $origin = $p['scheme'].'://'.$p['host'];
         if (!isset($robotsChecked[$origin])) {
             $robots = fetch_public($origin.'/robots.txt', $deadline);
-            if ($robots['status'] !== 404 && $robots['status'] !== 410 && $robots['status'] !== 200) throw new \RuntimeException('Le fichier robots.txt est inaccessible ou redirigé. Cet audit prudent ne poursuit pas l’analyse.');
+            // Still never fetched without permission; the refusal is now explained.
+            if ($robots['status'] !== 404 && $robots['status'] !== 410 && $robots['status'] !== 200) {
+                return robots_report(robots_finding(null, $origin, $url, $robots['status']), $url, $requested, $goal);
+            }
             $robotsChecked[$origin] = $robots['status'] === 200 ? $robots['html'] : '';
         }
-        if (robots_denies($robotsChecked[$origin], $p['path'] ?? '/')) throw new \RuntimeException('Une règle de robots.txt empêche cet audit. Par prudence, les exceptions Allow ne sont pas interprétées.');
+        $rule = robots_rule($robotsChecked[$origin], $p['path'] ?? '/');
+        if ($rule) return robots_report(robots_finding($rule, $origin, $url), $url, $requested, $goal);
         $page = fetch_public($url, $deadline);
         if (in_array($page['status'], [301,302,303,307,308], true)) {
             $location = $page['headers']['location'][0] ?? '';
