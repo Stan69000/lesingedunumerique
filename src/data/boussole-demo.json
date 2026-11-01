@@ -1,7 +1,7 @@
 {
     "before": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.5.0",
+        "engineVersion": "0.6.0",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -14,6 +14,18 @@
             "Respect prudent de robots.txt : les exceptions Allow ne sont pas interprétées."
         ],
         "checks": [
+            {
+                "id": "SEO-ROBOTS",
+                "category": "SEO",
+                "source": "https://developers.google.com/search/docs/crawling-indexing/robots/intro",
+                "url": "https://ateliers-du-lien.example/",
+                "status": "action",
+                "minutes": 10,
+                "title": "Votre site demande aux robots de ne pas explorer cette page",
+                "evidence": "https://ateliers-du-lien.example/robots.txt · User-agent: * · Disallow: / · Cette règle vise tous les robots, ceux de Google compris.",
+                "why": "Le fichier robots.txt, placé à la racine du site, indique aux robots ce qu’ils ont le droit d’explorer. Une règle qui couvre cette page empêche les moteurs de la lire : elle a donc peu de chances d’apparaître dans les résultats de recherche. C’est l’oubli le plus fréquent après la mise en ligne d’un site.",
+                "action": "Ouvrez https://ateliers-du-lien.example/robots.txt et retrouvez la ligne indiquée ci-dessus. Si vous souhaitez que cette page soit trouvable, demandez à la personne qui gère le site de retirer cette règle ou d’en réduire la portée. Ce blocage est parfois volontaire pendant la construction d’un site : dans ce cas, ne changez rien tant qu’il n’est pas prêt."
+            },
             {
                 "id": "SEO-TITLE",
                 "category": "SEO",
@@ -177,7 +189,7 @@
     },
     "after": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.5.0",
+        "engineVersion": "0.6.0",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -190,6 +202,18 @@
             "Respect prudent de robots.txt : les exceptions Allow ne sont pas interprétées."
         ],
         "checks": [
+            {
+                "id": "SEO-ROBOTS",
+                "category": "SEO",
+                "source": "https://developers.google.com/search/docs/crawling-indexing/robots/intro",
+                "url": "https://ateliers-du-lien.example/",
+                "status": "ok",
+                "minutes": 5,
+                "title": "Les moteurs ont le droit d’explorer cette page",
+                "evidence": "Fichier robots.txt lu sur https://ateliers-du-lien.example. Aucune de ses règles ne couvre cette page.",
+                "why": "Le fichier robots.txt indique aux robots ce qu’ils ont le droit d’explorer. Rien n’empêche ici l’exploration de cette page. Cela ne prouve pas que Google la connaisse déjà ni qu’il l’affiche dans ses résultats.",
+                "action": "Rien à modifier pour ce contrôle. Si vous souhaitiez au contraire tenir cette page à l’écart des moteurs, c’est le réglage noindex, examiné plus haut, qui s’en charge — robots.txt ne suffit pas."
+            },
             {
                 "id": "SEO-TITLE",
                 "category": "SEO",

@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.5.0';
+const VERSION = '0.6.0';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -148,15 +148,35 @@ function ai_crawler_access(string $robotsText, string $path): array {
 }
 function robots_denies(string $text, string $path): bool { return robots_rule($text, $path) !== null; }
 
-/** A blocked page is a finding to explain, not a failure to report. */
-function robots_finding(?array $rule, string $origin, string $url, ?int $status = null): array {
+/** The four states robots.txt can leave a page in, in one wording each.
+ *  $context carries 'rule' when blocked, 'status' when unreadable, and
+ *  'hasFile' to tell a permissive file from an absent one. */
+function robots_finding(string $state, string $origin, string $url, array $context = []): array {
     $source = 'https://developers.google.com/search/docs/crawling-indexing/robots/intro';
     $base = ['id'=>'SEO-ROBOTS', 'category'=>'SEO', 'source'=>$source, 'url'=>$url];
-    if ($rule === null) return $base + ['status'=>'review', 'minutes'=>5,
+    $why = 'Le fichier robots.txt, placé à la racine du site, indique aux robots ce qu’ils ont le droit d’explorer. Une règle qui couvre cette page empêche les moteurs de la lire : elle a donc peu de chances d’apparaître dans les résultats de recherche. C’est l’oubli le plus fréquent après la mise en ligne d’un site.';
+
+    if ($state === 'unknown') return $base + ['status'=>'unmeasured', 'minutes'=>5,
+        'title'=>'Les robots ont-ils le droit d’explorer cette page ?',
+        'evidence'=>'Le fichier robots.txt du site n’a pas été consulté pour cet exemple.',
+        'why'=>$why,
+        'action'=>'Lancez une analyse sur une adresse en ligne pour obtenir ce constat.'];
+
+    if ($state === 'unreadable') return $base + ['status'=>'review', 'minutes'=>5,
         'title'=>'Le fichier robots.txt n’a pas pu être lu',
-        'evidence'=>'Réponse HTTP '.($status ?? 0).' pour '.$origin.'/robots.txt',
-        'why'=>'Ce fichier, placé à la racine du site, indique aux robots ce qu’ils ont le droit d’explorer. Faute d’avoir pu le lire, nous ignorons si l’exploration est autorisée : par prudence, la page n’a pas été récupérée. Cela ne prouve pas que les moteurs rencontrent la même difficulté.',
+        'evidence'=>'Réponse HTTP '.($context['status'] ?? 0).' pour '.$origin.'/robots.txt',
+        'why'=>'Ce fichier indique aux robots ce qu’ils ont le droit d’explorer. Faute d’avoir pu le lire, nous ignorons si l’exploration est autorisée : par prudence, la page n’a pas été récupérée. Cela ne prouve pas que les moteurs rencontrent la même difficulté.',
         'action'=>'Ouvrez '.$origin.'/robots.txt dans votre navigateur. Si le fichier ne s’affiche pas comme du texte simple, demandez à la personne qui gère le site de vérifier qu’il est bien servi à cette adresse, puis relancez l’analyse.'];
+
+    if ($state === 'allowed') return $base + ['status'=>'ok', 'minutes'=>5,
+        'title'=>'Les moteurs ont le droit d’explorer cette page',
+        'evidence'=>($context['hasFile'] ?? true)
+            ? 'Fichier robots.txt lu sur '.$origin.'. Aucune de ses règles ne couvre cette page.'
+            : 'Aucun fichier robots.txt n’a été trouvé sur '.$origin.'. Sans ce fichier, les robots explorent librement le site.',
+        'why'=>'Le fichier robots.txt indique aux robots ce qu’ils ont le droit d’explorer. Rien n’empêche ici l’exploration de cette page. Cela ne prouve pas que Google la connaisse déjà ni qu’il l’affiche dans ses résultats.',
+        'action'=>'Rien à modifier pour ce contrôle. Si vous souhaitiez au contraire tenir cette page à l’écart des moteurs, c’est le réglage noindex, examiné plus haut, qui s’en charge — robots.txt ne suffit pas.'];
+
+    $rule = $context['rule'] ?? ['agents'=>[], 'disallow'=>''];
     $line = 'Disallow: '.$rule['disallow'];
     if (!in_array('*', $rule['agents'], true)) return $base + ['status'=>'review', 'minutes'=>5,
         'title'=>'Votre site refuse l’exploration par notre outil',
@@ -166,7 +186,7 @@ function robots_finding(?array $rule, string $origin, string $url, ?int $status 
     return $base + ['status'=>'action', 'minutes'=>10,
         'title'=>'Votre site demande aux robots de ne pas explorer cette page',
         'evidence'=>$origin.'/robots.txt · User-agent: * · '.$line.' · Cette règle vise tous les robots, ceux de Google compris.',
-        'why'=>'Le fichier robots.txt indique aux robots ce qu’ils ont le droit d’explorer. Une règle qui couvre cette page empêche les moteurs de la lire : elle a donc peu de chances d’apparaître dans les résultats de recherche. C’est l’oubli le plus fréquent après la mise en ligne d’un site.',
+        'why'=>$why,
         'action'=>'Ouvrez '.$origin.'/robots.txt et retrouvez la ligne indiquée ci-dessus. Si vous souhaitez que cette page soit trouvable, demandez à la personne qui gère le site de retirer cette règle ou d’en réduire la portée. Ce blocage est parfois volontaire pendant la construction d’un site : dans ce cas, ne changez rien tant qu’il n’est pas prêt.'];
 }
 
@@ -219,12 +239,12 @@ function audit_url(string $url, string $goal = 'association'): array {
             $robots = fetch_public($origin.'/robots.txt', $deadline);
             // Still never fetched without permission; the refusal is now explained.
             if ($robots['status'] !== 404 && $robots['status'] !== 410 && $robots['status'] !== 200) {
-                return robots_report(robots_finding(null, $origin, $url, $robots['status']), $url, $requested, $goal);
+                return robots_report(robots_finding('unreadable', $origin, $url, ['status'=>$robots['status']]), $url, $requested, $goal);
             }
             $robotsChecked[$origin] = $robots['status'] === 200 ? $robots['html'] : '';
         }
         $rule = robots_rule($robotsChecked[$origin], $p['path'] ?? '/');
-        if ($rule) return robots_report(robots_finding($rule, $origin, $url), $url, $requested, $goal);
+        if ($rule) return robots_report(robots_finding('blocked', $origin, $url, ['rule'=>$rule]), $url, $requested, $goal);
         $page = fetch_public($url, $deadline);
         if (in_array($page['status'], [301,302,303,307,308], true)) {
             $location = $page['headers']['location'][0] ?? '';
@@ -299,6 +319,15 @@ function analyze_html(string $html, string $url, string $goal = 'association', a
         $checks[] = compact('id','category','status','title','evidence','why','action','source','minutes','url');
     };
     $google = 'https://developers.google.com/search/docs/';
+    $origin = parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST);
+    // audit_url only reaches here when the page was allowed, but the rule is
+    // evaluated rather than assumed: analyze_html is also called on its own.
+    $robotsRule = $robotsText === null ? null : robots_rule($robotsText, parse_url($url, PHP_URL_PATH) ?: '/');
+    $checks[] = $robotsText === null
+        ? robots_finding('unknown', $origin, $url)
+        : ($robotsRule
+            ? robots_finding('blocked', $origin, $url, ['rule'=>$robotsRule])
+            : robots_finding('allowed', $origin, $url, ['hasFile'=>trim($robotsText) !== '']));
     $add('SEO-TITLE','SEO', $title ? 'ok':'action', 'Le nom de votre page dans les recherches', $title ?: 'Aucun titre HTML trouvé.', 'Le titre est comme l’étiquette d’un livre : il aide à choisir la bonne page.', $title ? 'Lisez le titre affiché ci-dessus. Décrit-il clairement cette page ? Si oui, gardez-le. Sinon, modifiez le titre dans les réglages SEO de cette page ou transmettez un nouveau titre à la personne qui gère le site.' : 'Dans votre outil de publication, ouvrez cette page, puis ses réglages SEO. Renseignez un titre qui explique le sujet et le nom de votre activité. Si vous ne trouvez pas ce réglage, envoyez ce rapport à la personne qui gère le site.', $google.'appearance/title-link');
     $add('SEO-DESCRIPTION','SEO',$description ? 'ok':'suggestion','Présenter la page en quelques mots',$description ?: 'Aucune description trouvée.','La description peut aider le moteur à présenter la page ; il peut aussi choisir un autre extrait.',$description ? 'Relisez le résumé affiché ci-dessus. Explique-t-il ce que le visiteur trouvera sur cette page ? Si oui, gardez-le. Sinon, remplacez-le dans les réglages SEO de la page.' : 'Écrivez une ou deux phrases qui présentent cette page, puis ajoutez-les dans le champ Description ou Méta-description de ses réglages SEO. Vous pouvez aussi transmettre ce texte à la personne qui gère le site.',$google.'appearance/snippet');
     $add('SEO-NOINDEX','SEO',preg_match('/\b(noindex|none)\b/', $robots) ? 'review':'ok','Vérifier le choix d’apparaître dans les moteurs',$robots ?: 'Aucune directive noindex détectée dans le HTML ou les en-têtes.','Une directive noindex peut être volontaire : brouillon, page privée ou contenu à exclure. Son absence ne prouve pas que la page est indexée.',preg_match('/\b(noindex|none)\b/', $robots) ? 'Si cette page doit être trouvable sur les moteurs, demandez à la personne qui gère le site de vérifier l’option qui masque cette page aux moteurs de recherche. Si vous souhaitez volontairement la garder à l’écart des recherches, ne changez rien.' : 'Aucun blocage noindex n’a été repéré : rien à modifier pour ce contrôle. Cela ne prouve pas que Google connaît déjà cette page.',$google.'crawling-indexing/robots-meta-tag');

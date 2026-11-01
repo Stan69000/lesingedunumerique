@@ -318,3 +318,22 @@ La carte d'introduction devient « GEO : lisible par les assistants », et décr
 151 contrôles PHP et 23 tests Node. Les nouveaux couvrent la priorité d'un groupe nommé sur le groupe `*`, la différence entre blocage nommé et blocage général, l'absence de `robots.txt` qui donne « non mesuré » plutôt qu'une supposition, le comptage de mots et l'exclusion du contenu des scripts. Audit réel de notre page d'accueil, rendu vérifié dans le navigateur.
 
 Les exemples de démonstration racontent aussi cette correction : l'association fictive écarte les assistants avant, les autorise après. Leurs fichiers ont reçu un contenu éditorial réaliste, les textes d'origine tombant sous le seuil des cinquante mots et déclenchant un constat qui n'aurait rien décrit de leur cas.
+
+## SEO-ROBOTS dans chaque rapport — moteur 0.6.0
+
+Le constat n'apparaissait que lorsque l'exploration était refusée. Un site dont le `robots.txt` est correct n'en entendait donc jamais parler, alors que c'est le réglage qui décide si tout le reste sert à quelque chose. Il devient le quatorzième contrôle, présent dans chaque rapport, symétrique de `GEO-AI-CRAWLERS` livré en 0.5.0.
+
+`robots_finding()` est refondu autour d'un état explicite — `unknown`, `unreadable`, `allowed`, `blocked` — plutôt que de deviner la situation d'après la nullité de ses paramètres. Les contextes particuliers passent dans un tableau nommé. Quatre formulations :
+
+- Aucun `robots.txt` consulté, cas des exemples hors ligne : « Non mesuré ». Rien n'est supposé.
+- Fichier illisible ou redirigé : « À vérifier », avec le code HTTP obtenu.
+- Aucune règle ne couvre la page : « Point vérifié ». L'absence de fichier est distinguée d'un fichier permissif, et l'action rappelle que c'est `noindex`, et non `robots.txt`, qui tient une page à l'écart des résultats — la confusion est fréquente.
+- Une règle couvre la page : « À améliorer » pour une règle visant tous les robots, « À vérifier » pour une règle ne visant que notre outil. Formulations inchangées depuis 0.3.0.
+
+`analyze_html()` évalue désormais la règle au lieu de supposer que la page a été autorisée. Dans le moteur, `audit_url()` ne l'appelle que sur une page autorisée, mais le générateur de démonstration l'appelle directement : sans cette évaluation, un exemple bloqué se serait affiché comme autorisé.
+
+Le constat est émis en tête des contrôles. `selectPlan()` suit l'ordre d'émission, et une page qu'aucun robot n'a le droit d'atteindre doit mener le plan d'action : soigner son titre d'abord reviendrait à polir une page que les moteurs n'ont pas le droit de lire. L'exemple « avant » le montre — la correction du `robots.txt` passe devant le titre.
+
+Un test indexait les constats par position plutôt que par identifiant ; il a été corrigé, cette fragilité n'ayant rien à voir avec le contrôle ajouté.
+
+Vérification : 160 contrôles PHP et 23 tests Node, audit réel de notre accueil en « Point vérifié », démonstration rejouée dans le navigateur avant et après.
