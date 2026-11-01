@@ -267,3 +267,22 @@ Ce contrôle a trouvé un défaut réel sur notre propre site dès sa première 
 La fiche « Open Graph » rejoint le lexique SEO, qui passe de 32 à 33 entrées et le lexique commun de 205 à 206. `ogp.me`, spécification du protocole, rejoint la liste des sources primaires admises par les tests. Le constat renvoie aux fiches « Open Graph » et « CTR ».
 
 L'exemple de démonstration raconte désormais aussi cette correction : le fichier « avant » n'a pas d'image de partage, le fichier « après » en déclare une. Vérification : 133 contrôles PHP, 23 tests Node, audit réel de notre site et rendu contrôlé dans le navigateur. L'étape de pré-déploiement attend maintenant douze identifiants.
+
+## Le premier défaut corrigé grâce au contrôle
+
+`SOCIAL-PREVIEW` ayant signalé que notre propre `og:image` désignait `logo.svg`, un format que Facebook, LinkedIn et WhatsApp n'affichent pas, le site reçoit une véritable image de partage : `public/partage.png`, 1200 par 630 pixels, 239 Ko.
+
+Les balises `og:image` et `twitter:image` de la mise en page commune, de l'accueil, de la liste du blog et des articles pointent désormais vers ce fichier. Le champ `image` des données structurées d'article suit le même chemin : Google n'accepte pas le SVG pour ce champ. Les pages de BD conservent leur propre planche, passée en propriété à la mise en page.
+
+Le logo en SVG reste utilisé partout où il s'agit d'un logo : l'en-tête, le pied de page, la page de maintenance, et les champs `logo` des données structurées d'organisation. Une bannière de partage n'est pas un logo, et ces champs attendent un logo. Leur format reste à arbitrer séparément.
+
+L'image est reproductible : `scripts/partage-image.html` en contient la source, qui compose le logo, le nom, la signature et les couleurs de marque, puis se capture avec un navigateur sans interface.
+
+```sh
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --headless=new --disable-gpu --hide-scrollbars --window-size=1200,630 \
+  --virtual-time-budget=8000 --screenshot=public/partage.png \
+  "file://$PWD/scripts/partage-image.html"
+```
+
+Le rendu dépend des polices Space Grotesk et JetBrains Mono, chargées depuis Google Fonts : la machine qui régénère l'image doit avoir accès au réseau. Vérification : image reproduite à l'identique depuis le script versionné, `og:image` contrôlé dans quatre pages du build, planche de BD préservée, et le contrôle `SOCIAL-PREVIEW` de la Boussole qui passe de « À vérifier » à « Point vérifié » sur notre page d'accueil.

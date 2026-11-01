@@ -57,7 +57,7 @@ const articleSchema = {
     },
   },
   mainEntityOfPage: canonicalUrl,
-  image: `${siteSettings.siteUrl}/logo.svg`,
+  image: `${siteSettings.siteUrl}/partage.png`,
   inLanguage: 'fr-FR',
   timeRequired: `PT${readingTimeMinutes}M`,
 };
@@ -78,13 +78,13 @@ const articleSchema = {
     <meta property="og:description" content={post.data.description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:image" content={`${siteSettings.siteUrl}/logo.svg`} />
+    <meta property="og:image" content={`${siteSettings.siteUrl}/partage.png`} />
     <meta property="article:published_time" content={post.data.pubDate.toISOString()} />
     <meta property="article:author" content={post.data.author || siteSettings.siteName} />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={articleTitle} />
     <meta name="twitter:description" content={post.data.description} />
-    <meta name="twitter:image" content={`${siteSettings.siteUrl}/logo.svg`} />
+    <meta name="twitter:image" content={`${siteSettings.siteUrl}/partage.png`} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
