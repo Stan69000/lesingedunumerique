@@ -52,4 +52,13 @@ $absent=canonical_test('');
 check($absent['status']==='suggestion','missing canonical is not an automatic error');
 check(str_contains($absent['action'],'Ne changez rien'),'missing canonical advice is conditional');
 check(canonical_test('')['source']==='https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls','source retained');
+// A string containing only separator spaces must never become an empty proof.
+$emptyChecks=array_column($empty['checks'],null,'id');
+check($emptyChecks['SEO-NOINDEX']['evidence']==='Aucune directive noindex détectée dans le HTML ou les en-têtes.','missing robots has an explicit observation');
+foreach ([['<meta name="robots" content="   ">',[], 'ok'],['<meta name="robots" content="index, follow">',[], 'ok'],['<meta name="googlebot" content=" noindex ">',[], 'review'],['',['x-robots-tag'=>[' noindex ']],'review']] as [$head,$headers,$status]) {
+    $sample=\Octet\analyze_html('<html><head>'.$head.'</head><body>Test</body></html>','https://example.com/','association',$headers);
+    $found=array_column($sample['checks'],null,'id')['SEO-NOINDEX'];
+    check($found['status']===$status && trim($found['evidence'])!=='','robots observation remains visible and preserves blocking detection');
+    foreach ($sample['checks'] as $finding) check(trim($finding['evidence'])!=='','nonempty observation for '.$finding['id']);
+}
 echo "$count checks passed\n";

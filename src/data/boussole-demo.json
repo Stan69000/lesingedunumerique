@@ -1,7 +1,7 @@
 {
     "before": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.1.1",
+        "engineVersion": "0.1.2",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -43,7 +43,7 @@
                 "category": "SEO",
                 "status": "ok",
                 "title": "Vérifier le choix d’apparaître dans les moteurs",
-                "evidence": "  ",
+                "evidence": "Aucune directive noindex détectée dans le HTML ou les en-têtes.",
                 "why": "Une directive noindex peut être volontaire : brouillon, page privée ou contenu à exclure. Son absence ne prouve pas que la page est indexée.",
                 "action": "Aucun blocage noindex n’a été repéré : rien à modifier pour ce contrôle. Cela ne prouve pas que Google connaît déjà cette page.",
                 "source": "https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag",
@@ -153,7 +153,7 @@
     },
     "after": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.1.1",
+        "engineVersion": "0.1.2",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -195,7 +195,7 @@
                 "category": "SEO",
                 "status": "ok",
                 "title": "Vérifier le choix d’apparaître dans les moteurs",
-                "evidence": "  ",
+                "evidence": "Aucune directive noindex détectée dans le HTML ou les en-têtes.",
                 "why": "Une directive noindex peut être volontaire : brouillon, page privée ou contenu à exclure. Son absence ne prouve pas que la page est indexée.",
                 "action": "Aucun blocage noindex n’a été repéré : rien à modifier pour ce contrôle. Cela ne prouve pas que Google connaît déjà cette page.",
                 "source": "https://developers.google.com/search/docs/crawling-indexing/robots-meta-tag",

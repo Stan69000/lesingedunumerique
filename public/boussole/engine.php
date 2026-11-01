@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.1.1';
+const VERSION = '0.1.2';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -169,7 +169,7 @@ function analyze_html(string $html, string $url, string $goal = 'association', a
     };
     $title = $clean($x->evaluate('string(//title)')); $description = $clean($meta('description'));
     $h1 = $x->query('//h1');
-    $robots = strtolower($meta('robots').' '.$meta('googlebot').' '.implode(' ', $headers['x-robots-tag'] ?? []));
+    $robots = $clean(strtolower($meta('robots').' '.$meta('googlebot').' '.implode(' ', $headers['x-robots-tag'] ?? [])));
     $canonical = []; $canonicalUnsupported = false;
     foreach ($x->query('//head/link[@href]') as $node) {
         if (!in_array('canonical', preg_split('/\s+/', strtolower($node->getAttribute('rel'))), true)) continue;

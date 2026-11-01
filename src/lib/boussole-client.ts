@@ -59,7 +59,7 @@ function render(data:Report, focus = true){
   for(const check of [...data.checks].sort((a,b)=>rank[a.status]-rank[b.status])){
     const card=node('article','','audit-check');card.dataset.status=check.status;card.dataset.category=check.category;
     card.append(node('p',`${statuses[check.status]} · ${check.category}`,'check-label'),node('h3',check.title));
-    const evidence=prose(check.evidence,check);evidence.className='evidence';
+    const evidence=prose(check.evidence.trim() || 'Aucune observation disponible pour ce contrôle. Relancez l’analyse pour obtenir un résultat à jour.',check);evidence.className='evidence';
     card.append(node('h4','Ce que l’outil a trouvé'),evidence);
     const actionTitle=check.status==='unmeasured' ? 'Pour aller plus loin' : (check.status==='ok' ? 'Que faire maintenant ?' : `Que faire maintenant ? · environ ${check.minutes} min`);
     card.append(node('h4',actionTitle),prose(check.action,check));
