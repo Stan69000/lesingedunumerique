@@ -204,3 +204,8 @@ Le moteur découvre au maximum 80 liens HTML admissibles par page : même origin
 Le bilan indique les succès, tentatives, erreurs et liens en attente. Les priorités regroupent les actions/suggestions admissibles par contrôle et statut ; les décisions humaines restent séparées. Des titres/descriptions identiques sont signalés pour relecture, sans inventer de pénalité. Le détail de chaque page est sélectionnable. JSON, Markdown et consignes IA contiennent toutes les pages analysées ; le PDF contient la synthèse et la page sélectionnée. Les cases cochées concernent uniquement cette page.
 
 Vérification : tests de découverte des liens et résolution relative, limites, exclusions, regroupement des constats et répétitions.
+
+
+### Délais et résultats partiels (0.2.1)
+
+Le client distingue un arrêt demandé d’une réponse absente après 45 secondes. Un compteur d’attente reste visible. Chaque page réussie est affichée immédiatement ; les échecs suivants ne suppriment pas les résultats. Le moteur partage un budget réseau de 25 secondes entre robots.txt et les redirections, chaque récupération gardant un maximum de 10 secondes. La résolution DNS du système reste soumise à ses propres délais. Le script PHP a une limite d’exécution de 35 secondes. Ces limites évitent d’empiler les attentes ; elles ne prouvent pas la cause d’une réponse absente chez l’hébergeur.

@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.2.0';
+const VERSION = '0.2.1';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -44,19 +44,22 @@ function resolve_location(string $base, string $location): string {
     return normalize_url($origin.'/'.implode('/', $segments).($segments && str_ends_with($path, '/') ? '/' : ''));
 }
 
-function fetch_public(string $url): array {
+function fetch_public(string $url, ?float $deadline = null): array {
+    if ($deadline !== null && microtime(true) >= $deadline) throw new \RuntimeException('Le délai de récupération de cette page est dépassé. Cette page n’a pas été analysée.');
     $url = normalize_url($url);
     $host = parse_url($url, PHP_URL_HOST);
     $ips = gethostbynamel($host);
     if (!$ips) throw new \RuntimeException('Ce domaine ne répond pas en IPv4.');
     foreach ($ips as $ip) if (!public_ipv4($ip)) throw new \RuntimeException('Cette destination réseau est exclue de l’audit.');
+    $remaining = $deadline === null ? 10 : min(10, (int)ceil($deadline - microtime(true)));
+    if ($remaining <= 0) throw new \RuntimeException('Le délai de récupération de cette page est dépassé. Cette page n’a pas été analysée.');
     $body = ''; $headers = []; $tooLarge = false;
     $ch = curl_init($url);
     $port = str_starts_with($url, 'https:') ? 443 : 80;
     curl_setopt_array($ch, [
         CURLOPT_FOLLOWLOCATION => false, CURLOPT_PROTOCOLS => CURLPROTO_HTTP | CURLPROTO_HTTPS,
         CURLOPT_PROXY => '', CURLOPT_RESOLVE => ["$host:$port:{$ips[0]}"],
-        CURLOPT_CONNECTTIMEOUT => 4, CURLOPT_TIMEOUT => 10, CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_CONNECTTIMEOUT => min(4, $remaining), CURLOPT_TIMEOUT => $remaining, CURLOPT_SSL_VERIFYPEER => true,
         CURLOPT_USERAGENT => 'OctetAudit/0.1 (+https://lesingedunumerique.fr/outils/boussole/)',
         CURLOPT_ENCODING => '',
         CURLOPT_HEADERFUNCTION => static function ($ch, $line) use (&$headers) {
@@ -127,16 +130,17 @@ function discover_links(string $html, string $base): array {
 
 function audit_url(string $url, string $goal = 'association'): array {
     $url = normalize_url($url); $requested = $url;
+    $deadline = microtime(true) + 25;
     $robotsChecked = [];
     for ($i=0; $i<4; $i++) {
         $p = parse_url($url); $origin = $p['scheme'].'://'.$p['host'];
         if (!isset($robotsChecked[$origin])) {
-            $robots = fetch_public($origin.'/robots.txt');
+            $robots = fetch_public($origin.'/robots.txt', $deadline);
             if ($robots['status'] !== 404 && $robots['status'] !== 410 && $robots['status'] !== 200) throw new \RuntimeException('Le fichier robots.txt est inaccessible ou redirigé. Cet audit prudent ne poursuit pas l’analyse.');
             $robotsChecked[$origin] = $robots['status'] === 200 ? $robots['html'] : '';
         }
         if (robots_denies($robotsChecked[$origin], $p['path'] ?? '/')) throw new \RuntimeException('Une règle de robots.txt empêche cet audit. Par prudence, les exceptions Allow ne sont pas interprétées.');
-        $page = fetch_public($url);
+        $page = fetch_public($url, $deadline);
         if (in_array($page['status'], [301,302,303,307,308], true)) {
             $location = $page['headers']['location'][0] ?? '';
             if (!$location) throw new \RuntimeException('Redirection sans destination.');

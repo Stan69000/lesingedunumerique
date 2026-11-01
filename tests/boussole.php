@@ -68,4 +68,6 @@ check(\Octet\discover_links('<base href="https://elsewhere.com/"><a href="page">
 $many='';for($i=0;$i<100;$i++)$many.='<a href="/page-'.$i.'">Page</a>';
 check(count(\Octet\discover_links($many,'https://example.com/'))===80,'link discovery remains bounded');
 check(\Octet\resolve_location('https://example.com/dir/','next/')==='https://example.com/dir/next/','relative directory link is retained');
+try { \Octet\fetch_public('https://example.com/',microtime(true)-1);check(false,'expired budget rejected before DNS'); }
+catch (RuntimeException $e) {check(str_contains($e->getMessage(),'délai'),'expired budget has an explicit error');}
 echo "$count checks passed\n";

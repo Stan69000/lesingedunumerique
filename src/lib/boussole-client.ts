@@ -1,4 +1,4 @@
-import { summarizeSite } from './boussole-site.mjs';
+import { summarizeSite, requestFailure, exploreSite } from './boussole-site.mjs';
 import seoLexique from '../data/lexique-seo.json';
 import { selectPlan, glossaryAnchor, glossaryByCheck } from './boussole-plan.mjs';
 import { lexiqueSegments } from './lexique-segments.mjs';
@@ -9,7 +9,7 @@ const get = <T extends HTMLElement>(id:string) => document.getElementById(id) as
 const form = get<HTMLFormElement>('audit-form');
 const statuses:Record<string,string> = {action:'À améliorer',suggestion:'Suggestion',review:'À vérifier',ok:'Point vérifié',unmeasured:'Non mesuré'};
 let report:Report|null = null;
-type SiteReport = {mode:'site'; requestedUrl:string; generatedAt:string; pages:Report[]; failed:{url:string;reason:string}[]; pending:string[]; stopped:boolean; attempts:number; summary:ReturnType<typeof summarizeSite>};
+type SiteReport = {mode:'site'; requestedUrl:string; generatedAt:string; pages:Report[]; failed:{url:string;reason:string}[]; pending:string[]; stopped:boolean; attempts:number; running:boolean; summary:ReturnType<typeof summarizeSite>};
 let siteReport:SiteReport|null=null;
 let activeController:AbortController|null=null;
 let stopped=false;
@@ -99,17 +99,20 @@ function showDemo(after = false, focus = true){
   render((after ? demoReports.after : demoReports.before) as Report, focus);
 }
 get('audit-demo')?.addEventListener('click',()=>showDemo());
-async function fetchReport(url:string, goal:string):Promise<Report>{
+async function fetchReport(url:string, goal:string, progress?:(seconds:number)=>void):Promise<Report>{
   const controller=new AbortController();activeController=controller;
-  const timer=setTimeout(()=>controller.abort(),100000);
+  const started=Date.now();
+  const ticker=setInterval(()=>progress?.(Math.floor((Date.now()-started)/1000)),1000);
+  const timer=setTimeout(()=>controller.abort(),45000);
   try {
     const response=await fetch('/boussole/audit.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,goal}),signal:controller.signal});
     if(!(response.headers.get('content-type')||'').includes('application/json'))throw new Error('L’hébergeur n’a pas répondu à cette analyse. Réessayez dans quelques instants.');
     const data=await response.json();if(!response.ok)throw new Error(data.error||'L’analyse n’a pas pu aboutir.');
     return data;
-  } finally {clearTimeout(timer);activeController=null;}
+  } catch(error) {throw new Error(requestFailure(error,{stopped,url,seconds:45}));}
+  finally {clearTimeout(timer);clearInterval(ticker);activeController=null;}
 }
-const failureMessage=(error:unknown)=>error instanceof Error ? (error.name==='AbortError'?'Délai dépassé ou exploration arrêtée.':error.message) : 'Analyse indisponible.';
+const failureMessage=(error:unknown)=>requestFailure(error,{stopped});
 function pageButton(url:string){
   const button=node('button',url) as HTMLButtonElement;button.type='button';
   button.addEventListener('click',()=>{const page=siteReport?.pages.find(p=>p.url===url);if(page)render(page);});return button;
@@ -118,7 +121,7 @@ function renderSite(){
   if(!siteReport)return;
   const data=siteReport;data.summary=summarizeSite(data.pages);
   get('site-results').hidden=false;
-  get('site-progress').textContent=`${data.pages.length} page(s) analysée(s) sur ${data.attempts} tentative(s). ${data.failed.length} page(s) non analysée(s). ${data.stopped?'Exploration arrêtée à votre demande.':data.pending.length?'Limite de 5 tentatives atteinte ; des pages restent à visiter.':'Aucun autre lien admissible découvert dans les pages reçues.'} Ce bilan ne couvre pas nécessairement tout le site.`;
+  get('site-progress').textContent=`${data.pages.length} page(s) analysée(s) sur ${data.attempts} tentative(s). ${data.failed.length} page(s) non analysée(s). ${data.running?'Exploration en cours ; les résultats s’ajoutent au fur et à mesure.':data.stopped?'Exploration arrêtée à votre demande.':data.pending.length?'Limite de 5 tentatives atteinte ; des pages restent à visiter.':'Aucun autre lien admissible découvert dans les pages reçues.'} Ce bilan ne couvre pas nécessairement tout le site.`;
   const priorities=get('site-priorities');priorities.replaceChildren();
   data.summary.priorities.forEach((issue:any,index:number)=>{
     const item=node('article','');item.append(node('h4',`${index+1}. ${issue.title} · ${issue.urls.length} page(s)`),node('p',issue.action));
@@ -146,29 +149,18 @@ async function audit(){
   status.textContent=mode==='site'?'Octet explore les pages une par une. Gardez cet onglet ouvert…':'Octet récupère la page et vérifie ses repères. Cela peut prendre environ une minute…';
   try{
     if(mode==='site'){
-      const data:SiteReport={mode:'site',requestedUrl:url,generatedAt:new Date().toISOString(),pages:[],failed:[],pending:[],stopped:false,attempts:0,summary:summarizeSite([])};siteReport=data;
-      const queue=[url];const seen=new Set<string>();let origin='';
-      while(queue.length&&data.attempts<5&&!stopped){
-        const next=queue.shift()!;if(seen.has(next))continue;seen.add(next);data.attempts++;
-        if(data.attempts>1)await new Promise(resolve=>setTimeout(resolve,700));
-        if(stopped)break;
-        status.textContent=`Exploration : tentative ${data.attempts}/5 · ${data.pages.length} page(s) analysée(s). ${next}`;
-        try{
-          const page=await fetchReport(next,goal);
-          if(!origin)origin=new URL(page.url).origin;
-          // Redirected off-site pages are not included and do not expand the crawl.
-          if(new URL(page.url).origin!==origin){data.failed.push({url:next,reason:'La redirection mène à un autre site ; page exclue.'});continue;}
-          seen.add(page.url);
-          if(!data.pages.some(p=>p.url===page.url))data.pages.push(page);
-          for(const link of page.discoveredLinks||[]){if(new URL(link).origin===origin&&!seen.has(link)&&!queue.includes(link)&&queue.length<80)queue.push(link);}
-        }catch(error){data.failed.push({url:next,reason:failureMessage(error)});if(!data.pages.length)break;}
-      }
-      data.pending=queue;data.stopped=stopped;
-      if(!data.pages.length)throw new Error(data.failed[0]?.reason||'Aucune page n’a pu être analysée.');
-      render(data.pages[0]);renderSite();status.textContent=`Exploration terminée : ${data.pages.length} page(s) analysée(s). Consultez la vue d’ensemble et les limites.`;
+      const data:SiteReport=await exploreSite({url,isStopped:()=>stopped,
+        fetchPage:(next:string,state:SiteReport)=>{
+          status.textContent=`Exploration : tentative ${state.attempts}/5 · ${state.pages.length} page(s) analysée(s). ${next}`;
+          return fetchReport(next,goal,seconds=>{status.textContent=`Page ${state.attempts}/5 · ${seconds} secondes d’attente · ${state.pages.length} page(s) déjà analysée(s). ${next}`;});
+        },
+        onUpdate:(state:SiteReport)=>{siteReport=state;if(state.pages.length){if(!report)render(state.pages[0],false);renderSite();}}
+      });
+      if(!data.pages.length)throw new Error(data.failed[0]?.reason||(stopped?'Exploration arrêtée à votre demande, avant le premier résultat.':'Aucune page n’a pu être analysée.'));
+      render(data.pages[0]);renderSite();status.textContent=`${stopped?'Exploration arrêtée':'Exploration terminée'} : ${data.pages.length} page(s) analysée(s). ${data.failed.length?'Certaines pages n’ont pas pu être analysées ; les résultats obtenus sont conservés.':'Consultez la vue d’ensemble et les limites.'}`;
       get('site-title').setAttribute('tabindex','-1');get('site-title').focus();
-    }else{render(await fetchReport(url,goal));status.textContent='Analyse terminée. Vos constats sont disponibles ci-dessous.';}
-  }catch(error){get('audit-error').textContent=failureMessage(error);get('audit-error').hidden=false;status.textContent='L’analyse n’a pas abouti. Aucun résultat n’a été inventé.';}
+    }else{render(await fetchReport(url,goal,seconds=>{status.textContent=`Analyse de la page : ${seconds} secondes d’attente. Si le serveur ne répond pas sous 45 secondes, un message vous l’indiquera.`;}));status.textContent='Analyse terminée. Vos constats sont disponibles ci-dessous.';}
+  }catch(error){get('audit-error').textContent=failureMessage(error);get('audit-error').hidden=false;status.textContent=stopped?'Exploration arrêtée avant le premier résultat.':'Aucune page n’a pu être analysée. Aucun résultat n’a été inventé.';}
   finally{submit.disabled=false;again.disabled=false;get<HTMLButtonElement>('audit-demo').disabled=false;controls.forEach(c=>c.disabled=false);stopButton.hidden=true;}
 }
 form?.addEventListener('submit',e=>{e.preventDefault();audit();});
