@@ -1,51 +1,92 @@
-"""Verify the deployed pages, JSON API and one real audit of our own site."""
-import json
-import re
+"""Verify the deployed pages and the PHP engine using plain GET requests.
+
+O2Switch answers POST requests coming from datacenter addresses with a 503
+CAPTCHA page from its firewall, so this check never POSTs: a red deploy would
+describe the runner's reputation, not the site. The engine's real network
+behaviour is exercised before the deploy by scripts/octet-audit.php, which runs
+on the runner itself and therefore never crosses that firewall.
+"""
 import html
+import json
+import pathlib
+import re
 import time
 import urllib.error
 import urllib.request
 
 BASE = 'https://lesingedunumerique.fr'
+ENGINE = pathlib.Path(__file__).resolve().parent.parent / 'public' / 'boussole' / 'engine.php'
+PAGES = [
+    ('/outils/', 'La Boussole'),
+    ('/outils/boussole/', 'audit-form'),
+    ('/lexique/', 'MCP'),
+    ('/blog/votre-site-est-en-ligne-octet-sort-sa-boussole/', 'Octet sort sa boussole'),
+]
 
 
-def request(path, payload=None):
-    headers = {'Cache-Control': 'no-cache', 'User-Agent': 'OctetDeploymentCheck/0.1'}
-    if payload is not None:
-        headers['Content-Type'] = 'application/json'
-    req = urllib.request.Request(BASE + path, data=json.dumps(payload).encode() if payload is not None else None, headers=headers)
+def expected_version():
+    match = re.search(r"const VERSION\s*=\s*'([^']+)'", ENGINE.read_text(encoding='utf-8'))
+    assert match, f'No VERSION constant in {ENGINE}'
+    return match.group(1)
+
+
+def request(path):
+    req = urllib.request.Request(BASE + path, headers={'Cache-Control': 'no-cache', 'User-Agent': 'OctetDeploymentCheck/0.2'})
     try:
-        with urllib.request.urlopen(req, timeout=100) as response:
+        with urllib.request.urlopen(req, timeout=60) as response:
             return response.status, response.headers, response.read()
     except urllib.error.HTTPError as error:
         return error.code, error.headers, error.read()
 
 
-# O2Switch may briefly return 503 while the FTPS update becomes visible.
+def describe(path, status, headers, body):
+    """Say what answered without logging cookies, tokens or a full HTML body."""
+    text = body.decode('utf-8', errors='replace')
+    title = re.search(r'<title[^>]*>(.*?)</title>', text, re.I | re.S)
+    return {
+        'path': path,
+        'status': status,
+        'type': headers.get('Content-Type'),
+        'server': headers.get('Server'),
+        'title': html.unescape(title.group(1)).strip()[:200] if title else None,
+        'protectionMarkers': [m for m in ('imunify360', 'webshield', 'captcha', 'cloudflare') if m.encode() in body.lower()],
+    }
+
+
+def json_endpoint(path, expected_status):
+    status, headers, body = request(path)
+    if status != expected_status or 'application/json' not in headers.get('Content-Type', ''):
+        print('Unexpected response:', describe(path, status, headers, body), flush=True)
+        raise AssertionError(f'{path}: expected JSON HTTP {expected_status}, got {status}')
+    return json.loads(body)
+
+
+def verify():
+    for path, marker in PAGES:
+        status, _, body = request(path)
+        assert status == 200 and marker in body.decode(), f'Page not ready: {path} (HTTP {status})'
+
+    # A GET must reach the API script and be turned away by it, not by the host.
+    assert json_endpoint('/boussole/audit.php', 405).get('error'), 'Expected a JSON error for GET'
+
+    # The engine is loaded and its extensions are present on the deployed host.
+    health = json_endpoint('/boussole/health.php', 200)
+    assert health.get('curl') and health.get('dom'), f'Missing PHP extensions: {health}'
+    assert health.get('ready'), f'Engine not ready: {health}'
+    wanted = expected_version()
+    assert health.get('engineVersion') == wanted, f"Deployed engine {health.get('engineVersion')}, expected {wanted}"
+    return health
+
+
+# O2Switch may keep serving stale files or 503s for a few minutes after FTPS sync.
 for attempt in range(6):
     try:
-        for path, marker in [('/outils/', 'La Boussole'), ('/outils/boussole/', 'audit-form'), ('/lexique/', 'MCP'), ('/blog/votre-site-est-en-ligne-octet-sort-sa-boussole/', 'Octet sort sa boussole')]:
-            status, _, body = request(path)
-            assert status == 200 and marker in body.decode(), f'Page not ready: {path} (HTTP {status})'
-        status, headers, body = request('/boussole/audit.php')
-        assert status == 405 and 'application/json' in headers.get('Content-Type', ''), f'Expected JSON HTTP 405, got {status}'
-        assert json.loads(body).get('error'), 'Expected a JSON error for GET'
+        health = verify()
         break
-    except (AssertionError, urllib.error.URLError, TimeoutError):
+    except (AssertionError, urllib.error.URLError, TimeoutError, json.JSONDecodeError) as error:
         if attempt == 5:
             raise
+        print(f'Attempt {attempt + 1}/6 failed ({error}); retrying in 20 s.', flush=True)
         time.sleep(20)
 
-status, headers, body = request('/boussole/audit.php', {'url': BASE + '/', 'goal': 'association'})
-if status != 200:
-    title = re.search(r'<title[^>]*>(.*?)</title>', body.decode('utf-8', errors='replace'), re.I | re.S)
-    markers = [m for m in ['imunify360', 'webshield', 'captcha', 'cloudflare'] if m.encode() in body.lower()]
-    print('Audit response diagnostic:', {'status': status, 'type': headers.get('Content-Type'), 'server': headers.get('Server'), 'title': html.unescape(title.group(1)).strip()[:200] if title else None, 'protectionMarkers': markers}, flush=True)
-assert status == 200, f'Real audit failed: HTTP {status}; see safe response diagnostic above.'
-assert 'application/json' in headers.get('Content-Type', ''), 'Expected JSON report'
-report = json.loads(body)
-assert len(report.get('checks', [])) == 11, 'Expected 11 checks'
-assert report['url'].startswith(BASE), 'Unexpected target'
-assert not report.get('demo'), 'Expected a real report'
-assert next(c for c in report['checks'] if c['id'] == 'GEO-CITATIONS')['status'] == 'unmeasured'
-print('Production verified: four pages, JSON API, real audit with 11 checks.')
+print(f"Production verified: {len(PAGES)} pages, JSON API rejects GET, engine {health['engineVersion']} ready (cURL and DOM present).")

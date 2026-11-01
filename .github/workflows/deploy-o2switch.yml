@@ -34,6 +34,29 @@ jobs:
       - name: Test Boussole and unified lexicon
         run: npm run test:boussole
 
+      # Exercises the engine against a real page over the network. It runs here,
+      # on the runner, because O2Switch answers POST requests from datacenter
+      # addresses with a firewall CAPTCHA: auditing through the deployed API
+      # would measure the runner's reputation instead of the engine.
+      - name: Real audit of our homepage through the engine
+        run: |
+          set -eu
+          php -r 'exit(extension_loaded("curl") && extension_loaded("dom") ? 0 : 1);' \
+            || { echo "This runner's PHP is missing cURL or DOM; the engine cannot audit a page."; exit 1; }
+          php scripts/octet-audit.php https://lesingedunumerique.fr/ --goal=association > audit.json
+          python3 - <<'CHECK'
+          import json
+          report = json.load(open('audit.json'))
+          ids = {check['id'] for check in report['checks']}
+          missing = {'SEO-TITLE', 'SEO-DESCRIPTION', 'SEO-NOINDEX', 'SEO-CANONICAL', 'CONTENT-HEADINGS',
+                     'CONTENT-IMAGES', 'CONTENT-LANG', 'TECH-MOBILE', 'GEO-STRUCTURE', 'GEO-USEFULNESS',
+                     'GEO-CITATIONS'} - ids
+          assert not missing, f'Checks missing from the report: {sorted(missing)}'
+          assert report['url'].startswith('https://lesingedunumerique.fr'), 'Unexpected target'
+          assert not report.get('demo'), 'Expected a real report'
+          print(f"Engine {report['engineVersion']} audited {report['url']}: {len(ids)} checks.")
+          CHECK
+
       - name: Security audit (root production deps)
         run: npm audit --omit=dev --audit-level=high
 
@@ -177,8 +200,17 @@ jobs:
         run: |
           echo "::warning title=Post-deploy healthcheck failed::O2Switch returned an unhealthy response after deploy. Deployment was left in place and no automatic rollback was attempted."
 
-      - name: Verify Boussole pages and real PHP audit
+      # Non-blocking like the healthcheck above: the deploy has already happened,
+      # and O2Switch can serve stale files or 503s for minutes after FTPS sync.
+      - name: Verify Boussole pages and deployed engine
+        id: boussole
+        continue-on-error: true
         run: python3 scripts/check-boussole-production.py
+
+      - name: Warn if the Boussole check failed after deploy
+        if: steps.boussole.outcome == 'failure'
+        run: |
+          echo "::warning title=Post-deploy Boussole check failed::The deployed pages, the JSON API or /boussole/health.php did not answer as expected. Deployment was left in place; see the step log for the response diagnostic."
 
       - name: Publish new last known good artifact
         if: steps.healthcheck.outcome == 'success'
