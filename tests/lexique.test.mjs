@@ -84,3 +84,19 @@ test('links work in both directions without duplicates or loss of existing links
   assert.ok(enriched.find(e=>e.terme==='Métadonnée').liens.some(l=>l.href.startsWith('/blog/')));
   assert.equal(enriched.find(e=>e.terme==='MCP').liens.filter(l=>l.href.startsWith('/blog/')).length,0);
 });
+
+import {lexiqueSegments} from '../src/lib/lexique-segments.mjs';
+test('inline definitions preserve text and select complete technical words',()=>{
+  const entries=[{terme:'JSON',aussi:[]},{terme:'JSON-LD',aussi:[]},{terme:'SEO',aussi:[]},{terme:'Méta-description',aussi:['meta description']}];
+  const text='JSON-LD, SEO et une META DESCRIPTION. Pas pseudoSEO ni https://seo.example/JSON-LD.';
+  const segments=lexiqueSegments(text,entries);
+  assert.equal(segments.map(s=>s.text).join(''),text);
+  assert.deepEqual(segments.filter(s=>s.terme).map(s=>s.terme),['JSON-LD','SEO','Méta-description']);
+});
+test('inline definitions escape aliases and leave markup as plain text',()=>{
+  const text='<img src=x onerror=alert(1)> C++ et noindex.';
+  const segments=lexiqueSegments(text,[{terme:'C++',aussi:[]},{terme:'noindex',aussi:[]}]);
+  assert.equal(segments.map(s=>s.text).join(''),text);
+  assert.deepEqual(segments.filter(s=>s.terme).map(s=>s.terme),['C++','noindex']);
+  assert.deepEqual(lexiqueSegments('Sans mot défini',[]),[{text:'Sans mot défini'}]);
+});

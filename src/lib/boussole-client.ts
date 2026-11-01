@@ -1,5 +1,6 @@
 import seoLexique from '../data/lexique-seo.json';
 import { selectPlan, glossaryAnchor, glossaryByCheck } from './boussole-plan.mjs';
+import { lexiqueSegments } from './lexique-segments.mjs';
 import demoReports from '../data/boussole-demo.json';
 type Check = {planEligible?:boolean; id:string; category:string; status:string; title:string; evidence:string; why:string; action:string; source:string; minutes:number; url:string};
 type Report = {demo?:boolean; scenario?:string; schemaVersion:string; engineVersion:string; generatedAt:string; url:string; requestedUrl?:string; goal:string; scope:string; limitations:string[]; checks:Check[]};
@@ -12,6 +13,24 @@ const declaredDone = new Set<string>();
 const standaloneDemo = document.documentElement.dataset.standaloneDemo === 'true';
 const node = (tag:string,text:string,className='') => { const el=document.createElement(tag); el.textContent=text; if(className) el.className=className; return el; };
 const rank:Record<string,number>={action:0,suggestion:1,review:2,ok:3,unmeasured:4};
+function glossaryLink(text:string, term:string) {
+  const link=document.createElement('a');link.href=`#vocab-${glossaryAnchor(term)}`;link.textContent=text;
+  link.setAttribute('aria-label',`Comprendre « ${text} » dans le lexique`);
+  link.addEventListener('click',()=>{
+    get<HTMLInputElement>('audit-glossary-search').value='';filterGlossary();
+    const target=get<HTMLDetailsElement>(`vocab-${glossaryAnchor(term)}`);
+    target.open=true;target.querySelector('summary')?.focus({preventScroll:true});
+  });
+  return link;
+}
+function prose(text:string, check:Check) {
+  const terms=new Set([...(glossaryByCheck[check.id as keyof typeof glossaryByCheck]||[]),'SEO','GEO']);
+  const entries=seoLexique.filter(entry=>terms.has(entry.terme));
+  const paragraph=document.createElement('p');
+  for(const segment of lexiqueSegments(text,entries)) paragraph.append(segment.terme ? glossaryLink(segment.text,segment.terme) : document.createTextNode(segment.text));
+  return paragraph;
+}
+
 function guide(cms:string) {
   return ({wordpress:'WordPress : ouvrez la page dans votre administration. Les titres et descriptions SEO se règlent généralement dans votre extension SEO ; les autres éléments peuvent dépendre du thème.',code:'Code : transmettez la preuve et la référence du contrôle à la personne qui maintient le modèle de page. Vérifiez le HTML livré après modification.',provider:'Prestataire : exportez le Markdown et demandez un avis sur les constats prioritaires. Faites confirmer le besoin avant d’accepter une modification.',unknown:'Repérez les réglages de la page dans votre outil. Si vous ne les trouvez pas, transmettez le rapport à la personne qui gère le site.'} as Record<string,string>)[cms];
 }
@@ -40,22 +59,19 @@ function render(data:Report, focus = true){
   for(const check of [...data.checks].sort((a,b)=>rank[a.status]-rank[b.status])){
     const card=node('article','','audit-check');card.dataset.status=check.status;card.dataset.category=check.category;
     card.append(node('p',`${statuses[check.status]} · ${check.category}`,'check-label'),node('h3',check.title));
-    card.append(node('h4','Ce que l’outil a trouvé'),node('p',check.evidence,'evidence'));
+    const evidence=prose(check.evidence,check);evidence.className='evidence';
+    card.append(node('h4','Ce que l’outil a trouvé'),evidence);
     const actionTitle=check.status==='unmeasured' ? 'Pour aller plus loin' : (check.status==='ok' ? 'Que faire maintenant ?' : `Que faire maintenant ? · environ ${check.minutes} min`);
-    card.append(node('h4',actionTitle),node('p',check.action));
-    card.append(node('h4','À quoi ça sert ?'),node('p',check.why));
+    card.append(node('h4',actionTitle),prose(check.action,check));
+    card.append(node('h4','À quoi ça sert ?'),prose(check.why,check));
     const details=document.createElement('details');details.append(node('summary','Comprendre le détail et passer la main'));
     details.append(node('p',`Référence du contrôle : ${check.id}`),node('p',guide(get<HTMLSelectElement>('audit-cms').value)));
     const a=document.createElement('a');a.href=check.source;a.textContent='Lire la source de ce contrôle';a.target='_blank';a.rel='noopener noreferrer';details.append(a);card.append(details);card.id=`check-${check.id}`;
     const words = (glossaryByCheck[check.id as keyof typeof glossaryByCheck] || []).map((term:string)=>seoLexique.find(e=>e.terme===term)).filter(Boolean);
     if(words.length){
-      const vocab=document.createElement('details');vocab.className='check-vocabulary';vocab.append(node('summary','🐒 Ces mots, en clair'));
-      for(const entry of words){if(!entry)continue;
-        vocab.append(node('h4',entry.terme),node('p',entry.definition),node('p',`Ça vous parle ? ${entry.situation}`),node('p',`Le réflexe d’Octet : ${entry.reflexe}`));
-        const link=document.createElement('a');link.href=`#vocab-${glossaryAnchor(entry.terme)}`;link.textContent=`Retrouver « ${entry.terme} » dans le lexique et lire sa source`;
-        link.addEventListener('click',()=>{const search=get<HTMLInputElement>('audit-glossary-search');search.value='';filterGlossary();const target=get<HTMLDetailsElement>(`vocab-${glossaryAnchor(entry.terme)}`);target.open=true;});vocab.append(link);
-      }
-      card.append(vocab);
+      const vocabulary=node('p','','check-terms');vocabulary.append(node('strong','Un mot à comprendre ? '));
+      words.forEach((entry,index)=>{if(!entry)return;if(index)vocabulary.append(document.createTextNode(' · '));vocabulary.append(glossaryLink(entry.terme,entry.terme));});
+      card.append(vocabulary);
     }
     cards.append(card);
   }
@@ -98,7 +114,7 @@ function renderPlan(){
     const item=document.createElement('li');const label=document.createElement('label');const box=document.createElement('input');box.type='checkbox';box.checked=declaredDone.has(check.id);
     label.append(box,document.createTextNode(`${check.title} · environ ${check.minutes} min`));
     box.addEventListener('change',()=>{if(box.checked)declaredDone.add(check.id);else declaredDone.delete(check.id);updatePlanProgress(plan.checks);});
-    item.append(label,node('p',check.action));const link=document.createElement('a');link.href=`#check-${check.id}`;link.textContent='Voir la preuve et les explications';
+    item.append(label,prose(check.action,check));const link=document.createElement('a');link.href=`#check-${check.id}`;link.textContent='Voir la preuve et les explications';
     link.addEventListener('click',()=>{get<HTMLSelectElement>('audit-filter').value='all';applyFilter();});item.append(link);list.append(item);
   }
   if(!plan.checks.length)list.append(node('li','Aucune action automatique adaptée à ce créneau. Consultez les points à vérifier avec une personne.'));

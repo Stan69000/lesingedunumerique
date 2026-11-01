@@ -186,3 +186,10 @@ La fiche « URL canonique » est reformulée avec un exemple par page et un réf
 Validation locale : 50 contrôles PHP dont 18 cas de régression sur les adresses déclarées, 14 tests Node et build de 77 pages. Les exemples avant/après et les aperçus autonomes sont régénérés avec le moteur 0.1.1.
 
 Une déclaration d’adresse absente, qui ne nécessite pas systématiquement une modification, est exclue des trois premières pistes d’action. Un test vérifie qu’elle ne prend pas la place d’une correction utile.
+
+
+## Définitions accessibles directement depuis le rapport
+
+Les termes SEO/GEO reconnus dans les constats, les conseils et le plan d’action deviennent des liens vers les définitions intégrées à la page. Les adresses web sont conservées intactes ; les textes reçus ne sont jamais interprétés comme du HTML. Les mots utiles associés à un contrôle sont également visibles sous celui-ci, au lieu d’être dissimulés dans une section dépliable. Le clic efface le filtre du lexique, ouvre la bonne définition et place le focus sur son intitulé. Les textes exportés restent inchangés.
+
+Deux tests supplémentaires couvrent les synonymes, la casse, les mots complets, les adresses non découpées et le maintien du balisage comme texte. Total : 50 contrôles PHP et 16 tests Node.
