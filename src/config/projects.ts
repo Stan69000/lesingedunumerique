@@ -4,8 +4,8 @@ export const associationProjects = [
     id: 'boussole', name: 'La Boussole d’Octet', icon: '🧭',
     href: '/outils/boussole/',
     promise: 'Comprendre comment améliorer la visibilité de son site',
-    description: 'Un premier bilan SEO et GEO gratuit : analysez une page et découvrez quoi améliorer, pourquoi et par où commencer.',
-    note: 'Première version : une page à la fois, des pistes expliquées et un rapport à partager.',
+    description: 'Un premier bilan SEO et GEO gratuit : analysez une page ou explorez un échantillon de votre site et découvrez quoi améliorer, pourquoi et par où commencer.',
+    note: 'Deux modes : une page précise ou jusqu’à 5 pages reliées, avec des pistes expliquées et un rapport à partager.',
     cta: 'Analyser mon site',
   },
   {

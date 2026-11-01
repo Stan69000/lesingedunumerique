@@ -11,7 +11,7 @@ Vous avez créé le site de votre association, présenté votre activité ou pub
 
 Quand on cherche à améliorer son site, les mots compliqués arrivent vite : SEO, indexation, H1, données structurées… Au Singe du Numérique, nous voulons vous aider à comprendre ce qu’ils changent concrètement.
 
-C’est l’idée de **la Boussole d’Octet** : un outil gratuit, sans compte, pour examiner une page publique et repartir avec des pistes expliquées.
+C’est l’idée de **la Boussole d’Octet** : un outil gratuit, sans compte, pour examiner une page publique ou un échantillon de votre site et repartir avec des pistes expliquées.
 
 👉 [Découvrir la Boussole d’Octet](/outils/boussole/)
 
@@ -25,7 +25,7 @@ Pour les fonctions d’IA de Google Search, Google indique que les bonnes pratiq
 
 ## Comment ça se passe ?
 
-1. Collez l’adresse publique d’une page de votre site.
+1. Choisissez « Analyser une page » ou « Explorer un site » (5 pages au maximum), puis collez une adresse publique.
 2. Indiquez votre objectif et, si vous le connaissez, votre outil de publication.
 3. Lancez l’analyse et lisez les constats : ce qui a été observé, pourquoi cela compte et quoi faire ensuite.
 4. Choisissez vos premières pistes, ou le mode « J’ai 15 minutes », puis vérifiez à nouveau après correction.
@@ -42,20 +42,22 @@ L’outil repère la présence du titre. **Il ne peut pas décider seul si ce ti
 
 ## Un rapport que vous pouvez utiliser
 
-Le bilan se consulte sur la page. Vous pouvez aussi :
+Le bilan se consulte sur la page. En exploration, une synthèse regroupe les constats communs et propose les premières corrections. Chaque page reste consultable en détail. Vous pouvez aussi :
 
 - l’imprimer ou l’enregistrer en **PDF** depuis la fenêtre d’impression du navigateur ;
 - télécharger une version **[Markdown](/lexique/#markdown)**, pratique pour reprendre le texte et le partager ;
 - exporter un fichier **[JSON](/lexique/#json)**, une fiche organisée pour qu’un logiciel puisse reprendre les résultats ;
 - récupérer des **consignes pour votre IA**, à relire avant de lui demander des corrections.
 
+En exploration, les exports Markdown, JSON et IA contiennent toutes les pages examinées. Le PDF contient la synthèse et la page sélectionnée.
+
 Aucun service d’IA n’est interrogé pendant l’analyse. Si vous transmettez ensuite le rapport à votre assistant, vous choisissez vous-même ce que vous partagez.
 
 ## Ce que cette première version voit… et ce qu’elle ne voit pas
 
-La Boussole examine le code HTML initial **d’une seule page**, sans faire fonctionner son JavaScript. Elle vérifie notamment le titre, la description, certains réglages d’indexation, les titres de section et la présence d’informations structurées.
+La Boussole examine le code HTML initial **d’une page précise ou de 5 pages au maximum en mode exploration**, sans faire fonctionner leur JavaScript. Elle suit les liens admissibles sur le même site ; elle ne consulte pas le sitemap. Le nombre de pages examinées et les erreurs sont affichés. Elle vérifie notamment le titre, la description, certains réglages d’indexation, les titres de section et la présence d’informations structurées.
 
-Elle ne parcourt pas tout votre site, ne mesure pas sa vitesse réelle, ne connaît pas votre position dans Google et ne certifie ni son accessibilité ni la qualité de ses textes. Un élément « présent » peut encore demander une amélioration. Un élément absent n’est pas toujours une erreur.
+L’exploration reste un échantillon : elle ne garantit pas de couvrir tout votre site, ne mesure pas sa vitesse réelle, ne connaît pas votre position dans Google et ne certifie ni son accessibilité ni la qualité de ses textes. Un élément « présent » peut encore demander une amélioration. Un élément absent n’est pas toujours une erreur.
 
 Certaines pages protégées ou bloquant l’exploration ne pourront pas être analysées. Le rapport n’est pas enregistré par l’outil ; une empreinte temporaire de l’adresse IP sert à limiter les abus, et les journaux techniques de l’hébergeur restent applicables.
 

@@ -18,7 +18,7 @@ form.querySelectorAll('input[name="audit-mode"]').forEach(input=>input.addEventL
   get('mode-help').textContent=auditMode()==='site' ? 'Jusqu’à 5 pages reliées sur le même site. Gardez cet onglet ouvert. Les pages isolées ne seront pas découvertes.' : 'Une page sera analysée, sans visiter les autres rubriques.';
   get('audit-submit').firstChild!.textContent=auditMode()==='site' ? 'Explorer ce site ' : 'Analyser cette page ';
 }));
-const stopButton=node('button','Arrêter l’exploration') as HTMLButtonElement;
+const stopButton=document.createElement('button');stopButton.textContent='Arrêter l’exploration';
 stopButton.type='button';stopButton.hidden=true;get('audit-status').after(stopButton);
 stopButton.addEventListener('click',()=>{stopped=true;activeController?.abort();});
 let checklistKey = '';
@@ -89,7 +89,7 @@ function render(data:Report, focus = true){
     }
     cards.append(card);
   }
-  for(const limit of data.limitations)get('report-limits').append(node('li',limit));
+  for(const limit of data.limitations)get('report-limits').append(node('li',siteReport && limit.startsWith('Pas d’exploration') ? 'Ce détail concerne la page sélectionnée. La vue d’ensemble indique les autres pages effectivement examinées.' : limit));
   renderPlan();
   get('audit-results').hidden=false;applyFilter();if(focus)get('report-title').focus();
 }
@@ -140,7 +140,7 @@ function renderSite(){
 async function audit(){
   if(standaloneDemo){showDemo();return;}
   get('audit-error').hidden=true;get('audit-results').hidden=true;get('site-results').hidden=true;report=null;siteReport=null;stopped=false;
-  const submit=get<HTMLButtonElement>('audit-submit');const again=get<HTMLButtonElement>('audit-again');submit.disabled=true;again.disabled=true;
+  const submit=get<HTMLButtonElement>('audit-submit');const again=get<HTMLButtonElement>('audit-again');submit.disabled=true;again.disabled=true;get<HTMLButtonElement>('audit-demo').disabled=true;
   const controls=[...form.querySelectorAll<HTMLInputElement|HTMLSelectElement>('input,select')];controls.forEach(c=>c.disabled=true);
   const status=get('audit-status');const mode=auditMode();stopButton.hidden=mode!=='site';
   const url=get<HTMLInputElement>('audit-url').value;const goal=get<HTMLSelectElement>('audit-goal').value;
@@ -170,7 +170,7 @@ async function audit(){
       get('site-title').setAttribute('tabindex','-1');get('site-title').focus();
     }else{render(await fetchReport(url,goal));status.textContent='Analyse terminée. Vos constats sont disponibles ci-dessous.';}
   }catch(error){get('audit-error').textContent=failureMessage(error);get('audit-error').hidden=false;status.textContent='L’analyse n’a pas abouti. Aucun résultat n’a été inventé.';}
-  finally{submit.disabled=false;again.disabled=false;controls.forEach(c=>c.disabled=false);stopButton.hidden=true;}
+  finally{submit.disabled=false;again.disabled=false;get<HTMLButtonElement>('audit-demo').disabled=false;controls.forEach(c=>c.disabled=false);stopButton.hidden=true;}
 }
 form?.addEventListener('submit',e=>{e.preventDefault();audit();});
 get('audit-again')?.addEventListener('click',()=>{if(report?.demo){showDemo(report.scenario!=='after');return;}if(form.reportValidity())audit();});
