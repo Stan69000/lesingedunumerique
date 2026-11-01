@@ -18,6 +18,7 @@ export function glossaryAnchor(term) {
 export const glossaryByCheck = {
   'SEO-TITLE': ['Balise title', 'SERP'],
   'SEO-DESCRIPTION': ['Méta-description', 'CTR'],
+  'SEO-ROBOTS': ['robots.txt', 'Indexation'],
   'SEO-NOINDEX': ['noindex', 'Indexation', 'robots.txt'],
   'SEO-CANONICAL': ['URL canonique', 'Redirection 301'],
   'CONTENT-HEADINGS': ['Titres H1 et H2', 'Intention de recherche'],
