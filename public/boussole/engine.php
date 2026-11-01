@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.1.2';
+const VERSION = '0.2.0';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -33,13 +33,15 @@ function resolve_location(string $base, string $location): string {
     if (preg_match('~^https?://~i', $location)) return normalize_url($location);
     $p = parse_url($base); $origin = $p['scheme'].'://'.$p['host'];
     if (str_starts_with($location, '//')) return normalize_url($p['scheme'].':'.$location);
-    $path = str_starts_with($location, '/') ? $location : dirname($p['path'] ?? '/').'/'.$location;
+    $basePath = $p['path'] ?? '/';
+    $directory = str_ends_with($basePath, '/') ? $basePath : dirname($basePath).'/';
+    $path = str_starts_with($location, '/') ? $location : $directory.$location;
     $segments = [];
     foreach (explode('/', $path) as $s) {
         if ($s === '..') array_pop($segments);
         elseif ($s !== '' && $s !== '.') $segments[] = $s;
     }
-    return normalize_url($origin.'/'.implode('/', $segments));
+    return normalize_url($origin.'/'.implode('/', $segments).($segments && str_ends_with($path, '/') ? '/' : ''));
 }
 
 function fetch_public(string $url): array {
@@ -96,6 +98,33 @@ function robots_denies(string $text, string $path): bool {
     return false;
 }
 
+/** Public HTML links only: no forms, query strings, assets or other origins. */
+function discover_links(string $html, string $base): array {
+    $doc = new \DOMDocument();
+    $previous = libxml_use_internal_errors(true);
+    $doc->loadHTML('<?xml encoding="UTF-8">'.$html, LIBXML_NONET | LIBXML_NOERROR | LIBXML_NOWARNING);
+    libxml_clear_errors(); libxml_use_internal_errors($previous);
+    $origin = parse_url($base, PHP_URL_SCHEME).'://'.parse_url($base, PHP_URL_HOST);
+    // A base element changes relative links; avoid guessing its effect.
+    if ($doc->getElementsByTagName('base')->length) return [];
+    $links = [];
+    foreach ($doc->getElementsByTagName('a') as $a) {
+        $href = trim($a->getAttribute('href'));
+        if ($href === '' || str_starts_with($href, '#') || str_contains($href, '?') || $a->hasAttribute('download')) continue;
+        if (preg_match('/\b(nofollow|ugc|sponsored)\b/i', $a->getAttribute('rel'))) continue;
+        if (preg_match('~^[a-z][a-z0-9+.-]*:~i', $href) && !preg_match('~^https?://~i', $href)) continue;
+        $href = explode('#', $href, 2)[0];
+        try { $url = resolve_location($base, $href); } catch (\RuntimeException $e) { continue; }
+        if (parse_url($url, PHP_URL_SCHEME).'://'.parse_url($url, PHP_URL_HOST) !== $origin) continue;
+        $path = parse_url($url, PHP_URL_PATH) ?: '/';
+        if (preg_match('~/(?:wp-admin|wp-login\.php|admin|login|logout|signout|deconnexion|connexion|panier|cart|checkout|account|mon-compte)(?:/|$)~i', $path)) continue;
+        if (preg_match('~\.(?:pdf|jpe?g|png|gif|svg|webp|avif|zip|mp[34]|xml|json|css|js|csv|docx?|xlsx?|ics|exe)$~i', $path)) continue;
+        $links[$url] = true;
+        if (count($links) >= 80) break;
+    }
+    return array_keys($links);
+}
+
 function audit_url(string $url, string $goal = 'association'): array {
     $url = normalize_url($url); $requested = $url;
     $robotsChecked = [];
@@ -118,7 +147,7 @@ function audit_url(string $url, string $goal = 'association'): array {
         if ($page['status'] !== 200) throw new \RuntimeException('La page répond avec le code HTTP '.$page['status'].'. Aucun audit HTML fiable n’est disponible.');
         $type = strtolower($page['headers']['content-type'][0] ?? '');
         if (!str_contains($type, 'text/html') && !str_contains($type, 'application/xhtml+xml')) throw new \RuntimeException('Cette adresse ne renvoie pas une page HTML.');
-        return analyze_html($page['html'], $url, $goal, $page['headers']) + ['requestedUrl'=>$requested];
+        return analyze_html($page['html'], $url, $goal, $page['headers']) + ['requestedUrl'=>$requested, 'discoveredLinks'=>discover_links($page['html'], $url)];
     }
     throw new \RuntimeException('Trop de redirections (maximum : 3).');
 }

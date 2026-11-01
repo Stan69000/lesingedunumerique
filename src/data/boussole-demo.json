@@ -1,7 +1,7 @@
 {
     "before": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.1.2",
+        "engineVersion": "0.2.0",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",
@@ -153,7 +153,7 @@
     },
     "after": {
         "schemaVersion": "1.0",
-        "engineVersion": "0.1.2",
+        "engineVersion": "0.2.0",
         "generatedAt": "2026-10-31T12:00:00Z",
         "url": "https://ateliers-du-lien.example/",
         "goal": "association",

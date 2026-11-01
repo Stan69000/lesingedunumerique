@@ -193,3 +193,14 @@ Une déclaration d’adresse absente, qui ne nécessite pas systématiquement un
 Les termes SEO/GEO reconnus dans les constats, les conseils et le plan d’action deviennent des liens vers les définitions intégrées à la page. Les adresses web sont conservées intactes ; les textes reçus ne sont jamais interprétés comme du HTML. Les mots utiles associés à un contrôle sont également visibles sous celui-ci, au lieu d’être dissimulés dans une section dépliable. Le clic efface le filtre du lexique, ouvre la bonne définition et place le focus sur son intitulé. Les textes exportés restent inchangés.
 
 Deux tests supplémentaires couvrent les synonymes, la casse, les mots complets, les adresses non découpées et le maintien du balisage comme texte. Total : 50 contrôles PHP et 16 tests Node.
+
+
+## Exploration bornée (0.2.0)
+
+Deux modes : une page ou un échantillon du site. Le navigateur orchestre au maximum 5 appels séquentiels à la même API, espacés de 700 ms. Les limites serveur existantes restent applicables à chaque page. L’onglet doit rester ouvert ; un bouton permet d’arrêter et conserve les résultats déjà reçus. Aucun rapport ni état de visite n’est stocké côté serveur.
+
+Le moteur découvre au maximum 80 liens HTML admissibles par page : même origine finale (protocole et domaine), sans paramètres, sans formulaires, sans fichiers courants, sans liens nofollow/ugc/sponsored, ni espaces de connexion usuels. Chaque récupération conserve les vérifications DNS public, robots.txt, redirections, taille et délais existantes. Les pages avec une balise base ne développent pas de liens. Le sitemap n’est pas consulté. Une redirection vers un autre site après la page de départ est exclue du bilan et de la poursuite.
+
+Le bilan indique les succès, tentatives, erreurs et liens en attente. Les priorités regroupent les actions/suggestions admissibles par contrôle et statut ; les décisions humaines restent séparées. Des titres/descriptions identiques sont signalés pour relecture, sans inventer de pénalité. Le détail de chaque page est sélectionnable. JSON, Markdown et consignes IA contiennent toutes les pages analysées ; le PDF contient la synthèse et la page sélectionnée. Les cases cochées concernent uniquement cette page.
+
+Vérification : tests de découverte des liens et résolution relative, limites, exclusions, regroupement des constats et répétitions.

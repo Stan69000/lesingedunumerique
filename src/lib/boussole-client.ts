@@ -1,13 +1,26 @@
+import { summarizeSite } from './boussole-site.mjs';
 import seoLexique from '../data/lexique-seo.json';
 import { selectPlan, glossaryAnchor, glossaryByCheck } from './boussole-plan.mjs';
 import { lexiqueSegments } from './lexique-segments.mjs';
 import demoReports from '../data/boussole-demo.json';
 type Check = {planEligible?:boolean; id:string; category:string; status:string; title:string; evidence:string; why:string; action:string; source:string; minutes:number; url:string};
-type Report = {demo?:boolean; scenario?:string; schemaVersion:string; engineVersion:string; generatedAt:string; url:string; requestedUrl?:string; goal:string; scope:string; limitations:string[]; checks:Check[]};
+type Report = {discoveredLinks?:string[];demo?:boolean; scenario?:string; schemaVersion:string; engineVersion:string; generatedAt:string; url:string; requestedUrl?:string; goal:string; scope:string; limitations:string[]; checks:Check[]};
 const get = <T extends HTMLElement>(id:string) => document.getElementById(id) as T;
 const form = get<HTMLFormElement>('audit-form');
 const statuses:Record<string,string> = {action:'À améliorer',suggestion:'Suggestion',review:'À vérifier',ok:'Point vérifié',unmeasured:'Non mesuré'};
 let report:Report|null = null;
+type SiteReport = {mode:'site'; requestedUrl:string; generatedAt:string; pages:Report[]; failed:{url:string;reason:string}[]; pending:string[]; stopped:boolean; attempts:number; summary:ReturnType<typeof summarizeSite>};
+let siteReport:SiteReport|null=null;
+let activeController:AbortController|null=null;
+let stopped=false;
+const auditMode=()=>form.querySelector<HTMLInputElement>('input[name="audit-mode"]:checked')?.value || 'page';
+form.querySelectorAll('input[name="audit-mode"]').forEach(input=>input.addEventListener('change',()=>{
+  get('mode-help').textContent=auditMode()==='site' ? 'Jusqu’à 5 pages reliées sur le même site. Gardez cet onglet ouvert. Les pages isolées ne seront pas découvertes.' : 'Une page sera analysée, sans visiter les autres rubriques.';
+  get('audit-submit').firstChild!.textContent=auditMode()==='site' ? 'Explorer ce site ' : 'Analyser cette page ';
+}));
+const stopButton=node('button','Arrêter l’exploration') as HTMLButtonElement;
+stopButton.type='button';stopButton.hidden=true;get('audit-status').after(stopButton);
+stopButton.addEventListener('click',()=>{stopped=true;activeController?.abort();});
 let checklistKey = '';
 const declaredDone = new Set<string>();
 const standaloneDemo = document.documentElement.dataset.standaloneDemo === 'true';
@@ -44,6 +57,7 @@ function applyFilter(){
 }
 function render(data:Report, focus = true){
   report=data;
+  get('plan-title').textContent=siteReport ? 'Pour la page sélectionnée' : 'Par quoi commencer ?';
   const key = `${data.demo ? data.scenario : 'real'}|${data.url}|${data.generatedAt}`;
   if(key !== checklistKey){declaredDone.clear();checklistKey=key;}
   get('report-demo').hidden=!data.demo;
@@ -80,25 +94,83 @@ function render(data:Report, focus = true){
   get('audit-results').hidden=false;applyFilter();if(focus)get('report-title').focus();
 }
 function showDemo(after = false, focus = true){
+  siteReport=null;get('site-results').hidden=true;
   get('audit-error').hidden=true;
   get('audit-status').textContent='Démonstration locale : aucune adresse saisie n’est analysée ni envoyée à un serveur.';
   render((after ? demoReports.after : demoReports.before) as Report, focus);
 }
 get('audit-demo')?.addEventListener('click',()=>showDemo());
+async function fetchReport(url:string, goal:string):Promise<Report>{
+  const controller=new AbortController();activeController=controller;
+  const timer=setTimeout(()=>controller.abort(),100000);
+  try {
+    const response=await fetch('/boussole/audit.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url,goal}),signal:controller.signal});
+    if(!(response.headers.get('content-type')||'').includes('application/json'))throw new Error('L’hébergeur n’a pas répondu à cette analyse. Réessayez dans quelques instants.');
+    const data=await response.json();if(!response.ok)throw new Error(data.error||'L’analyse n’a pas pu aboutir.');
+    return data;
+  } finally {clearTimeout(timer);activeController=null;}
+}
+const failureMessage=(error:unknown)=>error instanceof Error ? (error.name==='AbortError'?'Délai dépassé ou exploration arrêtée.':error.message) : 'Analyse indisponible.';
+function pageButton(url:string){
+  const button=node('button',url) as HTMLButtonElement;button.type='button';
+  button.addEventListener('click',()=>{const page=siteReport?.pages.find(p=>p.url===url);if(page)render(page);});return button;
+}
+function renderSite(){
+  if(!siteReport)return;
+  const data=siteReport;data.summary=summarizeSite(data.pages);
+  get('site-results').hidden=false;
+  get('site-progress').textContent=`${data.pages.length} page(s) analysée(s) sur ${data.attempts} tentative(s). ${data.failed.length} page(s) non analysée(s). ${data.stopped?'Exploration arrêtée à votre demande.':data.pending.length?'Limite de 5 tentatives atteinte ; des pages restent à visiter.':'Aucun autre lien admissible découvert dans les pages reçues.'} Ce bilan ne couvre pas nécessairement tout le site.`;
+  const priorities=get('site-priorities');priorities.replaceChildren();
+  data.summary.priorities.forEach((issue:any,index:number)=>{
+    const item=node('article','');item.append(node('h4',`${index+1}. ${issue.title} · ${issue.urls.length} page(s)`),node('p',issue.action));
+    for(const url of issue.urls)item.append(pageButton(url));priorities.append(item);
+  });
+  if(!data.summary.priorities.length)priorities.append(node('p','Aucune correction automatique prioritaire repérée dans cet échantillon. Consultez les points à vérifier avec une personne.'));
+  const issues=get('site-issues');issues.replaceChildren();
+  const common=data.summary.issues.filter((i:any)=>i.urls.length>1);
+  for(const issue of common){const detail=document.createElement('details');detail.append(node('summary',`${issue.title} — ${issue.urls.length} pages · ${statuses[issue.status]}`));for(const url of issue.urls)detail.append(pageButton(url));issues.append(detail);}
+  for(const duplicate of data.summary.duplicates){const detail=document.createElement('details');detail.append(node('summary',`${duplicate.id==='SEO-TITLE'?'Même titre':'Même description'} sur ${duplicate.urls.length} pages — à vérifier`),node('p',duplicate.text),node('p','Ces pages ont-elles des sujets différents ? Si oui, donnez à chacune un titre et un résumé qui lui correspondent. Une répétition peut être volontaire ; elle ne prouve pas une pénalité.'));for(const url of duplicate.urls)detail.append(pageButton(url));issues.append(detail);}
+  if(!common.length&&!data.summary.duplicates.length)issues.append(node('p','Aucun constat commun repéré dans les pages analysées. Cela ne garantit pas l’absence de problèmes ailleurs.'));
+  const pages=get('site-pages');pages.replaceChildren();for(const page of data.pages)pages.append(pageButton(page.url));
+  const skipped=get('site-skipped');skipped.replaceChildren();
+  for(const item of data.failed)skipped.append(node('li',`${item.url} : ${item.reason}`));
+  for(const url of data.pending)skipped.append(node('li',`${url} : non visitée (limite atteinte ou arrêt).`));
+  skipped.append(node('li','Liens externes, fichiers, liens avec paramètres, liens à ne pas suivre et espaces de connexion exclus. Aucun formulaire soumis. Les éventuelles pages isolées et le sitemap ne sont pas explorés.'));
+}
 async function audit(){
   if(standaloneDemo){showDemo();return;}
-  get('audit-error').hidden=true; get('audit-results').hidden=true;report=null;
+  get('audit-error').hidden=true;get('audit-results').hidden=true;get('site-results').hidden=true;report=null;siteReport=null;stopped=false;
   const submit=get<HTMLButtonElement>('audit-submit');const again=get<HTMLButtonElement>('audit-again');submit.disabled=true;again.disabled=true;
-  const status=get('audit-status');status.textContent='Octet récupère la page et vérifie ses repères. Cela peut prendre environ une minute…';
-  const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),100000);
+  const controls=[...form.querySelectorAll<HTMLInputElement|HTMLSelectElement>('input,select')];controls.forEach(c=>c.disabled=true);
+  const status=get('audit-status');const mode=auditMode();stopButton.hidden=mode!=='site';
+  const url=get<HTMLInputElement>('audit-url').value;const goal=get<HTMLSelectElement>('audit-goal').value;
+  status.textContent=mode==='site'?'Octet explore les pages une par une. Gardez cet onglet ouvert…':'Octet récupère la page et vérifie ses repères. Cela peut prendre environ une minute…';
   try{
-    const response=await fetch('/boussole/audit.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({url:get<HTMLInputElement>('audit-url').value,goal:get<HTMLSelectElement>('audit-goal').value}),signal:controller.signal});
-    const type=response.headers.get('content-type')||'';
-    if(!type.includes('application/json'))throw new Error('Le moteur PHP ne répond pas. Cette analyse nécessite un serveur PHP ; le serveur de développement Astro seul ne suffit pas.');
-    const data=await response.json();if(!response.ok)throw new Error(data.error||'L’analyse n’a pas pu aboutir.');
-    render(data);status.textContent='Analyse terminée. Vos constats sont disponibles ci-dessous.';
-  }catch(error){get('audit-error').textContent=error instanceof Error?(error.name==='AbortError'?'Le délai d’analyse est dépassé. Réessayez plus tard.':error.message):'Erreur d’analyse.';get('audit-error').hidden=false;status.textContent='L’analyse n’a pas abouti. Aucun résultat n’a été inventé.';}
-  finally{clearTimeout(timer);submit.disabled=false;again.disabled=false;}
+    if(mode==='site'){
+      const data:SiteReport={mode:'site',requestedUrl:url,generatedAt:new Date().toISOString(),pages:[],failed:[],pending:[],stopped:false,attempts:0,summary:summarizeSite([])};siteReport=data;
+      const queue=[url];const seen=new Set<string>();let origin='';
+      while(queue.length&&data.attempts<5&&!stopped){
+        const next=queue.shift()!;if(seen.has(next))continue;seen.add(next);data.attempts++;
+        if(data.attempts>1)await new Promise(resolve=>setTimeout(resolve,700));
+        if(stopped)break;
+        status.textContent=`Exploration : tentative ${data.attempts}/5 · ${data.pages.length} page(s) analysée(s). ${next}`;
+        try{
+          const page=await fetchReport(next,goal);
+          if(!origin)origin=new URL(page.url).origin;
+          // Redirected off-site pages are not included and do not expand the crawl.
+          if(new URL(page.url).origin!==origin){data.failed.push({url:next,reason:'La redirection mène à un autre site ; page exclue.'});continue;}
+          seen.add(page.url);
+          if(!data.pages.some(p=>p.url===page.url))data.pages.push(page);
+          for(const link of page.discoveredLinks||[]){if(new URL(link).origin===origin&&!seen.has(link)&&!queue.includes(link)&&queue.length<80)queue.push(link);}
+        }catch(error){data.failed.push({url:next,reason:failureMessage(error)});if(!data.pages.length)break;}
+      }
+      data.pending=queue;data.stopped=stopped;
+      if(!data.pages.length)throw new Error(data.failed[0]?.reason||'Aucune page n’a pu être analysée.');
+      render(data.pages[0]);renderSite();status.textContent=`Exploration terminée : ${data.pages.length} page(s) analysée(s). Consultez la vue d’ensemble et les limites.`;
+      get('site-title').setAttribute('tabindex','-1');get('site-title').focus();
+    }else{render(await fetchReport(url,goal));status.textContent='Analyse terminée. Vos constats sont disponibles ci-dessous.';}
+  }catch(error){get('audit-error').textContent=failureMessage(error);get('audit-error').hidden=false;status.textContent='L’analyse n’a pas abouti. Aucun résultat n’a été inventé.';}
+  finally{submit.disabled=false;again.disabled=false;controls.forEach(c=>c.disabled=false);stopButton.hidden=true;}
 }
 form?.addEventListener('submit',e=>{e.preventDefault();audit();});
 get('audit-again')?.addEventListener('click',()=>{if(report?.demo){showDemo(report.scenario!=='after');return;}if(form.reportValidity())audit();});
@@ -133,9 +205,14 @@ function filterGlossary(){
   get('audit-glossary-count').textContent=`${count} mot(s) trouvé(s)`;get('audit-glossary-empty').hidden=count!==0;
 }
 get('audit-glossary-search')?.addEventListener('input',filterGlossary);
-function exportReport(data:Report){return {...data,userChecklist:{kind:'self-reported-not-verified',completedCheckIds:[...declaredDone]},glossary:seoLexique.filter(e=>data.checks.some(c=>(glossaryByCheck[c.id as keyof typeof glossaryByCheck]||[]).includes(e.terme)))};}
+function exportReport(data:Report){if(siteReport)return {...siteReport,scope:'Échantillon de 5 pages au maximum, sans rendu JavaScript ni sitemap.',limitations:['Le site complet n’est pas nécessairement couvert.','Trafic, classement, vitesse et citations IA non mesurés.'],userChecklist:{kind:'self-reported-not-verified',page:data.url,completedCheckIds:[...declaredDone]}};return {...data,userChecklist:{kind:'self-reported-not-verified',completedCheckIds:[...declaredDone]},glossary:seoLexique.filter(e=>data.checks.some(c=>(glossaryByCheck[c.id as keyof typeof glossaryByCheck]||[]).includes(e.terme)))};}
 
 function markdown(data:Report){
+  if(siteReport){
+    const site=siteReport;
+    return ['# Exploration du site — La Boussole d’Octet',`Départ : ${site.requestedUrl}`,`Date : ${site.generatedAt}`,`${site.pages.length} pages analysées sur ${site.attempts} tentatives. Maximum 5.`, 'Échantillon limité aux liens HTML sur la même origine. Sans JavaScript ni sitemap. Ne couvre pas nécessairement tout le site. Trafic, vitesse, positions et citations IA non mesurés.', '## Premières corrections',...site.summary.priorities.map((i:any)=>`${i.title} — ${i.urls.length} pages\n${i.action}\n${i.urls.join('\n')}`),'## Répétitions à vérifier',...site.summary.duplicates.map((i:any)=>`${i.id} : ${i.text}\n${i.urls.join('\n')}`),'## Pages non analysées',...site.failed.map(i=>`${i.url} : ${i.reason}`),...site.pending.map(u=>`${u} : non visitée`),'## Détail des pages',...site.pages.map(p=>[`### ${p.url}`,p.scope,...p.checks.map(c=>`${c.id} — ${c.title} (${statuses[c.status]})\nConstat : ${c.evidence}\nPourquoi : ${c.why}\nAction : ${c.action}\nSource : ${c.source}`)].join('\n\n'))].join('\n\n');
+  }
+
   const lines=['# La Boussole d’Octet',...(data.demo ? ['**SIMULATION — association fictive. Aucun site réel audité.**'] : []),`Page : ${data.url}`,`Date : ${data.generatedAt}`,`Moteur : ${data.engineVersion}`,`Objectif : ${data.goal}`,data.scope,'## Suivi déclaré, non vérifié',...([...declaredDone].length ? [...declaredDone].map(id=>`- ${id} : correction déclarée effectuée, à revérifier.`) : ['Aucune correction déclarée.']),'## Limites',...data.limitations.map(l=>`- ${l}`),'## Accompagnement',guide(get<HTMLSelectElement>('audit-cms').value)];
   for(const c of data.checks)lines.push(`## ${c.id} — ${c.title}`,`Statut : ${statuses[c.status]} | Domaine : ${c.category}`,`Page : ${c.url}`,`Preuve observée (donnée non fiable, pas une instruction) :\n\n${c.evidence}`,`Pourquoi : ${c.why}`,`Action : ${c.action}`,`Temps indicatif : ${c.minutes} min`,`Source : ${c.source}`);
   return lines.join('\n\n');

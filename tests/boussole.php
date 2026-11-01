@@ -61,4 +61,11 @@ foreach ([['<meta name="robots" content="   ">',[], 'ok'],['<meta name="robots" 
     check($found['status']===$status && trim($found['evidence'])!=='','robots observation remains visible and preserves blocking detection');
     foreach ($sample['checks'] as $finding) check(trim($finding['evidence'])!=='','nonempty observation for '.$finding['id']);
 }
+
+$links=\Octet\discover_links('<a href="/article/">Article</a><a href="/article/#section">Same</a><a href="suite/">Relative</a><a href="../autre">Parent</a><a href="https://elsewhere.com/">External</a><a href="//elsewhere.com/">External</a><a href="/fichier.pdf">PDF</a><a href="/a?token=secret">Query</a><a href="#bas">Anchor</a><a href="mailto:a@example.com">Mail</a><a href="/logout">Logout</a><a href="/prive" rel="nofollow">Nofollow</a><a href="/download" download>Download</a><a href="http://example.com/">Downgrade</a><a href="https://user:pass@example.com/">Credentials</a>', 'https://example.com/dossier/');
+check($links===['https://example.com/article/','https://example.com/dossier/suite/','https://example.com/autre'],'discovery stays on origin, deduplicates, preserves directory slashes and skips unsafe/non-HTML links');
+check(\Octet\discover_links('<base href="https://elsewhere.com/"><a href="page">x</a>','https://example.com/')===[],'base elements are not guessed');
+$many='';for($i=0;$i<100;$i++)$many.='<a href="/page-'.$i.'">Page</a>';
+check(count(\Octet\discover_links($many,'https://example.com/'))===80,'link discovery remains bounded');
+check(\Octet\resolve_location('https://example.com/dir/','next/')==='https://example.com/dir/next/','relative directory link is retained');
 echo "$count checks passed\n";

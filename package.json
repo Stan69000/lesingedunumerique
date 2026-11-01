@@ -13,7 +13,7 @@
     "astro": "astro",
     "brief:add": "node scripts/add-brief.mjs",
     "audit:page": "php scripts/octet-audit.php",
-    "test:boussole": "php tests/boussole.php && node --test tests/boussole-plan.test.mjs tests/lexique.test.mjs"
+    "test:boussole": "php tests/boussole.php && node --test tests/boussole-plan.test.mjs tests/lexique.test.mjs tests/boussole-site.test.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
