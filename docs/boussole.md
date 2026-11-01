@@ -173,3 +173,16 @@ Validation : 32 contrôles PHP et 13 tests Node réussis ; build de 74 pages. V�
 La Boussole rejoint le catalogue partagé des projets (accueil, association et pied de page). Une entrée « Nos outils » mène à `/outils/`, avec la Boussole et RGAA Audit. L’article `/blog/votre-site-est-en-ligne-octet-sort-sa-boussole/` explique le fonctionnement, les exports et les limites ; il est relié à l’outil et au lexique. Le compteur du lexique sur l’accueil utilise désormais le catalogue commun de 205 termes.
 
 Les fichiers récents de main ont été intégrés avant publication, notamment la mesure d’audience et l’article RGAA Audit. Les relations éditoriales couvrent désormais 88 associations, 16 contenus et les nouvelles lectures SEO et accessibilité. Les tests sont aussi exécutés en CI et avant le déploiement. Un contrôle de production supplémentaire vérifie les pages, la réponse JSON 405 à un GET et un audit réel de la page d’accueil (11 constats), depuis le runner GitHub autorisé à accéder au réseau.
+
+
+## Clarification des résultats et des prochaines étapes — moteur 0.1.1
+
+Le rapport place désormais « Ce que l’outil a trouvé », puis « Que faire maintenant ? » avant l’explication. Les identifiants techniques restent dans le détail. Les actions sont visibles aussi pour les contrôles effectués, avec une consigne explicite de ne rien changer quand elle est adaptée. Plusieurs conseils indiquent où intervenir dans l’outil de publication ou fournissent un message à transmettre à la personne qui maintient le site.
+
+Le contrôle de l’adresse déclarée aux moteurs ne demande plus systématiquement une confirmation. Une seule adresse HTTP(S) complète, sans fragment ni attribut annexe incompatible, identique à celle de la page analysée est reconnue comme cohérente. L’absence de barre oblique à la racine, la casse du domaine et le port par défaut sont normalisés ; la différence www, le protocole, les paramètres et la barre finale des chemins internes restent distincts. Ce contrôle ne vérifie ni la disponibilité de la destination ni le choix retenu par Google. Les adresses relatives, incomplètes ou multiples demandent une confirmation technique. L’absence de déclaration HTML est une suggestion conditionnelle, pas une erreur automatique ; les en-têtes Link ne sont pas analysés.
+
+La fiche « URL canonique » est reformulée avec un exemple par page et un réflexe concret. Le périmètre du bilan est expliqué sous trois angles (fonctionnement, contenu, recommandations d’autres sites), avec renvoi à France Num. Ces repères sont reformulés pour le public du Singe ; ils n’ajoutent aucune mesure de popularité, de vitesse ou de trafic et ne constituent pas une approbation de France Num.
+
+Validation locale : 50 contrôles PHP dont 18 cas de régression sur les adresses déclarées, 14 tests Node et build de 77 pages. Les exemples avant/après et les aperçus autonomes sont régénérés avec le moteur 0.1.1.
+
+Une déclaration d’adresse absente, qui ne nécessite pas systématiquement une modification, est exclue des trois premières pistes d’action. Un test vérifie qu’elle ne prend pas la place d’une correction utile.

@@ -269,11 +269,13 @@
     "terme": "URL canonique",
     "aussi": [
       "canonical",
-      "adresse de référence"
+      "adresse de référence",
+      "adresse préférée",
+      "adresse à afficher dans les recherches"
     ],
-    "definition": "L’adresse indiquée comme version de référence quand plusieurs URLs présentent un contenu identique ou très proche. C’est un signal, pas un ordre absolu au moteur.",
-    "situation": "Une même page est accessible par deux adresses différentes.",
-    "reflexe": "Vérifiez la version souhaitée avant de modifier ce réglage. Un canonique erroné peut orienter le moteur vers une autre page.",
+    "definition": "L’adresse d’une page que votre site demande aux moteurs de privilégier quand plusieurs adresses montrent le même contenu. Comme indiquer la bonne entrée d’un bâtiment. Le moteur garde le dernier mot.",
+    "situation": "Vous partagez la page de vos reportages. Si elle existe aussi à une autre adresse, ce réglage indique laquelle vous préférez voir dans les recherches. Chaque page doit être examinée séparément : tout ne doit pas renvoyer vers l’accueil.",
+    "reflexe": "Regardez l’adresse indiquée dans le rapport. Si elle correspond à la page analysée, rien à modifier pour ce contrôle. Si elle désigne une autre page, confirmez que ce choix est volontaire avant de changer le réglage nommé URL canonique dans votre outil de publication.",
     "theme": "SEO et GEO · Technique",
     "source": {
       "href": "https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls",

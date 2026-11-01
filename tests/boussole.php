@@ -25,4 +25,31 @@ check($empty['checks'][0]['status']==='action','missing title');
 $none=\Octet\analyze_html('<html><head><meta name="robots" content="none"></head><body>x</body></html>','https://example.com/');
 check(array_column($none['checks'],null,'id')['SEO-NOINDEX']['status']==='review','robots none');
 check(count($report['checks'])===11,'stable scope');
+
+// Realistic regression cases: a root slash must not alarm a beginner, while
+// a different host, scheme or article path must never be silently accepted.
+function canonical_test(string $head, string $url='https://rvaz.fr/'): array {
+    $report=\Octet\analyze_html('<html><head>'.$head.'</head><body><h1>Test</h1></body></html>',$url);
+    return array_column($report['checks'],null,'id')['SEO-CANONICAL'];
+}
+$root=canonical_test('<link rel="canonical" href="https://rvaz.fr">');
+check($root['status']==='ok','root slash is not a canonical warning');
+check(str_contains($root['action'],'Rien à modifier'),'self canonical gives an explicit no-action instruction');
+check(canonical_test('<link rel="canonical" href="https://RVAZ.FR:443/">')['status']==='ok','host case and default port');
+check(canonical_test('<link rel="canonical" href="https://www.rvaz.fr/">')['status']==='review','www is a different declared address');
+check(canonical_test('<link rel="canonical" href="http://rvaz.fr/">')['status']==='review','HTTP is not silently equated with HTTPS');
+check(canonical_test('<link rel="canonical" href="https://rvaz.fr/">','https://rvaz.fr/reportages')['status']==='review','an article pointing to home needs confirmation');
+check(canonical_test('<link rel="canonical" href="https://rvaz.fr/reportages/">','https://rvaz.fr/reportages')['status']==='review','non-root trailing slash is not erased');
+check(canonical_test('<link rel="canonical" href="https://rvaz.fr/reportages">','https://rvaz.fr/reportages')['status']==='ok','each page can declare its own address');
+check(canonical_test('<link rel="canonical" href="https://rvaz.fr/?page=2">')['status']==='review','query is not discarded');
+check(canonical_test('<link rel="canonical" href="https://rvaz.fr/#section">')['status']==='review','fragment canonical is not validated');
+check(canonical_test('<link rel="canonical" href="https://user:pass@rvaz.fr/">')['status']==='review','credentials in canonical are not validated');
+check(canonical_test('<link rel="canonical" href="/">')['status']==='review','relative canonical is left for technical confirmation');
+check(canonical_test('<link rel="canonical" href="">')['status']==='review','empty canonical is not validated');
+check(canonical_test('<link rel="canonical" href="https://rvaz.fr/"><link rel="canonical" href="https://rvaz.fr/reportages">')['status']==='review','multiple declarations are not validated');
+check(canonical_test('<link rel="canonical" hreflang="fr" href="https://rvaz.fr/">')['status']==='review','unsupported link attributes are not validated');
+$absent=canonical_test('');
+check($absent['status']==='suggestion','missing canonical is not an automatic error');
+check(str_contains($absent['action'],'Ne changez rien'),'missing canonical advice is conditional');
+check(canonical_test('')['source']==='https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls','source retained');
 echo "$count checks passed\n";

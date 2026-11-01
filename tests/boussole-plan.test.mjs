@@ -29,3 +29,11 @@ test('32 entries each have a situation, action and primary documentation source'
     assert.ok(['developers.google.com','support.google.com','www.w3.org','developers.openai.com','www.bing.com'].includes(new URL(entry.source.href).hostname));
   }
 });
+
+test('an optional missing canonical does not become a priority correction',()=>{
+  const canonical=demos.before.checks.find(c=>c.id==='SEO-CANONICAL');
+  assert.equal(canonical.planEligible,false);
+  assert.ok(!selectPlan(demos.before.checks).checks.some(c=>c.id==='SEO-CANONICAL'));
+  const next=selectPlan([{id:'optional',status:'suggestion',minutes:1,planEligible:false},{id:'useful',status:'suggestion',minutes:5}]);
+  assert.deepEqual(next.checks.map(c=>c.id),['useful']);
+});

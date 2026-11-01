@@ -1,7 +1,7 @@
 /** Select actionable findings; checked boxes never change audit evidence. */
 export function selectPlan(checks, budgetMinutes = Infinity) {
   const rank = {action: 0, suggestion: 1};
-  const candidates = checks.filter(c => c.status in rank)
+  const candidates = checks.filter(c => c.planEligible !== false && c.status in rank)
     .sort((a,b) => rank[a.status]-rank[b.status]);
   const chosen = [];
   let total = 0;

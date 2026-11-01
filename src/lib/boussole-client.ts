@@ -1,11 +1,11 @@
 import seoLexique from '../data/lexique-seo.json';
 import { selectPlan, glossaryAnchor, glossaryByCheck } from './boussole-plan.mjs';
 import demoReports from '../data/boussole-demo.json';
-type Check = {id:string; category:string; status:string; title:string; evidence:string; why:string; action:string; source:string; minutes:number; url:string};
+type Check = {planEligible?:boolean; id:string; category:string; status:string; title:string; evidence:string; why:string; action:string; source:string; minutes:number; url:string};
 type Report = {demo?:boolean; scenario?:string; schemaVersion:string; engineVersion:string; generatedAt:string; url:string; requestedUrl?:string; goal:string; scope:string; limitations:string[]; checks:Check[]};
 const get = <T extends HTMLElement>(id:string) => document.getElementById(id) as T;
 const form = get<HTMLFormElement>('audit-form');
-const statuses:Record<string,string> = {action:'À améliorer',suggestion:'Suggestion',review:'À vérifier',ok:'Présent',unmeasured:'Non mesuré'};
+const statuses:Record<string,string> = {action:'À améliorer',suggestion:'Suggestion',review:'À vérifier',ok:'Point vérifié',unmeasured:'Non mesuré'};
 let report:Report|null = null;
 let checklistKey = '';
 const declaredDone = new Set<string>();
@@ -39,12 +39,13 @@ function render(data:Report, focus = true){
   }
   for(const check of [...data.checks].sort((a,b)=>rank[a.status]-rank[b.status])){
     const card=node('article','','audit-check');card.dataset.status=check.status;card.dataset.category=check.category;
-    card.append(node('p',`${statuses[check.status]} · ${check.category} · ${check.id}`,'check-label'),node('h3',check.title));
-    card.append(node('p',check.evidence,'evidence'));
-    card.append(node('h4','Pourquoi c’est utile'),node('p',check.why));
-    if(check.status!=='ok'&&check.status!=='unmeasured') card.append(node('h4',`Votre prochaine action · environ ${check.minutes} min`),node('p',check.action));
+    card.append(node('p',`${statuses[check.status]} · ${check.category}`,'check-label'),node('h3',check.title));
+    card.append(node('h4','Ce que l’outil a trouvé'),node('p',check.evidence,'evidence'));
+    const actionTitle=check.status==='unmeasured' ? 'Pour aller plus loin' : (check.status==='ok' ? 'Que faire maintenant ?' : `Que faire maintenant ? · environ ${check.minutes} min`);
+    card.append(node('h4',actionTitle),node('p',check.action));
+    card.append(node('h4','À quoi ça sert ?'),node('p',check.why));
     const details=document.createElement('details');details.append(node('summary','Comprendre le détail et passer la main'));
-    details.append(node('p',check.action),node('p',guide(get<HTMLSelectElement>('audit-cms').value)));
+    details.append(node('p',`Référence du contrôle : ${check.id}`),node('p',guide(get<HTMLSelectElement>('audit-cms').value)));
     const a=document.createElement('a');a.href=check.source;a.textContent='Lire la source de ce contrôle';a.target='_blank';a.rel='noopener noreferrer';details.append(a);card.append(details);card.id=`check-${check.id}`;
     const words = (glossaryByCheck[check.id as keyof typeof glossaryByCheck] || []).map((term:string)=>seoLexique.find(e=>e.terme===term)).filter(Boolean);
     if(words.length){

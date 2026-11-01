@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace Octet;
 
-const VERSION = '0.1.0';
+const VERSION = '0.1.1';
 
 function normalize_url(string $url): string {
     $url = trim($url);
@@ -123,6 +123,38 @@ function audit_url(string $url, string $goal = 'association'): array {
     throw new \RuntimeException('Trop de redirections (maximum : 3).');
 }
 
+// Compare only explicit HTTP(S) addresses; never fetch the declared destination.
+// At the domain root, an omitted slash and a default port identify the same URL.
+function canonical_url_key(string $url): ?string {
+    if (!filter_var($url, FILTER_VALIDATE_URL)) return null;
+    $parts = parse_url($url);
+    if (!$parts || !in_array(strtolower($parts['scheme'] ?? ''), ['http', 'https'], true)
+        || empty($parts['host']) || isset($parts['user']) || isset($parts['pass']) || isset($parts['fragment'])) return null;
+    $scheme = strtolower($parts['scheme']);
+    $port = $parts['port'] ?? ($scheme === 'https' ? 443 : 80);
+    $suffix = $port === ($scheme === 'https' ? 443 : 80) ? '' : ':'.$port;
+    return $scheme.'://'.strtolower($parts['host']).$suffix.($parts['path'] ?? '/')
+        .(isset($parts['query']) ? '?'.$parts['query'] : '');
+}
+
+function canonical_finding(array $addresses, string $pageUrl, bool $unsupported = false): array {
+    $why = 'Quand le même contenu existe à plusieurs adresses, ce réglage dit aux moteurs quelle adresse vous préférez afficher. L’outil ne vérifie pas le choix réellement fait par Google.';
+    if (!$addresses) return ['suggestion', 'Aucune adresse préférée n’est déclarée dans la page',
+        'Aucune indication trouvée dans le code de la page. Cela ne signifie pas que votre page est introuvable.', $why,
+        'Ne changez rien pour ce point si vous n’avez pas de pages en double. Si le même contenu existe à plusieurs adresses, demandez à la personne qui gère le site d’indiquer l’adresse à conserver pour cette page.'];
+    $evidence = 'Page analysée : '.$pageUrl.' · Adresse'.(count($addresses) > 1 ? 's indiquées : ' : ' indiquée : ').implode(' | ', $addresses);
+    if (count($addresses) > 1) return ['review', 'Cette page indique plusieurs adresses préférées', $evidence, $why,
+        'Transmettez les adresses ci-dessus à la personne qui gère le site avec ce message : « Cette page indique plusieurs adresses dans le réglage URL canonique. Pouvez-vous vérifier laquelle conserver et éviter les indications contradictoires ? »'];
+    $key = canonical_url_key($addresses[0]);
+    if ($key !== null && !$unsupported && $key === canonical_url_key($pageUrl)) return ['ok', 'L’adresse de cette page est bien indiquée',
+        'Adresse indiquée aux moteurs : '.$addresses[0].' · Elle correspond à la page analysée.', $why,
+        'Rien à modifier pour ce contrôle. Passez au point suivant.'];
+    if ($key !== null && !$unsupported) return ['review', 'Cette page indique une autre adresse aux moteurs', $evidence, $why,
+        'Comparez les deux adresses ci-dessus. Si l’autre adresse est bien la page que vous souhaitez privilégier, gardez ce réglage. Sinon, envoyez ce message à la personne qui gère le site : « Je souhaite que les moteurs privilégient '.$pageUrl.'. Pouvez-vous vérifier le réglage URL canonique de cette page ? »'];
+    return ['review', 'L’adresse indiquée demande une vérification technique', $evidence, $why,
+        'Ne modifiez pas le code au hasard. Transmettez ce rapport à la personne qui gère le site : « Pouvez-vous vérifier que le réglage URL canonique contient une adresse complète en https:// et qu’il est bien pris en compte pour cette page ? »'];
+}
+
 function analyze_html(string $html, string $url, string $goal = 'association', array $headers = []): array {
     $doc = new \DOMDocument();
     $previous = libxml_use_internal_errors(true);
@@ -138,38 +170,44 @@ function analyze_html(string $html, string $url, string $goal = 'association', a
     $title = $clean($x->evaluate('string(//title)')); $description = $clean($meta('description'));
     $h1 = $x->query('//h1');
     $robots = strtolower($meta('robots').' '.$meta('googlebot').' '.implode(' ', $headers['x-robots-tag'] ?? []));
-    $canonical = [];
-    foreach ($x->query('//link[@href]') as $node) if (in_array('canonical', preg_split('/\s+/', strtolower($node->getAttribute('rel'))), true)) $canonical[] = $node->getAttribute('href');
+    $canonical = []; $canonicalUnsupported = false;
+    foreach ($x->query('//head/link[@href]') as $node) {
+        if (!in_array('canonical', preg_split('/\s+/', strtolower($node->getAttribute('rel'))), true)) continue;
+        $canonical[] = trim($node->getAttribute('href'));
+        foreach (['hreflang', 'lang', 'media', 'type'] as $attribute) if ($node->hasAttribute($attribute)) $canonicalUnsupported = true;
+    }
     $checks = [];
     $add = static function($id,$category,$status,$title,$evidence,$why,$action,$source,$minutes=5) use (&$checks,$url) {
         $checks[] = compact('id','category','status','title','evidence','why','action','source','minutes','url');
     };
     $google = 'https://developers.google.com/search/docs/';
-    $add('SEO-TITLE','SEO', $title ? 'ok':'action', 'Donner un nom clair à la page', $title ?: 'Aucun titre HTML trouvé.', 'Le titre est comme l’étiquette d’un livre : il aide à choisir la bonne page.', 'Dans les réglages SEO de votre page, écrivez un titre précis et fidèle au contenu. Aucun nombre de caractères ne garantit un bon classement.', $google.'appearance/title-link');
-    $add('SEO-DESCRIPTION','SEO',$description ? 'ok':'suggestion','Présenter la page en quelques mots',$description ?: 'Aucune description trouvée.','La description peut aider le moteur à présenter la page ; il peut aussi choisir un autre extrait.','Ajoutez un résumé utile et spécifique dans les réglages SEO de cette page. Ce champ ne garantit pas un meilleur classement.',$google.'appearance/snippet');
-    $add('SEO-NOINDEX','SEO',preg_match('/\b(noindex|none)\b/', $robots) ? 'review':'ok','Vérifier le choix d’apparaître dans les moteurs',$robots ?: 'Aucune directive noindex détectée dans le HTML ou les en-têtes.','Une directive noindex peut être volontaire : brouillon, page privée ou contenu à exclure. Son absence ne prouve pas que la page est indexée.','Si cette page doit être publique dans les moteurs, faites vérifier les réglages d’indexation. Confirmez ce choix avant toute suppression de directive.',$google.'crawling-indexing/robots-meta-tag');
-    $add('SEO-CANONICAL','SEO',count($canonical) === 1 ? 'review':'suggestion','Identifier l’adresse de référence', $canonical ? implode(' | ', $canonical) : 'Aucune adresse canonique HTML trouvée (en-tête Link non analysé).','Quand plusieurs adresses présentent le même contenu, une adresse de référence aide à les regrouper. Son absence n’est pas toujours un problème.','Vérifiez que l’adresse de référence correspond à la version souhaitée et accessible. Le moteur conserve le choix final.',$google.'crawling-indexing/consolidate-duplicate-urls',10);
-    $add('CONTENT-HEADINGS','Clarté',$h1->length > 0 ? 'review':'suggestion','Rendre le sujet visible',$h1->length.' titre(s) principal(aux) H1 trouvé(s).','Les titres organisent la lecture comme les panneaux d’un parcours. Leur présence seule ne prouve pas leur pertinence.','Relisez les titres : décrivent-ils le sujet et les sections ? Plusieurs H1 ne constituent pas automatiquement une pénalité SEO.',$google.'fundamentals/seo-starter-guide',10);
+    $add('SEO-TITLE','SEO', $title ? 'ok':'action', 'Le nom de votre page dans les recherches', $title ?: 'Aucun titre HTML trouvé.', 'Le titre est comme l’étiquette d’un livre : il aide à choisir la bonne page.', $title ? 'Lisez le titre affiché ci-dessus. Décrit-il clairement cette page ? Si oui, gardez-le. Sinon, modifiez le titre dans les réglages SEO de cette page ou transmettez un nouveau titre à la personne qui gère le site.' : 'Dans votre outil de publication, ouvrez cette page, puis ses réglages SEO. Renseignez un titre qui explique le sujet et le nom de votre activité. Si vous ne trouvez pas ce réglage, envoyez ce rapport à la personne qui gère le site.', $google.'appearance/title-link');
+    $add('SEO-DESCRIPTION','SEO',$description ? 'ok':'suggestion','Présenter la page en quelques mots',$description ?: 'Aucune description trouvée.','La description peut aider le moteur à présenter la page ; il peut aussi choisir un autre extrait.',$description ? 'Relisez le résumé affiché ci-dessus. Explique-t-il ce que le visiteur trouvera sur cette page ? Si oui, gardez-le. Sinon, remplacez-le dans les réglages SEO de la page.' : 'Écrivez une ou deux phrases qui présentent cette page, puis ajoutez-les dans le champ Description ou Méta-description de ses réglages SEO. Vous pouvez aussi transmettre ce texte à la personne qui gère le site.',$google.'appearance/snippet');
+    $add('SEO-NOINDEX','SEO',preg_match('/\b(noindex|none)\b/', $robots) ? 'review':'ok','Vérifier le choix d’apparaître dans les moteurs',$robots ?: 'Aucune directive noindex détectée dans le HTML ou les en-têtes.','Une directive noindex peut être volontaire : brouillon, page privée ou contenu à exclure. Son absence ne prouve pas que la page est indexée.',preg_match('/\b(noindex|none)\b/', $robots) ? 'Si cette page doit être trouvable sur les moteurs, demandez à la personne qui gère le site de vérifier l’option qui masque cette page aux moteurs de recherche. Si vous souhaitez volontairement la garder à l’écart des recherches, ne changez rien.' : 'Aucun blocage noindex n’a été repéré : rien à modifier pour ce contrôle. Cela ne prouve pas que Google connaît déjà cette page.',$google.'crawling-indexing/robots-meta-tag');
+    [$canonicalStatus, $canonicalTitle, $canonicalEvidence, $canonicalWhy, $canonicalAction] = canonical_finding($canonical, $url, $canonicalUnsupported);
+    $add('SEO-CANONICAL','SEO',$canonicalStatus,$canonicalTitle,$canonicalEvidence,$canonicalWhy,$canonicalAction,$google.'crawling-indexing/consolidate-duplicate-urls',10);
+    if (!$canonical) $checks[array_key_last($checks)]['planEligible'] = false;
+    $add('CONTENT-HEADINGS','Clarté',$h1->length > 0 ? 'review':'suggestion','Rendre le sujet visible',$h1->length.' titre(s) principal(aux) H1 trouvé(s).','Les titres organisent la lecture comme les panneaux d’un parcours. Leur présence seule ne prouve pas leur pertinence.','Lisez le grand titre au début de votre page. Comprend-on immédiatement son sujet ? Si oui, gardez-le. Sinon, réécrivez-le dans votre éditeur de page. Si aucun grand titre n’est trouvé, ajoutez-en un avec le style Titre 1 de votre éditeur ou demandez à la personne qui gère le site de le faire.',$google.'fundamentals/seo-starter-guide',10);
     $missingAlt = 0; $images = $x->query('//img');
     foreach ($images as $img) if (!$img->hasAttribute('alt')) $missingAlt++;
-    $add('CONTENT-IMAGES','Clarté',$missingAlt ? 'action':'ok','Expliquer les images utiles',"$missingAlt image(s) sans attribut alt sur {$images->length}.",'Une alternative textuelle donne accès à l’information quand une image ne peut pas être vue.','Décrivez l’information des images utiles. Pour une image décorative, utilisez alt="". Le sens des alternatives reste à vérifier par une personne.','https://www.w3.org/WAI/tutorials/images/',15);
+    $add('CONTENT-IMAGES','Clarté',$missingAlt ? 'action':'ok','Expliquer les images utiles',"$missingAlt image(s) sans attribut alt sur {$images->length}.",'Une alternative textuelle donne accès à l’information quand une image ne peut pas être vue.',$images->length === 0 ? 'Aucune image n’a été trouvée dans la version de la page analysée : rien à modifier pour ce point.' : ($missingAlt ? 'Dans votre outil de publication, ouvrez les images de cette page et cherchez le champ Texte alternatif. Pour chaque image qui apporte une information, décrivez brièvement ce qu’elle montre. Laissez ce texte vide pour une image purement décorative. Si ce champ manque, transmettez ce rapport à la personne qui gère le site.' : 'Les images possèdent le champ de description attendu. Relisez les descriptions des images utiles : expliquent-elles bien leur contenu ? Si oui, gardez-les. Une description vide peut être volontaire pour une image décorative.'),'https://www.w3.org/WAI/tutorials/images/',15);
     $lang = $clean($x->evaluate('string(//html/@lang)'));
-    $add('CONTENT-LANG','Clarté',$lang ? 'ok':'action','Indiquer la langue du document',$lang ?: 'Attribut lang absent ou vide.','Les outils de lecture vocale ont besoin de connaître la langue pour bien prononcer le texte.','Renseignez la langue réelle dans le modèle de page, par exemple lang="fr". Ce contrôle d’accessibilité ne constitue pas un audit RGAA.','https://www.w3.org/WAI/WCAG22/Understanding/language-of-page.html');
+    $add('CONTENT-LANG','Clarté',$lang ? 'ok':'action','Indiquer la langue du document',$lang ?: 'Attribut lang absent ou vide.','Les outils de lecture vocale ont besoin de connaître la langue pour bien prononcer le texte.',$lang ? 'Une langue est déclarée. Le code fr signifie français et en signifie anglais. Si la langue déclarée correspond à celle de votre texte, ne changez rien. Sinon, demandez à la personne qui gère le site de corriger la langue de cette page.' : 'Dans les réglages de votre site, vérifiez la langue du contenu. Si votre page est en français, demandez à la personne qui gère le site d’ajouter lang="fr" dans le modèle de page. Vous pouvez lui transmettre ce rapport.','https://www.w3.org/WAI/WCAG22/Understanding/language-of-page.html');
     $viewport = $meta('viewport');
     $add('TECH-MOBILE','Technique',str_contains(strtolower($viewport),'width=device-width') ? 'ok':'review','Préparer l’affichage sur téléphone',$viewport ?: 'Aucune balise viewport trouvée.','Cette indication aide à adapter la largeur de la page ; elle ne prouve pas que le site est confortable sur mobile.','Ouvrez la page sur un téléphone : vérifiez texte, menus et boutons. Faites vérifier le viewport si nécessaire.',$google.'crawling-indexing/mobile/mobile-sites-mobile-first-indexing',10);
     $ldCount = 0; $ldInvalid = 0;
     foreach ($x->query('//script[@type="application/ld+json"]') as $script) {
         $ldCount++; json_decode($script->textContent); if (json_last_error() !== JSON_ERROR_NONE) $ldInvalid++;
     }
-    $add('GEO-STRUCTURE','GEO',$ldInvalid ? 'action':'review','Vérifier les informations structurées',"$ldCount bloc(s) JSON-LD ; $ldInvalid syntaxe(s) JSON invalide(s).",'Ces blocs peuvent décrire une organisation ou un article. Leur présence ne garantit ni résultat enrichi ni citation IA.','Si des données structurées sont pertinentes, vérifiez leur exactitude et leur conformité avec le contenu visible. Aucun schéma spécial IA n’est requis.',$google.'appearance/structured-data/intro-structured-data',15);
+    $add('GEO-STRUCTURE','GEO',$ldInvalid ? 'action':'review','Les informations supplémentaires pour les moteurs',($ldInvalid ? "$ldInvalid bloc(s) d’informations ne peuvent pas être lus correctement." : ($ldCount ? "$ldCount bloc(s) d’informations ont été trouvés pour les moteurs. Leur exactitude reste à vérifier." : 'Aucun bloc de ce type n’a été trouvé dans le code analysé. Ce n’est pas automatiquement une erreur.')),'Ces informations peuvent décrire une organisation ou un article aux moteurs. Seul le format JSON-LD est vérifié ici ; les autres formats et le contenu ajouté par JavaScript ne le sont pas. Cela ne prouve pas qu’une IA citera votre site.',($ldInvalid ? 'Transmettez ce rapport à la personne qui gère le site avec ce message : « Un bloc d’informations pour les moteurs ne peut pas être lu. Pouvez-vous corriger la syntaxe de ce bloc JSON-LD ? »' : ($ldCount ? 'Faites vérifier que les informations déclarées, par exemple le nom de l’organisation, l’auteur ou la date selon le contenu, correspondent bien à ce qui est affiché sur la page. Si c’est le cas, gardez-les.' : 'Ce point n’est pas une erreur à corriger automatiquement. Occupez-vous d’abord des informations visibles de la page. Si vous êtes accompagné, demandez si une description technique de votre organisation ou de vos articles serait utile.')),$google.'appearance/structured-data/intro-structured-data',15);
     $goals = [
         'association'=>'Une personne comprend-elle votre mission, votre territoire et comment participer ?',
         'activite'=>'Une personne comprend-elle votre offre, la zone desservie et comment vous contacter ?',
         'publication'=>'Le lecteur identifie-t-il les auteurs, les sources et les dates utiles ?',
     ];
     $goal = isset($goals[$goal]) ? $goal : 'association';
-    $add('GEO-USEFULNESS','GEO','review','Répondre au besoin réel du visiteur',$goals[$goal],'Les informations fiables, explicites et utiles aux lecteurs forment le socle d’un contenu exploitable. Un automate ne peut pas certifier votre expertise.','Faites relire la page par une personne extérieure : peut-elle répondre à cette question sans vous solliciter ? Corrigez les informations manquantes et citez vos sources.',$google.'fundamentals/creating-helpful-content',20);
-    $add('GEO-CITATIONS','GEO','unmeasured','Mesurer les citations dans les réponses IA','Aucun service IA interrogé. Aucune donnée de citation connectée.','Une analyse HTML ne mesure pas votre présence dans les réponses des assistants.','Pour mesurer la visibilité, définissez des questions, des services et des dates de test. Conservez les réponses et les liens cités.',$google.'appearance/ai-features',30);
+    $add('GEO-USEFULNESS','GEO','review','Un visiteur comprend-il ce que vous proposez ?',$goals[$goal],'Les informations fiables, explicites et utiles aux lecteurs forment le socle d’un contenu exploitable. Un automate ne peut pas certifier votre expertise.','Demandez à une personne qui ne connaît pas votre site de lire cette page, puis posez-lui la question affichée ci-dessus. Si elle ne trouve pas la réponse, ajoutez les informations manquantes sur la page. Si elle comprend, gardez votre contenu.',$google.'fundamentals/creating-helpful-content',20);
+    $add('GEO-CITATIONS','GEO','unmeasured','Votre site apparaît-il dans les réponses des IA ?','Aucun service IA interrogé. Aucune donnée de citation connectée.','Une analyse HTML ne mesure pas votre présence dans les réponses des assistants.','Ce rapport ne permet pas de répondre. Pour un premier essai, posez à votre assistant une question qu’un visiteur pourrait poser sur votre activité, puis regardez s’il cite votre site. Un seul essai ne suffit pas à mesurer votre visibilité : les réponses peuvent varier.',$google.'appearance/ai-features',30);
     return ['schemaVersion'=>'1.0','engineVersion'=>VERSION,'generatedAt'=>gmdate('c'),'url'=>$url,'goal'=>$goal,'scope'=>'Une page HTML reçue par le serveur, sans exécution JavaScript.','limitations'=>[
         'Pas d’exploration du site, de contrôle des liens cassés ou d’analyse des autres pages.',
         'Indexation réelle, positions, popularité, vitesse vécue et citations IA non mesurées.',
