@@ -12,6 +12,13 @@ const blog = defineCollection({
     author: z.string().optional(),
     draft: z.boolean().optional().default(false),
     featured: z.boolean().optional().default(false),
+    // Champs SEO optionnels, renseignés depuis l'admin.
+    seoTitle: z.string().optional(),
+    image: z.string().optional(),
+    imageAlt: z.string().optional(),
+    updatedDate: z.coerce.date().optional(),
+  }).refine((post) => !post.image || Boolean(post.imageAlt?.trim()), {
+    message: 'Une image de partage doit avoir un texte alternatif.', path: ['imageAlt'],
   }),
 });
 
