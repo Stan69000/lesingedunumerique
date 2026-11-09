@@ -66,7 +66,9 @@ test('editorial relations reference existing terms and published content',()=>{
     const frontmatter=content.split('---')[1];
     assert.doesNotMatch(frontmatter,/^draft:\s*true\s*$/m);
     assert.doesNotMatch(frontmatter,/^demo:\s*true\s*$/m);
-    assert.ok(frontmatter.includes(relation.label),relation.label);
+    assert.doesNotMatch(relation.label,/^\s*[>|][-+]?\s*$/,relation.href);
+    // Les titres longs sont repliés sur plusieurs lignes (YAML `>-`) : on compare à espaces normalisés.
+    assert.ok(frontmatter.replace(/\s+/g,' ').includes(relation.label.replace(/\s+/g,' ')),relation.label);
   }
 });
 test('links work in both directions without duplicates or loss of existing links',()=>{
