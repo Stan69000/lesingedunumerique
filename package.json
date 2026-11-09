@@ -16,9 +16,9 @@
     "test:boussole": "php -l public/boussole/engine.php && php -l public/boussole/audit.php && php -l public/boussole/health.php && php tests/boussole.php && node --test tests/boussole-plan.test.mjs tests/lexique.test.mjs tests/boussole-site.test.mjs"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.3",
-    "astro": "^7.4.4",
-    "marked": "^18.1.2",
+    "@tailwindcss/vite": "^4.3.4",
+    "astro": "^7.4.7",
+    "marked": "^18.1.3",
     "tailwindcss": "^4.2.4"
   }
 }
