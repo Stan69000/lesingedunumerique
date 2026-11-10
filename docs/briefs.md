@@ -34,12 +34,19 @@ La page d’un décryptage (`src/lib/brief-layout.mjs`) reconnaît les conventio
 - `## 1. Nom de l’arnaque` ouvre une carte numérotée. Il en faut une par entrée de `scams`, dans le même ordre : le sommaire et les ancres (`#identifiant`) en dépendent, et `npm run test:briefs` le vérifie en CI.
 - `**Statut : … ; ….**` devient des étiquettes, une par segment séparé par « ; ».
 - `**Le piège.**`, `**Pourquoi ça marche.**`, `**Ce qui doit alerter.**` et `**Le réflexe d’Octet.**` deviennent quatre blocs ; les autres paragraphes de la section (liens vers une fiche, précisions) s’affichent sous ces blocs.
+- `**Exemple de message (fictif).** …` dans une section d’arnaque s’affiche en bulle de message, marquée comme reconstituée. Facultatif ; jamais de vrai lien ni de vrai numéro (`[lien]`, `0X XX XX XX XX`).
 - `## La phrase à retenir` suivi d’une citation `>` devient le bandeau ; `## Les réflexes d’Octet` affiche sa liste numérotée en étapes ; `## Vous avez déjà … ?` devient l’encadré d’urgence.
 - La ligne d’ouverture `**Édition du … — France.** Période de veille …` n’est pas répétée : les dates figurent déjà en tête de page.
 
 Deux ajouts sont calculés sans rien écrire dans le brief. Une arnaque dont l’identifiant figure dans une autre édition publiée renvoie vers elle (« Déjà traitée le … » / « Revue le … ») : réutiliser le même `id` pour une même arnaque d’une semaine à l’autre. Une planche BD d’Octet est proposée d’après les mots de l’identifiant, selon les règles de `src/data/brief-bd.json`, sans répéter la même planche dans une édition.
 
-## Publication hebdomadaire automatique
+## Préparation depuis l’admin (relecture humaine)
+
+Depuis novembre 2026, l’admin (Admin-Sites-Astro, menu Le Singe du Numérique → Décryptages) prépare chaque dimanche à 7 h un **brouillon** : Claude cherche et lit les pages des sites officiels sur la semaine écoulée, en s’aidant des actualités « Cyber Arnaque » collectées par Le Signal Clair, puis rend le décryptage au format ci-dessus. Les arnaques des huit dernières éditions sont signalées comme doublons. Rien n’est publié sans relecture : le bouton « Publier sur le site » écrit `src/content/briefs/AAAA-MM-JJ-arnaques.md`, committe sur `main` et lance le déploiement.
+
+Cette préparation remplace l’automatisation Codex décrite ci-dessous, à désactiver dans Codex une fois l’admin déployé. Si les deux tournent la même semaine, l’admin refuse de publier une édition déjà présente sur `main`.
+
+## Ancienne publication automatique (Codex)
 
 L’automatisation Codex « Brief hebdomadaire d’Octet — publication automatique » prépare l’édition chaque dimanche à 8 h (Europe/Paris). Elle couvre le dimanche précédent au samedi inclus, consulte des sources primaires et crée `src/content/briefs/AAAA-MM-JJ-arnaques.md` sur une branche dédiée. Elle reprend une PR existante pour éviter les doublons.
 

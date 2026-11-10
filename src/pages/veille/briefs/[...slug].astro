@@ -91,7 +91,8 @@ const shareText = (quoteHtml: string) => `« ${decode(quoteHtml)} » Le décrypt
     {layout.scams.map((scam, index) => {
       const bd = bdFor[index];
       const plain = scam.blocks.filter((block) => block.kind === 'trap' || block.kind === 'why');
-      const others = scam.blocks.filter((block) => block.kind !== 'trap' && block.kind !== 'why');
+      const example = scam.blocks.find((block) => block.kind === 'example');
+      const others = scam.blocks.filter((block) => block.kind === 'alert' || block.kind === 'reflex');
       return (
         <article class="scam" id={scamIds[index]} aria-labelledby={`${scamIds[index]}-titre`}>
           <header class="scam-head">
@@ -111,6 +112,12 @@ const shareText = (quoteHtml: string) => `« ${decode(quoteHtml)} » Le décrypt
               <div class="scam-row">
                 {plain.map((block) => <section class="block block-plain"><h3><span aria-hidden="true">{icons[block.kind]}</span> {block.label}</h3><p set:html={block.html} /></section>)}
               </div>
+            )}
+            {example && (
+              <figure class="sms">
+                <figcaption><span aria-hidden="true">💬</span> Exemple de message reconstitué, fictif</figcaption>
+                <p class="sms-bubble" set:html={example.html} />
+              </figure>
             )}
             {others.map((block) => block.kind === 'reflex'
               ? <section class="block block-reflex"><span class="avatar" aria-hidden="true">🐒</span><div><h3>{block.label}</h3><p set:html={block.html} /></div></section>
@@ -241,6 +248,9 @@ const shareText = (quoteHtml: string) => `« ${decode(quoteHtml)} » Le décrypt
   .block-reflex h3 { color: var(--brand-green); }
   .block-reflex p { font-size: 1.08rem; font-weight: 500; }
   .scam-notes { color: var(--text-muted); font-size: .95rem; }
+  .sms { margin: 0; padding: 1rem 1.1rem; border: 1px dashed var(--border-color); border-radius: 14px; }
+  .sms figcaption { margin-bottom: .6rem; color: var(--text-muted); font-family: "JetBrains Mono", monospace; font-size: .75rem; letter-spacing: .04em; text-transform: uppercase; }
+  .sms-bubble { position: relative; max-width: 34rem; margin: 0; padding: .7rem 1rem; border-radius: 18px 18px 18px 4px; background: color-mix(in srgb, var(--text-main) 9%, var(--bg-card)); font-size: .97rem; line-height: 1.5; }
   .scam-foot { padding: 1rem 1.5rem; border-top: 1px solid var(--border-color); }
   .brief-detail .bd-link { display: inline-flex; gap: .8rem; align-items: center; color: inherit; text-decoration: none; }
   .bd-link img { width: 64px; height: 64px; object-fit: cover; object-position: top; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-body); }
@@ -318,6 +328,8 @@ const shareText = (quoteHtml: string) => `« ${decode(quoteHtml)} » Le décrypt
     .block h3, .block-alert h3, .block-reflex h3 { color: #000; }
     .block-reflex { grid-template-columns: 1fr; border: 2px solid #000 !important; }
     .block-alert { border-style: dashed !important; }
+    .sms { break-inside: avoid; padding: .35rem .6rem; border-color: #999; }
+    .sms-bubble { background: none; border: 1px solid #999; }
     .retain { break-inside: avoid; background: none; color: #000; border: 2px solid #000; padding: .6rem .9rem; margin: .8rem 0 .6rem; border-radius: 10px; }
     .retain blockquote { font-size: 13pt; padding-right: 0; }
     .closing { margin: .6rem 0; }

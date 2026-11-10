@@ -11,6 +11,8 @@ const BLOCKS = [
   { kind: 'why', label: 'Pourquoi ça marche', pattern: /^Pourquoi ça marche$/i },
   { kind: 'alert', label: 'Ce qui doit alerter', pattern: /^Ce qui doit alerter$/i },
   { kind: 'reflex', label: 'Le réflexe d’Octet', pattern: /^Le réflexe d[’']Octet$/i },
+  // Message type reconstitué, affiché en bulle : toujours fictif.
+  { kind: 'example', label: 'Exemple de message (fictif)', pattern: /^Exemple de message \(fictif\)$/i },
 ];
 
 const render = (markdown) => (markdown.trim() ? marked.parse(markdown.trim(), { async: false }) : '');

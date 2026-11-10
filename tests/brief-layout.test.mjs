@@ -21,7 +21,7 @@ test('the current briefs follow the four headings and the closing sentence', () 
   for (const name of readdirSync(dir).filter((file) => file.endsWith('.md'))) {
     const layout = layoutBrief(bodyOf(name));
     for (const scam of layout.scams) {
-      assert.deepEqual(scam.blocks.map((block) => block.kind), ['trap', 'why', 'alert', 'reflex'], `${name} ${scam.title}`);
+      assert.deepEqual(scam.blocks.map((block) => block.kind).filter((kind) => kind !== 'example'), ['trap', 'why', 'alert', 'reflex'], `${name} ${scam.title}`);
     }
     assert.ok(layout.sections.some((section) => section.kind === 'retain' && section.quoteHtml), name);
   }
@@ -42,6 +42,13 @@ test('nothing outside the known conventions is dropped', () => {
   assert.deepEqual(layout.sections.map((section) => section.kind), ['retain', 'trapped', 'generic']);
   assert.equal(layout.sections[0].quoteHtml, 'Une phrase.');
   assert.match(layout.sections[0].html, /Une suite/);
+});
+
+test('a fictitious example message becomes its own block', () => {
+  const [scam] = layoutBrief('## 1. Une arnaque\n\n**Le piège.** Un SMS.\n\n**Exemple de message (fictif).** Votre colis attend : [lien]\n').scams;
+  assert.deepEqual(scam.blocks.map((block) => block.kind), ['trap', 'example']);
+  assert.equal(scam.blocks[1].html, 'Votre colis attend : [lien]');
+  assert.equal(scam.notesHtml, '');
 });
 
 test('the edition line is not repeated under the header dates', () => {
