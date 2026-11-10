@@ -1,0 +1,38 @@
+---
+// Contacts fixes de l'encadré « Déjà tombé dans le piège ? », affiché sous
+// chaque décryptage d'Octet. Texte validé par Stan (novembre 2026) ; chaque
+// point a été vérifié sur la page officielle liée.
+---
+<ul class="help-contacts">
+  <li>
+    <strong>Votre banque, tout de suite</strong>
+    Faites opposition avec le numéro au dos de votre carte ou depuis votre application bancaire, jamais avec un numéro reçu par message.
+  </li>
+  <li>
+    <strong>Perceval</strong>
+    Votre carte est toujours en votre possession, mais ses coordonnées ont servi à des achats en ligne&nbsp;? Après l’opposition, signalez la fraude sur <a href="https://www.service-public.gouv.fr/particuliers/vosdroits/F31324">service-public.fr</a> (connexion par FranceConnect). Le récépissé appuie votre demande de remboursement auprès de la banque.
+  </li>
+  <li>
+    <strong>17Cyber</strong>
+    Le service de la Police nationale, de la Gendarmerie nationale et de Cybermalveillance.gouv.fr. Il pose un diagnostic, donne des conseils et oriente vers le signalement ou la plainte&nbsp;: <a href="https://www.17cyber.gouv.fr/">17cyber.gouv.fr</a>
+  </li>
+  <li>
+    <strong>33700</strong>
+    Transférez gratuitement le SMS frauduleux au 33700. Pour un appel, envoyez «&nbsp;spam vocal&nbsp;» suivi du numéro. <a href="https://www.33700.fr/">33700.fr</a>
+  </li>
+</ul>
+<p class="help-urgent">En cas d’urgence ou de menace, appelez le <strong>17</strong> ou le <strong>112</strong>.</p>
+<style>
+  .help-contacts { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: .75rem; margin: 1rem 0 0; padding: 0; list-style: none; }
+  .help-contacts li { padding: .85rem 1rem; border: 1px solid var(--border-color); border-radius: 12px; background: var(--bg-card); font-size: .93rem; line-height: 1.6; }
+  .help-contacts strong { display: block; margin-bottom: .15rem; }
+  .help-contacts a { color: var(--brand-green); text-decoration: underline; text-underline-offset: 3px; }
+  .help-urgent { margin: 1rem 0 0; font-size: .95rem; }
+  @media print {
+    .help-contacts { grid-template-columns: 1fr 1fr; }
+    .help-contacts { gap: .35rem; margin-top: .4rem; }
+    .help-contacts li { break-inside: avoid; background: none; border-color: #999; padding: .35rem .6rem; font-size: 9pt; line-height: 1.35; }
+    .help-contacts a { color: #000; }
+    .help-urgent { margin-top: .4rem; font-size: 9.5pt; }
+  }
+</style>
