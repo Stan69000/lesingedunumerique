@@ -26,7 +26,7 @@ export type Jeu = {
 export const jeux: Jeu[] = catalogue.games as Jeu[];
 
 export function jeuPath(slug: string): string {
-  return `/sensibilisation/jeux/${slug}`;
+  return `/sensibilisation/jeux/${slug}/`;
 }
 
 /** Titre de page : le champ SEO s'il est renseigné, sinon un gabarit par défaut. */

@@ -141,7 +141,7 @@
     "terme": "Fuite de données",
     "definition": "Un incident où des informations confidentielles détenues par une entreprise ou un service sont exposées ou volées. Vos données peuvent alors circuler sans que vous ayez fait d’erreur.",
     "lien": {
-      "href": "/veille/failles",
+      "href": "/veille/failles/",
       "label": "Voir les dernières fuites de données"
     },
     "theme": "Comptes et sécurité",
@@ -322,7 +322,7 @@
     ],
     "definition": "Un moyen de suivre un site sans compte ni réseau social : vous ajoutez l’adresse du flux dans une application de lecture, et les nouveautés y arrivent toutes seules.",
     "lien": {
-      "href": "/flux",
+      "href": "/flux/",
       "label": "Voir les flux RSS du site"
     },
     "theme": "IA et information",
@@ -393,7 +393,7 @@
     "situation": "Les photos de famille sont conservées chez un fournisseur plutôt que seulement sur la tablette.",
     "reflexe": "Le nuage est chez quelqu’un : regardez qui peut accéder aux fichiers et comment les récupérer.",
     "lien": {
-      "href": "/veille/failles",
+      "href": "/veille/failles/",
       "label": "Voir les dernières fuites de données"
     },
     "aussi": [
@@ -451,7 +451,7 @@
     "situation": "Au téléphone, il connaît votre nom et vous demande de valider une opération pour « l’annuler ».",
     "reflexe": "Raccrochez et contactez votre banque avec son numéro habituel. Ne validez pas une opération dictée par cet appel.",
     "lien": {
-      "href": "/veille",
+      "href": "/veille/",
       "label": "Consulter les alertes arnaques"
     }
   },
@@ -792,7 +792,7 @@
     "situation": "Une page clignote et vous ordonne d’appeler un numéro pour « débloquer Windows ».",
     "reflexe": "N’appelez pas le numéro affiché. Fermez la page et cherchez de l’aide par un contact fiable.",
     "lien": {
-      "href": "/veille",
+      "href": "/veille/",
       "label": "Consulter les alertes arnaques"
     }
   },
@@ -803,7 +803,7 @@
     "situation": "Un appel prétend venir du service antifraude et demande un code reçu par SMS.",
     "reflexe": "Le numéro affiché peut être falsifié : raccrochez et rappelez l’organisme avec son numéro habituel.",
     "lien": {
-      "href": "/veille",
+      "href": "/veille/",
       "label": "Consulter les alertes arnaques"
     }
   },

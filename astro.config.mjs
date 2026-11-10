@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   site: 'https://lesingedunumerique.fr',
   redirects: {
-    '/projets': '/asso',
+    '/projets': '/asso/',
   },
   vite: {
     plugins: [tailwindcss()]

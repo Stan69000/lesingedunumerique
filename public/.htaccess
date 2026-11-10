@@ -1,8 +1,13 @@
 ErrorDocument 404 /404.html
 
 RewriteEngine On
+# Une seule adresse canonique : https://lesingedunumerique.fr, en une redirection.
+RewriteCond %{HTTP_HOST} ^www\. [NC,OR]
 RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+RewriteRule ^ https://lesingedunumerique.fr%{REQUEST_URI} [L,R=301]
+
+# Ancienne page « Projets », remplacée par l'association.
+RewriteRule ^projets/?$ /asso/ [L,R=301]
 
 # Les jeux étaient servis en statique depuis /jeux/*.html avant d'être hébergés
 # par la super-admin. On conserve les anciennes URLs indexées.

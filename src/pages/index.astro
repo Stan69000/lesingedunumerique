@@ -31,12 +31,12 @@ const formatNewsDate = (date: Date) => date.toLocaleDateString('fr-FR', {
 
 const spaces = [
   {
-    href: '/lexique', icon: '🐒', tone: 'green', name: 'Le lexique d’Octet',
+    href: '/lexique/', icon: '🐒', tone: 'green', name: 'Le lexique d’Octet',
     what: 'Un SMS douteux, des photos dans le cloud, une appli trop curieuse… Des mots expliqués à partir de votre quotidien, avec le réflexe d’Octet pour savoir quoi faire.',
     meta: `${lexique.length} mots, des exemples et des réflexes utiles`, cta: 'Comprendre un mot',
   },
   {
-    href: '/blog',
+    href: '/blog/',
     icon: '📖',
     tone: 'green',
     name: 'Articles et guides',
@@ -45,7 +45,7 @@ const spaces = [
     cta: 'Lire les articles',
   },
   {
-    href: '/bd',
+    href: '/bd/',
     icon: '💬',
     tone: 'blue',
     name: 'Les BD d’Octet',
@@ -55,7 +55,7 @@ const spaces = [
     cta: 'Lire les BD',
   },
   {
-    href: '/veille',
+    href: '/veille/',
     icon: '🚨',
     tone: 'orange',
     name: 'Alertes arnaques',
@@ -64,7 +64,7 @@ const spaces = [
     cta: 'Voir les alertes',
   },
   {
-    href: '/sensibilisation',
+    href: '/sensibilisation/',
     icon: '🎮',
     tone: 'green',
     name: 'Jeux',
@@ -73,7 +73,7 @@ const spaces = [
     cta: 'Jouer',
   },
   {
-    href: '/asso',
+    href: '/asso/',
     icon: '🐒',
     tone: 'orange',
     name: 'L’association',
@@ -82,7 +82,7 @@ const spaces = [
     cta: 'Faire connaissance',
   },
   {
-    href: '/adhesion',
+    href: '/adhesion/',
     icon: '🤝',
     tone: 'blue',
     name: 'Rejoindre',
@@ -301,7 +301,7 @@ const currentPath = Astro.url.pathname;
           <div class="section-header">
             <h2 id="start-title">Par où <span class="text-accent">commencer</span></h2>
             <div class="line-deco"></div>
-            <a href="/blog" class="section-more">Tous les articles <span aria-hidden="true">→</span></a>
+            <a href="/blog/" class="section-more">Tous les articles <span aria-hidden="true">→</span></a>
           </div>
 
           <ul class="guide-grid">
@@ -311,7 +311,7 @@ const currentPath = Astro.url.pathname;
                   <span>{post.data.tags[0] ?? post.data.rubrique}</span>
                   <span>{estimateReadingTimeMinutes(post.body)} min de lecture</span>
                 </p>
-                <h3><a href={`/blog/${post.id}`}>{post.data.title}</a></h3>
+                <h3><a href={`/blog/${post.id}/`}>{post.data.title}</a></h3>
                 <p class="guide-desc">{post.data.description}</p>
                 <span class="guide-cta" aria-hidden="true">Lire l’article →</span>
               </li>
@@ -359,8 +359,8 @@ const currentPath = Astro.url.pathname;
                   <span id="service-status-text">Statut : vérification...</span>
                 </a>
               </li>
-              <li><a href="/accessibilite">Accessibilité : non conforme</a></li>
-              <li><a href="/contact">Aide : Contact</a></li>
+              <li><a href="/accessibilite/">Accessibilité : non conforme</a></li>
+              <li><a href="/contact/">Aide : Contact</a></li>
               <li>Numéro d’association : W692012226</li>
             </ul>
           </div>
