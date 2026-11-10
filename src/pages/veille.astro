@@ -274,7 +274,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
       return (
       <section class="veille-section" data-section={section.key}>
         <div class="section-headline">
-          <h2><a class="section-page-link" href={`/veille/${section.key}`}>{section.title}</a></h2>
+          <h2><a class="section-page-link" href={`/veille/${section.key}/`}>{section.title}</a></h2>
           <a href={`/veille-${section.key}.xml`} class="section-rss-link" aria-label={`RSS ${section.title}`}>
             RSS
           </a>
@@ -288,7 +288,7 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
           <p class="section-alert">
             Client de ce site ? Vos infos peuvent fuiter ailleurs.
             Changez vos mots de passe (surtout s’ils sont réutilisés) et utilisez-en un différent par service, avec
-            une <a href="/blog/activer-la-2fa-sur-vos-comptes">double sécurité</a>.
+            une <a href="/blog/activer-la-2fa-sur-vos-comptes/">double sécurité</a>.
           </p>
         )}
 
@@ -363,8 +363,8 @@ Mise à jour hebdomadaire lorsqu’il y a de nouvelles actualités détectées.`
     <h2 id="more-title">Aller plus loin</h2>
     <ul class="rss-links">
       <li><a href="/veille/briefs/" class="rss-button rss-button-secondary">Tous les décryptages d’Octet</a></li>
-      <li><a href="/veille-sources" class="rss-button rss-button-secondary">D’où viennent ces alertes</a></li>
-      <li><a href="/flux" class="rss-button rss-button-secondary">Recevoir les alertes par flux RSS</a></li>
+      <li><a href="/veille-sources/" class="rss-button rss-button-secondary">D’où viennent ces alertes</a></li>
+      <li><a href="/flux/" class="rss-button rss-button-secondary">Recevoir les alertes par flux RSS</a></li>
     </ul>
   </section>
 

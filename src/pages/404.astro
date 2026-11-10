@@ -10,13 +10,14 @@ import SiteLayout from '../layouts/SiteLayout.astro';
   accent="introuvable"
   intro="Le lien est peut-être ancien, incomplet ou la page a changé d’emplacement. Vous pouvez repartir de l’accueil ou parcourir les articles."
   showShare={false}
+  noindex
 >
   <section class="prose-block">
     <h2>Que faire maintenant ?</h2>
     <p>Vous pouvez revenir à l’accueil, consulter les articles et guides ou reprendre la navigation depuis les pages principales du site.</p>
     <ul class="cta-row">
       <li><a href="/" class="cta-button">Retour à l’accueil</a></li>
-      <li><a href="/blog" class="cta-button cta-secondary">Voir les articles</a></li>
+      <li><a href="/blog/" class="cta-button cta-secondary">Voir les articles</a></li>
     </ul>
   </section>
 </SiteLayout>

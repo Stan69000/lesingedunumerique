@@ -39,6 +39,9 @@ jobs:
           PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY }}
         run: npm run build
 
+      - name: Liens internes et sitemap
+        run: npm run test:liens
+
       - name: Secret scan (gitleaks CLI)
         run: |
           set -euo pipefail

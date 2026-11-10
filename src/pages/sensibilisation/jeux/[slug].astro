@@ -44,7 +44,7 @@ const bodyHtml = jeu.bodyMd ? marked.parse(jeu.bodyMd) : '';
     <article class="game-intro-card reveal reveal-0">
       <div class="game-top-row">
         {jeu.ageRange && <p class="game-badge">{jeu.ageRange}</p>}
-        <a href="/sensibilisation/jeux" class="mini-link">Voir tous les jeux</a>
+        <a href="/sensibilisation/jeux/" class="mini-link">Voir tous les jeux</a>
       </div>
       <h2 id="game-title">Jouer pour déclencher la discussion</h2>
       {jeu.description && <p>{jeu.description}</p>}
@@ -76,7 +76,7 @@ const bodyHtml = jeu.bodyMd ? marked.parse(jeu.bodyMd) : '';
         <div set:html={bodyHtml} />
         <p>
           Vous animez un atelier de prévention numérique ? Retrouvez toute la
-          <a href="/sensibilisation/jeux"> bibliothèque de jeux de sensibilisation</a>.
+          <a href="/sensibilisation/jeux/"> bibliothèque de jeux de sensibilisation</a>.
         </p>
       </article>
     )}

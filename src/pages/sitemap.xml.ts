@@ -1,6 +1,7 @@
 import { getCollection } from 'astro:content';
 import { siteSettings } from '../config/site';
 import { getPublishedBriefs } from '../lib/briefs';
+import { jeux, jeuPath } from '../lib/jeux';
 
 export async function GET() {
   const posts = await getCollection('blog');
@@ -21,6 +22,8 @@ export async function GET() {
     '/veille/actu-generaliste/',
     '/veille/cyber/',
     '/veille/associations/',
+    '/sensibilisation/',
+    '/sensibilisation/jeux/',
     '/flux/',
     '/lexique/',
     '/outils/',
@@ -35,6 +38,7 @@ export async function GET() {
     ...staticPaths.map((path) => new URL(path, siteSettings.siteUrl).toString()),
     ...posts.map((post) => new URL(`/blog/${post.id}/`, siteSettings.siteUrl).toString()),
     ...planches.map((planche) => new URL(`/bd/${planche.id}/`, siteSettings.siteUrl).toString()),
+    ...jeux.map((jeu) => new URL(jeuPath(jeu.slug), siteSettings.siteUrl).toString()),
     ...briefs.map((brief) => new URL(`/veille/briefs/${brief.id}/`, siteSettings.siteUrl).toString()),
   ];
 
