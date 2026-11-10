@@ -307,5 +307,19 @@
       "Système d’exploitation",
       "Mise à jour"
     ]
+  },
+  {
+    "href": "/blog/podcasts-numerique-cyber/",
+    "label": "Podcasts à suivre sur le numérique et la cybersécurité",
+    "termes": [
+      "RGPD"
+    ]
+  },
+  {
+    "href": "/blog/premier-pas/",
+    "label": "Bienvenue sur le blog du Singe",
+    "termes": [
+      "Logiciel libre"
+    ]
   }
 ]
