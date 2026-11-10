@@ -31,6 +31,9 @@ jobs:
       - name: Test Boussole and unified lexicon
         run: npm run test:boussole
 
+      - name: Décryptages d’Octet (mise en page)
+        run: npm run test:briefs
+
       - name: Security audit (root production deps)
         run: npm audit --omit=dev --audit-level=high
 

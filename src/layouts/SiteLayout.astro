@@ -93,6 +93,7 @@ const isVeillePage = currentPath.startsWith('/veille');
                   {headline} {accent && <span class="gradient-text">{accent}</span>}
                 </h1>
                 {intro && <p class="hero-desc">{intro}</p>}
+                <slot name="hero" />
               </div>
             </section>
 

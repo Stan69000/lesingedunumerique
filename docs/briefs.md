@@ -27,6 +27,18 @@ Le frontmatter YAML doit contenir `title`, `description`, `pubDate`, `periodStar
 
 Le libellé existant dépend du type : `weekly` affiche « Hebdomadaire », `evergreen` affiche « Conseils pratiques ». Le design reste identique.
 
+## Mise en page
+
+La page d’un décryptage (`src/lib/brief-layout.mjs`) reconnaît les conventions du modèle et les met en forme ; ce qui n’est pas reconnu s’affiche tel quel, sans être perdu :
+
+- `## 1. Nom de l’arnaque` ouvre une carte numérotée. Il en faut une par entrée de `scams`, dans le même ordre : le sommaire et les ancres (`#identifiant`) en dépendent, et `npm run test:briefs` le vérifie en CI.
+- `**Statut : … ; ….**` devient des étiquettes, une par segment séparé par « ; ».
+- `**Le piège.**`, `**Pourquoi ça marche.**`, `**Ce qui doit alerter.**` et `**Le réflexe d’Octet.**` deviennent quatre blocs ; les autres paragraphes de la section (liens vers une fiche, précisions) s’affichent sous ces blocs.
+- `## La phrase à retenir` suivi d’une citation `>` devient le bandeau ; `## Les réflexes d’Octet` affiche sa liste numérotée en étapes ; `## Vous avez déjà … ?` devient l’encadré d’urgence.
+- La ligne d’ouverture `**Édition du … — France.** Période de veille …` n’est pas répétée : les dates figurent déjà en tête de page.
+
+Deux ajouts sont calculés sans rien écrire dans le brief. Une arnaque dont l’identifiant figure dans une autre édition publiée renvoie vers elle (« Déjà traitée le … » / « Revue le … ») : réutiliser le même `id` pour une même arnaque d’une semaine à l’autre. Une planche BD d’Octet est proposée d’après les mots de l’identifiant, selon les règles de `src/data/brief-bd.json`, sans répéter la même planche dans une édition.
+
 ## Publication hebdomadaire automatique
 
 L’automatisation Codex « Brief hebdomadaire d’Octet — publication automatique » prépare l’édition chaque dimanche à 8 h (Europe/Paris). Elle couvre le dimanche précédent au samedi inclus, consulte des sources primaires et crée `src/content/briefs/AAAA-MM-JJ-arnaques.md` sur une branche dédiée. Elle reprend une PR existante pour éviter les doublons.
