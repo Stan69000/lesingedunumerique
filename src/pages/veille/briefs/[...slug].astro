@@ -149,6 +149,7 @@ const icons: Record<string, string> = { trap: '🎣', why: '🧠', alert: '⚠�
 <style>
   .brief-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
   .brief-chips li { display: inline-block; padding: .3rem .8rem; border: 1px solid var(--border-color); border-radius: 999px; background: var(--bg-card); font-size: .88rem; }
+  .brief-chips li > span[aria-hidden] { margin-right: .35rem; }
   .brief-chips .chip-period { color: var(--brand-green); border-color: color-mix(in srgb, var(--brand-green) 35%, transparent); font-weight: 500; }
 
   .brief-detail { max-width: 860px; margin-inline: auto; line-height: 1.7; overflow-wrap: anywhere; }
