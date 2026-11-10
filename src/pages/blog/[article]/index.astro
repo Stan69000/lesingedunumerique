@@ -34,7 +34,12 @@ if (!post) {
 const { Content } = await render(post);
 const essentiel: string[] | undefined = (essentiels as Record<string, string[]>)[post.id];
 const canonicalUrl = new URL(currentPath, siteSettings.siteUrl).toString();
-const articleTitle = `${post.data.title} | ${siteSettings.siteName}`;
+const articleTitle = `${post.data.seoTitle ?? post.data.title} | ${siteSettings.siteName}`;
+const shareImage = post.data.image
+  ? new URL(post.data.image, siteSettings.siteUrl).toString()
+  : `${siteSettings.siteUrl}/partage.png`;
+const shareImageAlt = post.data.image ? post.data.imageAlt : undefined;
+const updatedDate = post.data.updatedDate && post.data.updatedDate > post.data.pubDate ? post.data.updatedDate : undefined;
 
 const readingTimeMinutes = estimateReadingTimeMinutes(post.body);
 
@@ -44,6 +49,7 @@ const articleSchema = {
   headline: post.data.title,
   description: post.data.description,
   datePublished: post.data.pubDate.toISOString(),
+  ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
   author: {
     '@type': 'Person',
     name: post.data.author || siteSettings.siteName,
@@ -57,7 +63,7 @@ const articleSchema = {
     },
   },
   mainEntityOfPage: canonicalUrl,
-  image: `${siteSettings.siteUrl}/partage.png`,
+  image: shareImage,
   inLanguage: 'fr-FR',
   timeRequired: `PT${readingTimeMinutes}M`,
 };
@@ -78,13 +84,16 @@ const articleSchema = {
     <meta property="og:description" content={post.data.description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:image" content={`${siteSettings.siteUrl}/partage.png`} />
+    <meta property="og:image" content={shareImage} />
+    {shareImageAlt && <meta property="og:image:alt" content={shareImageAlt} />}
     <meta property="article:published_time" content={post.data.pubDate.toISOString()} />
+    {updatedDate && <meta property="article:modified_time" content={updatedDate.toISOString()} />}
     <meta property="article:author" content={post.data.author || siteSettings.siteName} />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content={post.data.image ? 'summary_large_image' : 'summary'} />
     <meta name="twitter:title" content={articleTitle} />
     <meta name="twitter:description" content={post.data.description} />
-    <meta name="twitter:image" content={`${siteSettings.siteUrl}/partage.png`} />
+    <meta name="twitter:image" content={shareImage} />
+    {shareImageAlt && <meta name="twitter:image:alt" content={shareImageAlt} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -741,7 +750,7 @@ const articleSchema = {
                       </div>
                       <h1>{post.data.title}</h1>
                       <div class="meta">
-                        Par {post.data.author} • {post.data.pubDate.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })} • {readingTimeMinutes} min de lecture
+                        Par {post.data.author} • {post.data.pubDate.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}{updatedDate && <> (mis à jour le <time datetime={updatedDate.toISOString()}>{updatedDate.toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric' })}</time>)</>} • {readingTimeMinutes} min de lecture
                       </div>
                     </header>
 
