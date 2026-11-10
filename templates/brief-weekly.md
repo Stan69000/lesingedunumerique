@@ -15,7 +15,9 @@ sources:
     url: "https://example.org/source-a-remplacer"
 ---
 
-## À compléter : le nom de l’arnaque
+## 1. À compléter : le nom de l’arnaque
+
+**Statut : à compléter (fiche officielle actualisée le …) ; technique déjà connue.**
 
 **Le piège.** Décrire les faits étayés par la source.
 
@@ -32,3 +34,7 @@ sources:
 ## Les réflexes d’Octet
 
 1. À compléter.
+
+## Vous avez déjà communiqué vos données bancaires ?
+
+À compléter : que faire si l’on est déjà tombé dans le piège.
