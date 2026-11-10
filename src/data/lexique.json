@@ -959,5 +959,12 @@
       "href": "https://developer.mozilla.org/fr/docs/Glossary/Metadata",
       "label": "Lire la documentation de référence"
     }
+  },
+  {
+    "terme": "Vérification des faits (fact-checking)",
+    "definition": "C'est le travail qui consiste à confronter une affirmation à des preuves fiables pour savoir si elle est vraie ou fausse. Des journalistes et des organismes spécialisés s'en chargent au quotidien.",
+    "theme": "IA et information",
+    "situation": "Vous lisez une information surprenante sur les réseaux sociaux et vous vous demandez si elle est réelle avant de la partager.",
+    "reflexe": "Avant de relayer une information, cherchez si une source fiable l'a déjà vérifiée, et croisez toujours plusieurs sources."
   }
 ]
