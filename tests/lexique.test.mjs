@@ -7,7 +7,8 @@ const load=name=>JSON.parse(readFileSync(new URL(`../src/data/${name}.json`,impo
 const general=load('lexique'),seo=load('lexique-seo'),rgaa=load('lexique-rgaa'),scams=load('lexique-arnaques'),jargon=load('lexique-jargon');
 const all=[...general,...seo,...rgaa,...scams,...jargon];
 test('unified lexicon has no duplicate words or permalink collisions',()=>{
-  assert.equal(rgaa.length,24);assert.equal(all.length,206);
+  // L'admin ajoute des fiches au lexique général : seul un plancher est vérifié.
+  assert.equal(rgaa.length,24);assert.ok(all.length>=206,String(all.length));
   assert.equal(new Set(all.map(e=>glossaryAnchor(e.terme))).size,all.length);
 });
 test('shared terms appear in several universes as a single record',()=>{
@@ -66,7 +67,9 @@ test('editorial relations reference existing terms and published content',()=>{
     const frontmatter=content.split('---')[1];
     assert.doesNotMatch(frontmatter,/^draft:\s*true\s*$/m);
     assert.doesNotMatch(frontmatter,/^demo:\s*true\s*$/m);
-    assert.ok(frontmatter.includes(relation.label),relation.label);
+    assert.doesNotMatch(relation.label,/^\s*[>|][-+]?\s*$/,relation.href);
+    // Les titres longs sont repliés sur plusieurs lignes (YAML `>-`) : on compare à espaces normalisés.
+    assert.ok(frontmatter.replace(/\s+/g,' ').includes(relation.label.replace(/\s+/g,' ')),relation.label);
   }
 });
 test('links work in both directions without duplicates or loss of existing links',()=>{

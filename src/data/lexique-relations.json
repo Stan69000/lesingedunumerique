@@ -1,34 +1,43 @@
 [
   {
     "href": "/blog/ce-faux-abonnement-connait-votre-nom-votre-adresse-et-votre-iban-faut-il-panique/",
-    "label": ">-",
+    "label": "Ce faux abonnement connaît votre nom, votre adresse et votre IBAN : faut-il paniquer ?",
     "termes": [
       "Harponnage",
       "Fuite de données",
       "IBAN",
       "Cryptogramme",
       "Faux remboursement",
-      "Fausse urgence"
+      "Fausse urgence",
+      "Hameçonnage",
+      "Données personnelles",
+      "Adresse IP"
     ]
   },
   {
     "href": "/blog/contenus-generes-par-ia-une-nouvelle-etiquette-pour-nous-aider-mais-pas-pour-ref/",
-    "label": ">-",
+    "label": "Contenus générés par IA : une nouvelle étiquette pour nous aider… mais pas pour réfléchir à notre place",
     "termes": [
       "Deepfake",
       "IA générative",
       "AI Act",
       "Désinformation",
-      "Métadonnée"
+      "Métadonnée",
+      "Données personnelles"
     ]
   },
   {
     "href": "/blog/ai-act-l-europe-met-des-regles-autour-de-l-intelligence-artificielle-mais-qu-est/",
-    "label": ">-",
+    "label": "AI Act : l’Europe met des règles autour de l’intelligence artificielle. Mais qu’est-ce que ça change vraiment ?",
     "termes": [
       "AI Act",
       "IA générative",
-      "Chatbot"
+      "Chatbot",
+      "RGPD",
+      "Deepfake",
+      "Données personnelles",
+      "Algorithme",
+      "Hallucination de l’IA"
     ]
   },
   {
@@ -37,7 +46,11 @@
     "termes": [
       "Double authentification",
       "Code de secours",
-      "Passkey"
+      "Passkey",
+      "Mot de passe",
+      "Hameçonnage",
+      "Fuite de données",
+      "Identifiant"
     ]
   },
   {
@@ -51,7 +64,11 @@
       "Mise à jour",
       "Logiciel malveillant",
       "Sauvegarde",
-      "Rançongiciel"
+      "Rançongiciel",
+      "Hameçonnage",
+      "Cloud",
+      "URL",
+      "Smishing"
     ]
   },
   {
@@ -62,16 +79,25 @@
       "Faux conseiller bancaire",
       "Support technique frauduleux",
       "Vishing",
-      "Ingénierie sociale"
+      "Ingénierie sociale",
+      "Double authentification",
+      "Mot de passe",
+      "Logiciel malveillant",
+      "Pièce jointe",
+      "Mise à jour",
+      "Fausse urgence"
     ]
   },
   {
     "href": "/blog/ils-passent-6-heures-par-jour-sur-leur-smartphone-mais-90-ne-reperent-pas-un-phi/",
-    "label": ">-",
+    "label": "Ils passent 6 heures par jour sur leur smartphone… mais 90 % ne repèrent pas un phishing",
     "termes": [
       "Hameçonnage",
       "Cyberharcèlement",
-      "Données personnelles"
+      "Données personnelles",
+      "Double authentification",
+      "Identifiant",
+      "Réseau social"
     ]
   },
   {
@@ -80,7 +106,9 @@
     "termes": [
       "Cyberharcèlement",
       "Réseau social",
-      "Données personnelles"
+      "Données personnelles",
+      "Double authentification",
+      "Antivirus"
     ]
   },
   {
@@ -166,7 +194,8 @@
       "Contraste",
       "Information par la couleur",
       "Sous-titres accessibles",
-      "Texte alternatif"
+      "Texte alternatif",
+      "CLI"
     ]
   },
   {
@@ -180,7 +209,117 @@
       "Indexation",
       "Données structurées",
       "JSON",
-      "Markdown"
+      "Markdown",
+      "Exploration",
+      "Sitemap",
+      "HTML",
+      "Rendu JavaScript",
+      "RGAA",
+      "Prompt"
+    ]
+  },
+  {
+    "href": "/blog/bienvenue-bd-octet/",
+    "label": "Bienvenue dans les BD d’Octet 🐒💻",
+    "termes": [
+      "Deepfake",
+      "Faux QR code",
+      "Extension de navigateur",
+      "Mise à jour",
+      "Sauvegarde",
+      "Smishing",
+      "Site copié"
+    ]
+  },
+  {
+    "href": "/blog/films-series-documentaires-numerique/",
+    "label": "Films, séries et documentaires pour parler numérique autrement",
+    "termes": [
+      "Données personnelles",
+      "Identité numérique"
+    ]
+  },
+  {
+    "href": "/blog/jeux-sensibilisation-numerique/",
+    "label": "Les jeux du singe",
+    "termes": [
+      "Faux QR code",
+      "Mot de passe",
+      "Smishing",
+      "Support technique frauduleux"
+    ]
+  },
+  {
+    "href": "/blog/les-aventures-d-octet-commencent-ici-decouvrez-le-cadeau-impossible/",
+    "label": "Les aventures d’Octet commencent ici : découvrez Le cadeau impossible",
+    "termes": [
+      "Fausse preuve sociale",
+      "Fausse urgence",
+      "Fausse occasion limitée",
+      "Mot de passe",
+      "Site copié",
+      "Code de validation dérobé"
+    ]
+  },
+  {
+    "href": "/blog/les-francais-et-le-numerique-en-2026-ou-en-sommes-nous-vraiment/",
+    "label": "Les Français et le numérique en 2026 : où en sommes-nous vraiment ?",
+    "termes": [
+      "IA générative",
+      "Réseau social"
+    ]
+  },
+  {
+    "href": "/blog/octet-et-le-grand-bug-des-vacances-decouvrez-notre-premier-cahier-de-jeux-numeri/",
+    "label": "Octet et le Grand Bug des vacances : découvrez notre premier cahier de jeux numériques",
+    "termes": [
+      "Phrase de passe",
+      "Mot de passe",
+      "Fausse livraison de colis",
+      "Fausse urgence"
+    ]
+  },
+  {
+    "href": "/blog/proteger-son-enfant-en-ligne-sans-se-ruiner-le-duo-gratuit-qui-tient-la-route/",
+    "label": "Protéger son enfant en ligne sans se ruiner : le duo gratuit qui tient la route",
+    "termes": [
+      "DNS",
+      "Contrôle parental",
+      "VPN",
+      "Adresse Internet ressemblante"
+    ]
+  },
+  {
+    "href": "/blog/ressources-pour-les-associations/",
+    "label": "Les meilleures ressources pour les associations (gratuites et payantes)",
+    "termes": [
+      "RGPD",
+      "Données personnelles",
+      "Logiciel libre"
+    ]
+  },
+  {
+    "href": "/blog/vieil-ordinateur-lui-offrir-une-seconde-vie/",
+    "label": "Vieil ordinateur : lui offrir une seconde vie",
+    "termes": [
+      "Sauvegarde",
+      "Stockage",
+      "Système d’exploitation",
+      "Mise à jour"
+    ]
+  },
+  {
+    "href": "/blog/podcasts-numerique-cyber/",
+    "label": "Podcasts à suivre sur le numérique et la cybersécurité",
+    "termes": [
+      "RGPD"
+    ]
+  },
+  {
+    "href": "/blog/premier-pas/",
+    "label": "Bienvenue sur le blog du Singe",
+    "termes": [
+      "Logiciel libre"
     ]
   }
 ]
