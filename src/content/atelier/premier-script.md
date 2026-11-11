@@ -4,7 +4,7 @@ ordre: 1
 title: Votre premier script en 10 minutes
 description: Où se cache Apps Script, quel compte utiliser pour l’association, et un premier script qui ajoute un menu à votre tableau.
 pubDate: '2026-11-11'
-draft: true
+draft: false
 duree: 10 min
 services:
   - Sheets
