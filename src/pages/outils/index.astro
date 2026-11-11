@@ -10,7 +10,7 @@ const atelierOuvert = (await getFiches()).length > 0;
   <section class="tools-grid" aria-label="Choisir un outil">
     {tools.map(tool => <article><span aria-hidden="true">{tool.icon}</span><h2>{tool.name}</h2><p><strong>{tool.promise}</strong></p><p>{tool.description}</p><p>{tool.note}</p><a href={tool.href}>{tool.cta} →</a></article>)}
   </section>
-  {atelierOuvert && <section class="atelier-card" aria-labelledby="atelier-titre"><span aria-hidden="true">🛠️</span><div><h2 id="atelier-titre">L’atelier d’Octet</h2><p><strong>Automatiser les tâches répétitives de votre association</strong></p><p>Mail de bienvenue, agenda partagé, envois personnalisés, sauvegardes : des recettes Google Apps Script expliquées pas à pas, avec les droits qu’elles demandent et comment les arrêter.</p><a href="/outils/atelier/">Ouvrir l’atelier →</a></div></section>}
+  {atelierOuvert && <section class="atelier-card" aria-labelledby="atelier-titre"><span aria-hidden="true">🛠️</span><div><h2 id="atelier-titre">L’atelier d’Octet</h2><p><strong>Automatiser les tâches répétitives de votre association</strong></p><p>Des fiches Google Apps Script expliquées pas à pas : ce qu’un script a le droit de faire, comment l’installer et comment l’arrêter.</p><a href="/outils/atelier/">Ouvrir l’atelier →</a></div></section>}
   <section class="prose-block"><h2>Un point de départ pour progresser</h2><p>Les outils d’audit donnent des pistes à relire et à compléter avec les personnes qui utilisent votre site. Le Signal Clair rassemble l’actualité et ses sources pour approfondir. Chaque projet précise son fonctionnement et ses limites.</p><p>Un mot vous échappe ? <a href="/lexique/">Le lexique d’Octet</a> vous l’explique avec des exemples.</p></section>
 </SiteLayout>
 <style>
