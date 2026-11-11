@@ -3,7 +3,7 @@ kind: premiers-pas
 ordre: 2
 title: Autoriser un script sans paniquer
 description: L’écran « Google n’a pas validé cette application » expliqué, les droits à lire avant de cliquer, et comment tout retirer.
-pubDate: 2026-11-11
+pubDate: '2026-11-11'
 draft: true
 duree: 5 min
 sources:
@@ -13,6 +13,7 @@ sources:
     url: https://support.google.com/accounts/answer/13533235?hl=fr
   - title: Cybermalveillance.gouv.fr — L’hameçonnage
     url: https://www.cybermalveillance.gouv.fr/tous-nos-contenus/fiches-reflexes/hameconnage-phishing
+verifieLe: '2026-11-11'
 ---
 
 ## Pourquoi Google vous demande la permission
