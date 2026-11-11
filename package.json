@@ -15,7 +15,8 @@
     "audit:page": "php scripts/octet-audit.php",
     "test:boussole": "php -l public/boussole/engine.php && php -l public/boussole/audit.php && php -l public/boussole/health.php && php tests/boussole.php && node --test tests/boussole-plan.test.mjs tests/lexique.test.mjs tests/boussole-site.test.mjs",
     "test:liens": "node --test tests/liens-internes.test.mjs",
-    "test:briefs": "node --test tests/brief-layout.test.mjs"
+    "test:briefs": "node --test tests/brief-layout.test.mjs",
+    "test:atelier": "node --test tests/atelier.test.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",

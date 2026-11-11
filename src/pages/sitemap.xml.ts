@@ -2,11 +2,13 @@ import { getCollection } from 'astro:content';
 import { siteSettings } from '../config/site';
 import { getPublishedBriefs } from '../lib/briefs';
 import { jeux, jeuPath } from '../lib/jeux';
+import { getFichesPubliees, fichePath } from '../lib/atelier';
 
 export async function GET() {
   const posts = await getCollection('blog');
   const briefs = (await getPublishedBriefs()).filter((brief) => !brief.data.demo);
   const planches = (await getCollection('bd')).filter((planche) => !planche.data.draft);
+  const fiches = await getFichesPubliees();
 
   const staticPaths = [
     '/',
@@ -28,6 +30,8 @@ export async function GET() {
     '/lexique/',
     '/outils/',
     '/outils/boussole/',
+    // L'atelier n'entre dans le sitemap qu'avec sa première fiche publiée.
+    ...(fiches.length ? ['/outils/atelier/'] : []),
     '/veille-sources/',
     '/plan-du-site/',
     '/accessibilite/',
@@ -39,6 +43,7 @@ export async function GET() {
     ...posts.map((post) => new URL(`/blog/${post.id}/`, siteSettings.siteUrl).toString()),
     ...planches.map((planche) => new URL(`/bd/${planche.id}/`, siteSettings.siteUrl).toString()),
     ...jeux.map((jeu) => new URL(jeuPath(jeu.slug), siteSettings.siteUrl).toString()),
+    ...fiches.map((fiche) => new URL(fichePath(fiche), siteSettings.siteUrl).toString()),
     ...briefs.map((brief) => new URL(`/veille/briefs/${brief.id}/`, siteSettings.siteUrl).toString()),
   ];
 
