@@ -1,13 +1,24 @@
 ---
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import GameCard from '../../../components/GameCard.astro';
-import { jeux, themesCouverts, themesFiltrables, filtreThemesPertinent } from '../../../lib/jeux';
+import { jeux, facetteUtile, optionsUtilisees, nombreDeThemes, type Facette } from '../../../lib/jeux';
 import { siteSettings } from '../../../config/site';
 import '../../../styles/jeux.css';
 
-const themes = themesCouverts();
-const themesDuFiltre = themesFiltrables();
-const avecFiltres = filtreThemesPertinent();
+const nbThemes = nombreDeThemes();
+
+// Facettes dans l'ordre des questions qu'on se pose : pour qui, comment, quoi, combien de temps.
+const FACETTES: Array<{ id: Facette; legende: string }> = [
+  { id: 'public', legende: 'Pour qui' },
+  { id: 'format', legende: 'Comment jouer' },
+  { id: 'theme', legende: 'Thème' },
+  { id: 'duree', legende: 'Durée' },
+];
+const facettes = FACETTES.filter((f) => facetteUtile(f.id)).map((f) => ({ ...f, options: optionsUtilisees(f.id) }));
+// Recherche et tri n'ont d'intérêt qu'à partir de quelques jeux.
+const avecOutils = jeux.length >= 4;
+const avecTriRecent = jeux.some((j) => j.publishedAt);
+const avecTriDuree = jeux.some((j) => j.duration);
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -49,29 +60,61 @@ const itemListSchema = {
       <h2 id="catalogue-titre">Trouver le jeu adapté à votre public</h2>
       <p>
         Chaque jeu se joue directement dans le navigateur, sans inscription et sans collecte de données.
-        Les jeux sont classés du plus récemment mis en avant au plus ancien.
+        Choisissez votre public, votre façon de jouer ou un thème : la liste se met à jour.
       </p>
       <ul class="hub-stats">
         <li><strong>{jeux.length}</strong> {jeux.length > 1 ? 'jeux disponibles' : 'jeu disponible'}</li>
-        <li><strong>{themes.length}</strong> {themes.length > 1 ? 'thèmes abordés' : 'thème abordé'}</li>
+        <li><strong>{nbThemes}</strong> {nbThemes > 1 ? 'thèmes abordés' : 'thème abordé'}</li>
         <li><strong>100%</strong> gratuit</li>
       </ul>
     </section>
 
     {
-      avecFiltres && (
+      avecOutils && (
         <section aria-labelledby="filtres-titre">
           <h2 id="filtres-titre" class="sr-only">Filtrer les jeux</h2>
 
           <div class="filters" id="filtres" hidden>
-            <fieldset class="filter-group" data-facette="themes">
-              <legend>Thème</legend>
-              {themesDuFiltre.map((theme) => (
-                <button type="button" class="filter-chip" aria-pressed="false" data-valeur={theme.toLowerCase()}>
-                  {theme}
-                </button>
-              ))}
-            </fieldset>
+            <div class="filters-toolbar">
+              <div class="filters-field">
+                <label for="filtre-recherche">Rechercher</label>
+                <input id="filtre-recherche" type="search" placeholder="arnaque, mot de passe, IA…" autocomplete="off" />
+              </div>
+              <div class="filters-field is-sort">
+                <label for="filtre-tri">Trier</label>
+                <select id="filtre-tri">
+                  <option value="">Ordre conseillé</option>
+                  {avecTriRecent && <option value="recent">Les plus récents</option>}
+                  {avecTriDuree && <option value="duree">Les plus courts</option>}
+                </select>
+              </div>
+            </div>
+
+            {facettes.length > 0 && (
+              <details class="filters-more" id="filtres-plus" open>
+                <summary class="filter-chip">
+                  Filtres <span id="filtres-actifs"></span>
+                </summary>
+              <div class="filters-facets">
+                {facettes.map((f) => (
+                  <fieldset class="filter-group" data-facette={f.id}>
+                    <legend>{f.legende}</legend>
+                    {f.options.map((o) => (
+                      <button
+                        type="button"
+                        class="filter-chip"
+                        aria-pressed="false"
+                        data-valeur={o.key}
+                        title={o.hint || undefined}
+                      >
+                        {o.label}
+                      </button>
+                    ))}
+                  </fieldset>
+                ))}
+              </div>
+              </details>
+            )}
 
             <div class="filters-footer">
               <p class="filters-status" id="filtres-statut" role="status">
@@ -85,11 +128,11 @@ const itemListSchema = {
     }
 
     <div id="jouer-maintenant" class="games-grid" role="list" aria-label="Liste des jeux">
-      {jeux.map((jeu, index) => <GameCard jeu={jeu} index={index} />)}
+      {jeux.map((jeu, index) => <GameCard jeu={jeu} index={index} ordre={index} />)}
     </div>
 
     {
-      avecFiltres && (
+      avecOutils && (
         <p class="filters-empty" id="filtres-vide" hidden>
           Aucun jeu ne correspond à cette sélection.
           <button type="button" class="filter-chip" data-reinitialiser>Tout afficher</button>
@@ -121,54 +164,110 @@ const itemListSchema = {
   </div>
 </SiteLayout>
 
-<style>
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-    border: 0;
-  }
-</style>
-
 <script>
   const barre = document.getElementById('filtres');
   const statut = document.getElementById('filtres-statut');
   const messageVide = document.getElementById('filtres-vide');
+  const grille = document.getElementById('jouer-maintenant');
+  const recherche = document.getElementById('filtre-recherche') as HTMLInputElement | null;
+  const tri = document.getElementById('filtre-tri') as HTMLSelectElement | null;
   const cartes = Array.from(document.querySelectorAll<HTMLElement>('[data-jeu]'));
 
-  if (barre && statut && cartes.length > 0) {
+  // Même normalisation que data-recherche (GameCard) : minuscules, sans accents.
+  const normaliser = (texte: string) =>
+    texte.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase().trim();
+
+  if (barre && statut && grille && cartes.length > 0) {
     barre.hidden = false;
 
-    const chips = Array.from(barre.querySelectorAll<HTMLButtonElement>('[data-facette] .filter-chip'));
+    const groupes = Array.from(barre.querySelectorAll<HTMLFieldSetElement>('[data-facette]'));
+    const chips = groupes.flatMap((g) => Array.from(g.querySelectorAll<HTMLButtonElement>('.filter-chip')));
     const boutonsReset = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-reinitialiser]'));
 
+    /** Sélection par facette : OU à l'intérieur d'une facette, ET entre facettes. */
     const selection = () =>
-      chips.filter((chip) => chip.getAttribute('aria-pressed') === 'true').map((chip) => chip.dataset.valeur ?? '');
+      groupes
+        .map((g) => ({
+          facette: g.dataset.facette ?? '',
+          valeurs: Array.from(g.querySelectorAll<HTMLButtonElement>('.filter-chip'))
+            .filter((c) => c.getAttribute('aria-pressed') === 'true')
+            .map((c) => c.dataset.valeur ?? ''),
+        }))
+        .filter((s) => s.valeurs.length > 0);
+
+    // Sur mobile, les filtres replient leur liste (dépliée si l'adresse en sélectionne déjà).
+    const plus = document.getElementById('filtres-plus') as HTMLDetailsElement | null;
+    const actifs = document.getElementById('filtres-actifs');
+    const mobile = window.matchMedia('(max-width: 720px)');
+    const ajusterRepli = () => {
+      if (plus) plus.open = !mobile.matches || selection().length > 0;
+    };
+    mobile.addEventListener('change', ajusterRepli);
+
+    const trier = () => {
+      const mode = tri?.value ?? '';
+      const cle = (c: HTMLElement) => Number(c.dataset.ordre ?? 0);
+      const ordonnees = [...cartes].sort((a, b) => {
+        if (mode === 'recent') {
+          return (b.dataset.date ?? '').localeCompare(a.dataset.date ?? '') || cle(a) - cle(b);
+        }
+        if (mode === 'duree') {
+          return Number(a.dataset.rangDuree ?? 9) - Number(b.dataset.rangDuree ?? 9) || cle(a) - cle(b);
+        }
+        return cle(a) - cle(b);
+      });
+      ordonnees.forEach((carte) => grille.appendChild(carte));
+    };
+
+    /** Garde la sélection dans l'adresse : un lien ouvre une sélection toute faite. */
+    const memoriser = (choix: ReturnType<typeof selection>, texte: string) => {
+      const params = new URLSearchParams();
+      choix.forEach((s) => params.set(s.facette, s.valeurs.join(',')));
+      if (texte) params.set('q', texte);
+      if (tri?.value) params.set('tri', tri.value);
+      const query = params.toString();
+      history.replaceState(null, '', query ? `?${query}` : location.pathname);
+    };
 
     const appliquer = () => {
-      const themes = selection();
+      const choix = selection();
+      const texte = recherche?.value.trim() ?? '';
+      const mots = normaliser(texte).split(/\s+/).filter(Boolean);
       let visibles = 0;
 
       cartes.forEach((carte) => {
-        const contenu = (carte.dataset.themes ?? '').split('|').filter(Boolean);
-        const garde = themes.length === 0 || themes.some((theme) => contenu.includes(theme));
+        const garde =
+          choix.every((s) => {
+            const portees = (carte.dataset[s.facette] ?? '').split(' ');
+            return s.valeurs.some((v) => portees.includes(v));
+          }) && mots.every((mot) => (carte.dataset.recherche ?? '').includes(mot));
         carte.hidden = !garde;
         if (garde) visibles += 1;
       });
 
-      statut.textContent = themes.length
+      const filtre = choix.length > 0 || mots.length > 0;
+      const nbChoix = choix.reduce((n, s) => n + s.valeurs.length, 0);
+      if (actifs) actifs.textContent = nbChoix ? `(${nbChoix})` : '';
+      statut.textContent = filtre
         ? `${visibles} ${visibles > 1 ? 'jeux affichés' : 'jeu affiché'} sur ${cartes.length}`
         : `${cartes.length} ${cartes.length > 1 ? 'jeux affichés' : 'jeu affiché'}`;
       if (messageVide) messageVide.hidden = visibles > 0;
       boutonsReset.forEach((bouton) => {
-        if (!bouton.closest('#filtres-vide')) bouton.hidden = themes.length === 0;
+        if (!bouton.closest('#filtres-vide')) bouton.hidden = !filtre;
       });
+      memoriser(choix, texte);
     };
+
+    // État initial depuis l'adresse (?public=seniors&theme=arnaques,comptes&q=…&tri=recent).
+    const params = new URLSearchParams(location.search);
+    groupes.forEach((g) => {
+      const voulues = (params.get(g.dataset.facette ?? '') ?? '').split(',').filter(Boolean);
+      g.querySelectorAll<HTMLButtonElement>('.filter-chip').forEach((c) => {
+        c.setAttribute('aria-pressed', voulues.includes(c.dataset.valeur ?? '') ? 'true' : 'false');
+      });
+    });
+    if (recherche) recherche.value = params.get('q') ?? '';
+    if (tri && [...tri.options].some((o) => o.value === params.get('tri'))) tri.value = params.get('tri') ?? '';
 
     chips.forEach((chip) => {
       chip.addEventListener('click', () => {
@@ -176,15 +275,23 @@ const itemListSchema = {
         appliquer();
       });
     });
+    recherche?.addEventListener('input', appliquer);
+    tri?.addEventListener('change', () => {
+      trier();
+      appliquer();
+    });
 
     boutonsReset.forEach((bouton) => {
       bouton.addEventListener('click', () => {
         chips.forEach((chip) => chip.setAttribute('aria-pressed', 'false'));
+        if (recherche) recherche.value = '';
         appliquer();
-        chips[0]?.focus();
+        (recherche ?? chips[0])?.focus();
       });
     });
 
+    trier();
     appliquer();
+    ajusterRepli();
   }
 </script>
