@@ -1,6 +1,6 @@
 ---
 import SiteLayout from '../../../layouts/SiteLayout.astro';
-import { getFiches, fichePath, etageres, niveauLabel } from '../../../lib/atelier';
+import { getFiches, fichePath, etageres, niveauLabel, statutFiche } from '../../../lib/atelier';
 
 const fiches = await getFiches();
 const premiersPas = fiches.filter((f) => f.data.kind === 'premiers-pas');
@@ -36,7 +36,7 @@ const bananes = (n: number) => '🍌'.repeat(n);
             <a href={fichePath(fiche)}>
               <span class="step-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
               <span class="step-text">
-                {fiche.data.draft && <span class="draft">Brouillon</span>}
+                {statutFiche(fiche) && <span class="draft">{statutFiche(fiche)?.label}</span>}
                 <strong>{fiche.data.title}</strong>
                 <span>{fiche.data.description}</span>
               </span>
@@ -67,7 +67,7 @@ const bananes = (n: number) => '🍌'.repeat(n);
                         <span class="recipe-meta">
                           <span><span aria-hidden="true">{bananes(r.data.niveau)}</span><span class="sr-only">Niveau {niveauLabel(r.data.niveau).toLowerCase()}</span></span>
                           {r.data.duree && <span><span aria-hidden="true">⏱</span> {r.data.duree}</span>}
-                          {r.data.draft && <span class="draft">Brouillon</span>}
+                          {statutFiche(r) && <span class="draft">{statutFiche(r)?.label}</span>}
                         </span>
                       </a>
                     </li>

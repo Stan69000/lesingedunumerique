@@ -70,6 +70,9 @@ const briefs = defineCollection({
 // dans le texte à l'emplacement du marqueur `<!-- script -->`.
 // Règle éditoriale : rien n'est publié sans avoir été vérifié par un humain
 // (script testé sur un vrai compte, texte relu) ; `verifieLe` en garde la trace.
+// Cycle piloté depuis l'admin (Admin-Sites-Astro, module Atelier) :
+// brouillon → vérifiée (`verifieLe`) → programmée (`publierLe`) → publiée
+// (`draft: false`, `pubDate` = jour de publication).
 const atelier = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/atelier' }),
   schema: z.object({
@@ -79,6 +82,9 @@ const atelier = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     verifieLe: z.coerce.date().optional(),
+    publierLe: z.coerce.date().optional(),
+    // Empreinte du script vérifié : l'admin bloque la publication s'il a changé depuis.
+    empreinteScript: z.string().optional(),
     draft: z.boolean().default(true),
     ordre: z.number().int().min(1).optional(),
     etagere: z.enum(['adherents', 'evenements', 'communication', 'tresorerie', 'securite']).optional(),
@@ -92,6 +98,8 @@ const atelier = defineCollection({
     sources: z.array(z.object({ title: z.string().min(1), url: z.string().url().startsWith('https://') })).default([]),
   }).refine((fiche) => fiche.draft || Boolean(fiche.verifieLe), {
     message: 'Une fiche publiée doit avoir été vérifiée par un humain (verifieLe).', path: ['verifieLe'],
+  }).refine((fiche) => !fiche.publierLe || (fiche.draft && Boolean(fiche.verifieLe)), {
+    message: 'Seule une fiche vérifiée et pas encore publiée peut être programmée.', path: ['publierLe'],
   }).refine((fiche) => fiche.kind !== 'recette' || (fiche.etagere && fiche.donnees && fiche.autorisations.length > 0), {
     message: 'Une recette précise son étagère, les données touchées et ses autorisations.', path: ['etagere'],
   }).refine((fiche) => fiche.kind !== 'premiers-pas' || fiche.ordre, {
