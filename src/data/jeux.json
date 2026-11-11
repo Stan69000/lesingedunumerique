@@ -312,6 +312,36 @@
         "arnaques"
       ],
       "publishedAt": "2026-11-11"
+    },
+    {
+      "slug": "phrase-de-passe",
+      "name": "Dessinez votre phrase de passe",
+      "description": "Tirez au hasard une phrase de passe de 6 ou 7 mots, imaginez la scène qu'elle raconte pour la retenir, et comprenez pourquoi elle est plus solide qu'un mot de passe « compliqué ».",
+      "intro": "Oubliez « Azerty123 ». Quelques mots tirés au hasard, une image en tête, et vous avez un mot de passe solide que vous retiendrez.",
+      "ageRange": "Ados et adultes",
+      "tags": [
+        "mots de passe",
+        "sécurité",
+        "cnil",
+        "double authentification"
+      ],
+      "bodyMd": "**Des mots tirés au hasard, une image en tête.**\n\n## Le hasard choisit, vous imaginez\n\nL'outil tire 6 ou 7 mots au hasard dans une liste de 7 776 mots français. Vous imaginez ensuite la scène qu'ils racontent : c'est elle qui vous aidera à retenir la phrase.\n\n## Une solidité affichée honnêtement\n\nChaque mot ajoute environ 13 bits de solidité. La CNIL recommande 80 bits pour un mot de passe utilisé seul, soit 7 mots ; 6 mots suffisent quand le service bloque les essais ratés. Le jeu explique aussi pourquoi « Azerty123 » ou « Password123! » ne valent rien.\n\n## Et jamais de vrai mot de passe sur un site\n\nLa phrase est tirée dans votre navigateur et n'est ni enregistrée ni envoyée. Et on ne tape jamais un vrai mot de passe sur un site pour le « tester ».\n\n**Sans inscription · Sans publicité · Rien n'est enregistré**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/phrase-de-passe",
+      "cover": "/jeux/covers/phrase-de-passe.webp",
+      "seoTitle": "Dessinez votre phrase de passe : créer un mot de passe solide et facile à retenir | Le Singe Du Numerique",
+      "seoDescription": "Un outil gratuit pour tirer une phrase de passe au hasard, dans votre navigateur et sans rien enregistrer, avec les recommandations de la CNIL et de l'ANSSI.",
+      "audiences": [
+        "ados",
+        "adultes"
+      ],
+      "formats": [
+        "solo"
+      ],
+      "duration": "court",
+      "themes": [
+        "comptes"
+      ],
+      "publishedAt": "2026-11-11"
     }
   ]
 }
