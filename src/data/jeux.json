@@ -281,6 +281,37 @@
         "desinfo"
       ],
       "publishedAt": ""
+    },
+    {
+      "slug": "arnaque-telephone",
+      "name": "L'arnaque au téléphone",
+      "description": "Écoutez de faux appels (faux conseiller bancaire, faux support, faux policier…) et repérez le moment où quelque chose cloche, ou raccrochez.",
+      "intro": "Une voix rassurante, une urgence, un code à donner… Saurez-vous repérer l'arnaque avant qu'il ne soit trop tard ?",
+      "ageRange": "Adultes et seniors",
+      "tags": [
+        "arnaques",
+        "téléphone",
+        "seniors",
+        "banque"
+      ],
+      "bodyMd": "**Raccrocher n'est jamais impoli quand on a un doute.**\n\n## Des appels comme on en reçoit vraiment\n\nFaux conseiller bancaire, faux support informatique, faux policier, faux service des impôts, faux livreur : le jeu vous fait vivre ces appels réplique par réplique. À vous de repérer le moment où quelque chose cloche, ou de raccrocher.\n\n## Les signaux qui doivent alerter\n\nUne urgence soudaine, une demande de code reçu par SMS, un « compte sécurisé » où virer son argent, un numéro qui ressemble à celui de sa banque : chaque appel décortique la technique utilisée.\n\n## Le bon réflexe\n\nRaccrocher, puis rappeler soi-même le numéro officiel, celui du dos de sa carte ou de son contrat. Une banque ne demande jamais un code de validation par téléphone.\n\n**Sans inscription · Sans publicité · Rien n'est envoyé**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/arnaque-telephone",
+      "cover": "/jeux/covers/arnaque-telephone.webp",
+      "seoTitle": "L'arnaque au téléphone : repérer un faux conseiller ou un faux support | Le Singe Du Numerique",
+      "seoDescription": "Un jeu d'écoute gratuit pour apprendre à repérer les arnaques par téléphone et le bon réflexe : raccrocher, puis rappeler soi-même le numéro officiel.",
+      "audiences": [
+        "adultes",
+        "seniors"
+      ],
+      "formats": [
+        "solo",
+        "groupe"
+      ],
+      "duration": "court",
+      "themes": [
+        "arnaques"
+      ],
+      "publishedAt": "2026-11-11"
     }
   ]
 }
