@@ -1,13 +1,31 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import GameCard from '../components/GameCard.astro';
-import { jeux, jeuxALaUne, themesCouverts } from '../lib/jeux';
+import {
+  jeux, jeuxALaUne, nouveautes, nombreDeThemes, optionsUtilisees, lienCatalogue, valeurs, type Facette,
+} from '../lib/jeux';
 import { siteSettings } from '../config/site';
 import '../styles/jeux.css';
 
-const misEnAvant = jeuxALaUne(3);
+const recents = nouveautes(3);
+const misEnAvant = recents.length > 0 ? recents : jeuxALaUne(3);
 const autresJeux = jeux.length - misEnAvant.length;
-const themeCount = themesCouverts().length;
+const themeCount = nombreDeThemes();
+
+// Entrées par besoin : la question qu'on se pose avant de choisir un jeu.
+const BESOINS: Array<{ facette: Facette; cle: string; titre: string; texte: string }> = [
+  { facette: 'public', cle: 'enfants', titre: 'Pour les enfants', texte: 'Des situations simples pour en parler avant 12 ans.' },
+  { facette: 'public', cle: 'ados', titre: 'Avec des ados', texte: 'Réseaux, arnaques, infos virales : leurs vrais sujets.' },
+  { facette: 'public', cle: 'parents', titre: 'Pour les parents', texte: 'Faire le point et accompagner son enfant en ligne.' },
+  { facette: 'public', cle: 'seniors', titre: 'Pour les seniors', texte: 'Repérer les faux appels et faire le point sereinement.' },
+  { facette: 'format', cle: 'groupe', titre: 'En famille ou à plusieurs', texte: 'Un écran pour plusieurs, et de quoi débattre.' },
+  { facette: 'format', cle: 'atelier', titre: 'En classe ou en atelier', texte: 'Des jeux à animer avec un groupe.' },
+];
+const besoins = BESOINS.map((b) => ({
+  ...b,
+  jeux: jeux.filter((j) => valeurs(j, b.facette).includes(b.cle)).length,
+})).filter((b) => b.jeux > 0);
+const themes = optionsUtilisees('theme');
 
 const breadcrumbSchema = {
   '@context': 'https://schema.org',
@@ -50,11 +68,46 @@ const breadcrumbSchema = {
       </ul>
     </section>
 
+    {
+      besoins.length >= 2 && (
+        <section aria-labelledby="besoins-titre">
+          <p class="hub-kicker">Par où commencer ?</p>
+          <h2 id="besoins-titre">Trouver le bon jeu</h2>
+          <p class="section-intro">Choisissez votre situation : le catalogue s'ouvre déjà filtré.</p>
+          <ul class="needs-grid">
+            {besoins.map((b) => (
+              <li>
+                <a class="need-tile" href={lienCatalogue(b.facette, b.cle)}>
+                  <strong>{b.titre}</strong>
+                  <span>{b.texte}</span>
+                  <small>{b.jeux} {b.jeux > 1 ? 'jeux' : 'jeu'}</small>
+                </a>
+              </li>
+            ))}
+          </ul>
+          {themes.length >= 2 && (
+            <>
+              <h3 class="theme-links-title">Ou par sujet</h3>
+              <ul class="theme-links">
+                {themes.map((t) => (
+                  <li>
+                    <a href={lienCatalogue('theme', t.key)}>
+                      {t.label} <span aria-hidden="true">·</span> <span>{t.jeux}<span class="sr-only"> {t.jeux > 1 ? 'jeux' : 'jeu'}</span></span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+        </section>
+      )
+    }
+
     <section aria-labelledby="jeux-titre">
       <div class="section-head">
         <div>
-          <p class="hub-kicker">Nos jeux pédagogiques</p>
-          <h2 id="jeux-titre">Apprendre en jouant</h2>
+          <p class="hub-kicker">{recents.length > 0 ? 'Nouveautés' : 'Nos jeux pédagogiques'}</p>
+          <h2 id="jeux-titre">{recents.length > 0 ? 'Les derniers jeux en ligne' : 'Apprendre en jouant'}</h2>
         </div>
         <a href="/sensibilisation/jeux/" class="cta-button">Voir les {jeux.length} jeux</a>
       </div>
@@ -63,7 +116,7 @@ const breadcrumbSchema = {
         Chaque jeu se joue dans le navigateur, sans compte et sans collecte de données.
       </p>
 
-      <div class="games-grid" role="list" aria-label="Jeux mis en avant">
+      <div class="games-grid" role="list" aria-label={recents.length > 0 ? 'Derniers jeux en ligne' : 'Jeux mis en avant'}>
         {misEnAvant.map((jeu, index) => <GameCard jeu={jeu} index={index} />)}
       </div>
 
@@ -129,7 +182,7 @@ const breadcrumbSchema = {
   }
 
   .section-intro {
-    margin: 0 0 18px;
+    margin: 8px 0 18px;
     color: var(--text-muted);
     max-width: 68ch;
   }
@@ -146,6 +199,12 @@ const breadcrumbSchema = {
 
   .section-more a:hover {
     color: var(--text-main);
+  }
+
+  .theme-links-title {
+    margin: 22px 0 0;
+    font-size: 1rem;
+    color: var(--text-muted);
   }
 
   :global(.hub .cta-row) {

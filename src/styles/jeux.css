@@ -14,10 +14,22 @@
   margin: 0;
 }
 
-/* `a { text-decoration: none }` du layout est scopé : il n'atteint pas le slot. */
-.hub .cta-button,
-.game-host .cta-button {
+/* `a { text-decoration: none }` du layout est scopé : il n'atteint pas le slot,
+   et `body a:any-link` (links.css) repeindrait les boutons couleur lien —
+   sur fond vert en mode clair, le texte disparaissait. */
+.hub a.cta-button,
+.hub a.cta-button:hover,
+.game-host a.cta-button,
+.game-host a.cta-button:hover {
+  color: var(--action-text);
   text-decoration: none;
+}
+
+.hub a.cta-secondary,
+.hub a.cta-secondary:hover,
+.game-host a.cta-secondary,
+.game-host a.cta-secondary:hover {
+  color: var(--text-main);
 }
 
 .hub-card,
@@ -135,7 +147,45 @@
 
 .game-card h3 {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+/* Trois lignes au plus : le détail est sur la page du jeu. */
+.game-card .game-summary {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.6;
+}
+
+.game-meta {
+  margin: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
+.game-meta div {
+  display: flex;
+  gap: 8px;
+}
+
+.game-meta dt {
+  flex: 0 0 3.2rem;
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 0.15rem;
+}
+
+.game-meta dd {
+  margin: 0;
+  color: var(--text-main);
 }
 
 .game-cover,
@@ -155,7 +205,8 @@
 .game-preview {
   margin: 0;
   min-height: 84px;
-  aspect-ratio: 16 / 9;
+  /* Sans vignette, un bandeau suffit : une carte de 16 jeux reste lisible. */
+  aspect-ratio: 4 / 1;
   display: flex;
   align-items: flex-end;
   padding: 12px;
@@ -168,7 +219,7 @@
 
 .game-head {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
 }
@@ -193,6 +244,8 @@
 
 .game-badge {
   margin: 0;
+  flex: 0 0 auto;
+  white-space: nowrap;
   border: 1px solid var(--border-color);
   border-radius: 999px;
   padding: 5px 12px;
@@ -266,8 +319,8 @@
 .filter-chip {
   border: 1px solid var(--border-color);
   border-radius: 999px;
-  padding: 7px 14px;
-  min-height: 38px;
+  padding: 6px 13px;
+  min-height: 36px;
   background: transparent;
   color: var(--text-muted);
   font: inherit;
@@ -315,6 +368,184 @@
 
 .filters-empty[hidden] {
   display: none;
+}
+
+/* Barre du catalogue : recherche, tri, compteur. */
+.filters-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.filters-field {
+  display: grid;
+  gap: 6px;
+  flex: 1 1 220px;
+}
+
+.filters-field.is-sort {
+  flex: 0 1 220px;
+}
+
+.filters-field label {
+  color: var(--text-muted);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.filters-field input,
+.filters-field select {
+  min-height: 42px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  color: var(--text-main);
+  font: inherit;
+}
+
+.filters-field input:focus-visible,
+.filters-field select:focus-visible {
+  outline: 2px solid var(--brand-green);
+  outline-offset: 2px;
+}
+
+.filters-facets {
+  display: grid;
+  gap: 12px;
+}
+
+.filters-more > summary {
+  display: none;
+  list-style: none;
+  width: fit-content;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-main);
+}
+
+.filters-more > summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .filters-more > summary {
+    display: inline-flex;
+  }
+
+  .filters-more > summary::after {
+    content: '▾';
+    transition: transform 0.2s ease;
+  }
+
+  .filters-more[open] > summary::after {
+    transform: rotate(180deg);
+  }
+
+  .filters-more[open] > summary {
+    margin-bottom: 12px;
+  }
+}
+
+/* --- Entrées par besoin (/sensibilisation) --- */
+
+.needs-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.hub a.need-tile {
+  box-sizing: border-box;
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 6px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  background: var(--bg-card);
+  color: var(--text-main);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.hub a.need-tile:hover,
+.hub a.need-tile:focus-visible {
+  color: var(--text-main);
+  border-color: var(--brand-green);
+  transform: translateY(-2px);
+}
+
+.need-tile strong {
+  font-size: 1.08rem;
+}
+
+.need-tile span {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.need-tile small {
+  color: var(--brand-green);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+
+.theme-links {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hub .theme-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 13px;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.hub .theme-links a:hover,
+.hub .theme-links a:focus-visible {
+  color: var(--text-main);
+  border-color: var(--brand-green);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hub a.need-tile,
+  .hub a.need-tile:hover {
+    transition: none;
+    transform: none;
+  }
 }
 
 /* --- Page d'un jeu --- */

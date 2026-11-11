@@ -1,7 +1,7 @@
 ---
 import { marked } from 'marked';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
-import { jeux, jeuTitle, jeuDescription, type Jeu } from '../../../lib/jeux';
+import { jeux, jeuTitle, jeuDescription, enPhrase, libelles, type Jeu } from '../../../lib/jeux';
 import { siteSettings } from '../../../config/site';
 import '../../../styles/jeux.css';
 
@@ -26,6 +26,12 @@ const breadcrumbSchema = {
     { '@type': 'ListItem', position: 4, name: jeu.name, item: pageUrl },
   ],
 };
+
+// Thèmes classés dans l'admin, sinon les mots-clés libres.
+const themes = libelles(jeu, 'theme').length ? libelles(jeu, 'theme') : jeu.tags;
+const publics = libelles(jeu, 'public');
+const formats = libelles(jeu, 'format');
+const [duree] = libelles(jeu, 'duree');
 
 const bodyHtml = jeu.bodyMd ? marked.parse(jeu.bodyMd) : '';
 
@@ -52,9 +58,16 @@ const avisEndpoint = `${new URL(jeu.embedUrl).origin}/api/games/${encodeURICompo
       </div>
       <h2 id="game-title">Jouer pour déclencher la discussion</h2>
       {jeu.description && <p>{jeu.description}</p>}
-      {jeu.tags.length > 0 && (
+      {(publics.length > 0 || formats.length > 0 || duree) && (
+        <dl class="game-meta">
+          {publics.length > 0 && <div><dt>Pour</dt><dd>{enPhrase(publics)}</dd></div>}
+          {formats.length > 0 && <div><dt>Jouer</dt><dd>{enPhrase(formats)}</dd></div>}
+          {duree && <div><dt>Durée</dt><dd>{duree}</dd></div>}
+        </dl>
+      )}
+      {themes.length > 0 && (
         <ul class="risk-tags" aria-label={`Thèmes de ${jeu.name}`}>
-          {jeu.tags.map((tag) => <li>{tag}</li>)}
+          {themes.map((theme) => <li>{theme}</li>)}
         </ul>
       )}
       <div class="cta-row">
