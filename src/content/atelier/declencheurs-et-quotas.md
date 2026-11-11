@@ -3,7 +3,7 @@ kind: premiers-pas
 ordre: 3
 title: Faire tourner un script tout seul, sans mauvaise surprise
 description: Les déclencheurs, les messages d’erreur et les limites quotidiennes de Google, pour qu’un script ne s’arrête pas en silence.
-pubDate: 2026-11-11
+pubDate: '2026-11-11'
 draft: true
 duree: 10 min
 sources:
@@ -13,6 +13,7 @@ sources:
     url: https://developers.google.com/apps-script/guides/services/quotas
   - title: Google pour les associations
     url: https://www.google.com/intl/fr/nonprofits/
+verifieLe: '2026-11-11'
 ---
 
 ## Le déclencheur : ce qui lance le script
