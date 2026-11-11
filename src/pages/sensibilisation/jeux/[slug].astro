@@ -28,6 +28,10 @@ const breadcrumbSchema = {
 };
 
 const bodyHtml = jeu.bodyMd ? marked.parse(jeu.bodyMd) : '';
+
+// Les avis partent vers l'admin qui héberge le jeu (même origine que l'iframe),
+// comme les compteurs anonymes du jeu lui-même.
+const avisEndpoint = `${new URL(jeu.embedUrl).origin}/api/games/${encodeURIComponent(jeu.slug)}/event`;
 ---
 
 <SiteLayout
@@ -68,8 +72,22 @@ const bodyHtml = jeu.bodyMd ? marked.parse(jeu.bodyMd) : '';
         loading="lazy"
         class="game-frame"
         allow="fullscreen"
+        sandbox="allow-scripts allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-downloads allow-pointer-lock"
+        data-game-frame
       ></iframe>
     </div>
+
+    <section class="game-rating reveal reveal-2" aria-labelledby="avis-titre" data-avis data-slug={jeu.slug} data-endpoint={avisEndpoint}>
+      <h2 id="avis-titre">Ce jeu vous a plu ?</h2>
+      <p class="avis-aide" data-avis-aide>Votre avis aide Octet à améliorer ses jeux.</p>
+      <div class="avis-choix" role="group" aria-labelledby="avis-titre">
+        <button type="button" data-note="rate_up"><span aria-hidden="true">😀</span> J’ai aimé</button>
+        <button type="button" data-note="rate_mid"><span aria-hidden="true">😐</span> Bof</button>
+        <button type="button" data-note="rate_down"><span aria-hidden="true">🙁</span> Pas aimé</button>
+      </div>
+      <p class="avis-merci" role="status" aria-live="polite" data-avis-statut></p>
+      <p class="avis-confidentialite">Avis anonyme : aucun cookie, aucune donnée personnelle.</p>
+    </section>
 
     {bodyHtml && (
       <article class="game-description reveal reveal-2">
@@ -82,3 +100,68 @@ const bodyHtml = jeu.bodyMd ? marked.parse(jeu.bodyMd) : '';
     )}
   </section>
 </SiteLayout>
+
+<script>
+  // Note 😀 😐 🙁 sous le jeu : un avis par jeu et par navigateur (retenu dans le
+  // navigateur, sans cookie), envoyé en texte brut pour éviter toute requête préalable.
+  // Même endpoint pour les compteurs anonymes relayés depuis le jeu.
+  const bloc = document.querySelector<HTMLElement>('[data-avis]');
+  const frame = document.querySelector<HTMLIFrameElement>('[data-game-frame]');
+  if (bloc) {
+    const cle = `lsdn-avis-${bloc.dataset.slug}`;
+    const statut = bloc.querySelector<HTMLElement>('[data-avis-statut]');
+    const aide = bloc.querySelector<HTMLElement>('[data-avis-aide]');
+    const boutons = [...bloc.querySelectorAll<HTMLButtonElement>('[data-note]')];
+    const lire = () => { try { return localStorage.getItem(cle); } catch { return null; } };
+    const merci = (note: string | null) => {
+      boutons.forEach((b) => {
+        b.disabled = true;
+        b.setAttribute('aria-pressed', String(b.dataset.note === note));
+      });
+      if (statut) statut.textContent = 'Merci ! Votre avis est bien noté.';
+    };
+    const deja = lire();
+    if (deja) merci(deja);
+
+    const envoyer = (type: string) => {
+      fetch(bloc.dataset.endpoint ?? '', { method: 'POST', body: JSON.stringify({ type }), keepalive: true }).catch(() => {});
+    };
+
+    boutons.forEach((bouton) => bouton.addEventListener('click', () => {
+      const note = bouton.dataset.note ?? '';
+      try { localStorage.setItem(cle, note); } catch { /* navigation privée : tant pis */ }
+      merci(note);
+      envoyer(note);
+    }));
+
+    // Le jeu tourne en bac à sable : il prévient la page de ses étapes (ouverture,
+    // départ, fin) et c'est la page qui transmet ces compteurs anonymes à l'admin.
+    const ETAPES = ['visit', 'start', 'complete'];
+    window.addEventListener('message', (event) => {
+      if (!frame || event.source !== frame.contentWindow) return;
+      const data = event.data as { source?: string; type?: string } | null;
+      if (data?.source !== 'lsdn-game' || !data.type || !ETAPES.includes(data.type)) return;
+      envoyer(data.type);
+      if (data.type !== 'complete' || lire()) return;
+      bloc.classList.add('avis-invite');
+      if (aide) aide.textContent = 'Partie terminée ! Ce jeu vous a plu ?';
+    });
+  }
+</script>
+
+<style>
+  .game-rating { margin-top: 1.5rem; padding: clamp(1rem, 4vw, 1.6rem); border: 1px solid var(--border-color); border-radius: 18px; background: var(--bg-card); text-align: center; transition: border-color .3s, box-shadow .3s; }
+  .game-rating.avis-invite { border-color: var(--brand-green); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-green) 25%, transparent); }
+  .game-rating h2 { margin: 0 0 .4rem; font-size: 1.25rem; }
+  .avis-aide, .avis-confidentialite { color: var(--text-muted); margin: 0 0 1rem; }
+  .avis-confidentialite { margin: .8rem 0 0; font-size: .85rem; }
+  .avis-choix { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem; }
+  .avis-choix button { display: inline-flex; align-items: center; gap: .45rem; min-height: 46px; padding: 0 1.1rem; border: 1px solid var(--border-color); border-radius: 999px; background: transparent; color: var(--text-main); font: inherit; font-weight: 600; cursor: pointer; }
+  .avis-choix button span { font-size: 1.35rem; }
+  .avis-choix button:hover:not(:disabled) { border-color: var(--brand-green); }
+  .avis-choix button:focus-visible { outline: 3px solid var(--brand-green); outline-offset: 3px; }
+  .avis-choix button:disabled { cursor: default; opacity: .55; }
+  .avis-choix button[aria-pressed="true"] { opacity: 1; border-color: var(--brand-green); background: color-mix(in srgb, var(--brand-green) 14%, transparent); }
+  .avis-merci { min-height: 1.5em; margin: .8rem 0 0; color: var(--brand-green); font-weight: 600; }
+  @media (prefers-reduced-motion: reduce) { .game-rating { transition: none; } }
+</style>
