@@ -3,15 +3,17 @@ kind: premiers-pas
 ordre: 1
 title: Votre premier script en 10 minutes
 description: Où se cache Apps Script, quel compte utiliser pour l’association, et un premier script qui ajoute un menu à votre tableau.
-pubDate: 2026-11-11
-draft: true
+pubDate: '2026-11-11'
+draft: false
 duree: 10 min
-services: [Sheets]
+services:
+  - Sheets
 sources:
   - title: Google — Présentation d’Apps Script (en anglais)
     url: https://developers.google.com/apps-script/overview
   - title: Google — Scripts liés à un document (en anglais)
     url: https://developers.google.com/apps-script/guides/bound
+verifieLe: '2026-11-11'
 ---
 
 ## Apps Script, c’est quoi ?

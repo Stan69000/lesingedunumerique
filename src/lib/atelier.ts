@@ -11,12 +11,12 @@ export const etageres: { id: EtagereId; nom: string; icone: string; description:
   {
     id: 'adherents', nom: 'Adhérents', icone: '🧑‍🤝‍🧑',
     description: 'Accueillir les nouveaux, suivre les cotisations, garder un fichier à jour.',
-    aVenir: ['Relancer les cotisations à échéance', 'Une carte d’adhérent en PDF', 'Importer les adhésions HelloAsso'],
+    aVenir: ['Importer les adhésions HelloAsso'],
   },
   {
     id: 'evenements', nom: 'Événements et bénévoles', icone: '📅',
     description: 'Planifier, inscrire les bénévoles, prévenir la veille.',
-    aVenir: ['Des créneaux bénévoles qui se ferment quand ils sont pleins', 'Un rappel la veille aux bénévoles inscrits'],
+    aVenir: [],
   },
   {
     id: 'communication', nom: 'Communication', icone: '✉️',
@@ -46,6 +46,16 @@ export async function getFiches(): Promise<Fiche[]> {
 /** Fiches publiées seulement : pour le sitemap, la recherche et les liens d'entrée. */
 export async function getFichesPubliees(): Promise<Fiche[]> {
   return (await getCollection('atelier', ({ data }) => !data.draft));
+}
+
+/** Où en est la fiche dans son cycle de publication (voir content.config.ts). */
+export function statutFiche(fiche: Fiche): { label: string; detail?: string } | null {
+  const { draft, verifieLe, publierLe } = fiche.data;
+  if (!draft) return null;
+  const date = (d: Date) => d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', timeZone: 'Europe/Paris' });
+  if (publierLe) return { label: 'Programmée', detail: `le ${date(publierLe)}` };
+  if (verifieLe) return { label: 'Vérifiée', detail: 'pas encore programmée' };
+  return { label: 'Brouillon' };
 }
 
 export const fichePath = (fiche: Fiche) => `/outils/atelier/${fiche.id}/`;

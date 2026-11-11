@@ -2,7 +2,7 @@
 import { Code } from 'astro:components';
 import { marked } from 'marked';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
-import { getFiches, fichePath, etagere, niveauLabel, donneesInfo, scriptFor, splitBody } from '../../../lib/atelier';
+import { getFiches, fichePath, etagere, niveauLabel, donneesInfo, scriptFor, splitBody, statutFiche } from '../../../lib/atelier';
 import { formatBriefDate } from '../../../lib/briefs';
 
 export async function getStaticPaths() {
@@ -28,6 +28,7 @@ const voisines = data.kind === 'recette'
   ? fiches.filter((f) => f.id !== fiche.id && f.data.etagere === data.etagere)
   : [];
 const nomFichier = `${fiche.id}.gs`;
+const statut = statutFiche(fiche);
 ---
 <SiteLayout
   title={`${data.title} | L’atelier d’Octet`}
@@ -51,8 +52,8 @@ const nomFichier = `${fiche.id}.gs`;
       <button type="button" class="btn" data-print><span aria-hidden="true">🖨</span> Imprimer la fiche</button>
     </div>
 
-    {data.draft && (
-      <aside class="notice"><strong>Brouillon.</strong> Cette fiche n’a pas encore été vérifiée par l’équipe : elle n’apparaît pas sur le site publié.</aside>
+    {statut && (
+      <aside class="notice"><strong>{statut.label}{statut.detail ? ` ${statut.detail}` : ''}.</strong> {statut.label === 'Brouillon' ? 'Cette fiche n’a pas encore été vérifiée par l’équipe : elle' : 'Cette fiche'} n’apparaît pas sur le site publié. Sa vérification et sa publication se pilotent depuis l’admin.</aside>
     )}
 
     {data.kind === 'recette' && (
