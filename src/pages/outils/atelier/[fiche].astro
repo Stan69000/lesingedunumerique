@@ -1,0 +1,210 @@
+---
+import { Code } from 'astro:components';
+import { marked } from 'marked';
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import { getFiches, fichePath, etagere, niveauLabel, donneesInfo, scriptFor, splitBody } from '../../../lib/atelier';
+import { formatBriefDate } from '../../../lib/briefs';
+
+export async function getStaticPaths() {
+  const fiches = await getFiches();
+  return fiches.map((fiche) => ({ params: { fiche: fiche.id }, props: { fiche, fiches } }));
+}
+
+const { fiche, fiches } = Astro.props;
+const { data } = fiche;
+const script = scriptFor(fiche);
+const [avant, apres] = splitBody(fiche.body ?? '');
+const html = (md: string) => (md.trim() ? marked.parse(md.trim(), { async: false }) : '');
+const etag = etagere(data.etagere);
+const donnees = data.donnees ? donneesInfo[data.donnees] : undefined;
+const automatique = Boolean(data.declencheur && !/menu|main/i.test(data.declencheur));
+
+// Suite logique : le tuto suivant pour les premiers pas, la même étagère sinon.
+const premiersPas = fiches.filter((f) => f.data.kind === 'premiers-pas');
+const suivant = data.kind === 'premiers-pas'
+  ? premiersPas[premiersPas.indexOf(fiche) + 1]
+  : undefined;
+const voisines = data.kind === 'recette'
+  ? fiches.filter((f) => f.id !== fiche.id && f.data.etagere === data.etagere)
+  : [];
+const nomFichier = `${fiche.id}.gs`;
+---
+<SiteLayout
+  title={`${data.title} | L’atelier d’Octet`}
+  description={data.description}
+  eyebrow={data.kind === 'recette' ? `L’atelier d’Octet · ${etag?.nom}` : 'L’atelier d’Octet · Premiers pas'}
+  headline={data.title}
+  intro={data.description}
+  noindex={data.draft}
+>
+  <ul slot="hero" class="chips" aria-label="En bref">
+    {data.kind === 'recette' && <li><span aria-hidden="true">{'🍌'.repeat(data.niveau)}</span> {niveauLabel(data.niveau)}</li>}
+    {data.kind === 'premiers-pas' && <li>Premiers pas · étape {data.ordre}</li>}
+    {data.duree && <li><span aria-hidden="true">⏱</span> {data.duree}</li>}
+    {data.services.length > 0 && <li><span aria-hidden="true">🧰</span> {data.services.join(', ')}</li>}
+    {data.verifieLe && <li><span aria-hidden="true">✅</span> {data.kind === 'recette' ? 'Testé' : 'Vérifié'} le <time datetime={data.verifieLe.toISOString()}>{formatBriefDate(data.verifieLe)}</time></li>}
+  </ul>
+
+  <div class="fiche">
+    <div class="toolbar">
+      <nav class="crumbs" aria-label="Fil d’Ariane"><a href="/outils/">Nos outils</a> · <a href="/outils/atelier/">L’atelier d’Octet</a></nav>
+      <button type="button" class="btn" data-print><span aria-hidden="true">🖨</span> Imprimer la fiche</button>
+    </div>
+
+    {data.draft && (
+      <aside class="notice"><strong>Brouillon.</strong> Cette fiche n’a pas encore été vérifiée par l’équipe : elle n’apparaît pas sur le site publié.</aside>
+    )}
+
+    {data.kind === 'recette' && (
+      <dl class="summary" aria-label="La recette en bref">
+        <div><dt>Il vous faut</dt><dd>{data.services.join(', ')}</dd></div>
+        {data.declencheur && <div><dt>Se lance</dt><dd>{data.declencheur}</dd></div>}
+        {data.compteGratuit && <div><dt>Compte Gmail gratuit</dt><dd>{data.compteGratuit}</dd></div>}
+        {donnees && <div><dt>Données touchées</dt><dd><span aria-hidden="true">{donnees.icone}</span> {donnees.label}</dd></div>}
+      </dl>
+    )}
+
+    <div class="prose" set:html={html(avant)} />
+
+    {script && (
+      <figure class="script" aria-labelledby="script-titre">
+        <figcaption>
+          <span id="script-titre"><span aria-hidden="true">📜</span> Le script complet <code>{nomFichier}</code></span>
+          <button type="button" class="btn" data-copy="script-code" aria-describedby="copy-status">Copier le script</button>
+          <span id="copy-status" class="copy-status" role="status" aria-live="polite"></span>
+        </figcaption>
+        <div id="script-code" class="code">
+          <Code code={script} lang="js" theme="github-dark" />
+        </div>
+      </figure>
+    )}
+
+    <div class="prose" set:html={html(apres)} />
+
+    {data.autorisations.length > 0 && (
+      <section class="box box-rights" aria-labelledby="droits">
+        <h2 id="droits"><span aria-hidden="true">🔑</span> Ce que ce script a le droit de faire</h2>
+        <p>Au moment de l’autoriser, Google vous affiche cette liste. Vérifiez qu’elle correspond, ni plus ni moins :</p>
+        <ul>{data.autorisations.map((a) => <li><strong>{a.droit}</strong> : {a.pourquoi}</li>)}</ul>
+        <p class="small">L’écran vous inquiète ? <a href="/outils/atelier/autoriser-un-script-sans-paniquer/">Autoriser un script sans paniquer</a></p>
+      </section>
+    )}
+
+    {donnees && (
+      <section class="box box-data" aria-labelledby="donnees">
+        <h2 id="donnees"><span aria-hidden="true">{donnees.icone}</span> Données personnelles</h2>
+        <p>{donnees.regle}</p>
+      </section>
+    )}
+
+    {data.kind === 'recette' && (
+      <section class="box box-stop" aria-labelledby="arreter">
+        <h2 id="arreter"><span aria-hidden="true">🛑</span> Comment l’arrêter</h2>
+        <ol>
+          {automatique && <li>Dans l’éditeur Apps Script, ouvrez <strong>Déclencheurs</strong> (l’icône en forme de réveil, à gauche) et supprimez la ligne correspondante. Le script ne se lancera plus tout seul.</li>}
+          <li>Pour retirer aussi les droits accordés : <a href="https://myaccount.google.com/connections">votre compte Google, rubrique « Applications et services tiers »</a>, choisissez le projet, puis « Supprimer tous les accès ».</li>
+          <li>Pour tout effacer, supprimez le projet Apps Script{script && data.services.includes('Sheets') ? ' (Extensions > Apps Script, ou le fichier dans Drive s’il est autonome)' : ''}.</li>
+        </ol>
+      </section>
+    )}
+
+    {data.sources.length > 0 && (
+      <section class="sources" aria-labelledby="sources">
+        <h2 id="sources">Pour aller plus loin</h2>
+        <ul>{data.sources.map((s) => <li><a href={s.url} rel="noopener">{s.title}</a></li>)}</ul>
+      </section>
+    )}
+
+    <nav class="next" aria-label="Suite">
+      {suivant && <a class="next-link" href={fichePath(suivant)}><small>Étape suivante</small><strong>{suivant.data.title} →</strong></a>}
+      {data.kind === 'premiers-pas' && !suivant && <a class="next-link" href="/outils/atelier/#etageres"><small>Vous êtes prêt</small><strong>Choisir une recette sur les étagères →</strong></a>}
+      {voisines.map((v) => <a class="next-link" href={fichePath(v)}><small>Sur la même étagère</small><strong>{v.data.title} →</strong></a>)}
+      <a class="back" href="/outils/atelier/">← Toutes les recettes de l’atelier</a>
+    </nav>
+  </div>
+</SiteLayout>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((button) => {
+    button.addEventListener('click', () => window.print());
+  });
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
+    button.addEventListener('click', async () => {
+      const code = document.getElementById(button.dataset.copy ?? '')?.querySelector('pre')?.textContent ?? '';
+      const status = document.getElementById('copy-status');
+      try {
+        await navigator.clipboard.writeText(code);
+        if (status) status.textContent = 'Script copié. Collez-le dans l’éditeur Apps Script.';
+      } catch {
+        const range = document.createRange();
+        const pre = document.getElementById(button.dataset.copy ?? '')?.querySelector('pre');
+        if (pre) { range.selectNodeContents(pre); getSelection()?.removeAllRanges(); getSelection()?.addRange(range); }
+        if (status) status.textContent = 'Copie automatique impossible : le script est sélectionné, faites Ctrl+C (ou Cmd+C).';
+      }
+    });
+  });
+</script>
+
+<style>
+  /* minmax(0, 1fr) : sans lui, le bloc de code élargit la colonne sur mobile. */
+  .fiche { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.8rem; max-width: 860px; }
+  .prose { overflow-wrap: anywhere; }
+  .prose :global(table) { display: block; overflow-x: auto; }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 1.2rem 0 0; list-style: none; }
+  .chips li { padding: .35rem .8rem; border: 1px solid var(--border-color); border-radius: 999px; background: var(--bg-card); font-size: .92rem; }
+  .toolbar { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between; align-items: center; }
+  .crumbs a { color: var(--link-color); text-decoration: underline; }
+  .btn { display: inline-flex; align-items: center; gap: .4rem; min-height: 40px; padding: 0 1rem; border: 1px solid var(--border-color); border-radius: 999px; background: var(--bg-card); color: var(--text-main); font: inherit; font-size: .9rem; font-weight: 500; cursor: pointer; }
+  .btn:hover { border-color: var(--brand-green); }
+  .btn:focus-visible, .fiche a:focus-visible { outline: 3px solid var(--brand-green); outline-offset: 3px; }
+  .notice { padding: 1rem 1.25rem; border: 1px dashed var(--brand-orange); border-radius: 12px; background: var(--bg-card); }
+  .summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 1px; margin: 0; border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; background: var(--border-color); }
+  .summary div { padding: .9rem 1.1rem; background: var(--bg-card); }
+  .summary dt { color: var(--text-muted); font-size: .82rem; text-transform: uppercase; letter-spacing: .04em; }
+  .summary dd { margin: .3rem 0 0; font-weight: 600; line-height: 1.45; }
+  .prose :global(h2) { margin: 2rem 0 .8rem; font-size: clamp(1.3rem, 3vw, 1.6rem); }
+  .prose :global(h2:first-child) { margin-top: 0; }
+  .prose :global(h3) { margin: 1.5rem 0 .6rem; font-size: 1.15rem; }
+  .prose :global(p), .prose :global(li) { color: var(--text-muted); line-height: 1.8; }
+  .prose :global(strong) { color: var(--text-main); }
+  .prose :global(a) { color: var(--link-color); text-decoration: underline; text-underline-offset: 3px; }
+  .prose :global(ol), .prose :global(ul) { padding-left: 1.4rem; }
+  .prose :global(li) { margin-bottom: .45rem; }
+  .prose :global(code), .script figcaption code, .box code { padding: .1rem .35rem; border-radius: 6px; background: color-mix(in srgb, var(--text-main) 10%, transparent); font-family: 'JetBrains Mono', monospace; font-size: .88em; }
+  .prose :global(pre) { padding: 1rem; overflow-x: auto; border-radius: 12px; background: #0d1117; color: #e6edf3; }
+  .prose :global(pre code) { padding: 0; background: none; }
+  .prose :global(blockquote) { margin: 1.2rem 0; padding: .9rem 1.2rem; border-left: 4px solid var(--brand-green); border-radius: 0 12px 12px 0; background: var(--bg-card); }
+  .prose :global(blockquote p) { margin: 0; }
+  .prose :global(table) { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+  .prose :global(th), .prose :global(td) { padding: .55rem .7rem; border: 1px solid var(--border-color); text-align: left; vertical-align: top; }
+  .prose :global(th) { background: var(--bg-card); }
+  .script { margin: 0; border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; }
+  .script figcaption { display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; justify-content: space-between; padding: .8rem 1rem; background: var(--bg-card); font-weight: 700; }
+  .copy-status { flex-basis: 100%; color: var(--brand-green); font-weight: 500; font-size: .9rem; }
+  .copy-status:empty { display: none; }
+  .code :global(pre) { margin: 0; padding: 1.1rem; max-height: 520px; overflow: auto; font-size: .85rem; line-height: 1.6; }
+  .box { padding: 1.3rem 1.5rem; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-card); }
+  .box h2 { margin: 0 0 .7rem; font-size: 1.2rem; }
+  .box p, .box li { color: var(--text-muted); line-height: 1.7; }
+  .box strong { color: var(--text-main); }
+  .box a { color: var(--link-color); text-decoration: underline; }
+  .box ul, .box ol { padding-left: 1.3rem; margin: .5rem 0; }
+  .box-rights { border-left: 5px solid var(--brand-green); }
+  .box-data { border-left: 5px solid var(--brand-orange); }
+  .box-stop { border-left: 5px solid #ef4444; }
+  .small { font-size: .92rem; }
+  .sources h2 { font-size: 1.1rem; margin: 0 0 .5rem; }
+  .sources li { line-height: 1.7; color: var(--text-muted); }
+  .sources a { color: var(--link-color); text-decoration: underline; }
+  .next { display: grid; gap: .8rem; }
+  .next-link { display: grid; gap: .2rem; padding: 1rem 1.2rem; border: 1px solid var(--brand-green); border-radius: 14px; color: var(--text-main); text-decoration: none; background: color-mix(in srgb, var(--brand-green) 8%, var(--bg-card)); }
+  .next-link small { color: var(--text-muted); }
+  .back { color: var(--link-color); text-decoration: underline; min-height: 44px; display: inline-flex; align-items: center; }
+  @media print {
+    :global(header), :global(footer), :global(.share-buttons), .toolbar, .next, .btn, .copy-status { display: none !important; }
+    :global(body), :global(body.light-mode) { background: #fff !important; color: #000 !important; }
+    .box, .summary div, .script figcaption { background: #fff; }
+    .code :global(pre) { max-height: none; overflow: visible; white-space: pre-wrap; background: #fff !important; }
+    .code :global(pre span) { color: #000 !important; }
+  }
+</style>

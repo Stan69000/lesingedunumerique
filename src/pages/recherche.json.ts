@@ -3,6 +3,7 @@ import { mainNav, footerNav } from '../config/nav';
 import { lexique } from '../lib/lexique';
 import { jeux } from '../lib/jeux';
 import { getPublishedBriefs } from '../lib/briefs';
+import { getFichesPubliees, fichePath } from '../lib/atelier';
 export async function GET() {
   const entries: { title: string; description: string; type: string; href: string; keywords: string }[] = [];
   for (const collection of ['blog', 'bd'] as const) {
@@ -12,6 +13,9 @@ export async function GET() {
   }
   for (const brief of (await getPublishedBriefs()).filter(brief => !brief.data.demo)) {
     entries.push({ title: brief.data.title, description: brief.data.description, type: 'Alertes', href: `/veille/briefs/${brief.id}/`, keywords: brief.data.scams.map(s => s.name).join(' ') });
+  }
+  for (const fiche of await getFichesPubliees()) {
+    entries.push({ title: fiche.data.title, description: fiche.data.description, type: 'Atelier', href: fichePath(fiche), keywords: `apps script automatisation association ${fiche.data.services.join(' ')} ${fiche.body ?? ''}` });
   }
   for (const item of lexique) entries.push({ title: item.terme, description: item.definition, type: 'Lexique', href: `/lexique/#${item.terme.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`, keywords: `${item.aussi?.join(' ') ?? ''} ${'recherches' in item ? item.recherches?.join(' ') ?? '' : ''} ${item.situation} ${item.reflexe} ${item.theme}` });
   for (const game of jeux) entries.push({ title: game.name, description: game.description, type: 'Jeux', href: `/sensibilisation/jeux/${game.slug}/`, keywords: `${game.tags.join(' ')} ${game.ageRange} ${game.bodyMd}` });

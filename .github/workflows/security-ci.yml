@@ -34,6 +34,9 @@ jobs:
       - name: Décryptages d’Octet (mise en page)
         run: npm run test:briefs
 
+      - name: L’atelier d’Octet (scripts Apps Script)
+        run: npm run test:atelier
+
       - name: Security audit (root production deps)
         run: npm audit --omit=dev --audit-level=high
 

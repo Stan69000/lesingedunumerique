@@ -1,5 +1,7 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
+import { getFichesPubliees } from '../lib/atelier';
+const atelierOuvert = (await getFichesPubliees()).length > 0;
 ---
 
 <SiteLayout
@@ -24,6 +26,7 @@ import SiteLayout from '../layouts/SiteLayout.astro';
       <li><a href="/lexique/">Lexique : les mots du numérique</a></li>
       <li><a href="/outils/">Nos outils gratuits</a></li>
       <li><a href="/outils/boussole/">La Boussole d’Octet : audit SEO et GEO</a></li>
+      {atelierOuvert && <li><a href="/outils/atelier/">L’atelier d’Octet : automatiser les tâches de l’association</a></li>}
       <li><a href="/lexique/?univers=seo">Lexique : SEO et GEO</a></li>
       <li><a href="/lexique/?univers=accessibilite">Lexique : accessibilité et RGAA</a></li>
       <li><a href="/lexique/?univers=arnaques">Lexique : arnaques et manipulation</a></li>
