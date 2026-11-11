@@ -7,15 +7,24 @@ const premiersPas = fiches.filter((f) => f.data.kind === 'premiers-pas');
 const recettes = fiches.filter((f) => f.data.kind === 'recette');
 // Tant que rien n'est publié, la page existe mais ne s'indexe pas.
 const vide = fiches.every((f) => f.data.draft) && !import.meta.env.DEV;
+// Seules les étagères qui ont une recette s'affichent : pas de vitrine vide.
+const etageresGarnies = etageres
+  .map((e) => ({ ...e, recettes: recettes.filter((r) => r.data.etagere === e.id) }))
+  .filter((e) => e.recettes.length > 0);
+const avecRecettes = etageresGarnies.length > 0;
 const bananes = (n: number) => '🍌'.repeat(n);
 ---
 <SiteLayout
   title="L’atelier d’Octet : automatiser les tâches de votre association | Le Singe Du Numérique"
-  description="Des recettes Google Apps Script expliquées pas à pas pour les associations : mail de bienvenue, agenda partagé, publipostage, sauvegardes. Avec les réflexes de sécurité."
+  description={avecRecettes
+    ? 'Des recettes Google Apps Script expliquées pas à pas pour les associations, avec les droits qu’elles demandent et les réflexes de sécurité.'
+    : 'Premiers pas avec Google Apps Script pour les associations : où se cache l’éditeur, quel compte utiliser et comment lire l’écran d’autorisation sans paniquer.'}
   eyebrow="Comprendre et agir"
   headline="L’atelier"
   accent="d’Octet"
-  intro="Mails de bienvenue, agenda, envois groupés, sauvegardes : les tâches répétitives de votre association peuvent tourner toutes seules. Chaque recette explique ce qu’elle fait, ce qu’elle a le droit de toucher et comment l’arrêter."
+  intro={avecRecettes
+    ? 'Les tâches répétitives de votre association peuvent tourner toutes seules. Chaque recette explique ce qu’elle fait, ce qu’elle a le droit de toucher et comment l’arrêter.'
+    : 'Les tâches répétitives de votre association peuvent tourner toutes seules. Commencez par les premiers pas : installer un script en sachant ce qu’il a le droit de faire.'}
   noindex={vide}
 >
   <div class="atelier">
@@ -24,7 +33,7 @@ const bananes = (n: number) => '🍌'.repeat(n);
       <div>
         <h2 id="atelier-quoi">Le mot d’Octet</h2>
         <p>Google Apps Script, c’est un petit langage caché dans Google Sheets, Forms, Gmail et Drive. Il permet d’automatiser ce que vous faites à la main, sans serveur et sans abonnement : un compte Google suffit.</p>
-        <p>Vous n’avez pas besoin de savoir programmer. Chaque recette se copie, se règle en haut du script, puis s’installe en quelques clics. Commencez par les premiers pas : ils vous évitent les deux pièges classiques, l’écran d’autorisation qui fait peur et le script qui s’arrête quand un bénévole s’en va.</p>
+        <p>Vous n’avez pas besoin de savoir programmer.{avecRecettes && ' Chaque recette se copie, se règle en haut du script, puis s’installe en quelques clics.'} Commencez par les premiers pas : ils vous évitent les deux pièges classiques, l’écran d’autorisation qui fait peur et le script qui s’arrête quand un bénévole s’en va.</p>
       </div>
     </section>
 
@@ -46,45 +55,36 @@ const bananes = (n: number) => '🍌'.repeat(n);
       </ol>
     </section>
 
-    <section aria-labelledby="etageres">
-      <h2 id="etageres" class="section-title">Les étagères</h2>
-      <p class="legend"><span aria-hidden="true">🍌</span> débutant · <span aria-hidden="true">🍌🍌</span> intermédiaire · <span aria-hidden="true">🍌🍌🍌</span> avancé</p>
-      <div class="shelves">
-        {etageres.map((e) => {
-          const surEtagere = recettes.filter((r) => r.data.etagere === e.id);
-          return (
+    {avecRecettes && (
+      <section aria-labelledby="etageres">
+        <h2 id="etageres" class="section-title">Les étagères</h2>
+        <p class="legend"><span aria-hidden="true">🍌</span> débutant · <span aria-hidden="true">🍌🍌</span> intermédiaire · <span aria-hidden="true">🍌🍌🍌</span> avancé</p>
+        <div class="shelves">
+          {etageresGarnies.map((e) => (
             <section class="shelf" aria-labelledby={`etagere-${e.id}`}>
               <header>
                 <span class="shelf-icon" aria-hidden="true">{e.icone}</span>
                 <div><h3 id={`etagere-${e.id}`}>{e.nom}</h3><p>{e.description}</p></div>
               </header>
-              {surEtagere.length > 0 && (
-                <ul class="recipes">
-                  {surEtagere.map((r) => (
-                    <li>
-                      <a href={fichePath(r)}>
-                        <span class="recipe-title">{r.data.title}</span>
-                        <span class="recipe-meta">
-                          <span><span aria-hidden="true">{bananes(r.data.niveau)}</span><span class="sr-only">Niveau {niveauLabel(r.data.niveau).toLowerCase()}</span></span>
-                          {r.data.duree && <span><span aria-hidden="true">⏱</span> {r.data.duree}</span>}
-                          {statutFiche(r) && <span class="draft">{statutFiche(r)?.label}</span>}
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {e.aVenir.length > 0 && (
-                <details class="soon">
-                  <summary>Bientôt sur cette étagère</summary>
-                  <ul>{e.aVenir.map((titre) => <li>{titre}</li>)}</ul>
-                </details>
-              )}
+              <ul class="recipes">
+                {e.recettes.map((r) => (
+                  <li>
+                    <a href={fichePath(r)}>
+                      <span class="recipe-title">{r.data.title}</span>
+                      <span class="recipe-meta">
+                        <span><span aria-hidden="true">{bananes(r.data.niveau)}</span><span class="sr-only">Niveau {niveauLabel(r.data.niveau).toLowerCase()}</span></span>
+                        {r.data.duree && <span><span aria-hidden="true">⏱</span> {r.data.duree}</span>}
+                        {statutFiche(r) && <span class="draft">{statutFiche(r)?.label}</span>}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </section>
-          );
-        })}
-      </div>
-    </section>
+          ))}
+        </div>
+      </section>
+    )}
 
     <aside class="warning" aria-labelledby="avant-de-coller">
       <h2 id="avant-de-coller"><span aria-hidden="true">⚠️</span> Avant de coller un script trouvé sur Internet</h2>
@@ -94,7 +94,7 @@ const bananes = (n: number) => '🍌'.repeat(n);
         <li><strong>Les droits demandés collent-ils à la tâche ?</strong> Un script qui crée un événement n’a aucune raison de lire tout votre Gmail.</li>
         <li><strong>Le comprenez-vous à peu près ?</strong> Du code illisible ou qui envoie des données vers une adresse inconnue (<code>UrlFetchApp</code>) doit vous arrêter.</li>
       </ul>
-      <p>Toutes nos recettes affichent leur code en entier, avec la liste des droits demandés et la raison de chacun. <a href="/outils/atelier/autoriser-un-script-sans-paniquer/">Comprendre l’écran d’autorisation</a></p>
+      <p>{avecRecettes && 'Toutes nos recettes affichent leur code en entier, avec la liste des droits demandés et la raison de chacun. '}<a href="/outils/atelier/autoriser-un-script-sans-paniquer/">Comprendre l’écran d’autorisation</a></p>
     </aside>
 
     <section class="prose-block">
@@ -133,10 +133,6 @@ const bananes = (n: number) => '🍌'.repeat(n);
   .recipe-title { font-weight: 700; }
   .recipe-meta { display: flex; flex-wrap: wrap; gap: .8rem; color: var(--text-muted); font-size: .88rem; }
   .draft { padding: .1rem .5rem; border: 1px dashed var(--brand-orange); border-radius: 999px; color: var(--brand-orange); font-size: .78rem; font-weight: 700; align-self: flex-start; }
-  .soon { margin-top: auto; color: var(--text-muted); font-size: .92rem; }
-  .soon summary { cursor: pointer; min-height: 32px; display: flex; align-items: center; }
-  .soon summary:focus-visible { outline: 3px solid var(--brand-green); outline-offset: 2px; }
-  .soon ul { margin: .4rem 0 0; padding-left: 1.2rem; line-height: 1.6; }
   .warning { padding: clamp(1.2rem, 4vw, 2rem); border: 1px solid var(--border-color); border-left: 5px solid var(--brand-orange); border-radius: 16px; background: var(--bg-card); }
   .warning h2 { margin: 0 0 .8rem; font-size: 1.3rem; }
   .warning p, .warning li { color: var(--text-muted); line-height: 1.7; }

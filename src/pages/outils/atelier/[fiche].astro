@@ -118,9 +118,9 @@ const statut = statutFiche(fiche);
 
     <nav class="next" aria-label="Suite">
       {suivant && <a class="next-link" href={fichePath(suivant)}><small>Étape suivante</small><strong>{suivant.data.title} →</strong></a>}
-      {data.kind === 'premiers-pas' && !suivant && <a class="next-link" href="/outils/atelier/#etageres"><small>Vous êtes prêt</small><strong>Choisir une recette sur les étagères →</strong></a>}
+      {data.kind === 'premiers-pas' && !suivant && fiches.some((f) => f.data.kind === 'recette') && <a class="next-link" href="/outils/atelier/#etageres"><small>Vous êtes prêt</small><strong>Choisir une recette sur les étagères →</strong></a>}
       {voisines.map((v) => <a class="next-link" href={fichePath(v)}><small>Sur la même étagère</small><strong>{v.data.title} →</strong></a>)}
-      <a class="back" href="/outils/atelier/">← Toutes les recettes de l’atelier</a>
+      <a class="back" href="/outils/atelier/">← Retour à l’atelier</a>
     </nav>
   </div>
 </SiteLayout>

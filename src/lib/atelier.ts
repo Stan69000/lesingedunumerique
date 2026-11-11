@@ -4,34 +4,29 @@ export type Fiche = CollectionEntry<'atelier'>;
 export type EtagereId = NonNullable<Fiche['data']['etagere']>;
 
 /**
- * Les étagères de l'atelier. `aVenir` annonce les recettes prévues : une
- * étagère sans recette publiée reste vivante au lieu d'afficher un vide.
+ * Les étagères de l'atelier. Une étagère n'apparaît qu'avec au moins une
+ * recette publiée : on n'annonce pas de recettes qui n'existent pas encore.
  */
-export const etageres: { id: EtagereId; nom: string; icone: string; description: string; aVenir: string[] }[] = [
+export const etageres: { id: EtagereId; nom: string; icone: string; description: string }[] = [
   {
     id: 'adherents', nom: 'Adhérents', icone: '🧑‍🤝‍🧑',
     description: 'Accueillir les nouveaux, suivre les cotisations, garder un fichier à jour.',
-    aVenir: ['Importer les adhésions HelloAsso'],
   },
   {
     id: 'evenements', nom: 'Événements et bénévoles', icone: '📅',
     description: 'Planifier, inscrire les bénévoles, prévenir la veille.',
-    aVenir: [],
   },
   {
     id: 'communication', nom: 'Communication', icone: '✉️',
     description: 'Écrire à chacun personnellement, sans copier-coller.',
-    aVenir: ['La lettre d’info préparée en brouillons, envoyée après relecture'],
   },
   {
     id: 'tresorerie', nom: 'Trésorerie et vie statutaire', icone: '🧾',
     description: 'Notes de frais, assemblée générale, reçus : moins de paperasse.',
-    aVenir: ['Notes de frais : formulaire et justificatifs rangés', 'Convocation à l’AG, émargement et procurations', 'Reçus de dons en PDF'],
   },
   {
     id: 'securite', nom: 'Sécurité et entretien', icone: '🔒',
     description: 'Sauvegarder, vérifier les partages, ne garder que le nécessaire.',
-    aVenir: ['Lister les fichiers partagés à « tous ceux qui ont le lien »', 'Anonymiser les anciens adhérents après quelques années'],
   },
 ];
 
