@@ -4,7 +4,7 @@ ordre: 2
 title: Autoriser un script sans paniquer
 description: L’écran « Google n’a pas validé cette application » expliqué, les droits à lire avant de cliquer, et comment tout retirer.
 pubDate: '2026-11-11'
-draft: true
+draft: false
 duree: 5 min
 sources:
   - title: Google — Autorisations des scripts Apps Script (en anglais)
