@@ -32,7 +32,8 @@ const bananes = (n: number) => '🍌'.repeat(n);
       <span class="avatar" aria-hidden="true">🐒</span>
       <div>
         <h2 id="atelier-quoi">Le mot d’Octet</h2>
-        <p>Google Apps Script, c’est un petit langage caché dans Google Sheets, Forms, Gmail et Drive. Il permet d’automatiser ce que vous faites à la main, sans serveur et sans abonnement : un compte Google suffit.</p>
+        <p>Google Apps Script, c’est l’outil d’automatisation de tout l’écosystème Google : Gmail, Agenda, Drive, Docs, Sheets, Slides, Forms, et même des services comme Maps. Vous écrivez quelques lignes de JavaScript dans votre navigateur, et Google les exécute sur ses serveurs : rien à installer, pas d’abonnement, un compte Google suffit.</p>
+        <p>On commence petit, en confiant au script ce que vous faites à la main. Une fois à l’aise, le même outil va beaucoup plus loin : petites applications web, modules ajoutés à vos documents, échanges avec d’autres services en ligne.</p>
         <p>Vous n’avez pas besoin de savoir programmer.{avecRecettes && ' Chaque recette se copie, se règle en haut du script, puis s’installe en quelques clics.'} Commencez par les premiers pas : ils vous évitent les deux pièges classiques, l’écran d’autorisation qui fait peur et le script qui s’arrête quand un bénévole s’en va.</p>
       </div>
     </section>
@@ -113,7 +114,7 @@ const bananes = (n: number) => '🍌'.repeat(n);
   .avatar { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--border-color); font-size: 1.8rem; }
   .section-title { margin: 0 0 1rem; font-size: clamp(1.4rem, 3vw, 1.8rem); }
   .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1rem; padding: 0; margin: 0; list-style: none; }
-  .steps a { display: flex; gap: 1rem; height: 100%; padding: 1.2rem; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-card); color: var(--text-main); text-decoration: none; position: relative; }
+  .steps a { box-sizing: border-box; display: flex; gap: 1rem; height: 100%; padding: 1.2rem; border: 1px solid var(--border-color); border-radius: 16px; background: var(--bg-card); color: var(--text-main); text-decoration: none; position: relative; }
   .steps a:hover { border-color: var(--brand-green); }
   .steps a:focus-visible, .recipes a:focus-visible { outline: 3px solid var(--brand-green); outline-offset: 3px; }
   .step-num { font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 500; color: var(--brand-green); }
