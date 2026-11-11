@@ -1,5 +1,95 @@
 {
   "version": 1,
+  "taxonomy": {
+    "audiences": [
+      {
+        "key": "enfants",
+        "label": "Enfants",
+        "hint": "moins de 12 ans"
+      },
+      {
+        "key": "ados",
+        "label": "Ados",
+        "hint": "12 à 17 ans"
+      },
+      {
+        "key": "adultes",
+        "label": "Adultes",
+        "hint": ""
+      },
+      {
+        "key": "parents",
+        "label": "Parents",
+        "hint": "pour accompagner un enfant"
+      },
+      {
+        "key": "seniors",
+        "label": "Seniors",
+        "hint": ""
+      }
+    ],
+    "formats": [
+      {
+        "key": "solo",
+        "label": "Seul",
+        "hint": "sur un écran, à son rythme"
+      },
+      {
+        "key": "groupe",
+        "label": "En famille ou à plusieurs",
+        "hint": "un écran pour plusieurs"
+      },
+      {
+        "key": "atelier",
+        "label": "En classe ou en atelier",
+        "hint": "avec une personne qui anime"
+      }
+    ],
+    "durations": [
+      {
+        "key": "court",
+        "label": "Moins de 10 min"
+      },
+      {
+        "key": "moyen",
+        "label": "10 à 30 min"
+      },
+      {
+        "key": "long",
+        "label": "Plus de 30 min"
+      }
+    ],
+    "themes": [
+      {
+        "key": "arnaques",
+        "label": "Arnaques"
+      },
+      {
+        "key": "comptes",
+        "label": "Mots de passe et comptes"
+      },
+      {
+        "key": "vie-privee",
+        "label": "Vie privée et données"
+      },
+      {
+        "key": "reseaux",
+        "label": "Réseaux sociaux et harcèlement"
+      },
+      {
+        "key": "desinfo",
+        "label": "Désinformation et IA"
+      },
+      {
+        "key": "internet",
+        "label": "Comprendre Internet"
+      },
+      {
+        "key": "structures",
+        "label": "Cybersécurité des structures"
+      }
+    ]
+  },
   "games": [
     {
       "slug": "pixel-safe",
@@ -18,7 +108,24 @@
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/pixel-safe",
       "cover": "/jeux/covers/pixel-safe.webp",
       "seoTitle": "PIXEL SAFE: jeu de sensibilisation numérique pour enfants et ados | Le Singe Du Numerique",
-      "seoDescription": "PIXEL SAFE est un jeu pédagogique gratuit de sensibilisation numérique pour les 6-18 ans: phishing, cyberharcèlement, réseaux sociaux, deepfakes, réputation et protection des données."
+      "seoDescription": "PIXEL SAFE est un jeu pédagogique gratuit de sensibilisation numérique pour les 6-18 ans: phishing, cyberharcèlement, réseaux sociaux, deepfakes, réputation et protection des données.",
+      "audiences": [
+        "enfants",
+        "ados",
+        "parents"
+      ],
+      "formats": [
+        "solo",
+        "groupe",
+        "atelier"
+      ],
+      "duration": "moyen",
+      "themes": [
+        "arnaques",
+        "vie-privee",
+        "reseaux"
+      ],
+      "publishedAt": ""
     },
     {
       "slug": "sentinel",
@@ -37,7 +144,21 @@
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/sentinel",
       "cover": "/jeux/covers/sentinel.webp",
       "seoTitle": "SENTINEL: jeu cybersécurité et simulation immersive | Le Singe Du Numerique",
-      "seoDescription": "SENTINEL est un jeu de cybersécurité gratuit: enquêtes, terminal, scénarios et décisions sous pression pour apprendre les réflexes de défense numérique."
+      "seoDescription": "SENTINEL est un jeu de cybersécurité gratuit: enquêtes, terminal, scénarios et décisions sous pression pour apprendre les réflexes de défense numérique.",
+      "audiences": [
+        "ados",
+        "adultes"
+      ],
+      "formats": [
+        "solo"
+      ],
+      "duration": "long",
+      "themes": [
+        "arnaques",
+        "comptes",
+        "structures"
+      ],
+      "publishedAt": ""
     },
     {
       "slug": "l-enquete-de-la-classe",
@@ -52,7 +173,21 @@
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/l-enquete-de-la-classe",
       "cover": "/jeux/covers/l-enquete-de-la-classe.webp",
       "seoTitle": "L'Enquête de la Classe : jeu sur le cyberharcèlement pour les jeunes | Le Singe Du Numerique",
-      "seoDescription": "L'Enquête de la Classe est un jeu gratuit sur le cyberharcèlement : une fiction éducative où l'on mène l'enquête, on prend des décisions et on découvre comment aider un camarade."
+      "seoDescription": "L'Enquête de la Classe est un jeu gratuit sur le cyberharcèlement : une fiction éducative où l'on mène l'enquête, on prend des décisions et on découvre comment aider un camarade.",
+      "audiences": [
+        "enfants",
+        "ados"
+      ],
+      "formats": [
+        "solo",
+        "groupe",
+        "atelier"
+      ],
+      "duration": "moyen",
+      "themes": [
+        "reseaux"
+      ],
+      "publishedAt": ""
     },
     {
       "slug": "mon-telephone-me-connait",
@@ -71,7 +206,19 @@
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/mon-telephone-me-connait",
       "cover": "/jeux/covers/mon-telephone-me-connait.webp",
       "seoTitle": "Mon téléphone me connaît : ce que vos applications savent de vous | Le Singe Du Numerique",
-      "seoDescription": "Jeu de révélation gratuit sur les données personnelles : répondez à quelques questions sur vos habitudes numériques et découvrez ce que votre téléphone sait de vous. Rien n'est envoyé."
+      "seoDescription": "Jeu de révélation gratuit sur les données personnelles : répondez à quelques questions sur vos habitudes numériques et découvrez ce que votre téléphone sait de vous. Rien n'est envoyé.",
+      "audiences": [
+        "ados",
+        "adultes"
+      ],
+      "formats": [
+        "solo"
+      ],
+      "duration": "court",
+      "themes": [
+        "vie-privee"
+      ],
+      "publishedAt": ""
     },
     {
       "slug": "signal",
@@ -89,7 +236,21 @@
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/signal",
       "cover": "/jeux/covers/signal.webp",
       "seoTitle": "SIGNAL : jeu sur les arnaques, la désinformation et les données | Le Singe Du Numerique",
-      "seoDescription": "SIGNAL est un jeu éducatif gratuit en cinq jours : arnaques, désinformation et données personnelles, vécues à travers trois personnages de 16 à 68 ans aux réflexes très différents."
+      "seoDescription": "SIGNAL est un jeu éducatif gratuit en cinq jours : arnaques, désinformation et données personnelles, vécues à travers trois personnages de 16 à 68 ans aux réflexes très différents.",
+      "audiences": [
+        "ados",
+        "adultes"
+      ],
+      "formats": [
+        "solo"
+      ],
+      "duration": "long",
+      "themes": [
+        "arnaques",
+        "vie-privee",
+        "desinfo"
+      ],
+      "publishedAt": ""
     },
     {
       "slug": "quizia",
@@ -107,7 +268,19 @@
       "embedUrl": "https://admin.stan-bouchet.fr/jeux/quizia",
       "cover": "/jeux/covers/quizia.webp",
       "seoTitle": "Quiz IA : quel utilisateur d'intelligence artificielle êtes-vous ? | Le Singe Du Numerique",
-      "seoDescription": "Quiz gratuit sur l'intelligence artificielle : sept situations concrètes, six profils d'utilisateurs et trois conseils pratiques pour mieux utiliser l'IA au quotidien."
+      "seoDescription": "Quiz gratuit sur l'intelligence artificielle : sept situations concrètes, six profils d'utilisateurs et trois conseils pratiques pour mieux utiliser l'IA au quotidien.",
+      "audiences": [
+        "ados",
+        "adultes"
+      ],
+      "formats": [
+        "solo"
+      ],
+      "duration": "court",
+      "themes": [
+        "desinfo"
+      ],
+      "publishedAt": ""
     }
   ]
 }
