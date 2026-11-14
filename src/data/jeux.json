@@ -283,6 +283,38 @@
       "publishedAt": ""
     },
     {
+      "slug": "60-secondes",
+      "name": "60 secondes pour réagir",
+      "description": "Des situations du quotidien numérique, une décision à prendre à chaque fois, et la vérité juste après, avec ses vraies conséquences.",
+      "intro": "Un SMS bizarre, une vidéo choquante, une appli trop curieuse : vous avez soixante secondes pour réagir. Ou prenez votre temps, le chrono se désactive.",
+      "ageRange": "Ados et adultes",
+      "tags": [
+        "arnaques",
+        "réflexes",
+        "vie privée",
+        "réseaux sociaux"
+      ],
+      "bodyMd": "**Une situation, une décision, et la vérité juste après.**\n\n## Comment ça marche\n\nUn SMS de livraison bizarre, une vidéo qui choque, une application qui demande trop de droits : à chaque situation, vous choisissez ce que vous feriez vraiment. Le jeu vous montre ensuite ce qui se serait passé, et le bon réflexe à retenir.\n\nChoisissez une partie de 5, 10 ou 15 situations. Le chrono de soixante secondes met un peu de pression, comme dans la vraie vie ; il se désactive si vous préférez prendre votre temps.\n\n## Ce qu'on y apprend\n\nRepérer l'urgence fabriquée, vérifier avant de partager, et savoir à qui s'adresser quand on s'est fait avoir.\n\n**Sans inscription · Sans publicité · Rien n'est envoyé**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/60-secondes",
+      "cover": "/jeux/covers/60-secondes.webp",
+      "seoTitle": "60 secondes pour réagir : le jeu des bons réflexes numériques | Le Singe Du Numerique",
+      "seoDescription": "Un jeu gratuit pour s'entraîner à réagir face aux arnaques, aux fausses informations et aux pièges du quotidien numérique, avec les explications et les sources.",
+      "audiences": [
+        "ados",
+        "adultes"
+      ],
+      "formats": [
+        "solo"
+      ],
+      "duration": "court",
+      "themes": [
+        "arnaques",
+        "vie-privee",
+        "reseaux"
+      ],
+      "publishedAt": "2026-11-14"
+    },
+    {
       "slug": "arnaque-telephone",
       "name": "L'arnaque au téléphone",
       "description": "Écoutez de faux appels (faux conseiller bancaire, faux support, faux policier…) et repérez le moment où quelque chose cloche, ou raccrochez.",
