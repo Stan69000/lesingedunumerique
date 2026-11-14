@@ -314,6 +314,36 @@
       "publishedAt": "2026-11-11"
     },
     {
+      "slug": "dossier-enfant",
+      "name": "Ce qu'un inconnu pourrait deviner sur mon enfant",
+      "description": "Un outil pour les parents : à partir de l'âge, des passions et des usages de votre enfant, voyez ce qu'un inconnu pourrait deviner en ligne, et surtout comment limiter ces traces.",
+      "intro": "Un prénom, une passion, un club… Mis bout à bout, ces petits détails en disent beaucoup. Découvrez comment protéger votre enfant, simplement et sans lui faire peur.",
+      "ageRange": "Parents",
+      "tags": [
+        "parents",
+        "vie privée",
+        "réseaux sociaux",
+        "droit à l'image"
+      ],
+      "bodyMd": "**Des petits détails, mis bout à bout.**\n\n## Pour les parents\n\nRenseignez l'âge de votre enfant, ses passions et ses usages (un prénom inventé suffit). L'outil montre ce qu'un inconnu pourrait deviner à partir de ce qui circule en ligne : un club, une école, un quartier, des horaires.\n\n## Surtout : comment limiter ces traces\n\nÀ chaque étape, un encadré « Comment le limiter » donne un geste simple : réglages de confidentialité, photos partagées par les adultes, informations à ne pas publier. Le but n'est pas de faire peur, mais d'en parler en famille.\n\n## Les contacts utiles\n\nLe 3018 pour le cyberharcèlement et les violences numériques, Pharos pour signaler un contenu illicite, le 17 en cas de danger.\n\n**Sans inscription · Sans publicité · Rien n'est envoyé**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/dossier-enfant",
+      "cover": "/jeux/covers/dossier-enfant.webp",
+      "seoTitle": "Ce qu'un inconnu pourrait deviner sur mon enfant : l'outil pour les parents | Le Singe Du Numerique",
+      "seoDescription": "Un outil gratuit pour les parents : comprendre les traces que laisse un enfant en ligne et les gestes simples pour les limiter, avec les contacts utiles (3018).",
+      "audiences": [
+        "parents"
+      ],
+      "formats": [
+        "solo"
+      ],
+      "duration": "court",
+      "themes": [
+        "vie-privee",
+        "reseaux"
+      ],
+      "publishedAt": "2026-11-14"
+    },
+    {
       "slug": "phrase-de-passe",
       "name": "Dessinez votre phrase de passe",
       "description": "Tirez au hasard une phrase de passe de 6 ou 7 mots, imaginez la scène qu'elle raconte pour la retenir, et comprenez pourquoi elle est plus solide qu'un mot de passe « compliqué ».",
