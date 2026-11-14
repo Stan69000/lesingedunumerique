@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>L’Avent d’Octet · Bac à sable</title>
+<link rel="stylesheet" href="./style.css">
+<script type="module" src="./game.js"></script>
+</head>
+<body>
+<main>
+  <header><p>Le Singe du Numérique · Bac à sable</p><h1>L’Avent d’Octet</h1><p>24 surprises numériques à découvrir seul ou en famille.</p></header>
+  <section class="controls" aria-label="Simulation">
+    <label>Jour simulé <select id="date"><option value="1">1er décembre</option><option value="12">12 décembre</option><option value="13">13 décembre</option><option value="24">24 décembre</option></select></label>
+    <button id="resume">Copier le lien de reprise</button><button id="reset">Repartir de zéro</button>
+    <p id="notice" role="status"></p>
+  </section>
+  <section aria-labelledby="grid-title">
+    <h2 id="grid-title">Les 24 cases</h2><p id="progress" aria-live="polite"></p>
+    <div id="calendar" class="calendar"></div>
+    <p>Les cases 1, 13 et 24 sont jouables dans cet aperçu.</p>
+  </section>
+  <section id="activity" aria-labelledby="activity-title">
+    <h2 id="activity-title" tabindex="-1">Choisis une case</h2>
+    <div id="content"></div>
+  </section>
+  <section aria-labelledby="award-title">
+    <h2 id="award-title">Mon diplôme</h2><p id="award-status"></p>
+    <form id="award-form" hidden>
+      <label>Prénom ou nom d’équipe <input id="award-name" maxlength="60" required autocomplete="off"></label>
+      <button>Préparer mon diplôme</button>
+    </form>
+    <article id="diploma" hidden><p>Le Singe du Numérique · L’Avent d’Octet</p><h2>Diplôme d’exploration numérique</h2><p>Décerné à</p><strong id="winner"></strong><p>Pour avoir résolu l’énigme de Noël d’Octet</p><p>24 décembre 2026</p></article>
+    <button id="print" hidden>Imprimer ou enregistrer en PDF</button>
+  </section>
+  <details><summary>Prévisualiser les publications</summary>
+    <h3>Facebook</h3><p>Trois boutons pour un cahier de jeux. Lequel conseillerais-tu à Octet ? Dis-nous en commentaire.</p>
+    <h3>Instagram</h3><p>Carte 1 · Sur lequel cliquerais-tu ?</p>
+    <details><summary>Carte 2 · Voir la réponse</summary><p>Le bouton B indique le nom du cahier, le format PDF et la taille du fichier.</p></details>
+    <button data-channel="facebook">Simuler une arrivée Facebook</button>
+    <button data-channel="instagram">Simuler une arrivée Instagram</button>
+  </details>
+  <details><summary>Statistiques de test</summary><dl id="stats"></dl></details>
+</main>
+</body>
+</html>

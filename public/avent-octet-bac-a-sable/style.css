@@ -1,0 +1,29 @@
+:root { color-scheme: light; font: 16px/1.55 system-ui, sans-serif; color: #182b4a; background: #f8f0df; }
+body { margin: 0; }
+main { max-width: 48rem; margin: auto; padding: 1rem; }
+header { background: #172e56; color: #fff7e4; padding: clamp(1rem, 5vw, 3rem); border-radius: 1rem; }
+header p:first-child { color: #ffd174; font-weight: 700; }
+h1 { font: 700 clamp(2.25rem, 8vw, 4.5rem)/1 Georgia, serif; margin: .3em 0; }
+section, main > details { background: #fffaf0; border-radius: .75rem; margin-top: 1rem; padding: 1rem; }
+h2 { margin: 0 0 .5rem; }
+button, input, select { font: inherit; min-height: 44px; box-sizing: border-box; }
+button { border: 0; border-radius: .4rem; padding: .3rem .7rem; background: #234da0; color: white; cursor: pointer; }
+button:disabled { background: #e9dfcb; color: #4d5054; cursor: default; }
+button:focus-visible, summary:focus-visible { outline: 3px solid #ad6200; outline-offset: 2px; }
+.controls, form, .choices { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.controls p { flex-basis: 100%; margin: 0; }
+.controls p:empty { display: none; }
+.calendar { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: .4rem; }
+.calendar button { padding: 0; }
+.calendar [aria-current="true"] { box-shadow: inset 0 0 0 3px #ffd174; }
+.calendar .done { background: #176149; }
+#diploma { text-align: center; padding: 2rem 1rem; margin: 1rem 0; border: 3px double #ad6200; }
+#winner { display: block; overflow-wrap: anywhere; font-size: 1.8rem; }
+dl { display: grid; grid-template-columns: 1fr auto; gap: .25rem .65rem; }
+dd { margin: 0; }
+@media (max-width: 370px) { .calendar { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media print {
+  body { background: white; }
+  main > :not(section:has(#diploma)) { display: none; }
+  section:has(#diploma) > :not(#diploma) { display: none; }
+}
