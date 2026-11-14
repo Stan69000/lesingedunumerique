@@ -344,6 +344,37 @@
       "publishedAt": "2026-11-14"
     },
     {
+      "slug": "qui-controle-internet",
+      "name": "Qui contrôle Internet ?",
+      "description": "Suivez le trajet d'une vidéo jusqu'à votre écran, découvrez les acteurs qui font fonctionner, régulent ou surveillent Internet, puis testez-vous avec un quiz.",
+      "intro": "Câbles sous-marins, DNS, opérateurs, régulateurs : qui décide vraiment de ce qui arrive sur votre écran ?",
+      "ageRange": "Lycéens et adultes",
+      "tags": [
+        "fonctionnement d'interne",
+        "régulation",
+        "dns",
+        "câbles"
+      ],
+      "bodyMd": "**Du serveur à votre écran, étape par étape.**\n\n## Le trajet d'une vidéo\n\nQuand vous lancez une vidéo, elle passe par un annuaire (le DNS), des câbles sous-marins, des opérateurs et des serveurs de proximité. Le parcours suit ce trajet et montre qui intervient à chaque étape.\n\n## Qui fait quoi\n\nCeux qui font fonctionner le réseau, ceux qui fixent les règles techniques, ceux qui régulent en France et en Europe (Arcep, Arcom, CNIL, Commission européenne) : chaque acteur est présenté avec son vrai rôle, ses limites et ses sources officielles.\n\n## Un quiz pour finir\n\nNeuf questions pour vérifier ce qu'on a retenu.\n\n**Sans inscription · Sans publicité · Rien n'est envoyé**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/qui-controle-internet",
+      "cover": "/jeux/covers/qui-controle-internet.webp",
+      "seoTitle": "Qui contrôle Internet ? Comprendre le trajet d'un contenu jusqu'à vous | Le Singe Du Numerique",
+      "seoDescription": "Un parcours interactif gratuit pour comprendre comment fonctionne Internet et qui le régule en France et en Europe, avec un quiz et des sources officielles.",
+      "audiences": [
+        "ados",
+        "adultes"
+      ],
+      "formats": [
+        "solo",
+        "atelier"
+      ],
+      "duration": "moyen",
+      "themes": [
+        "internet"
+      ],
+      "publishedAt": "2026-11-14"
+    },
+    {
       "slug": "phrase-de-passe",
       "name": "Dessinez votre phrase de passe",
       "description": "Tirez au hasard une phrase de passe de 6 ou 7 mots, imaginez la scène qu'elle raconte pour la retenir, et comprenez pourquoi elle est plus solide qu'un mot de passe « compliqué ».",
