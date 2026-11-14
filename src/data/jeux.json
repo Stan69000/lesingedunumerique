@@ -314,6 +314,38 @@
       "publishedAt": "2026-11-11"
     },
     {
+      "slug": "crypte-moi-ca",
+      "name": "Crypte-moi ça",
+      "description": "Chiffrez et déchiffrez vos propres messages (César, XOR, hachage), puis découvrez comment le chiffrement protège vos échanges au quotidien.",
+      "intro": "Comment un message devient illisible pour les autres, et pourquoi le cadenas de votre navigateur ne dit pas tout.",
+      "ageRange": "Collégiens, lycéens et adultes curieux",
+      "tags": [
+        "chiffrement",
+        "mots de passe",
+        "https",
+        "sécurité"
+      ],
+      "bodyMd": "**Chiffrer, déchiffrer, hacher : on manipule pour comprendre.**\n\n## Des ateliers à manipuler\n\nÉcrivez un message et regardez-le devenir illisible avec le code de César, puis avec un chiffrement XOR. Testez le hachage : pourquoi un site sérieux ne connaît pas votre mot de passe, et pourquoi deux mots presque identiques donnent des empreintes sans rapport.\n\n## Le cadenas du navigateur\n\nLe HTTPS protège le trajet de vos données, pas l'honnêteté du site. Le jeu explique ce que le cadenas garantit, et ce qu'il ne garantit pas.\n\n## Un quiz pour finir\n\nQuelques questions pour vérifier ce qu'on a retenu. Les ateliers restent libres : on peut y revenir autant qu'on veut.\n\n**Sans inscription · Sans publicité · Vos messages restent sur votre appareil**",
+      "embedUrl": "https://admin.stan-bouchet.fr/jeux/crypte-moi-ca",
+      "cover": "/jeux/covers/crypte-moi-ca.webp",
+      "seoTitle": "Crypte-moi ça : comprendre le chiffrement en jouant | Le Singe Du Numerique",
+      "seoDescription": "Un atelier interactif gratuit pour comprendre le chiffrement, le hachage des mots de passe et le HTTPS, avec un quiz pour vérifier ce qu'on a retenu.",
+      "audiences": [
+        "ados",
+        "adultes"
+      ],
+      "formats": [
+        "solo",
+        "atelier"
+      ],
+      "duration": "moyen",
+      "themes": [
+        "comptes",
+        "internet"
+      ],
+      "publishedAt": "2026-11-14"
+    },
+    {
       "slug": "dossier-enfant",
       "name": "Ce qu'un inconnu pourrait deviner sur mon enfant",
       "description": "Un outil pour les parents : à partir de l'âge, des passions et des usages de votre enfant, voyez ce qu'un inconnu pourrait deviner en ligne, et surtout comment limiter ces traces.",
