@@ -75,4 +75,4 @@ Avant de choisir un hébergeur, mieux vaut se demander :
 
 Le meilleur hébergeur n'est pas celui qui promet le plus. C'est celui qui correspond le mieux à votre contexte réel.
 
-**Intéressé ?** Visitez leur site dès maintenant : [Offre hébergement unique o2switch](https://clients.o2switch.fr/offre-hebergement-unique?sc=d59f0a876b)
+**Intéressé ?** Visitez leur site dès maintenant : [Offre unique Cloud o2switch](https://clients.o2switch.fr/offre-hebergement-unique-cloud?sc=d59f0a876b)

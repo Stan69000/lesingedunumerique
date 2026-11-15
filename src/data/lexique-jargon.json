@@ -162,7 +162,7 @@
       "jargon"
     ],
     "source": {
-      "href": "https://www.anthropic.com/engineering/building-effective-agents",
+      "href": "https://www.anthropic.com/research/building-effective-agents",
       "label": "Lire la documentation de référence"
     }
   },
@@ -181,7 +181,7 @@
       "jargon"
     ],
     "source": {
-      "href": "https://docs.anthropic.com/en/docs/build-with-claude/token-counting",
+      "href": "https://platform.claude.com/docs/en/build-with-claude/token-counting",
       "label": "Lire la documentation de référence"
     }
   },
