@@ -1,4 +1,4 @@
-import { marked } from 'marked';
+import { Marked } from 'marked';
 
 // Découpe le Markdown d'un décryptage d'Octet en parties mises en page.
 // Le contrat d'écriture ne change pas (voir docs/briefs.md) : on reconnaît
@@ -14,6 +14,20 @@ const BLOCKS = [
   // Message type reconstitué, affiché en bulle : toujours fictif.
   { kind: 'example', label: 'Exemple de message (fictif)', pattern: /^Exemple de message \(fictif\)$/i },
 ];
+
+// Le texte vient d'un brouillon préparé par IA à partir de presse tierce et
+// finit en set:html : le HTML brut est affiché comme du texte et seuls les
+// liens http(s), mailto, tel et internes sont gardés.
+const escapeHtml = (text) => text.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const SAFE_HREF = /^(https?:|mailto:|tel:|\/(?!\/)|#)/i;
+const marked = new Marked({
+  walkTokens(token) {
+    if ((token.type === 'link' || token.type === 'image') && !SAFE_HREF.test(token.href.trim())) token.href = '#';
+  },
+  renderer: {
+    html({ text }) { return escapeHtml(text); },
+  },
+});
 
 const render = (markdown) => (markdown.trim() ? marked.parse(markdown.trim(), { async: false }) : '');
 const renderInline = (markdown) => marked.parseInline(markdown.trim(), { async: false });

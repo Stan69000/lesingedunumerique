@@ -71,3 +71,12 @@ test('a comic strip is suggested at most once per edition', () => {
 test('every suggested comic strip exists', () => {
   for (const { bd } of rules) readFileSync(new URL(`../src/content/bd/${bd}.md`, import.meta.url));
 });
+
+test('raw HTML and unsafe links never reach the page', () => {
+  const body = 'Intro <img src=x onerror=alert(1)>\n\n## 1. Faux colis\n\n**Le piège.** [cliquez](javascript:alert(1)) <script>alert(1)</script>\n\n**Pourquoi ça marche.** [source](https://www.cybermalveillance.gouv.fr/) et [relatif](/lexique/)\n\n## La phrase à retenir\n\n> Rien <b>ici</b>';
+  const layout = layoutBrief(body);
+  const html = [layout.introHtml, ...layout.scams.flatMap((scam) => scam.blocks.map((block) => block.html)), layout.sections[0].quoteHtml].join('\n');
+  assert.doesNotMatch(html, /<img|<script|<b>|javascript:/);
+  assert.match(html, /href="https:\/\/www\.cybermalveillance\.gouv\.fr\/"/);
+  assert.match(html, /href="\/lexique\/"/);
+});
