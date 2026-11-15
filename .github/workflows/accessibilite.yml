@@ -31,9 +31,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Sans clé Turnstile : l'iframe Cloudflare de /contact/ fait signaler un faux piège
+      # clavier, une fois sur deux selon son chargement.
       - name: Build
-        env:
-          PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY }}
         run: npm run build
 
       # astro-a11y 0.2.2 plante sur les pages de redirection d'Astro (meta refresh) :
