@@ -34,6 +34,9 @@ jobs:
       - name: Test Boussole and unified lexicon
         run: npm run test:boussole
 
+      - name: Test contact form relay
+        run: npm run test:contact
+
       # Exercises the engine against a real page over the network. It runs here,
       # on the runner, because O2Switch answers POST requests from datacenter
       # addresses with a firewall CAPTCHA: auditing through the deployed API
