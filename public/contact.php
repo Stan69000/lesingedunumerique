@@ -1,6 +1,9 @@
 <?php
 declare(strict_types=1);
 
+const LSDN_CONTACT_RELAY = true;
+require_once __DIR__ . '/contact-relay.php';
+
 function env_value(string $key, string $default = ''): string
 {
     static $localConfig = null;
@@ -359,6 +362,20 @@ $headers = [
     'Reply-To: ' . $safeName . ' <' . $email . '>',
 ];
 
+$relayed = relay_contact_to_admin(
+    [
+        'id' => bin2hex(random_bytes(16)),
+        'first_name' => $firstName,
+        'last_name' => $lastName,
+        'email' => $email,
+        'phone' => $safePhone,
+        'subject' => $safeSubject,
+        'message' => str_replace("\0", '', $message),
+    ],
+    env_value('CONTACT_ADMIN_ENDPOINT'),
+    env_value('CONTACT_ADMIN_SECRET')
+);
+
 $sent = mail(
     sanitize_mail_header_value($recipient),
     '[Contact site] ' . $safeSubject,
@@ -367,6 +384,11 @@ $sent = mail(
 );
 
 if (!$sent) {
+    log_contact_issue('mail() en échec' . ($relayed ? ', message conservé dans l’admin' : ''));
+}
+
+// Le message est arrivé quelque part : la personne n'a pas à le renvoyer.
+if (!$sent && !$relayed) {
     redirect_with_status('error');
 }
 
