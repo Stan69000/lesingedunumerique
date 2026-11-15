@@ -24,4 +24,12 @@ export const associationProjects = [
     note: 'Un point de départ pour progresser, à compléter par des vérifications humaines.',
     cta: 'Découvrir l’outil',
   },
+  {
+    id: 'astro-a11y', name: 'astro-a11y', icon: '🛠️',
+    href: 'https://stan69000.github.io/astro-a11y/',
+    promise: 'Vérifier l’accessibilité d’un site Astro à chaque mise à jour',
+    description: 'Un outil gratuit et open source pour les développeurs. Il analyse les pages d’un site Astro, signale les problèmes d’accessibilité, les relie aux critères du RGAA et explique comment les corriger.',
+    note: 'S’ajoute au projet ou se lance en ligne de commande. Comme tout outil automatique, il ne remplace pas une vérification humaine.',
+    cta: 'Découvrir l’outil',
+  },
 ] as const;

@@ -368,7 +368,7 @@
     "reflexe": "Corrigez les liens cassés. Ne redirigez pas toutes les pages supprimées vers l’accueil sans tenir compte de leur sujet.",
     "theme": "SEO et GEO · Technique",
     "source": {
-      "href": "https://developers.google.com/search/docs/crawling-indexing/http-network-errors",
+      "href": "https://developers.google.com/crawling/docs/troubleshooting/http-status-codes",
       "label": "Consulter la documentation de référence"
     },
     "lien": {

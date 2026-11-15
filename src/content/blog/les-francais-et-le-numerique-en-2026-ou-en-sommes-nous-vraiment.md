@@ -110,12 +110,12 @@ Ce panorama montre que l'enjeu n'est plus tant de se connecter que de bien compr
 
 ## Sources
 
-* [Baromètre du numérique 2026 – CRÉDOC, Arcep, Arcom, ANCT, CGE](https://www.arcep.fr/cartes-et-donnees/nos-publications-chiffrees/barometre-du-numerique.html)
+* [Baromètre du numérique 2026 – CRÉDOC, Arcep, Arcom, ANCT, CGE](https://www.arcep.fr/cartes-et-donnees/nos-publications-chiffrees/barometre-du-numerique/le-barometre-du-numerique-edition-2026.html)
 * [Site du CRÉDOC](https://www.credoc.fr)
 
 ## Pour aller plus loin
 
 * [Site de l'Arcep, régulateur des télécoms](https://www.arcep.fr)
 * [Site de l'Arcom, régulateur de l'audiovisuel et du numérique](https://www.arcom.fr)
-* [Site de l'Agence nationale de la cohésion des territoires (ANCT)](https://agence-cohesion-territoires.gouv.fr)
+* [Site de l'Agence nationale de la cohésion des territoires (ANCT)](https://anct.gouv.fr/)
 * [Plateforme de données publiques Data.gouv.fr](https://www.data.gouv.fr)
