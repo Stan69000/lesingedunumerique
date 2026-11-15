@@ -42,4 +42,4 @@ jobs:
           target: dist
           lang: fr
           baseline: a11y-baseline.json
-          fail-on: critical
+          fail-on: major
