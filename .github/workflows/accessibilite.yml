@@ -1,0 +1,52 @@
+name: Accessibilité (astro-a11y)
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: accessibilite-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  astro-a11y:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        env:
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ secrets.PUBLIC_TURNSTILE_SITE_KEY }}
+        run: npm run build
+
+      # astro-a11y 0.2.2 plante sur les pages de redirection d'Astro (meta refresh) :
+      # on scanne une copie du build sans elles.
+      - name: Copie du build sans les redirections
+        run: |
+          cp -R dist dist-a11y
+          grep -rlE '<meta http-equiv="refresh"' dist-a11y | grep '\.html$' | xargs -r rm -v
+
+      - name: Scan astro-a11y
+        uses: Stan69000/astro-a11y@19afd8fdb7b589cbcf048278c956e767107aa9c0  # v0.2.2
+        with:
+          target: dist-a11y
+          lang: fr
+          baseline: a11y-baseline.json
+          fail-on: critical
