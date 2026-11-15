@@ -6,7 +6,7 @@ const tools = associationProjects;
 // Visible en développement dès le premier brouillon, en production dès la première fiche publiée.
 const atelierOuvert = (await getFiches()).length > 0;
 ---
-<SiteLayout title="Nos outils gratuits et ressources numériques | Le Singe Du Numérique" description="Découvrez la Boussole d’Octet pour la visibilité de votre site, RGAA Audit pour son accessibilité et Le Signal Clair pour suivre l’actualité numérique." eyebrow="Comprendre et agir" headline="Nos outils," accent="à votre portée" intro="Vous souhaitez comprendre l’actualité numérique ou améliorer un site ? Retrouvez nos projets pour vous informer, rendre vos pages plus accessibles et améliorer leur visibilité.">
+<SiteLayout title="Nos outils gratuits et ressources numériques | Le Singe Du Numérique" description="Découvrez la Boussole d’Octet pour la visibilité de votre site, RGAA Audit et astro-a11y pour son accessibilité, et Le Signal Clair pour suivre l’actualité numérique." eyebrow="Comprendre et agir" headline="Nos outils," accent="à votre portée" intro="Vous souhaitez comprendre l’actualité numérique ou améliorer un site ? Retrouvez nos projets pour vous informer, rendre vos pages plus accessibles et améliorer leur visibilité.">
   <section class="tools-grid" aria-label="Choisir un outil">
     {tools.map(tool => <article><span aria-hidden="true">{tool.icon}</span><h2>{tool.name}</h2><p><strong>{tool.promise}</strong></p><p>{tool.description}</p><p>{tool.note}</p><a href={tool.href}>{tool.cta} →</a></article>)}
   </section>
