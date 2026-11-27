@@ -5,6 +5,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import CommandPalette from '../components/CommandPalette.astro';
 import BackToTop from '../components/BackToTop.astro';
 import AssociationProjects from '../components/AssociationProjects.astro';
+import AventBanner from '../components/AventBanner.astro';
 import FooterProjects from '../components/FooterProjects.astro';
 import { getCollection } from 'astro:content';
 import MaintenanceContent from '../components/MaintenanceContent.astro';
@@ -194,6 +195,8 @@ const currentPath = Astro.url.pathname;
           </p>
 
           <SearchDiscovery />
+
+          <AventBanner />
 
           {(latestBd || latestPost || latestBrief) && (
             <section class="home-news" aria-labelledby="home-news-title">

@@ -1,3 +1,5 @@
+import { AVENT_HREF, aventEnAvant } from './avent';
+
 export interface NavItem {
   href: string;
   label: string;
@@ -13,6 +15,7 @@ export const mainNav: NavItem[] = [
   { href: '/outils/', label: 'Nos outils', matchPrefix: true },
   { href: '/asso/', label: 'L’association' },
   { href: '/contact/', label: 'Contact' },
+  ...(aventEnAvant() ? [{ href: AVENT_HREF, label: 'Calendrier de l’Avent' }] : []),
 ];
 
 export const navCta: NavItem = { href: '/adhesion/', label: 'Rejoindre' };
