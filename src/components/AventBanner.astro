@@ -1,0 +1,59 @@
+---
+import { AVENT_FIN, AVENT_HREF, aventEnAvant } from '../config/avent';
+---
+
+{aventEnAvant() && (
+  <aside class="avent-banner" aria-labelledby="avent-banner-title" data-fin={AVENT_FIN}>
+    <div class="avent-banner-doors" aria-hidden="true">
+      {[1, 2, 3, 4, 5, 6].map((n) => <span>{n}</span>)}
+    </div>
+    <div class="avent-banner-body">
+      <p class="avent-banner-label">Du 1er au 24 décembre</p>
+      <h2 id="avent-banner-title"><a href={AVENT_HREF}>Le calendrier de l’Avent d’Octet</a></h2>
+      <p>Une fenêtre par jour, des petits défis de 3 à 15 minutes à faire en famille. Le Bug a enfermé le grand jeu de la veillée : aide Octet à retrouver le code !</p>
+      <span class="avent-banner-cta" aria-hidden="true">Ouvrir le calendrier →</span>
+    </div>
+  </aside>
+)}
+
+<script is:inline>
+  (() => {
+    const el = document.querySelector('.avent-banner');
+    const fin = el?.dataset.fin;
+    if (fin && new Date().toLocaleDateString('sv-SE', { timeZone: 'Europe/Paris' }) > fin) el.remove();
+  })();
+</script>
+
+<style>
+  .avent-banner {
+    position: relative;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin: 0 0 32px;
+    padding: 22px 24px;
+    border-radius: 20px;
+    background: #0d1f40;
+    color: #fff7e8;
+    text-align: left;
+    border: 2px solid #f2b632;
+  }
+  .avent-banner:hover { box-shadow: 0 0 0 3px rgba(242, 182, 50, .35); }
+  .avent-banner-doors { display: grid; grid-template-columns: repeat(3, 34px); gap: 6px; flex-shrink: 0; }
+  .avent-banner-doors span {
+    display: grid; place-items: center; height: 34px; border-radius: 8px;
+    background: #16305e; color: #ffd174; font-weight: 700; font-size: .85rem;
+  }
+  .avent-banner-doors span:first-child { background: #f2b632; color: #0d1f40; }
+  .avent-banner-label { margin: 0 0 4px; font-size: .8rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #ffd174; }
+  .avent-banner h2 { margin: 0 0 6px; font-size: 1.25rem; color: #fff; }
+  .avent-banner h2 a { color: inherit; text-decoration: none; }
+  .avent-banner h2 a::after { content: ''; position: absolute; inset: 0; border-radius: 20px; }
+  .avent-banner h2 a:focus-visible { outline: none; }
+  .avent-banner:focus-within { outline: 3px solid #ffd174; outline-offset: 3px; }
+  .avent-banner p { margin: 0; line-height: 1.5; }
+  .avent-banner-cta { display: inline-block; margin-top: 10px; font-weight: 700; color: #ffd174; }
+  @media (max-width: 560px) {
+    .avent-banner { flex-direction: column; align-items: flex-start; }
+  }
+</style>

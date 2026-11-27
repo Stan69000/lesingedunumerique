@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="index,follow">
+<meta name="description" content="Du 1er au 24 décembre, une fenêtre par jour : des petits défis de 3 à 15 minutes pour apprendre les bons réflexes du numérique en famille. Gratuit et sans inscription.">
+<link rel="canonical" href="https://lesingedunumerique.fr/calendrier-avent-octet/">
+<meta property="og:site_name" content="Le Singe Du Numérique">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:title" content="Le calendrier de l’Avent d’Octet">
+<meta property="og:description" content="Du 1er au 24 décembre, une fenêtre par jour : des petits défis de 3 à 15 minutes pour apprendre les bons réflexes du numérique en famille. Gratuit et sans inscription.">
+<meta property="og:url" content="https://lesingedunumerique.fr/calendrier-avent-octet/">
+<meta property="og:image" content="https://lesingedunumerique.fr/calendrier-avent-octet/partage.jpg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1350">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="avent-mode" content="site">
+<meta name="voice-base" content="https://admin.stan-bouchet.fr/api/public/lsdn/avent/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" href="/favicon.ico">
+<meta name="theme-color" content="#0d1f40">
+<meta name="asset-prefix" content="">
+<title>Le calendrier de l’Avent d’Octet · Le Singe du Numérique</title>
+<link rel="stylesheet" href="./style.css">
+<script type="module" src="./game.js"></script>
+<script>
+  (() => {
+    if (navigator.webdriver || !navigator.sendBeacon) return;
+    if (!/^(www\.)?lesingedunumerique\.fr$/.test(location.hostname)) return;
+    try { if (localStorage.getItem('lsdn-no-stats')) return; } catch {}
+    const body = JSON.stringify({ p: location.pathname, r: document.referrer, u: new URLSearchParams(location.search).get('utm_source') });
+    navigator.sendBeacon('https://admin.stan-bouchet.fr/api/public/lsdn/nav', new Blob([body], { type: 'text/plain' }));
+  })();
+</script>
+</head>
+<body>
+<svg class="symbols" aria-hidden="true" focusable="false">
+  <symbol id="hat" viewBox="0 0 236 356" overflow="visible">
+    <g stroke="#3a1d10" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M80 48 C80 20 100 0 126 -8 C100 -10 66 -2 44 22 C56 -4 100 -30 150 -30 C196 -30 218 4 218 50 Z" fill="#c8352e"/>
+      <path d="M126 -8 C150 -14 176 -4 190 14" fill="none" stroke="#9e2620" stroke-width="3"/>
+      <path d="M96 30 C104 12 118 2 134 -2" fill="none" stroke="#e0544b" stroke-width="4" opacity=".7"/>
+      <path d="M72 42 C110 20 190 20 226 44 C233 48 232 62 223 63 C190 44 108 44 76 63 C66 63 64 48 72 42 Z" fill="#fff7e8"/>
+      <path d="M86 55 C114 43 186 43 214 55" fill="none" stroke="#e6d9bf" stroke-width="5" opacity=".9"/>
+      <circle cx="42" cy="26" r="14" fill="#fff7e8"/>
+      <path d="M34 22 q4 -6 10 -4" fill="none" stroke="#e3d6bd" stroke-width="2.5"/>
+    </g>
+  </symbol>
+  <symbol id="bug" viewBox="0 0 64 64">
+    <path d="M24 14 L18 4 M40 14 L46 4" stroke="#6c4bd8" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="18" cy="4" r="3" fill="#ff5fa2"/>
+    <circle cx="46" cy="4" r="3" fill="#32d3e0"/>
+    <rect x="12" y="14" width="40" height="36" rx="10" fill="#32d3e0" transform="translate(-3 0)" opacity=".7"/>
+    <rect x="12" y="14" width="40" height="36" rx="10" fill="#ff5fa2" transform="translate(3 0)" opacity=".7"/>
+    <rect x="12" y="14" width="40" height="36" rx="10" fill="#6c4bd8"/>
+    <rect x="12" y="30" width="40" height="4" fill="#8d72ec"/>
+    <circle cx="25" cy="28" r="6" fill="#fff"/>
+    <circle cx="40" cy="28" r="6" fill="#fff"/>
+    <rect x="24" y="26" width="4" height="4" fill="#1b1036"/>
+    <rect x="39" y="27" width="4" height="4" fill="#1b1036"/>
+    <path d="M24 40 h4 v3 h4 v-3 h4 v3 h4" fill="none" stroke="#fff" stroke-width="2"/>
+    <rect x="16" y="50" width="8" height="8" rx="2" fill="#6c4bd8"/>
+    <rect x="40" y="50" width="8" height="8" rx="2" fill="#6c4bd8"/>
+  </symbol>
+  <symbol id="holly" viewBox="0 0 60 40">
+    <path d="M30 22 C20 4 8 10 2 6 C8 16 4 20 10 26 C16 22 22 28 30 22 Z" fill="#1f6b4a"/>
+    <path d="M30 22 C40 4 52 10 58 6 C52 16 56 20 50 26 C44 22 38 28 30 22 Z" fill="#2c8a5f"/>
+    <circle cx="26" cy="26" r="5" fill="#c8352e"/>
+    <circle cx="34" cy="27" r="5" fill="#d9443b"/>
+    <circle cx="30" cy="20" r="5" fill="#b42a24"/>
+  </symbol>
+  <symbol id="star" viewBox="0 0 24 24">
+    <path d="M12 1.5l3.1 6.6 7.2.9-5.3 5 1.4 7.1L12 17.6l-6.4 3.5L7 14l-5.3-5 7.2-.9z"/>
+  </symbol>
+  <symbol id="voice" viewBox="0 0 24 24">
+    <path d="M3 9.5v5h3.5l5 4.2V5.3l-5 4.2z"/>
+    <path d="M15 9a4.2 4.2 0 0 1 0 6M17.6 6.4a8 8 0 0 1 0 11.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="file" viewBox="0 0 24 24">
+    <path d="M6 2h8l5 5v15H6z" fill="#fff" stroke="#16305e" stroke-width="1.5"/>
+    <path d="M14 2v5h5" fill="none" stroke="#16305e" stroke-width="1.5"/>
+    <rect x="7.5" y="12" width="10" height="5" rx="1" fill="#c8352e"/>
+  </symbol>
+</svg>
+
+<a class="skip" href="#maison">Aller au calendrier</a>
+
+<header class="topbar">
+  <p class="brand"><a href="/" class="brand-link"><span class="art art-tete brand-octet" aria-hidden="true"></span> <span class="brand-text">Le Singe du Numérique</span></a></p>
+  <div class="toggles" role="group" aria-label="Réglages">
+    <button type="button" id="toggle-sound" aria-pressed="false">Sons</button>
+    <button type="button" id="toggle-big" aria-pressed="false">Grand écran</button>
+    <button type="button" id="toggle-test" class="test-toggle" aria-pressed="false">Mode test</button>
+  </div>
+</header>
+
+<section class="hero" aria-labelledby="titre">
+  <svg class="hero-scene" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#091631"/><stop offset=".7" stop-color="#17346a"/><stop offset="1" stop-color="#2b4f8f"/></linearGradient>
+      <radialGradient id="halo"><stop offset="0" stop-color="#ffe39a" stop-opacity=".9"/><stop offset="1" stop-color="#ffe39a" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="1200" height="420" fill="url(#ciel)"/>
+    <g fill="#fff7e8" opacity=".8">
+      <circle cx="90" cy="60" r="1.6"/><circle cx="210" cy="120" r="1.2"/><circle cx="330" cy="40" r="1.8"/><circle cx="470" cy="90" r="1.2"/><circle cx="610" cy="30" r="1.5"/><circle cx="760" cy="110" r="1.3"/><circle cx="880" cy="50" r="1.7"/><circle cx="1010" cy="140" r="1.2"/><circle cx="1130" cy="70" r="1.6"/><circle cx="560" cy="150" r="1"/><circle cx="260" cy="190" r="1"/>
+    </g>
+    <circle cx="1040" cy="90" r="60" fill="url(#halo)"/>
+    <mask id="croissant"><rect x="980" y="30" width="120" height="120" fill="#fff"/><circle cx="1056" cy="80" r="26" fill="#000"/></mask>
+    <circle cx="1040" cy="90" r="30" fill="#fff4cf" mask="url(#croissant)"/>
+    <path d="M0 300 C200 250 380 280 560 262 C760 242 960 290 1200 250 V420 H0Z" fill="#284a85"/>
+    <g>
+      <path d="M700 300 l60 -54 l60 54 v70 h-120z" fill="#1c3566"/>
+      <path d="M690 302 l70 -64 l70 64" fill="none" stroke="#fff7e8" stroke-width="8" stroke-linejoin="round"/>
+      <rect x="722" y="312" width="22" height="22" rx="3" fill="#ffd174"/><rect x="776" y="312" width="22" height="22" rx="3" fill="#ffd174"/>
+      <path d="M880 310 l44 -40 l44 40 v60 h-88z" fill="#1c3566"/>
+      <path d="M872 312 l52 -48 l52 48" fill="none" stroke="#fff7e8" stroke-width="7" stroke-linejoin="round"/>
+      <rect x="912" y="322" width="24" height="30" rx="12" fill="#ffd174"/>
+      <path d="M1040 236 l-40 74 h80z M1040 266 l-48 86 h96z" fill="#173f2f"/>
+      <rect x="1034" y="352" width="12" height="16" fill="#5a3418"/>
+      <g fill="#ffd174"><circle cx="1030" cy="290" r="4"/><circle cx="1052" cy="318" r="4"/><circle cx="1020" cy="336" r="4"/><circle cx="1062" cy="344" r="4"/></g>
+      <use href="#star" x="1028" y="222" width="24" height="24" fill="#f2b632"/>
+    </g>
+    <path d="M0 350 C220 320 420 352 640 336 C860 320 1020 356 1200 330 V420 H0Z" fill="#eef3fb"/>
+    <path d="M0 382 C260 366 520 392 800 376 C960 368 1080 384 1200 372 V420 H0Z" fill="#dbe5f4"/>
+  </svg>
+  <div class="snow" aria-hidden="true"></div>
+  <div class="hero-octet octet-fig" aria-hidden="true"><span class="art art-pointe"></span><svg class="hat"><use href="#hat"/></svg><svg class="hero-bug"><use href="#bug"/></svg></div>
+  <div class="hero-text">
+    <p class="eyebrow">Du 1er au 24 décembre 2026</p>
+    <h1 id="titre">L’Avent d’Octet</h1>
+    <p class="lede">Le Bug a enfermé le grand jeu de la veillée dans un coffre. Chaque jour, ouvre une fenêtre, relève le défi et aide Octet à retrouver le code.</p>
+    <p class="chapter" id="chapitre"></p>
+    <p><button type="button" class="cta" id="case-du-jour">Ouvrir la fenêtre du jour</button></p>
+  </div>
+</section>
+
+<main>
+  <section class="story" aria-labelledby="histoire-titre">
+    <h2 id="histoire-titre" class="sr-only">L’histoire</h2>
+    <div class="story-cast" aria-hidden="true">
+      <span class="avatar"><span class="art art-p-octet"></span></span><span class="avatar"><span class="art art-p-maya"></span></span><span class="avatar"><span class="art art-p-nino"></span></span><span class="avatar"><span class="art art-p-sam"></span></span>
+    </div>
+    <p>Cette année, Octet organise la veillée de Noël du Singe du Numérique avec <strong>Maya</strong>, <strong>Nino</strong> et <strong>Sam</strong>. Mais un petit lutin farceur, <strong>le Bug</strong>, s’est glissé dans les écrans et a enfermé le grand jeu de la veillée dans un coffre, avec un code de quatre lettres. Elles sont cachées dans le calendrier&nbsp;: trouve-les pour ouvrir le coffre le 24&nbsp;décembre.</p>
+  </section>
+
+  <div class="layout">
+    <div class="left">
+    <section class="maison" id="maison" aria-labelledby="maison-titre">
+      <div class="roof"><h2 id="maison-titre">La maison d’Octet</h2></div>
+      <div class="wall">
+        <p class="test-banner" id="bandeau-test" hidden>Mode test : toutes les portes s’ouvrent, quel que soit le jour.</p>
+        <p class="progress" id="progression" aria-live="polite"></p>
+        <ol class="windows" id="calendrier"></ol>
+      </div>
+      <p class="legend"><span><span class="key key-today"></span> Aujourd’hui</span> <span><span class="key key-catch"></span> À rattraper</span> <span><span class="key key-done"></span> Terminée</span> <span><span class="key key-closed"></span> Pas encore</span></p>
+    </section>
+      <section class="card rendezvous" aria-labelledby="rdv-titre">
+        <div>
+          <h2 id="rdv-titre">Rendez-vous demain</h2>
+          <p id="prochaine"></p>
+          <p class="small">Pas de compte : ta partie reste dans ce navigateur. Le lien de reprise la transporte ailleurs.</p>
+        </div>
+        <div class="rdv-actions">
+          <button type="button" class="secondary" id="agenda">Ajouter les 24 rappels à mon agenda</button>
+          <button type="button" class="secondary" id="reprise">Continuer sur un autre appareil</button>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side" aria-label="Ma progression">
+      <section class="card tree-card" aria-labelledby="sapin-titre">
+        <h2 id="sapin-titre">Le sapin d’Octet</h2>
+        <div id="sapin"></div>
+        <p id="sapin-texte"></p>
+      </section>
+      <section class="card carnet" aria-labelledby="carnet-titre">
+        <h2 id="carnet-titre">Mon carnet d’enquête</h2>
+        <ol class="letters" id="carnet"></ol>
+        <p class="small">Quatre cases cachent une lettre. Tu en as raté une&nbsp;? Les cases passées restent ouvertes jusqu’au 6&nbsp;janvier.</p>
+        <p><a class="btn secondary small-btn" href="carnet-enquete-octet.pdf" target="_blank" rel="noopener" id="carnet-pdf">Imprimer mon carnet</a></p>
+      </section>
+    </aside>
+  </div>
+
+  <section class="diplome-zone" id="diplome-zone" aria-labelledby="diplome-titre">
+    <h2 id="diplome-titre">Mon diplôme</h2>
+    <p id="diplome-statut"></p>
+    <form id="diplome-form" hidden>
+      <label for="diplome-nom">Prénom ou nom d’équipe</label>
+      <div class="inline">
+        <input id="diplome-nom" maxlength="40" required autocomplete="off">
+        <button>Préparer mon diplôme</button>
+      </div>
+      <p class="small">Le prénom reste sur cet appareil : il n’est ni envoyé ni compté.</p>
+    </form>
+    <article class="diplome" id="diplome" aria-label="Aperçu du diplôme">
+      <svg class="dip-holly dip-holly-a" aria-hidden="true"><use href="#holly"/></svg>
+      <svg class="dip-holly dip-holly-b" aria-hidden="true"><use href="#holly"/></svg>
+      <span class="dip-octet" aria-hidden="true"><span class="art art-tete"></span></span>
+      <div class="dip-body">
+        <p class="dip-org">Le Singe du Numérique · L’Avent d’Octet</p>
+        <p class="dip-title">Diplôme d’exploration numérique</p>
+        <p>décerné à</p>
+        <p class="dip-name" id="dip-nom">Ton prénom ici</p>
+        <p>pour avoir ouvert le coffre de Noël d’Octet<br>et retrouvé les quatre lettres du code.</p>
+        <p class="dip-count" id="dip-compte"></p>
+        <p class="dip-sign">Octet, guide numérique · Noël 2026</p>
+      </div>
+      <div class="dip-seal" id="dip-sceau"><svg aria-hidden="true"><use href="#star"/></svg><span>Avent complété</span></div>
+    </article>
+    <p><button type="button" id="imprimer" hidden>Imprimer ou enregistrer en PDF</button></p>
+  </section>
+
+  <section class="jeu-zone" id="jeu-zone" aria-labelledby="jeu-titre">
+    <h2 id="jeu-titre">Le grand jeu de la veillée</h2>
+    <p id="jeu-statut"></p>
+    <div class="jeu-body">
+      <img class="jeu-apercu" src="grand-jeu-apercu.webp" width="1286" height="909" alt="Aperçu du plateau : un sentier de 32 pierres colorées, de la maison d’Octet jusqu’au coffre de Noël.">
+      <div>
+        <p>Un plateau à poser sur la table, les règles, cinq pions à l’effigie des héros du livre et 48 cartes en trois paquets : <strong>Souvenirs du calendrier</strong>, <strong>Et toi, tu ferais quoi ?</strong> et <strong>Défis de la veillée</strong>.</p>
+        <p class="small">6 pages à imprimer, en couleur ou en noir et blanc. Il faut juste un dé et des ciseaux. Pas besoin d’avoir fait tout le calendrier pour jouer.</p>
+        <p><a class="btn" id="imprimer-jeu" href="grand-jeu-veillee-octet.pdf" target="_blank" rel="noopener">Ouvrir le grand jeu (PDF)</a></p>
+      </div>
+    </div>
+  </section>
+
+  <details class="sandbox">
+    <summary>Outils du bac à sable</summary>
+    <p class="small">Ce panneau n’existera pas dans la version publique.</p>
+    <div class="inline">
+      <label for="jour">Jour simulé</label>
+      <select id="jour"></select>
+      <button type="button" class="secondary" id="sim-indices">Simuler les cases 6, 20 et 23</button>
+      <button type="button" class="secondary" id="sim-tout">Simuler les 24 cases</button>
+      <button type="button" class="secondary" id="raz">Repartir de zéro</button>
+    </div>
+    <h3>Publications sociales</h3>
+    <div class="social">
+      <div><p class="small">Facebook</p><p>Trois boutons « Télécharger »… un seul est le bon. Lequel conseillerais-tu à Octet&nbsp;? Réponse dans la case 1 du calendrier.</p></div>
+      <div><p class="small">Instagram · carte 1</p><p>Sur lequel cliquerais-tu&nbsp;?</p><p class="small">Carte 2 · Le bon bouton donne le nom du fichier, son format et sa taille. Lien en bio.</p></div>
+    </div>
+    <div class="inline">
+      <button type="button" class="secondary" data-canal="facebook">Simuler une arrivée Facebook</button>
+      <button type="button" class="secondary" data-canal="instagram">Simuler une arrivée Instagram</button>
+    </div>
+    <h3>Statistiques de test</h3>
+    <dl id="stats"></dl>
+  </details>
+</main>
+
+<footer class="foot">
+  <p>Un calendrier du <a href="/">Singe du Numérique</a>, association loi 1901. Gratuit, sans inscription ni publicité : ta progression reste dans ton navigateur.</p>
+  <p><a href="/">Accueil</a> · <a href="/accessibilite/">Accessibilité</a> · <a href="/mentions-legales/">Mentions légales</a></p>
+</footer>
+
+<dialog class="case" id="case" aria-labelledby="case-titre">
+  <div class="shutters" id="volets" aria-hidden="true"><span></span><span></span><b id="volets-num"></b></div>
+  <header class="case-head">
+    <p class="case-meta" id="case-meta"></p>
+    <h2 id="case-titre" tabindex="-1"></h2>
+    <button type="button" class="close" id="fermer" aria-label="Fermer la case">×</button>
+    <ol class="steps" id="etapes" aria-label="Étapes"></ol>
+  </header>
+  <div class="case-body" id="case-corps"></div>
+  <footer class="case-foot" id="case-pied"></footer>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

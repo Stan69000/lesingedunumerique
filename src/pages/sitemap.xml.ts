@@ -30,6 +30,7 @@ export async function GET() {
     '/lexique/',
     '/outils/',
     '/outils/boussole/',
+    '/calendrier-avent-octet/',
     // L'atelier n'entre dans le sitemap qu'avec sa première fiche publiée.
     ...(fiches.length ? ['/outils/atelier/'] : []),
     '/veille-sources/',
