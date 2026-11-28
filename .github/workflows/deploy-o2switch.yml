@@ -17,6 +17,9 @@ permissions:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    # Environnement « production » : il permettra de n'exposer les secrets de
+    # déploiement qu'à main (Settings > Environments > production).
+    environment: production
 
     steps:
       - name: Checkout repository
